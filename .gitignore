@@ -1,0 +1,8 @@
+# local environment
+.env.local
+.env.*.local
+# dependencies
+node_modules/
+# builds
+dist/
+.DS_Store
