@@ -1,0 +1,1127 @@
+[
+ {
+  "id": 49,
+  "title": "Interface Builder e Storyboards",
+  "theory": "Interface Builder (IB) é o editor visual do Xcode para montar telas UIKit sem escrever código. Existem três formas de criar interface: Storyboard (um arquivo '.storyboard' com várias telas, chamadas scenes, e as ligações entre elas), XIB (um arquivo '.xib' com uma única tela ou view reutilizável) e código puro. No Document Outline, à esquerda do canvas, você vê a hierarquia de cada scene: View Controller, view raiz e subviews. Para adicionar elementos, abra a Object Library (botão '+' ou atalho Shift-Cmd-L) e arraste um 'Label', 'Button' ou 'Image View' para a tela. Com o objeto selecionado, os inspetores na lateral direita editam as propriedades sem código: Attributes (texto, cor, fonte), Size (posição, tamanho e constraints), Connections (outlets, actions e segues) e Identity (a classe customizada). A tela inicial do app é marcada com a seta de entrada, ligada ao campo 'Is Initial View Controller' no Attributes inspector. Um '@IBOutlet weak var' permite que o código leia ou altere um objeto da storyboard (uma referência), enquanto um '@IBAction func' é um método chamado quando um evento acontece, como o toque em um botão (uma ação). Ambos são criados com Control-arraste do objeto até o código no Assistant Editor. Erros comuns: apagar o método ou a propriedade no código e deixar a conexão antiga na storyboard (um método apagado causa o crash 'unrecognized selector'; uma propriedade apagada causa o crash 'this class is not key value coding-compliant for the key'; e um outlet sem conexão fica 'nil' e trava com 'Unexpectedly found nil' ao usar o valor), e esquecer de definir a classe customizada no Identity inspector. '@IBDesignable' e '@IBInspectable' permitem que uma view customizada seja renderizada e configurada direto no IB. A prova de certificação espera que você saiba diferenciar outlet e action, usar os inspetores e corrigir conexões quebradas pelo Connections inspector.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/uistoryboard",
+  "category": "UIKit e Interface Builder",
+  "corporateCase": "Em um app bancário, a equipe de design monta as telas de login e extrato em uma storyboard e o desenvolvedor liga o campo de senha a um '@IBOutlet' e o botão Entrar a um '@IBAction'. Ao refatorar, um outlet renomeado deixou uma conexão quebrada; o Connections inspector mostrou o aviso e evitou um crash em produção.",
+  "gameCase": "Em um jogo de quebra-cabeça, o menu principal, a tela de configurações e a de pontuação são scenes de uma storyboard, com o menu marcado como Initial View Controller. Um '@IBAction' no botão Jogar inicia a partida e um '@IBOutlet' atualiza o rótulo da pontuação.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare a propriedade que referencia um UILabel desenhado na storyboard.",
+    "codeSnippet": "___ weak var tituloLabel: UILabel!",
+    "correctAnswer": "@IBOutlet",
+    "hint": "Use o atributo que expõe um objeto da storyboard ao código (é uma referência, não um método)."
+   },
+   {
+    "id": 2,
+    "question": "Declare o método que a storyboard chama quando o usuário toca o botão.",
+    "codeSnippet": "___ func botaoTocado(_ sender: UIButton) { }",
+    "correctAnswer": "@IBAction",
+    "hint": "Use o atributo para métodos disparados por eventos de objetos da storyboard."
+   },
+   {
+    "id": 3,
+    "question": "Complete o modificador de memória usado normalmente em outlets, pois a view hierarchy já mantém a referência forte.",
+    "codeSnippet": "@IBOutlet ___ var nomeField: UITextField!",
+    "correctAnswer": "weak",
+    "hint": "É a palavra que evita um ciclo de retenção e deixa a referência não proprietária."
+   },
+   {
+    "id": 4,
+    "question": "Qual é a classe base de todos os elementos visuais do UIKit, usada quando o outlet aceita qualquer view?",
+    "codeSnippet": "@IBOutlet weak var cartao: ___!",
+    "correctAnswer": "UIView",
+    "hint": "Todo Label, Button e ImageView herda dela."
+   },
+   {
+    "id": 5,
+    "question": "Marque a view customizada para que o Interface Builder a renderize no canvas.",
+    "codeSnippet": "___ class CartaoView: UIView { }",
+    "correctAnswer": "@IBDesignable",
+    "hint": "O atributo começa com @IBD...; o parente @IBInspectable marca propriedades editáveis."
+   },
+   {
+    "id": 6,
+    "question": "Para ligar uma scene à sua subclasse de UIViewController, qual campo do Identity inspector você preenche?",
+    "codeSnippet": "// Identity inspector: Custom ___ = TelaViewController",
+    "correctAnswer": "Class",
+    "hint": "O campo se chama igual à palavra para o tipo que você escreveu em código (class)."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é a diferença entre @IBOutlet e @IBAction?",
+    "options": [
+     "@IBOutlet é um método e @IBAction é uma propriedade",
+     "@IBOutlet é uma referência a um objeto da storyboard; @IBAction é um método chamado por um evento",
+     "São sinônimos; só mudam o nome",
+     "@IBOutlet só funciona com botões e @IBAction só com labels"
+    ],
+    "correctIndex": 1,
+    "explanation": "Outlet = propriedade que aponta para um objeto (para ler/alterar texto, cor etc.). Action = método disparado por eventos como o toque. Confundir os dois é erro clássico de prova."
+   },
+   {
+    "id": 2,
+    "question": "Qual ação cria um outlet ou action na storyboard?",
+    "options": [
+     "Dar duplo clique no objeto e digitar o nome",
+     "Arrastar o objeto da Object Library para o Navigator",
+     "Copiar e colar o objeto no arquivo Swift",
+     "Control-arrastar do objeto até o código aberto no Assistant Editor"
+    ],
+    "correctIndex": 3,
+    "explanation": "Com o Assistant Editor mostrando a storyboard e o '.swift' lado a lado, você segura Control, arrasta e solta no código; o Xcode escreve a declaração e cria a conexão."
+   },
+   {
+    "id": 3,
+    "question": "O app trava com 'Unexpectedly found nil while implicitly unwrapping an Optional value' ao acessar 'meuLabel.text'. O outlet está declarado como '@IBOutlet weak var meuLabel: UILabel!'. Qual é a causa mais provável?",
+    "options": [
+     "O outlet não está conectado a um objeto na storyboard (ou o acesso ocorreu antes de a view carregar)",
+     "O label precisa ser declarado como 'var' em vez de 'weak var'",
+     "O texto do label não pode ser alterado por código",
+     "Falta o import SwiftUI"
+    ],
+    "correctIndex": 0,
+    "explanation": "Um outlet '!' vale nil até a conexão existir e a view ser carregada. Verifique o Connections inspector e evite usar outlets antes de 'viewDidLoad'."
+   },
+   {
+    "id": 4,
+    "question": "Você apagou o método 'botaoTocado' do código, mas a conexão continua na storyboard. O que acontece ao tocar o botão?",
+    "options": [
+     "Nada acontece e o Xcode remove a conexão sozinho",
+     "O botão fica desabilitado automaticamente",
+     "O app trava com 'unrecognized selector sent to instance'",
+     "O app compila com erro e não roda"
+    ],
+    "correctIndex": 2,
+    "explanation": "A conexão antiga ainda pede ao controller um método que não existe mais; em tempo de execução surge o crash 'unrecognized selector'. A solução é remover a conexão no Connections inspector."
+   },
+   {
+    "id": 5,
+    "question": "Onde você define que uma scene usa a classe 'PerfilViewController'?",
+    "options": [
+     "No Size inspector, no campo Class",
+     "No Attributes inspector, no campo Title",
+     "No Object Library",
+     "No Identity inspector, no campo Class"
+    ],
+    "correctIndex": 3,
+    "explanation": "O Identity inspector associa a scene (ou view) à sua classe Swift. Sem isso, os outlets e actions não encontram o controller correto."
+   },
+   {
+    "id": 6,
+    "question": "Como marcar qual scene é exibida primeiro ao abrir o app?",
+    "options": [
+     "Renomear a scene para 'Inicial'",
+     "Selecionar o View Controller e marcar 'Is Initial View Controller' no Attributes inspector",
+     "Colocá-la no topo do Document Outline",
+     "Dar a ela o identificador 'main'"
+    ],
+    "correctIndex": 1,
+    "explanation": "A seta de entrada aparece na scene marcada. A posição no Document Outline ou o nome não importam; no máximo uma scene é a inicial por storyboard principal."
+   },
+   {
+    "id": 7,
+    "question": "Qual inspetor você usa para alterar o texto, a cor e a fonte de um UILabel sem escrever código?",
+    "options": [
+     "Attributes inspector",
+     "Identity inspector",
+     "Connections inspector",
+     "File inspector"
+    ],
+    "correctIndex": 0,
+    "explanation": "O Attributes inspector expõe as propriedades do objeto selecionado (texto, cor, fonte, alinhamento). O Identity inspector trata da classe e o Connections inspector das ligações."
+   },
+   {
+    "id": 8,
+    "question": "Quando é mais indicado usar um XIB em vez de uma storyboard?",
+    "options": [
+     "Quando o app não usa Interface Builder",
+     "Quando se quer navegação com segues entre muitas telas",
+     "Para uma view ou tela isolada e reutilizável, evitando conflitos em uma storyboard grande",
+     "Quando o app é feito em SwiftUI"
+    ],
+    "correctIndex": 2,
+    "explanation": "Um XIB descreve uma única view. Segues e o fluxo entre telas só existem em storyboards. Uma storyboard grande compartilhada por vários devs gera conflitos de merge."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual atributo faz uma propriedade aparecer no Attributes inspector para uma view customizada?",
+    "options": [
+     "@IBOutlet",
+     "@objc",
+     "@IBInspectable",
+     "@State"
+    ],
+    "correctIndex": 2,
+    "explanation": "'@IBInspectable' expõe propriedades (cor, raio, número) no Attributes inspector. Combinado com '@IBDesignable', o resultado é visto no canvas."
+   },
+   {
+    "id": 2,
+    "question": "Para que serve o Document Outline?",
+    "options": [
+     "Mostrar a hierarquia de scenes e objetos e permitir selecioná-los mesmo quando estão sobrepostos",
+     "Listar os erros de compilação",
+     "Mostrar o histórico do Git",
+     "Exibir o console de depuração"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ele lista cada scene com a view e suas subviews em forma de árvore, útil para selecionar objetos escondidos ou sobrepostos e arrastar conexões."
+   },
+   {
+    "id": 3,
+    "question": "Qual é a melhor razão para declarar um outlet como 'weak'?",
+    "options": [
+     "Para que o outlet possa ser nil",
+     "Para que o objeto seja liberado imediatamente",
+     "Porque 'strong' é proibido em classes",
+     "A hierarquia de views já mantém a referência forte, então o outlet não precisa possuir o objeto"
+    ],
+    "correctIndex": 3,
+    "explanation": "A view principal retém suas subviews. Um outlet fraco evita retenção desnecessária; ele vira nil se a view sair da hierarquia, por isso costuma ser 'weak var ...!'."
+   },
+   {
+    "id": 4,
+    "question": "Um botão tem um action conectado a 'enviar'. Você quer alterar o título do botão por código. O que falta?",
+    "options": [
+     "Nada, basta chamar 'enviar.title'",
+     "Um @IBOutlet para o botão; só o action não dá acesso ao objeto para alterar propriedades",
+     "Trocar o action por um segue",
+     "Um @IBInspectable"
+    ],
+    "correctIndex": 1,
+    "explanation": "O action recebe 'sender', mas o outlet é a forma clara de manter uma referência ao botão. Para mudar o título, ligue um outlet e use 'setTitle(_:for:)'."
+   },
+   {
+    "id": 5,
+    "question": "Qual afirmação sobre SwiftUI e UIKit/Interface Builder é correta?",
+    "options": [
+     "SwiftUI exige storyboards",
+     "Interface Builder funciona com SwiftUI sem alterações",
+     "SwiftUI descreve a interface de forma declarativa em código; UIKit com Interface Builder é imperativo/visual com storyboards",
+     "UIKit foi removido do iOS"
+    ],
+    "correctIndex": 2,
+    "explanation": "SwiftUI usa código declarativo e @State, sem storyboards. UIKit continua suportado e muito usado, e ambos podem ser misturados via UIHostingController e UIViewRepresentable."
+   },
+   {
+    "id": 6,
+    "question": "Para que serve o Connections inspector ao depurar um crash causado por outlet?",
+    "options": [
+     "Mostrar as conexões do objeto (outlets, actions, segues) e permitir remover ligações quebradas",
+     "Mostrar o log do console",
+     "Alterar a fonte do texto",
+     "Definir a classe do controller"
+    ],
+    "correctIndex": 0,
+    "explanation": "O Connections inspector (e o botão direito sobre o controller) lista todas as ligações. Um aviso amarelo ou uma conexão para um membro inexistente indica a origem de crashes como 'unrecognized selector'."
+   }
+  ]
+ },
+ {
+  "id": 50,
+  "title": "Auto Layout e Stack Views",
+  "theory": "Auto Layout é o sistema do UIKit que calcula posição e tamanho das views a partir de regras chamadas constraints, em vez de coordenadas fixas. Uma constraint relaciona atributos (leading, trailing, top, bottom, width, height, centerX, centerY) de uma view com outra view, com a safe area ou com uma constante. Para a posição ficar sem ambiguidade, cada view precisa de constraints suficientes para definir x, y, largura e altura. A safe area layout guide marca a região visível que não é coberta pela barra de status, notch, Dynamic Island ou home indicator; as margens (layout margins) adicionam um respiro padrão. Cada constraint tem uma prioridade (1 a 1000; 1000 é obrigatória): o sistema quebra as de menor prioridade quando há conflito. O intrinsic content size é o tamanho natural de um label, botão ou imagem; content hugging priority diz o quanto a view resiste a crescer e compression resistance priority o quanto resiste a encolher. UIStackView organiza subviews em linha ou coluna e gera as constraints por você: axis (.horizontal ou .vertical), distribution (fill, fillEqually, equalSpacing...), alignment (leading, center, fill...) e spacing. Em código, desligue 'translatesAutoresizingMaskIntoConstraints' e ative as constraints com 'NSLayoutConstraint.activate([...])'; esquecer de desligar essa propriedade gera conflitos. Size classes (compact e regular, na largura e na altura) permitem adaptar o layout a iPhone em retrato ou paisagem e a iPad, e o console mostra mensagens 'Unable to simultaneously satisfy constraints' (conflito) ou o Xcode alerta de 'ambiguous layout' quando faltam constraints.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/uistackview",
+  "category": "UIKit e Interface Builder",
+  "corporateCase": "Em um app de agendamento médico, o formulário de cadastro é uma UIStackView vertical com spacing de 16, que se adapta a iPhones pequenos e iPads sem constraints manuais. Quando um dev adicionou um campo por código sem desligar 'translatesAutoresizingMaskIntoConstraints', o console mostrou 'Unable to simultaneously satisfy constraints' e o conflito foi resolvido.",
+  "gameCase": "Em um app de notícias, o título da manchete usa compression resistance alta para nunca ser cortado, e o rótulo da data cede espaço. Os botões ficam dentro da safe area para não ficarem sob o home indicator.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Ative um conjunto de constraints criadas por código.",
+    "codeSnippet": "NSLayoutConstraint.___([a.topAnchor.constraint(equalTo: b.topAnchor)])",
+    "correctAnswer": "activate",
+    "hint": "É um método de tipo da classe NSLayoutConstraint; o verbo é o contrário de 'deactivate'."
+   },
+   {
+    "id": 2,
+    "question": "Crie uma constraint que liga a borda superior do rótulo à borda superior da view, com 8 pontos de distância.",
+    "codeSnippet": "rotulo.___.constraint(equalTo: view.topAnchor, constant: 8)",
+    "correctAnswer": "topAnchor",
+    "hint": "O atributo é uma âncora (anchor) da borda de cima."
+   },
+   {
+    "id": 3,
+    "question": "Faça a UIStackView empilhar as subviews em coluna.",
+    "codeSnippet": "stack.___ = .vertical",
+    "correctAnswer": "axis",
+    "hint": "A propriedade define a direção: horizontal ou vertical."
+   },
+   {
+    "id": 4,
+    "question": "Defina 16 pontos de espaço entre as subviews do stack.",
+    "codeSnippet": "stack.___ = 16",
+    "correctAnswer": "spacing",
+    "hint": "É o espaço entre itens, não a margem externa."
+   },
+   {
+    "id": 5,
+    "question": "Obtenha o guia que representa a área visível livre do notch e do home indicator.",
+    "codeSnippet": "let guia = view.___",
+    "correctAnswer": "safeAreaLayoutGuide",
+    "hint": "O nome começa com 'safeArea'."
+   },
+   {
+    "id": 6,
+    "question": "Faça o rótulo resistir a encolher na direção da largura (eixo da linha de texto).",
+    "codeSnippet": "rotulo.setContentCompressionResistancePriority(.required, for: .___)",
+    "correctAnswer": "horizontal",
+    "hint": "Escolha o eixo do tipo .vertical ou .___; aqui trata-se de largura."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é o papel de uma constraint no Auto Layout?",
+    "options": [
+     "Fixar coordenadas x/y em pixels",
+     "Expressar uma regra que relaciona atributos de views (posição, tamanho) para o sistema calcular o layout",
+     "Animar uma view",
+     "Registrar eventos de toque"
+    ],
+    "correctIndex": 1,
+    "explanation": "Em vez de frames fixos, as constraints descrevem relações (ex.: 'leading = 16 do superview'), e o sistema calcula o frame para cada tamanho de tela."
+   },
+   {
+    "id": 2,
+    "question": "Uma view tem constraints de leading, trailing e top, mas nenhuma de altura ou bottom, e ela não tem intrinsic content size. Qual será o aviso no IB?",
+    "options": [
+     "Constraints em conflito",
+     "Nenhum aviso; a altura é zero por padrão",
+     "Erro de compilação em Swift",
+     "Layout ambíguo ou ausente: falta definir a altura/posição vertical"
+    ],
+    "correctIndex": 3,
+    "explanation": "Para definir a posição e o tamanho, são necessários x, y, largura e altura. Faltou a dimensão vertical, o que o Xcode mostra como 'Misplaced/ambiguous' (linha laranja/vermelha)."
+   },
+   {
+    "id": 3,
+    "question": "O console mostra 'Unable to simultaneously satisfy constraints'. O que isso significa?",
+    "options": [
+     "Duas ou mais constraints obrigatórias se contradizem; o sistema quebrou uma delas",
+     "Falta uma constraint",
+     "A imagem não foi encontrada",
+     "Há um erro de sintaxe no código"
+    ],
+    "correctIndex": 0,
+    "explanation": "Conflito: constraints de prioridade 1000 impossíveis de cumprir juntas. O log lista as constraints envolvidas; remova ou reduza a prioridade de uma delas."
+   },
+   {
+    "id": 4,
+    "question": "Dois labels lado a lado: o da esquerda deve crescer para ocupar o espaço sobrando. Como configurar?",
+    "options": [
+     "Dar ao da esquerda compression resistance zero",
+     "Remover as constraints",
+     "Dar ao label da direita content hugging maior que o da esquerda",
+     "Usar frame fixo"
+    ],
+    "correctIndex": 2,
+    "explanation": "Content hugging é a resistência a crescer. O view com menor hugging é o que se estica. Assim o da direita mantém o tamanho natural e o da esquerda cresce."
+   },
+   {
+    "id": 5,
+    "question": "Qual propriedade de UIStackView define como as subviews se distribuem ao longo do eixo (por exemplo, todas do mesmo tamanho)?",
+    "options": [
+     "alignment (.center)",
+     "spacing",
+     "axis",
+     "distribution (.fillEqually)"
+    ],
+    "correctIndex": 3,
+    "explanation": "'axis' escolhe a direção, 'distribution' define como o espaço ao longo dela é repartido e 'alignment' trata do eixo perpendicular."
+   },
+   {
+    "id": 6,
+    "question": "Ao criar uma view por código e ativar constraints, a tela mostra conflitos estranhos. O que provavelmente faltou?",
+    "options": [
+     "view.frame = .zero",
+     "view.translatesAutoresizingMaskIntoConstraints = false",
+     "Chamar reloadData()",
+     "Adicionar @IBOutlet"
+    ],
+    "correctIndex": 1,
+    "explanation": "Por padrão, uma view criada por código gera constraints de autoresizing mask que brigam com as suas. Desligue a propriedade antes de ativar as constraints."
+   },
+   {
+    "id": 7,
+    "question": "Por que ancorar o conteúdo à safe area em vez de às bordas da superview?",
+    "options": [
+     "Para o conteúdo não ficar sob o notch, a status bar ou o home indicator",
+     "Para melhorar o desempenho de memória",
+     "Porque a superview não aceita constraints",
+     "Para esconder a barra de navegação"
+    ],
+    "correctIndex": 0,
+    "explanation": "A safe area exclui áreas cobertas pelo sistema. Fundos podem ir até a borda, mas textos e botões devem respeitar a safe area."
+   },
+   {
+    "id": 8,
+    "question": "O que são size classes?",
+    "options": [
+     "Tamanhos fixos em pontos de cada iPhone",
+     "Classes Swift para tamanhos",
+     "Categorias (compact/regular) de largura e altura que permitem variar o layout conforme o dispositivo e a orientação",
+     "Um tipo de UIStackView"
+    ],
+    "correctIndex": 2,
+    "explanation": "Em vez de dispositivos específicos, o IB usa 'wC hR' etc. Pode-se instalar constraints ou mudar fontes somente para certas size classes."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual prioridade tem uma constraint 'obrigatória' (required)?",
+    "options": [
+     "500",
+     "250",
+     "1000",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "Required equivale a 1000. Valores menores são 'opcionais' e o sistema pode quebrá-las para atender às de maior prioridade."
+   },
+   {
+    "id": 2,
+    "question": "Qual trecho ativa corretamente duas constraints criadas por código?",
+    "options": [
+     "NSLayoutConstraint.activate([a, b])",
+     "a.isActive = false",
+     "view.addConstraint(a, b).activate",
+     "view.layoutIfNeeded(a, b)"
+    ],
+    "correctIndex": 0,
+    "explanation": "'NSLayoutConstraint.activate(_:)' recebe um array e ativa todas de uma vez, sendo mais eficiente que ativar uma por uma."
+   },
+   {
+    "id": 3,
+    "question": "Um UILabel com texto longo é cortado ('...') ao lado de um botão. O que ajuda?",
+    "options": [
+     "Aumentar o content hugging do botão para 0",
+     "Remover a safe area",
+     "Trocar a fonte para bold",
+     "Aumentar a compression resistance do label (ou reduzir a do botão)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Compression resistance mede a resistência a encolher. Com prioridade maior no label, o botão (menor) é quem cede espaço."
+   },
+   {
+    "id": 4,
+    "question": "O que acontece com uma UIStackView se você ocultar (isHidden = true) uma de suas arranged subviews?",
+    "options": [
+     "O espaço permanece vazio",
+     "A stack remove o espaço dela e redistribui as demais",
+     "O app trava",
+     "A stack também fica oculta"
+    ],
+    "correctIndex": 1,
+    "explanation": "Arranged subviews ocultas são removidas do layout; isso é muito útil para mostrar/ocultar campos sem recalcular constraints."
+   },
+   {
+    "id": 5,
+    "question": "Qual é o intrinsic content size de um UILabel?",
+    "options": [
+     "Sempre 0 x 0",
+     "O tamanho da tela",
+     "O tamanho natural que o texto exige (conforme fonte e conteúdo)",
+     "O valor da constraint de largura"
+    ],
+    "correctIndex": 2,
+    "explanation": "Labels, botões e imagens informam o tamanho mínimo necessário. Por isso muitas vezes você não precisa de constraints de largura/altura para eles."
+   },
+   {
+    "id": 6,
+    "question": "Qual constraint centraliza horizontalmente uma view dentro da superview?",
+    "options": [
+     "view.centerXAnchor.constraint(equalTo: superview.centerXAnchor)",
+     "view.leadingAnchor.constraint(equalTo: superview.centerXAnchor)",
+     "view.widthAnchor.constraint(equalToConstant: 0)",
+     "view.topAnchor.constraint(equalTo: superview.centerXAnchor)"
+    ],
+    "correctIndex": 0,
+    "explanation": "centerX com centerX alinha os centros. A segunda opção apenas alinha a borda esquerda ao centro, e a quarta mistura eixos horizontal e vertical, o que não é permitido."
+   }
+  ]
+ },
+ {
+  "id": 51,
+  "title": "View Controllers, Segues e Hierarquia de Navegação",
+  "theory": "Um UIViewController gerencia uma tela: ele controla uma view raiz, responde a eventos e coordena o modelo. O ciclo de vida segue uma ordem: 'loadView' cria a view (raramente sobrescrito com storyboards), 'viewDidLoad' roda uma vez quando a view foi carregada na memória (ideal para configuração inicial e dados), 'viewWillAppear' roda toda vez antes de a tela aparecer, 'viewDidAppear' depois que ela está visível e 'viewWillDisappear' antes de sair. Ao sobrescrever esses métodos, chame sempre 'super'. O UINavigationController mantém uma pilha (stack) de controllers: 'pushViewController' empilha uma tela, 'popViewController' volta, e cada tela tem uma navigation item (título, botões da barra). O UITabBarController organiza controllers em abas independentes. Segues são transições definidas na storyboard: show (push em um navigation controller), present modally (cobre a tela atual) e unwind (volta para um controller anterior, com um '@IBAction' que recebe um 'UIStoryboardSegue'). Para disparar um segue por código use 'performSegue(withIdentifier:sender:)', e para enviar dados ao destino sobrescreva 'prepare(for:sender:)', converta 'segue.destination' para a classe esperada e atribua a propriedade. Sem segues, 'instantiateViewController(withIdentifier:)' cria o controller a partir da storyboard pelo Storyboard ID. Apresentações modais têm estilos (fullScreen, pageSheet, formSheet) e fecham com 'dismiss(animated:)'; telas em pilha fecham com pop. Para devolver dados ao controller anterior, use o padrão delegate com um protocolo e uma referência 'weak'. A prova espera que você saiba o que cada método do ciclo faz e como passar dados em um segue.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/uiviewcontroller",
+  "category": "UIKit e Interface Builder",
+  "corporateCase": "Em um app de pedidos, tocar em uma célula faz um segue 'show' para a tela de detalhes; em 'prepare(for:sender:)' o pedido selecionado é atribuído ao controller de destino. O carregamento inicial fica em 'viewDidLoad', enquanto a atualização do status acontece em 'viewWillAppear'.",
+  "gameCase": "Em um jogo, o menu principal usa um segue modal para a tela de pausa; ao tocar em Continuar, o controller chama 'dismiss(animated: true)'. Um segue show leva à tela de fase, recebendo o número da fase em 'prepare(for:sender:)'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Complete o método chamado uma vez, quando a view do controller foi carregada na memória.",
+    "codeSnippet": "override func ___() {\n    super.viewDidLoad()\n}",
+    "correctAnswer": "viewDidLoad",
+    "hint": "Começa com 'view', fala em 'Did' e termina em 'Load'."
+   },
+   {
+    "id": 2,
+    "question": "Ao sobrescrever um método do ciclo de vida, qual palavra chama a implementação da superclasse?",
+    "codeSnippet": "override func viewWillAppear(_ animated: Bool) {\n    ___.viewWillAppear(animated)\n}",
+    "correctAnswer": "super",
+    "hint": "É a palavra-chave que representa a classe pai."
+   },
+   {
+    "id": 3,
+    "question": "Dispare por código o segue que tem o identificador 'mostrarDetalhe'.",
+    "codeSnippet": "performSegue(___: \"mostrarDetalhe\", sender: self)",
+    "correctAnswer": "withIdentifier",
+    "hint": "O rótulo do primeiro parâmetro diz 'com identificador'."
+   },
+   {
+    "id": 4,
+    "question": "Complete o método chamado antes de um segue, usado para enviar dados ao controller de destino.",
+    "codeSnippet": "override func ___(for segue: UIStoryboardSegue, sender: Any?) {\n    // enviar dados ao destino\n}",
+    "correctAnswer": "prepare",
+    "hint": "O nome é um verbo em inglês que significa 'preparar'."
+   },
+   {
+    "id": 5,
+    "question": "Empilhe o controller 'detalhe' na pilha do navigation controller.",
+    "codeSnippet": "navigationController?.___(detalhe, animated: true)",
+    "correctAnswer": "pushViewController",
+    "hint": "Use o método que faz 'push' de um view controller."
+   },
+   {
+    "id": 6,
+    "question": "Feche uma tela apresentada de forma modal.",
+    "codeSnippet": "___(animated: true)",
+    "correctAnswer": "dismiss",
+    "hint": "Não é pop; o verbo significa 'dispensar'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Em que ordem são chamados os métodos do ciclo de vida quando uma tela aparece pela primeira vez?",
+    "options": [
+     "viewWillAppear, viewDidLoad, viewDidAppear",
+     "viewDidLoad, viewWillAppear, viewDidAppear",
+     "viewDidAppear, viewDidLoad, viewWillAppear",
+     "loadView, viewDidAppear, viewDidLoad"
+    ],
+    "correctIndex": 1,
+    "explanation": "A view é carregada primeiro (viewDidLoad, uma vez), depois a tela está prestes a aparecer (viewWillAppear) e, por fim, já visível (viewDidAppear)."
+   },
+   {
+    "id": 2,
+    "question": "Ao voltar de uma tela de detalhe para uma lista, qual método é chamado de novo na lista, mas 'viewDidLoad' não?",
+    "options": [
+     "loadView",
+     "init",
+     "viewDidLoad",
+     "viewWillAppear"
+    ],
+    "correctIndex": 3,
+    "explanation": "'viewDidLoad' roda uma vez enquanto a view existe. 'viewWillAppear' roda a cada aparição, então é o lugar certo para atualizar dados que mudaram em outra tela."
+   },
+   {
+    "id": 3,
+    "question": "Qual é a forma correta de passar um objeto 'pedido' para a tela de destino em um segue?",
+    "options": [
+     "Em prepare(for:sender:), converter segue.destination para a classe do destino e atribuir a propriedade",
+     "Chamar viewDidLoad() do destino",
+     "Salvar em uma variável local no segue",
+     "Usar @IBAction no destino"
+    ],
+    "correctIndex": 0,
+    "explanation": "'prepare(for:sender:)' roda logo antes da transição, e 'segue.destination' é o controller de destino (tipo UIViewController), então precisa de 'as? DetalheViewController'."
+   },
+   {
+    "id": 4,
+    "question": "O que faz um segue 'show' quando a origem está dentro de um UINavigationController?",
+    "options": [
+     "Cobre a tela de forma modal",
+     "Fecha o app",
+     "Empilha o destino na pilha de navegação (push)",
+     "Cria uma nova aba"
+    ],
+    "correctIndex": 2,
+    "explanation": "Show é adaptável: em um navigation controller faz push (com botão Voltar automático); sem ele, apresenta de forma modal."
+   },
+   {
+    "id": 5,
+    "question": "Como voltar a um controller anterior específico, atravessando várias telas, usando segues?",
+    "options": [
+     "Com vários dismiss seguidos",
+     "Com performSegue sem identificador",
+     "Reiniciando o app",
+     "Com um unwind segue: um @IBAction (UIStoryboardSegue) no controller de destino"
+    ],
+    "correctIndex": 3,
+    "explanation": "O unwind segue é criado arrastando o botão até Exit na storyboard e ligando a um método '@IBAction func voltar(_ segue: UIStoryboardSegue)' no controller alvo."
+   },
+   {
+    "id": 6,
+    "question": "Para que serve 'instantiateViewController(withIdentifier:)'?",
+    "options": [
+     "Criar uma nova storyboard",
+     "Criar um controller da storyboard por código usando o Storyboard ID",
+     "Disparar um segue",
+     "Remover um controller da pilha"
+    ],
+    "correctIndex": 1,
+    "explanation": "Você define o 'Storyboard ID' no Identity inspector e então faz 'storyboard.instantiateViewController(withIdentifier: \"Detalhe\")', útil quando não há segue."
+   },
+   {
+    "id": 7,
+    "question": "Para o controller B avisar o controller A que o usuário escolheu um item, qual padrão é recomendado?",
+    "options": [
+     "Delegate: B tem uma propriedade 'weak var delegate' de um protocolo que A implementa",
+     "B guarda uma referência forte a A",
+     "Variáveis globais",
+     "Chamar viewDidLoad de A"
+    ],
+    "correctIndex": 0,
+    "explanation": "O delegate desacopla B de A. A referência é 'weak' para evitar um ciclo de retenção entre os dois controllers."
+   },
+   {
+    "id": 8,
+    "question": "Qual estilo de apresentação modal cobre toda a tela?",
+    "options": [
+     "pageSheet",
+     "popover",
+     "fullScreen",
+     "none"
+    ],
+    "correctIndex": 2,
+    "explanation": "'fullScreen' cobre tudo. 'pageSheet' e 'formSheet' apresentam a tela como um cartão (no iPhone, o pageSheet deixa a tela de trás parcialmente visível e pode ser fechado com gesto)."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual classe gerencia abas independentes com uma barra inferior?",
+    "options": [
+     "UINavigationController",
+     "UIPageControl",
+     "UITabBarController",
+     "UIStackView"
+    ],
+    "correctIndex": 2,
+    "explanation": "O UITabBarController contém vários controllers filhos, um por aba. Cada aba pode ter seu próprio UINavigationController."
+   },
+   {
+    "id": 2,
+    "question": "Onde definir o título que aparece na barra de navegação de uma tela?",
+    "options": [
+     "No navigationItem.title do controller",
+     "No title da UIWindow",
+     "No UINavigationController.view",
+     "No Info.plist"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada controller tem sua 'navigationItem', que fornece título e botões da barra. O navigation controller só exibe o item do controller no topo da pilha."
+   },
+   {
+    "id": 3,
+    "question": "Um dev colocou a requisição de rede em viewWillAppear e a lista recarrega toda vez que se volta a ela. Qual é a melhor abordagem se os dados raramente mudam?",
+    "options": [
+     "Mover para init",
+     "Usar viewDidDisappear",
+     "Usar loadView",
+     "Mover o carregamento inicial para viewDidLoad, mantendo viewWillAppear só para atualizações necessárias"
+    ],
+    "correctIndex": 3,
+    "explanation": "viewDidLoad roda uma vez, evitando requisições repetidas. viewWillAppear é útil quando a tela precisa refletir mudanças feitas em outras telas."
+   },
+   {
+    "id": 4,
+    "question": "Você apresentou 'vc' com 'present(vc, animated: true)'. Como fechá-lo?",
+    "options": [
+     "popViewController(animated:) sempre",
+     "Você usa dismiss(animated:), pois foi apresentado de forma modal, e não popViewController",
+     "removeFromParent() apenas",
+     "exit(0)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pop só funciona para telas na pilha. Telas apresentadas com 'present' fecham com 'dismiss'."
+   },
+   {
+    "id": 5,
+    "question": "Qual método do ciclo de vida é chamado imediatamente antes de a tela sair da vista (por exemplo, ao dar push em outra)?",
+    "options": [
+     "viewDidLoad",
+     "viewWillAppear",
+     "viewWillDisappear",
+     "loadView"
+    ],
+    "correctIndex": 2,
+    "explanation": "'viewWillDisappear' é um bom lugar para salvar rascunhos ou parar timers, pois a tela está prestes a sair."
+   },
+   {
+    "id": 6,
+    "question": "Qual método você sobrescreve para criar a view raiz inteiramente por código, sem storyboard?",
+    "options": [
+     "loadView, atribuindo a propriedade view (sem chamar super)",
+     "viewDidLoad, atribuindo a propriedade view",
+     "viewDidAppear",
+     "prepare(for:sender:)"
+    ],
+    "correctIndex": 0,
+    "explanation": "'loadView' é responsável por criar a view raiz. Quando sobrescrito, você atribui 'view' e não chama 'super.loadView()'. Para apenas configurar subviews, 'viewDidLoad' basta."
+   }
+  ]
+ },
+ {
+  "id": 52,
+  "title": "UITableView e UICollectionView",
+  "theory": "UITableView mostra uma lista rolável de linhas, organizada em seções, e é a base de telas como Ajustes e listas de contatos. Ela não guarda os dados: pede ao seu 'UITableViewDataSource' quantas linhas existem ('tableView(_:numberOfRowsInSection:)') e qual célula mostrar em cada posição ('tableView(_:cellForRowAt:)'). O 'UITableViewDelegate' trata interações, como 'tableView(_:didSelectRowAt:)' para o toque em uma linha. Para ser eficiente, a tabela reutiliza células: 'dequeueReusableCell(withIdentifier:for:)' devolve uma célula que saiu da tela, e por isso você precisa sempre reconfigurar todo o conteúdo da célula, senão aparecem dados antigos. Células protótipo são desenhadas na storyboard e ganham um Reuse Identifier no Attributes inspector, que deve ser igual ao texto usado no código. Para alterar a lista, 'reloadData()' recarrega tudo, enquanto 'insertRows', 'deleteRows' e 'reloadRows' atualizam só o necessário, com animação; swipe actions e o modo de edição são tratados por 'trailingSwipeActionsConfigurationForRowAt' e 'commit editingStyle'. UICollectionView é o equivalente em grade ou layouts livres: usa 'UICollectionViewFlowLayout' (grades simples) ou 'UICollectionViewCompositionalLayout' (layouts compostos por itens, grupos e seções). A abordagem moderna usa 'UITableViewDiffableDataSource' ou 'UICollectionViewDiffableDataSource' com um snapshot: você descreve o estado atual (seções e itens identificáveis e Hashable) e o sistema calcula as mudanças e anima. Erros comuns: esquecer de ligar 'dataSource' e 'delegate', usar um identificador diferente do definido, retornar um número errado de linhas (crash 'index out of range') e não reconfigurar a célula reutilizada.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/uitableview",
+  "category": "UIKit e Interface Builder",
+  "corporateCase": "Em um app de e-commerce, a lista de produtos é uma UITableView com células reutilizadas, mantendo a rolagem fluida com milhares de itens. Ao remover um item do carrinho, o time usa 'deleteRows' com animação em vez de 'reloadData()', evitando piscar a tela inteira.",
+  "gameCase": "Em um jogo, o inventário de itens é uma UICollectionView em grade com compositional layout, e as mudanças ao coletar um item são aplicadas por um snapshot do diffable data source. As células reutilizadas são reconfiguradas com ícone e quantidade.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Complete o método do data source que informa quantas linhas há em uma seção.",
+    "codeSnippet": "func tableView(_ tableView: UITableView, ___ section: Int) -> Int {\n    return itens.count\n}",
+    "correctAnswer": "numberOfRowsInSection",
+    "hint": "Começa com 'numberOf' e fala em Rows."
+   },
+   {
+    "id": 2,
+    "question": "Obtenha uma célula reutilizável pelo identificador.",
+    "codeSnippet": "let celula = tableView.___(withIdentifier: \"Celula\", for: indexPath)",
+    "correctAnswer": "dequeueReusableCell",
+    "hint": "O verbo 'dequeue' aparece no início do nome."
+   },
+   {
+    "id": 3,
+    "question": "Qual protocolo o controller adota para fornecer linhas e células à tabela?",
+    "codeSnippet": "class ListaViewController: UIViewController, ___ { }",
+    "correctAnswer": "UITableViewDataSource",
+    "hint": "O protocolo que fornece os dados."
+   },
+   {
+    "id": 4,
+    "question": "Complete o método do delegate chamado quando o usuário toca em uma linha.",
+    "codeSnippet": "func tableView(_ tableView: UITableView, ___ indexPath: IndexPath) {\n    print(itens[indexPath.row])\n}",
+    "correctAnswer": "didSelectRowAt",
+    "hint": "Começa com 'did' e termina com 'RowAt'."
+   },
+   {
+    "id": 5,
+    "question": "Recarregue todo o conteúdo da tabela depois de o array de dados mudar.",
+    "codeSnippet": "tableView.___()",
+    "correctAnswer": "reloadData",
+    "hint": "O nome diz literalmente 'recarregar dados'."
+   },
+   {
+    "id": 6,
+    "question": "Adicione a seção 0 ao snapshot antes de adicionar os itens.",
+    "codeSnippet": "var snapshot = NSDiffableDataSourceSnapshot<Int, String>()\nsnapshot.___([0])",
+    "correctAnswer": "appendSections",
+    "hint": "Use o método que adiciona seções (plural)."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual método do data source é obrigatório para fornecer a célula de cada linha?",
+    "options": [
+     "tableView(_:didSelectRowAt:)",
+     "tableView(_:cellForRowAt:)",
+     "tableView(_:heightForRowAt:)",
+     "viewDidLoad()"
+    ],
+    "correctIndex": 1,
+    "explanation": "Junto com 'numberOfRowsInSection', 'cellForRowAt' é obrigatório no UITableViewDataSource. 'didSelectRowAt' é do delegate e é opcional."
+   },
+   {
+    "id": 2,
+    "question": "Por que a UITableView reutiliza células?",
+    "options": [
+     "Para deixar todas as células iguais",
+     "Porque o Swift não permite criar muitas views",
+     "Para evitar usar o data source",
+     "Para economizar memória e manter a rolagem fluida, criando só as células visíveis"
+    ],
+    "correctIndex": 3,
+    "explanation": "Em vez de criar uma view por linha, a tabela recicla as que saíram da tela. Isso exige reconfigurar o conteúdo de cada célula obtida."
+   },
+   {
+    "id": 3,
+    "question": "O app trava com 'unable to dequeue a cell with identifier Celula'. Qual é a causa provável?",
+    "options": [
+     "O Reuse Identifier da célula protótipo na storyboard não é 'Celula' (ou não foi definido)",
+     "O array de dados está vazio",
+     "Falta o import UIKit",
+     "A tabela não tem seções"
+    ],
+    "correctIndex": 0,
+    "explanation": "O identificador no código precisa ser idêntico ao definido no Attributes inspector da célula. Letras diferentes ou ausência dele causam o crash."
+   },
+   {
+    "id": 4,
+    "question": "A lista mostra a foto errada em algumas linhas ao rolar. O que está errado?",
+    "options": [
+     "O UITableView é lento demais",
+     "O delegate não foi ligado",
+     "A célula reutilizada não é reconfigurada por completo (ex.: a imagem antiga permanece)",
+     "O número de seções está incorreto"
+    ],
+    "correctIndex": 2,
+    "explanation": "Células reutilizadas mantêm o conteúdo anterior. Em 'cellForRowAt', defina sempre todos os campos, inclusive limpando imagens ou usando 'prepareForReuse'."
+   },
+   {
+    "id": 5,
+    "question": "Quando é melhor usar 'deleteRows' em vez de 'reloadData()'?",
+    "options": [
+     "Quando se quer recarregar tudo",
+     "Nunca; 'deleteRows' foi descontinuado",
+     "Quando a tabela não tem data source",
+     "Ao remover linhas específicas com animação, sem recarregar a tabela inteira"
+    ],
+    "correctIndex": 3,
+    "explanation": "As atualizações pontuais são animadas e mais eficientes. É preciso atualizar o array de dados antes e manter as contagens consistentes, senão o app trava."
+   },
+   {
+    "id": 6,
+    "question": "Qual é a principal vantagem de um diffable data source com snapshots?",
+    "options": [
+     "Elimina a necessidade de células",
+     "O sistema calcula e anima as diferenças entre estados, evitando inconsistências de contagem",
+     "Funciona apenas com UITableView",
+     "Usa menos linhas de Swift para criar storyboards"
+    ],
+    "correctIndex": 1,
+    "explanation": "Você descreve o estado desejado (identificadores Hashable) e aplica com 'apply'. Isso evita o crash clássico 'number of rows ... was not equal to...'."
+   },
+   {
+    "id": 7,
+    "question": "Qual classe cria grades e layouts mais flexíveis com UICollectionView, baseados em item, grupo e seção?",
+    "options": [
+     "UICollectionViewCompositionalLayout",
+     "UITableViewCell",
+     "UIStackView",
+     "UINavigationController"
+    ],
+    "correctIndex": 0,
+    "explanation": "O compositional layout compõe NSCollectionLayoutItem, Group e Section. O flow layout mais simples cobre grades uniformes."
+   },
+   {
+    "id": 8,
+    "question": "O app trava com 'index out of range' em cellForRowAt. numberOfRowsInSection retorna 10 e o array tem 5 itens. O que corrigir?",
+    "options": [
+     "Aumentar o array para 10",
+     "Trocar a tabela por uma coleção",
+     "Retornar itens.count em numberOfRowsInSection",
+     "Remover o delegate"
+    ],
+    "correctIndex": 2,
+    "explanation": "O número de linhas deve refletir exatamente os dados. Retornar um valor fixo é fonte comum de falhas."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Como configurar o texto de uma célula de estilo padrão no iOS moderno?",
+    "options": [
+     "Atribuir a uma propriedade 'cell.title'",
+     "Chamar 'cell.setText(_:)' no data source",
+     "Obter 'defaultContentConfiguration()', definir 'text' e atribuir a 'contentConfiguration'",
+     "Usar um @IBAction na célula"
+    ],
+    "correctIndex": 2,
+    "explanation": "Desde o iOS 14, as células usam content configurations. 'defaultContentConfiguration()' devolve uma configuração padrão com 'text', 'image' etc. A antiga 'textLabel' está obsoleta."
+   },
+   {
+    "id": 2,
+    "question": "Como adicionar um botão 'Apagar' ao deslizar uma linha para a esquerda?",
+    "options": [
+     "Com trailingSwipeActionsConfigurationForRowAt, retornando UISwipeActionsConfiguration",
+     "Com viewWillAppear",
+     "Com um segue show",
+     "Com didSelectRowAt apenas"
+    ],
+    "correctIndex": 0,
+    "explanation": "Esse método do delegate retorna as ações exibidas no lado direito da linha, como UIContextualAction destrutiva."
+   },
+   {
+    "id": 3,
+    "question": "O que a propriedade indexPath.row informa?",
+    "options": [
+     "O número da seção",
+     "O identificador da célula",
+     "O número total de linhas",
+     "A posição da linha dentro da seção"
+    ],
+    "correctIndex": 3,
+    "explanation": "IndexPath tem 'section' e 'row' (para coleções, 'item'). Use 'indexPath.row' para buscar o dado em 'itens[indexPath.row]'."
+   },
+   {
+    "id": 4,
+    "question": "Para uma tabela com 3 seções, qual método do data source informa isso?",
+    "options": [
+     "numberOfRowsInSection",
+     "numberOfSections(in:)",
+     "sectionCount()",
+     "tableView.sections = 3"
+    ],
+    "correctIndex": 1,
+    "explanation": "'numberOfSections(in:)' é opcional, o padrão é 1. 'titleForHeaderInSection' adiciona um título a cada seção."
+   },
+   {
+    "id": 5,
+    "question": "Qual a diferença de uso entre UITableView e UICollectionView?",
+    "options": [
+     "Tabela só funciona no iPad",
+     "Coleção não reutiliza células",
+     "Tabela é uma coluna de linhas; coleção permite grades e layouts customizados",
+     "Não há diferença"
+    ],
+    "correctIndex": 2,
+    "explanation": "Ambas reutilizam células e usam data source. A coleção delega o posicionamento a um objeto de layout."
+   },
+   {
+    "id": 6,
+    "question": "Por que 'reloadData()' pode ser um problema de desempenho em listas grandes?",
+    "options": [
+     "Ele descarta e recria as células visíveis e não anima mudanças específicas",
+     "Ele apaga o array",
+     "Ele bloqueia o app para sempre",
+     "Ele só funciona uma vez"
+    ],
+    "correctIndex": 0,
+    "explanation": "Para mudanças pequenas, atualizações pontuais ou snapshots são mais eficientes. Para mudanças totais, 'reloadData()' é adequado."
+   }
+  ]
+ },
+ {
+  "id": 53,
+  "title": "UIKit Programático e Padrões (Delegate, Target-Action)",
+  "theory": "Tudo o que o Interface Builder faz também pode ser feito em código. Você cria views com seus inicializadores ('UILabel()', 'UIButton(type: .system)', 'UIImageView(image:)', 'UITextField()'), configura propriedades como 'text', 'textColor', 'backgroundColor', 'isHidden' e 'alpha', e as coloca na tela com 'addSubview(_:)', que as insere na hierarquia de views. Você posiciona com 'frame' (coordenadas fixas) ou, de preferência, com constraints do Auto Layout, lembrando de desligar 'translatesAutoresizingMaskIntoConstraints'. O padrão target-action liga um evento a um método: 'botao.addTarget(self, action: #selector(tocou), for: .touchUpInside)', e o método do target precisa ser '@objc'. O padrão delegate usa um protocolo para um objeto delegar decisões ou avisos a outro, como 'UITextFieldDelegate'; a propriedade do delegate deve ser 'weak' para evitar ciclos de retenção. 'NotificationCenter' permite broadcast desacoplado: um objeto faz 'post' e qualquer número de observadores recebe a mensagem, sem se conhecerem. 'UIAlertController' (estilos .alert e .actionSheet) mostra mensagens e pede decisões com 'UIAlertAction' e é apresentado com 'present(_:animated:)'. SwiftUI e UIKit convivem: 'UIHostingController' envolve uma view SwiftUI para uso em UIKit, e 'UIViewRepresentable' envolve uma UIView para uso em SwiftUI. Em um app UIKit, o AppDelegate trata o ciclo de vida do processo (lançamento, configuração de scenes), e o SceneDelegate gerencia cada cena (janela) e sua UIWindow. A prova espera que você saiba criar e modificar objetos por código e diferenciar target-action de delegate.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/uialertcontroller",
+  "category": "UIKit e Interface Builder",
+  "corporateCase": "Em um app de formulários, os campos são criados por código e organizados em um UIStackView, porque a equipe prefere revisar interfaces em pull requests de texto. Ao validar o e-mail, o 'UITextFieldDelegate' bloqueia o retorno do teclado e um 'UIAlertController' explica o erro.",
+  "gameCase": "Em um jogo, o botão Jogar é criado por código e usa 'addTarget' para iniciar a partida; ao acabar, o jogo publica uma notificação 'pontuacaoAtualizada' que o placar e o menu observam. Uma tela de ranking em SwiftUI é exibida dentro do app UIKit com 'UIHostingController'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Crie o objeto de texto estático do UIKit por código.",
+    "codeSnippet": "let rotulo = ___()\nrotulo.text = \"Olá\"",
+    "correctAnswer": "UILabel",
+    "hint": "Começa com UI e termina com Label."
+   },
+   {
+    "id": 2,
+    "question": "Coloque o rótulo na hierarquia de views do controller.",
+    "codeSnippet": "view.___(rotulo)",
+    "correctAnswer": "addSubview",
+    "hint": "O método insere uma view dentro de outra."
+   },
+   {
+    "id": 3,
+    "question": "Ligue o toque do botão ao método 'tocou' do controller.",
+    "codeSnippet": "botao.___(self, action: #selector(tocou), for: .touchUpInside)",
+    "correctAnswer": "addTarget",
+    "hint": "É o método do padrão target-action; o nome começa com 'add'."
+   },
+   {
+    "id": 4,
+    "question": "Declare a propriedade do delegate de forma a evitar um ciclo de retenção.",
+    "codeSnippet": "___ var delegate: MeuDelegate?",
+    "correctAnswer": "weak",
+    "hint": "Referência opcional que não retém o objeto e vira nil quando ele some; o protocolo precisa ser de classe (AnyObject)."
+   },
+   {
+    "id": 5,
+    "question": "Envie uma notificação para todos os observadores.",
+    "codeSnippet": "NotificationCenter.default.___(name: .pontuacaoAtualizada, object: nil)",
+    "correctAnswer": "post",
+    "hint": "O verbo em inglês é o mesmo de 'postar'."
+   },
+   {
+    "id": 6,
+    "question": "Crie a janela de alerta com título e mensagem.",
+    "codeSnippet": "let alerta = ___(title: \"Erro\", message: \"Tente de novo\", preferredStyle: .alert)",
+    "correctAnswer": "UIAlertController",
+    "hint": "O tipo se chama UIAlert + Controller."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é a diferença entre target-action e delegate?",
+    "options": [
+     "Delegate só funciona com botões",
+     "Target-action liga um evento a um método; delegate usa um protocolo para delegar decisões ou avisos a outro objeto",
+     "Target-action usa protocolos obrigatórios",
+     "São o mesmo padrão"
+    ],
+    "correctIndex": 1,
+    "explanation": "Target-action (addTarget) dispara um método quando ocorre um evento. Delegate define um contrato (protocolo) com vários métodos, como os de UITextFieldDelegate."
+   },
+   {
+    "id": 2,
+    "question": "Por que a propriedade 'delegate' costuma ser 'weak'?",
+    "options": [
+     "Para que possa ser constante",
+     "Porque delegates são structs",
+     "Para acelerar a compilação",
+     "Para evitar um ciclo de retenção entre o objeto e seu delegate"
+    ],
+    "correctIndex": 3,
+    "explanation": "O controller costuma reter o objeto (ex.: uma view customizada) e o objeto reteria o controller, o que impediria a liberação de ambos. 'weak' quebra o ciclo."
+   },
+   {
+    "id": 3,
+    "question": "Ao escrever '#selector(tocou)' para um botão criado por código, o compilador reclama que o método 'não está exposto ao Objective-C'. O que falta?",
+    "options": [
+     "Marcar o método com @objc",
+     "Chamar viewDidLoad",
+     "Usar 'weak' no botão",
+     "Adicionar um delegate"
+    ],
+    "correctIndex": 0,
+    "explanation": "#selector exige um método visível ao runtime do Objective-C. Sem '@objc' o compilador recusa o código; em classes que herdam de NSObject (como controllers) é necessário '@objc func tocou()'."
+   },
+   {
+    "id": 4,
+    "question": "A view foi criada, configurada e nunca aparece na tela. O que falta?",
+    "options": [
+     "Chamar 'delegate = self'",
+     "Mudar para 'isHidden = true'",
+     "Adicioná-la com addSubview a uma view que já está na hierarquia, com tamanho/constraints",
+     "Usar #selector"
+    ],
+    "correctIndex": 2,
+    "explanation": "Uma view só aparece se está na hierarquia e tem tamanho. Com frame .zero ou sem constraints ela fica invisível."
+   },
+   {
+    "id": 5,
+    "question": "Qual é a diferença entre isHidden e alpha = 0?",
+    "options": [
+     "São idênticos",
+     "alpha = 0 remove a view da hierarquia",
+     "isHidden apaga a view da memória",
+     "isHidden = true oculta a view (e a tira do layout em stack views); alpha = 0 a deixa transparente, mas ela ainda ocupa o espaço e pode ser animada"
+    ],
+    "correctIndex": 3,
+    "explanation": "Ambas deixam a view invisível. Em stack views, só isHidden remove o espaço. alpha é animável de 0 a 1, útil para fades."
+   },
+   {
+    "id": 6,
+    "question": "Para mostrar uma tela SwiftUI dentro de um app UIKit, qual classe usar?",
+    "options": [
+     "UIViewRepresentable",
+     "UIHostingController",
+     "UIAlertController",
+     "UIStackView"
+    ],
+    "correctIndex": 1,
+    "explanation": "UIHostingController é um UIViewController que contém uma view SwiftUI. UIViewRepresentable faz o caminho oposto: UIKit dentro do SwiftUI."
+   },
+   {
+    "id": 7,
+    "question": "Qual é o papel do SceneDelegate em um app UIKit moderno?",
+    "options": [
+     "Gerenciar o ciclo de vida de uma cena (janela) e sua UIWindow",
+     "Registrar o app na App Store",
+     "Definir constraints",
+     "Armazenar dados em disco"
+    ],
+    "correctIndex": 0,
+    "explanation": "O AppDelegate cuida do processo e da configuração de cenas; o SceneDelegate responde a eventos de cada cena (conectada, ativa, em segundo plano). Nos apps SwiftUI, isso é abstraído pelo protocolo App."
+   },
+   {
+    "id": 8,
+    "question": "Qual é o uso correto de UIAlertController?",
+    "options": [
+     "Adicioná-lo com addSubview",
+     "Chamá-lo de viewDidLoad sem present",
+     "Criar com título/mensagem, adicionar UIAlertAction e apresentar com present(_:animated:)",
+     "Criar um segue"
+    ],
+    "correctIndex": 2,
+    "explanation": "UIAlertController é um view controller. Sem 'present(alerta, animated: true)' ele nunca aparece, e 'addSubview' não é adequado."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Quando usar NotificationCenter em vez de delegate?",
+    "options": [
+     "Quando só há um interessado e ele é conhecido",
+     "Para tratar toques em botões",
+     "Quando vários objetos desconhecidos precisam ser avisados de um evento, sem referência direta",
+     "Para armazenar dados"
+    ],
+    "correctIndex": 2,
+    "explanation": "Notificações são broadcast desacoplado (1 para N). Delegate é 1 para 1 e mais explícito. Remover observadores é importante quando o tipo exige."
+   },
+   {
+    "id": 2,
+    "question": "Qual propriedade define o tamanho e a posição de uma view relativos à sua superview, em coordenadas fixas?",
+    "options": [
+     "frame",
+     "alpha",
+     "tag",
+     "contentMode"
+    ],
+    "correctIndex": 0,
+    "explanation": "'frame' (CGRect) é posição + tamanho na coordenada da superview. Com Auto Layout, é calculado pelo sistema, e você não deve defini-lo manualmente."
+   },
+   {
+    "id": 3,
+    "question": "O que faz 'textField.delegate = self'?",
+    "options": [
+     "Copia o texto do campo para o controller",
+     "Remove o campo da tela",
+     "Cria um segue",
+     "Faz o controller receber eventos do text field, se adotar UITextFieldDelegate"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sem atribuir o delegate, os métodos como 'textFieldShouldReturn' nunca são chamados. O controller precisa adotar o protocolo."
+   },
+   {
+    "id": 4,
+    "question": "Para colocar uma UIView existente em uma tela SwiftUI, o que implementar?",
+    "options": [
+     "Um UIHostingController",
+     "Um tipo conforme UIViewRepresentable com makeUIView e updateUIView",
+     "Um segue",
+     "Um IBOutlet"
+    ],
+    "correctIndex": 1,
+    "explanation": "UIViewRepresentable envolve uma UIView. 'makeUIView(context:)' cria a view e 'updateUIView(_:context:)' a atualiza quando o estado SwiftUI muda."
+   },
+   {
+    "id": 5,
+    "question": "Um botão tem 'button.isHidden = true' e depois 'button.alpha = 1'. O que o usuário vê?",
+    "options": [
+     "O botão aparece",
+     "O botão aparece pela metade",
+     "Nada: o botão continua oculto",
+     "O app trava"
+    ],
+    "correctIndex": 2,
+    "explanation": "isHidden e alpha são independentes. Para o botão aparecer, isHidden precisa ser false."
+   },
+   {
+    "id": 6,
+    "question": "Qual evento do botão é o mais comum para 'toque concluído dentro do botão'?",
+    "options": [
+     ".touchUpInside",
+     ".touchDown",
+     ".valueChanged",
+     ".editingChanged"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.touchUpInside' dispara quando o dedo é levantado dentro dos limites do botão, o que permite cancelar arrastando para fora."
+   }
+  ]
+ }
+]

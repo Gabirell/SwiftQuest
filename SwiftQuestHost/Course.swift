@@ -90,18 +90,32 @@ enum CourseData {
         return []
     }
 
-    /// Base pillars plus the new-content batches, with the extra exercises/quiz questions merged in.
+    /// Every bundled file named `<prefix><suffix>.<lang>.json` (e.g. pillarsNewA, pillarsNewB…), in name order.
+    static func loadAll<T: Decodable>(prefix: String, _ language: AppLanguage) -> [T] {
+        let urls = (Bundle.main.urls(forResourcesWithExtension: "json", subdirectory: nil) ?? [])
+            .filter { $0.lastPathComponent.hasPrefix(prefix) && $0.lastPathComponent.hasSuffix(".\(language.rawValue).json") }
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        return urls.flatMap { url -> [T] in
+            guard let data = try? Data(contentsOf: url), let items = try? JSONDecoder().decode([T].self, from: data) else { return [] }
+            return items
+        }
+    }
+
+    /// Base pillars plus every new-content batch, with extra exercises/quiz questions merged in
+    /// (`pillarsPlus*` / `pillarsMore*` files list `{id, exercises, quiz}` to append to an existing pillar).
     static func loadPillars(_ language: AppLanguage) -> [Pillar] {
-        struct Plus: Decodable { let id: Int; let exercises: [CourseExercise]; let quiz: [CourseQuestion] }
+        struct Plus: Decodable { let id: Int; let exercises: [CourseExercise]?; let quiz: [CourseQuestion]?; let extraQuiz: [CourseQuestion]? }
         var all: [Pillar] = load("pillars", language)
-        all += load("pillarsNewA", language) as [Pillar]
-        all += load("pillarsNewB", language) as [Pillar]
-        let plus: [Plus] = load("pillarsPlus", language)
+        all += loadAll(prefix: "pillarsNew", language) as [Pillar]
+        let plus: [Plus] = loadAll(prefix: "pillarsPlus", language) + loadAll(prefix: "pillarsMore", language)
         return all.map { p in
-            guard let extra = plus.first(where: { $0.id == p.id }) else { return p }
+            let extras = plus.filter { $0.id == p.id }
+            guard !extras.isEmpty else { return p }
             return Pillar(id: p.id, title: p.title, theory: p.theory, appleDocUrl: p.appleDocUrl, category: p.category,
                           corporateCase: p.corporateCase, gameCase: p.gameCase,
-                          exercises: p.exercises + extra.exercises, quiz: p.quiz + extra.quiz, extraQuiz: p.extraQuiz)
+                          exercises: p.exercises + extras.flatMap { $0.exercises ?? [] },
+                          quiz: p.quiz + extras.flatMap { $0.quiz ?? [] },
+                          extraQuiz: (p.extraQuiz ?? []) + extras.flatMap { $0.extraQuiz ?? [] })
         }
     }
 
@@ -109,7 +123,14 @@ enum CourseData {
     static let pillars: [Pillar] = loadPillars(.pt)
     static let badges: [Badge] = load("badges", .pt)
 
-    static let categoryOrder = ["Fundamentos", "Swift Avançado", "Swift Moderno", "Dados e Rede", "iOS e iPadOS", "watchOS", "macOS", "visionOS", "Projetos"]
+    /// Recommended study order of the categories (stable Portuguese keys; display names are localized).
+    static let categoryOrder = ["Fundamentos", "Xcode e Ferramentas", "Planejamento e Design", "Swift Avançado", "SwiftUI",
+                                "Swift Moderno", "UIKit e Interface Builder", "iOS e iPadOS", "Dados e Rede",
+                                "Recursos do Sistema", "Projetos", "IA e Machine Learning", "Distribuição",
+                                "watchOS", "macOS", "visionOS"]
+
+    /// Position of a category in the study order; unknown categories go last.
+    static func categoryRank(_ key: String) -> Int { categoryOrder.firstIndex(of: key) ?? categoryOrder.count }
     static let passingGrade = 0.7
 }
 
@@ -135,6 +156,7 @@ struct CourseSnapshot: Codable {
     var wrongQuestions: [String] = []              // review queue: "p:<pillar>:<q>", "e:<exam>:<q>", "i:<lessonQ>"
     var solvedChallenges: [String] = []            // playground challenges solved
     var unlockedUpTo = 0                           // guided path: steps below this index are open (placement quiz)
+    var topicStats: [String: TopicStat] = [:]      // "p:<pillar>", "l:<lesson>", "e:<exam category>", "c:<challenge>"
 
     init() {}
 
@@ -148,6 +170,21 @@ struct CourseSnapshot: Codable {
         wrongQuestions = try c.decodeIfPresent([String].self, forKey: .wrongQuestions) ?? []
         solvedChallenges = try c.decodeIfPresent([String].self, forKey: .solvedChallenges) ?? []
         unlockedUpTo = try c.decodeIfPresent(Int.self, forKey: .unlockedUpTo) ?? 0
+        topicStats = try c.decodeIfPresent([String: TopicStat].self, forKey: .topicStats) ?? [:]
+    }
+}
+
+/// Answer history for one topic, used to find what needs more attention.
+struct TopicStat: Codable, Sendable {
+    var attempts = 0
+    var correct = 0
+    var recent: [Bool] = []          // last 10 results, oldest first
+    var last = Date.distantPast
+
+    var accuracy: Double { attempts == 0 ? 0 : Double(correct) / Double(attempts) }
+    /// Weighted toward recent answers so improvement shows up quickly.
+    var recentAccuracy: Double {
+        recent.isEmpty ? accuracy : Double(recent.filter { $0 }.count) / Double(recent.count)
     }
 }
 
@@ -165,18 +202,30 @@ struct PillarProgress: Sendable {
 
 @MainActor
 final class CourseProgress: ObservableObject {
-    private let key = "courseProgress"
+    private var key: String { Storage.key("courseProgress") }
     @Published private(set) var snapshot: CourseSnapshot
+    private var observer: NSObjectProtocol?
     @Published var newlyUnlocked: Badge?
     private var pendingBadges: [Badge] = []
 
     init() {
+        snapshot = CourseSnapshot()
+        reload()
+        observer = NotificationCenter.default.addObserver(forName: .profileDidChange, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.reload() }
+        }
+    }
+
+    /// Loads the current profile's progress (called at start and whenever the profile changes).
+    func reload() {
         if let data = UserDefaults.standard.data(forKey: key),
            let saved = try? JSONDecoder().decode(CourseSnapshot.self, from: data) {
             snapshot = saved
         } else {
             snapshot = CourseSnapshot()
         }
+        pendingBadges = []
+        newlyUnlocked = nil
     }
 
     private func persist() {
@@ -198,9 +247,29 @@ final class CourseProgress: ObservableObject {
         if ok {
             snapshot.exerciseAnswers["\(pillar)-\(exercise.id)"] = answer
             HabitStore.shared.recordActivity()
-            persist()
         }
+        recordAttempt(topic: "p:\(pillar)", correct: ok)
         return ok
+    }
+
+    /// Remembers one answer for the "needs attention" analysis.
+    func recordAttempt(topic: String, correct: Bool) {
+        var stat = snapshot.topicStats[topic] ?? TopicStat()
+        stat.attempts += 1
+        if correct { stat.correct += 1 }
+        stat.recent.append(correct)
+        if stat.recent.count > 10 { stat.recent.removeFirst(stat.recent.count - 10) }
+        stat.last = Date()
+        snapshot.topicStats[topic] = stat
+        persist()
+    }
+
+    /// Topics with enough answers, weakest first (recent accuracy below 75%).
+    func weakTopics(minAttempts: Int = 3) -> [(topic: String, stat: TopicStat)] {
+        snapshot.topicStats
+            .filter { $0.value.attempts >= minAttempts && $0.value.recentAccuracy < 0.75 }
+            .map { ($0.key, $0.value) }
+            .sorted { ($0.1.recentAccuracy, -Double($0.1.attempts)) < ($1.1.recentAccuracy, -Double($1.1.attempts)) }
     }
 
     func recordQuiz(pillar: Int, correct: Int) {

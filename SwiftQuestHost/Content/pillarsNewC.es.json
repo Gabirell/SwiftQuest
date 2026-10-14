@@ -1,0 +1,914 @@
+[
+ {
+  "id": 26,
+  "title": "Ciclo de diseño de apps",
+  "theory": "El ciclo de diseño es un proceso iterativo para crear apps que resuelvan problemas reales. Suele tener cuatro fases: brainstorming (generar muchas ideas sin juzgarlas), planificación (definir el público, los objetivos y las funciones), prototipado (crear una versión que se pueda probar) y evaluación (observar a usuarios reales y recoger feedback), volviendo al inicio para iterar. La investigación de usuarios y las 'personas' (personajes ficticios basados en datos reales) ayudan a entender quién usará la app. Las 'user stories' describen necesidades con el formato 'Como [usuario], quiero [acción] para [beneficio]'. Un 'wireframe' es un boceto de baja fidelidad de la estructura de las pantallas; un 'mockup' muestra el aspecto visual final; un prototipo interactivo permite navegar entre pantallas. El MVP (Minimum Viable Product, producto mínimo viable) entrega solo lo esencial para aprender rápido con el feedback. En Xcode, el canvas de Previews de SwiftUI (con '#Preview') funciona como un prototipo vivo del código. Error común: omitir la evaluación y tratar el primer diseño como definitivo. La certificación espera que reconozcas cada fase y el papel del feedback y la iteración.",
+  "appleDocUrl": "https://developer.apple.com/tutorials/develop-in-swift/explore-the-app-design-cycle",
+  "category": "Planejamento e Design",
+  "corporateCase": "Una startup de citas médicas entrevista a pacientes y recepcionistas, crea personas y user stories y prueba un prototipo en Figma antes de programar. Lanza un MVP solo con reserva de citas y evoluciona con cada ciclo de feedback.",
+  "gameCase": "Un estudio de juegos hace brainstorming de mecánicas, dibuja wireframes de los menús y arma un prototipo jugable en pocos días. Unos amigos lo prueban, el estudio observa dónde se traban y ajusta la dificultad antes de invertir en arte final.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Completa el ciclo de diseño: Brainstorming → Planificación → Prototipo → ___ (y luego iterar).",
+    "codeSnippet": "Brainstorming → Planificación → Prototipo → ___",
+    "correctAnswer": "Evaluación",
+    "hint": "Fase en la que los usuarios prueban el prototipo y analizas los resultados. Empieza con 'E'."
+   },
+   {
+    "id": 2,
+    "question": "¿Cómo se llama el boceto de baja fidelidad, solo con cajas y líneas, que muestra la estructura de las pantallas?",
+    "codeSnippet": "Un ___ muestra la estructura de las pantallas sin colores ni imágenes finales.",
+    "correctAnswer": "wireframe",
+    "hint": "Palabra en inglés: un 'marco' hecho de 'alambres' (líneas). No es un mockup."
+   },
+   {
+    "id": 3,
+    "question": "Completa la user story en el formato estándar 'Como [usuario], quiero [acción] para [beneficio]'.",
+    "codeSnippet": "Como usuario, yo ___ ver mis tareas de hoy para organizarme.",
+    "correctAnswer": "quiero",
+    "hint": "El verbo que expresa el deseo o la necesidad del usuario."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué significa la V de la sigla MVP?",
+    "codeSnippet": "MVP = Producto Mínimo ___",
+    "correctAnswer": "Viable",
+    "hint": "Significa que el producto funciona y ya entrega valor, aunque sea simple."
+   },
+   {
+    "id": 5,
+    "question": "¿Cómo se llama el personaje ficticio, basado en investigación, que representa a un grupo de usuarios?",
+    "codeSnippet": "Una ___ describe nombre, edad, objetivos y frustraciones de un usuario típico.",
+    "correctAnswer": "persona",
+    "hint": "Palabra latina que también significa 'persona' o 'máscara'."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué macro muestra una vista previa en vivo de una View de SwiftUI en el canvas de Xcode?",
+    "codeSnippet": "#___ { ContentView() }",
+    "correctAnswer": "Preview",
+    "hint": "Es la palabra para ver algo antes de que se ejecute."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el orden típico de las fases del ciclo de diseño?",
+    "options": [
+     "Brainstorming, planificación, prototipo, evaluación",
+     "Prototipo, evaluación, planificación, brainstorming",
+     "Evaluación, prototipo, brainstorming, planificación",
+     "Planificación, evaluación, brainstorming, prototipo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Primero ideas, luego un plan, luego algo que se pueda probar y por último la evaluación, que alimenta un nuevo ciclo."
+   },
+   {
+    "id": 2,
+    "question": "Durante el brainstorming, ¿cuál es la mejor práctica?",
+    "options": [
+     "Elegir la primera idea y empezar a programar",
+     "Descartar ideas que parezcan difíciles de programar",
+     "Generar muchas ideas sin criticarlas de inmediato",
+     "Esperar el feedback de los usuarios antes de tener ideas"
+    ],
+    "correctIndex": 2,
+    "explanation": "El brainstorming valora la cantidad y la libertad; el filtro viene después, en la planificación."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es la diferencia entre un wireframe y un mockup?",
+    "options": [
+     "El wireframe tiene colores finales; el mockup es solo texto",
+     "El wireframe muestra la estructura; el mockup muestra el aspecto visual final",
+     "Son lo mismo con nombres diferentes",
+     "El mockup es código Swift; el wireframe es un storyboard"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los wireframes son de baja fidelidad y rápidos de cambiar. Los mockups son de alta fidelidad, con colores, tipografía e imágenes."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es una user story bien escrita?",
+    "options": [
+     "Usar CoreLocation con precisión máxima",
+     "El botón debe ser azul y tener 44 puntos",
+     "Crear la tabla de carreras en la base de datos",
+     "Como corredor, quiero ver mi ritmo en tiempo real para ajustar mi entrenamiento"
+    ],
+    "correctIndex": 3,
+    "explanation": "Una user story describe quién, qué y por qué desde el punto de vista del usuario, sin dictar la implementación."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el objetivo de un MVP?",
+    "options": [
+     "Entregar todas las funciones planificadas de una sola vez",
+     "Evitar cualquier contacto con usuarios hasta el lanzamento",
+     "Reemplazar las pruebas de usabilidad",
+     "Lanzar lo esencial rápidamente para aprender de usuarios reales"
+    ],
+    "correctIndex": 3,
+    "explanation": "El MVP reduce el riesgo: en lugar de apostar por una app enorme, validas la idea central y ajustas según los datos."
+   },
+   {
+    "id": 6,
+    "question": "Un equipo probó el prototipo y vio que nadie encontró el botón 'Guardar'. ¿Qué deben hacer?",
+    "options": [
+     "Ignorarlo, porque los usuarios deben aprender",
+     "Iterar: rediseñar el botón, crear una nueva versión y probar de nuevo",
+     "Lanzar la app igual y corregir solo si hay quejas",
+     "Volver al brainstorming y rehacer toda la app"
+    ],
+    "correctIndex": 1,
+    "explanation": "La evaluación existe para revelar problemas como este. La respuesta es un ajuste puntual y una nueva prueba, no ignorarlo ni empezar de cero."
+   },
+   {
+    "id": 7,
+    "question": "¿Para qué sirven las 'personas'?",
+    "options": [
+     "Almacenar las cuentas de los usuarios en la app",
+     "Crear perfiles falsos para inflar las valoraciones",
+     "Representar grupos de usuarios reales para orientar decisiones de diseño",
+     "Definir la arquitectura de la base de datos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las personas se basan en investigación y ayudan al equipo a decidir pensando en personas, no en suposiciones."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué recurso de Xcode permite ver una View de SwiftUI actualizarse mientras editas el código?",
+    "options": [
+     "El canvas de Previews",
+     "El Debug Navigator",
+     "El Report Navigator",
+     "El Asset Catalog"
+    ],
+    "correctIndex": 0,
+    "explanation": "Previews renderiza la View en cada cambio, acelerando el ciclo de prototipo y evaluación, incluso con distintos tamaños y modos."
+   },
+   {
+    "id": 9,
+    "question": "¿Por qué se describe el ciclo de diseño como iterativo?",
+    "options": [
+     "Porque los resultados de la evaluación realimentan nuevas rondas de ideas y prototipos",
+     "Porque cada fase debe repetirse exactamente 3 veces",
+     "Porque el código Swift se compila en bucle",
+     "Porque solo el diseñador participa en las fases"
+    ],
+    "correctIndex": 0,
+    "explanation": "Iterar significa repetir y mejorar. Ningún diseño nace perfecto; el feedback guía cada nueva versión."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué método de investigación observa a personas usando el prototipo para encontrar problemas?",
+    "options": [
+     "Refactorización de código",
+     "Prueba de usabilidad",
+     "Análisis de complejidad",
+     "Versionado semántico"
+    ],
+    "correctIndex": 1,
+    "explanation": "Observar usuarios reales revela dificultades que el equipo, por conocer demasiado bien la app, no percibe."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es una ventaja de prototipar en papel o en una herramienta de diseño antes de programar?",
+    "options": [
+     "La app corre más rápido una vez publicada",
+     "Elimina la necesidad de evaluar con usuarios",
+     "Garantiza la aprobación en la App Store",
+     "Cambiar ideas cuesta mucho menos que reescribir código"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cuanto antes se encuentra un error de diseño, más barato es corregirlo."
+   },
+   {
+    "id": 3,
+    "question": "Un prototipo interactivo se diferencia de un wireframe estático porque…",
+    "options": [
+     "es siempre la app final ya publicada",
+     "no tiene ninguna apariencia visual",
+     "permite tocar y navegar entre las pantallas simulando el flujo",
+     "solo se puede hacer en Swift"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los prototipos interactivos conectan pantallas y acciones, permitiendo evaluar el flujo antes de implementar."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué pregunta de investigación con usuarios es mejor?",
+    "options": [
+     "'Cuéntame cómo organizas tus tareas hoy.'",
+     "'¿No crees que la app de tareas es increíble?'",
+     "'¿Usarías nuestra app, cierto?'",
+     "'¿Prefieres el azul, que es el color más bonito?'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las preguntas abiertas y neutras evitan inducir la respuesta y revelan comportamientos reales."
+   },
+   {
+    "id": 5,
+    "question": "En la fase de planificación, ¿qué suele definir el equipo?",
+    "options": [
+     "Público objetivo, metas, funciones y prioridades",
+     "Solo el color del ícono de la app",
+     "El número de descargas que tendrá la app",
+     "Los nombres de las variables del código"
+    ],
+    "correctIndex": 0,
+    "explanation": "Planificar convierte las ideas del brainstorming en un alcance claro, incluido lo que entra en el MVP."
+   },
+   {
+    "id": 6,
+    "question": "Después de lanzar una app, ¿termina el ciclo de diseño?",
+    "options": [
+     "Sí, el diseño termina en el lanzamiento",
+     "Sí, las actualizaciones están prohibidas por la App Store",
+     "No: el feedback y las reseñas de las versiones publicadas alimentan nuevas iteraciones",
+     "No, pero solo cambia el código, nunca la interfaz"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las apps vivas evolucionan: el feedback posterior al lanzamiento, las métricas y las nuevas versiones de iOS reabren el ciclo."
+   }
+  ]
+ },
+ {
+  "id": 27,
+  "title": "Human Interface Guidelines y diseño de interfaz",
+  "theory": "Las Human Interface Guidelines (HIG) son la guía oficial de Apple para crear interfaces consistentes en iOS, iPadOS, macOS, watchOS, tvOS y visionOS. Sus principios clásicos son claridad (contenido legible e íconos precisos), deferencia (la interfaz sirve al contenido sin competir con él) y profundidad (capas y movimiento comunican jerarquía), a los que se suma la consistencia (usar patrones y controles que el usuario ya conoce). Los objetivos táctiles deben medir al menos 44 x 44 puntos. El diseño debe respetar las safe areas (zonas libres del notch, la Dynamic Island y la barra de inicio); en SwiftUI el fondo puede usar '.ignoresSafeArea()', pero el contenido interactivo no. La tipografía usa estilos de texto semánticos como '.title' y '.body', que escalan con Dynamic Type. Los colores semánticos ('Color.primary', colores del sistema) se adaptan al modo oscuro automáticamente. Los SF Symbols son los íconos vectoriales de Apple, usados con 'Image(systemName:)'. Navegación típica: 'TabView' (tab bar) para secciones de nivel superior, 'NavigationStack' para jerarquías y 'sheet' para tareas modales. El feedback y los hápticos ('.sensoryFeedback') confirman acciones. Error común: crear controles personalizados que ignoran las convenciones de la plataforma.",
+  "appleDocUrl": "https://developer.apple.com/design/human-interface-guidelines/designing-for-ios",
+  "category": "Planejamento e Design",
+  "corporateCase": "Una app bancaria usa 'TabView' con Cuentas, Pagos y Perfil, textos con Dynamic Type y colores semánticos para el modo oscuro. Botones de 44 puntos y hápticos de éxito al completar una transferencia reducen errores y generan confianza.",
+  "gameCase": "Un juego de puzzles usa SF Symbols en los botones de pausa y pista, respeta las safe areas para que los controles no queden bajo la Dynamic Island y usa una 'sheet' para los ajustes, manteniendo el tablero visible detrás.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "El tamaño mínimo recomendado de un objetivo táctil en iOS es 44 x 44 ___.",
+    "codeSnippet": "Objetivo táctil mínimo: 44 x 44 ___",
+    "correctAnswer": "puntos",
+    "hint": "La unidad independiente de resolución usada en los diseños de Apple (no son píxeles)."
+   },
+   {
+    "id": 2,
+    "question": "Aplica el estilo de texto semántico llamado 'headline', que escala con Dynamic Type.",
+    "codeSnippet": "Text(\"Resumo\").font(.___)",
+    "correctAnswer": "headline",
+    "hint": "Estilo en inglés que significa 'encabezado', en negrita por defecto."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué parámetro de 'Image' carga un SF Symbol?",
+    "codeSnippet": "Image(___: \"star.fill\")",
+    "correctAnswer": "systemName",
+    "hint": "Es el 'nombre del sistema' del ícono. No es 'named'."
+   },
+   {
+    "id": 4,
+    "question": "Haz que el fondo azul ocupe toda la pantalla, incluso detrás de las safe areas.",
+    "codeSnippet": "Color.blue.___()",
+    "correctAnswer": "ignoresSafeArea",
+    "hint": "El modificador cuyo nombre dice 'ignora el área segura'."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué modificador define el ícono y el título de una pestaña dentro de un TabView?",
+    "codeSnippet": "Text(\"Inicio\").___ { Label(\"Inicio\", systemImage: \"house\") }",
+    "correctAnswer": "tabItem",
+    "hint": "Une 'tab' e 'item'."
+   },
+   {
+    "id": 6,
+    "question": "Dispara un feedback háptico de éxito cuando 'salvou' cambie.",
+    "codeSnippet": "Button(\"Guardar\") { salvou.toggle() }\n    .___(.success, trigger: salvou)",
+    "correctAnswer": "sensoryFeedback",
+    "hint": "Modificador de SwiftUI: 'feedback sensorial'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuáles son los principios clásicos del diseño de Apple citados en las HIG?",
+    "options": [
+     "Velocidad, memoria, batería y red",
+     "Claridad, deferencia, profundidad y consistencia",
+     "Color, sonido, vibración y animación",
+     "Struct, class, enum y protocol"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las interfaces claras ponen el contenido en primer plano, usan capas para la jerarquía y siguen patrones familiares."
+   },
+   {
+    "id": 2,
+    "question": "¿Por qué respetar las safe areas?",
+    "options": [
+     "Para que la app consuma menos batería",
+     "Para poder usar solo colores claros",
+     "Porque Xcode no compila sin ellas",
+     "Para que el contenido no quede oculto por el notch, la Dynamic Island o la barra de inicio"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las safe areas garantizan que botones y textos sean visibles y tocables. Solo los fondos decorativos suelen extenderse más allá."
+   },
+   {
+    "id": 3,
+    "question": "Un botón mide 20 x 20 puntos. ¿Cuál es el problema según las HIG?",
+    "options": [
+     "Los botones deben ser siempre cuadrados de 100 puntos",
+     "Ninguno, 20 puntos es el estándar de iOS",
+     "Es menor que el objetivo táctil recomendado de 44 x 44 puntos",
+     "El botón debería ser siempre rojo"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los objetivos pequeños causan errores de toque, sobre todo en personas con dificultades motoras. Se puede mantener el ícono pequeño y ampliar el área tocable."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es la mejor forma de garantizar que el texto sea legible y escale con las preferencias del usuario?",
+    "options": [
+     "Usar estilos de texto semánticos, como .body y .title",
+     "Fijar .font(.system(size: 12)) en todos los textos",
+     "Convertir los textos en imágenes",
+     "Desactivar Dynamic Type en toda la app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los estilos semánticos responden al tamaño de texto elegido en Ajustes. Los tamaños fijos ignoran esa preferencia."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué patrón de navegación es ideal para 3 a 5 secciones de nivel superior independientes?",
+    "options": [
+     "Tab bar (TabView)",
+     "Una sheet por cada sección",
+     "Un menú oculto sin etiquetas",
+     "Alertas en secuencia"
+    ],
+    "correctIndex": 0,
+    "explanation": "La tab bar mantiene las secciones principales siempre visibles. 'NavigationStack' sirve para profundizar dentro de una sección."
+   },
+   {
+    "id": 6,
+    "question": "¿Por qué usar colores semánticos como Color.primary en lugar de Color.black?",
+    "options": [
+     "Porque se renderizan más rápido",
+     "Porque Color.black fue eliminado de SwiftUI",
+     "Porque se adaptan automáticamente al modo claro y al oscuro",
+     "Porque solo funcionan en iPad"
+    ],
+    "correctIndex": 2,
+    "explanation": "El texto negro fijo desaparece en modo oscuro. Los colores semánticos cambian de valor según la apariencia."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuándo es más adecuada una 'sheet' que un push en el NavigationStack?",
+    "options": [
+     "Para avanzar en la jerarquía de detalles de un elemento",
+     "Para cambiar entre las secciones principales de la app",
+     "Nunca; las sheets fueron eliminadas de iOS",
+     "Para una tarea enfocada e independiente, como crear un elemento nuevo"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las sheets presentan contenido modal con una acción clara de cerrar/listo. Las jerarquías de detalle usan push con botón Atrás."
+   },
+   {
+    "id": 8,
+    "question": "¿Cuál es el papel de los hápticos según las HIG?",
+    "options": [
+     "Reemplazar por completo el feedback visual",
+     "Reforzar el feedback de acciones importantes, sin exagerar",
+     "Vibrar en cada toque en la pantalla",
+     "Ser la única forma de avisar errores"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los hápticos complementan lo visual y el sonido, no los reemplazan. El uso excesivo cansa y pierde significado."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué significa 'deferencia' en las HIG?",
+    "options": [
+     "La app debe pedir permiso antes de abrirse",
+     "Todos los botones deben tener el mismo color",
+     "La interfaz ayuda al usuario sin competir con el contenido",
+     "La app debe ocultar el contenido hasta el login"
+    ],
+    "correctIndex": 2,
+    "explanation": "Deferir es dejar que el contenido sea protagonista: bordes, sombras y decoración no deben llamar más la atención que él."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué son los SF Symbols?",
+    "options": [
+     "Un conjunto de íconos vectoriales de Apple que combinan con la fuente del sistema",
+     "Un lenguaje de programación de Apple",
+     "Un tipo de seguridad para strings",
+     "Fotos de alta resolución para la App Store"
+    ],
+    "correctIndex": 0,
+    "explanation": "Son miles de símbolos que escalan con el texto, admiten pesos y colores y se usan con Image(systemName:)."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué enfoque respeta la consistencia de la plataforma?",
+    "options": [
+     "Recrear todos los controles desde cero con un aspecto propio",
+     "Cambiar el gesto de volver en cada pantalla",
+     "Usar íconos diferentes para acciones estándar como compartir",
+     "Usar controles estándar, como Toggle y NavigationStack, personalizando solo lo necesario"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los controles estándar ya traen accesibilidad, animaciones y comportamientos que el usuario conoce."
+   },
+   {
+    "id": 4,
+    "question": "Una View se ejecuta en iPhone SE y en iPhone Pro Max. ¿Qué práctica ayuda?",
+    "options": [
+     "Posiciones absolutas en píxeles para cada dispositivo",
+     "Diseños adaptables con stacks, Spacer y Auto Layout, sin tamaños fijos",
+     "Crear una app separada por modelo de iPhone",
+     "Probar solo en el simulador por defecto"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los diseños flexibles se adaptan a tamaños, orientaciones y Dynamic Type. Usa Previews para probar varios dispositivos."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el mejor feedback al usuario tras enviar un formulario con éxito?",
+    "options": [
+     "Ningún feedback, el usuario debe suponer que funcionó",
+     "Una confirmación visible y clara, posiblemente con un háptico de éxito",
+     "Cerrar la app sin aviso",
+     "Una alerta técnica con el código de error interno"
+    ],
+    "correctIndex": 1,
+    "explanation": "El usuario necesita saber que su acción funcionó. Un feedback inmediato y comprensible reduce dudas y toques repetidos."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué afirmación sobre el modo oscuro es correcta?",
+    "options": [
+     "Es solo cambiar el fondo blanco por negro",
+     "Solo afecta al iPad",
+     "Las imágenes y los íconos nunca necesitan cambiar",
+     "Se debe probar la interfaz en ambos modos y usar colores adaptativos"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los contrastes cambian entre apariencias. Los assets del catálogo aceptan variantes Light/Dark y Xcode Previews permite revisar ambos."
+   }
+  ]
+ },
+ {
+  "id": 28,
+  "title": "Accesibilidad y diseño inclusivo",
+  "theory": "Accesibilidad significa crear apps que todas las personas puedan usar, incluidas las que tienen discapacidad visual, auditiva, motriz o cognitiva. VoiceOver es el lector de pantalla de Apple: lee en voz alta el 'accessibilityLabel' de cada elemento. En SwiftUI, usa '.accessibilityLabel(\"Cerrar\")' para nombrar el elemento (sobre todo íconos), '.accessibilityHint' para explicar el resultado de la acción, '.accessibilityValue' para el valor actual (como '50%') y '.accessibilityAddTraits(.isButton)' para indicar su rol. '.accessibilityHidden(true)' oculta elementos decorativos. Dynamic Type permite que el texto escale con la preferencia del usuario; un contraste de color suficiente y no depender solo del color (usa también íconos o texto) ayudan a personas con daltonismo. El ajuste Reduce Motion, leído con '@Environment(\\.accessibilityReduceMotion)', debe reducir o quitar animaciones. El Accessibility Inspector de Xcode audita la app y muestra lo que ve VoiceOver. El diseño inclusivo también implica localización e idiomas de derecha a izquierda (RTL), como árabe y hebreo, que requieren diseños que se reflejan. Error común: tratar la accesibilidad como un último paso opcional. La certificación espera que reconozcas estos recursos y su finalidad.",
+  "appleDocUrl": "https://developer.apple.com/design/human-interface-guidelines/accessibility",
+  "category": "Planejamento e Design",
+  "corporateCase": "Una app de transporte público etiqueta todos los botones para VoiceOver, admite Dynamic Type e indica retrasos con ícono y texto, no solo con color rojo. Usuarios ciegos y con daltonismo planifican viajes con autonomía y la empresa se acerca más a cumplir los requisitos legales de accesibilidad.",
+  "gameCase": "Un juego de ritmo ofrece un modo para daltónicos con una forma distinta por nota, respeta Reduce Motion cambiando efectos intensos por transiciones suaves y permite reasignar toques. Más personas pueden jugar y mejora la valoración de la app.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Dale al botón de ícono un nombre que VoiceOver lea en voz alta.",
+    "codeSnippet": "Image(systemName: \"xmark\").___(\"Cerrar\")",
+    "correctAnswer": "accessibilityLabel",
+    "hint": "El modificador que da la 'etiqueta' de accesibilidad."
+   },
+   {
+    "id": 2,
+    "question": "Explica el resultado de la acción con un texto extra leído después de la etiqueta.",
+    "codeSnippet": "Button(\"Borrar\") { }\n    .___(\"Quita el elemento de la lista\")",
+    "correctAnswer": "accessibilityHint",
+    "hint": "Es la 'pista' de accesibilidad, en inglés."
+   },
+   {
+    "id": 3,
+    "question": "Indica a VoiceOver que este texto se comporta como un botón.",
+    "codeSnippet": "Text(\"Entrar\").accessibilityAddTraits(.___)",
+    "correctAnswer": "isButton",
+    "hint": "Un trait que empieza con 'is' y termina con el nombre del control."
+   },
+   {
+    "id": 4,
+    "question": "Oculta una imagen puramente decorativa de VoiceOver.",
+    "codeSnippet": "Image(\"enfeite\").accessibilityHidden(___)",
+    "correctAnswer": "true",
+    "hint": "Un valor booleano que significa 'sí, ocultar'."
+   },
+   {
+    "id": 5,
+    "question": "Lee del entorno si el usuario activó Reduce Motion.",
+    "codeSnippet": "@Environment(\\.___) var reduzir",
+    "correctAnswer": "accessibilityReduceMotion",
+    "hint": "La clave empieza con 'accessibility' y termina con el nombre del ajuste."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo se llama el lector de pantalla de Apple, que describe la interfaz en voz alta?",
+    "codeSnippet": "El lector de pantalla de Apple se llama ___.",
+    "correctAnswer": "VoiceOver",
+    "hint": "Une 'voice' y 'over' en inglés."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Para qué sirve 'accessibilityLabel'?",
+    "options": [
+     "Cambiar el texto visible en pantalla",
+     "Definir el color del elemento",
+     "Dar a VoiceOver el texto que describe el elemento",
+     "Guardar el elemento en la base de datos"
+    ],
+    "correctIndex": 2,
+    "explanation": "La etiqueta es el nombre hablado. Un botón solo con ícono y sin etiqueta se leería de forma vaga o como el nombre del archivo."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre label y hint?",
+    "options": [
+     "El label dice qué es el elemento; el hint explica qué ocurre al activarlo",
+     "El label es para iPad y el hint para iPhone",
+     "El hint siempre reemplaza al label",
+     "Son idénticos"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un buen par sería label 'Compartir' y hint 'Abre las opciones de envío'. Los hints deben ser cortos y opcionales."
+   },
+   {
+    "id": 3,
+    "question": "Un indicador muestra 'Sin conexión' solo con un círculo rojo. ¿Cuál es el problema?",
+    "options": [
+     "El rojo está prohibido por las HIG",
+     "Los círculos no se pueden dibujar en SwiftUI",
+     "Ningún problema, es el estándar recomendado",
+     "Depende solo del color; las personas con daltonismo pueden no notarlo"
+    ],
+    "correctIndex": 3,
+    "explanation": "Combina color con texto, ícono o forma. Así la información llega a todos, incluso con pantalla en escala de grises."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué herramienta de Xcode ayuda a auditar la accesibilidad y ver lo que VoiceOver percibe?",
+    "options": [
+     "Asset Catalog",
+     "Accessibility Inspector",
+     "Memory Graph",
+     "Source Control Navigator"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Accessibility Inspector lista etiquetas, traits y problemas como bajo contraste y objetivos pequeños, en el simulador o en un dispositivo."
+   },
+   {
+    "id": 5,
+    "question": "Un usuario eligió textos muy grandes en Ajustes. ¿Qué implementación es correcta?",
+    "options": [
+     "Usar .font(.system(size: 14)) en todo",
+     "Usar .font(.body) y diseños que crezcan, permitiendo varias líneas",
+     "Limitar el texto a una línea y cortar con '...'",
+     "Mostrar un aviso pidiendo reducir el tamaño"
+    ],
+    "correctIndex": 1,
+    "explanation": "Dynamic Type exige que la interfaz acompañe al texto. Los tamaños fijos y el truncamiento agresivo vuelven la app inutilizable para muchos."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué le pide el ajuste Reduce Motion a la app?",
+    "options": [
+     "Silenciar el sonido de la app",
+     "Reducir el brillo de la pantalla",
+     "Pausar la app en segundo plano",
+     "Reducir o sustituir animaciones intensas, como parallax y zoom"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los movimientos grandes pueden causar mareo o náuseas en algunas personas. Cámbialos por fades simples cuando la opción esté activa."
+   },
+   {
+    "id": 7,
+    "question": "En un idioma de derecha a izquierda, como el árabe, ¿qué hace SwiftUI por defecto?",
+    "options": [
+     "Refleja el diseño, usando 'leading' y 'trailing' en lugar de izquierda y derecha",
+     "Mantiene todo igual y solo traduce el texto",
+     "Desactiva los botones",
+     "Invierte los colores"
+    ],
+    "correctIndex": 0,
+    "explanation": "Por eso se usan bordes 'leading/trailing'. Fijar izquierda y derecha rompe la experiencia RTL."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué es el diseño inclusivo?",
+    "options": [
+     "Agregar funciones de accesibilidad solo después del lanzamiento",
+     "Diseñar solo para el usuario promedio",
+     "Diseñar considerando la diversidad de habilidades, idiomas y contextos desde el inicio",
+     "Crear una app separada para cada discapacidad"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las funciones pensadas para un grupo, como los subtítulos, terminan ayudando a muchos otros, como quienes están en lugares ruidosos."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué comunica '.accessibilityValue(\"50%\")'?",
+    "options": [
+     "El precio del elemento",
+     "La velocidad de la animación",
+     "La versión mínima de iOS",
+     "El valor actual de un control, como un slider"
+    ],
+    "correctIndex": 3,
+    "explanation": "VoiceOver lee la etiqueta y luego el valor, por ejemplo 'Volumen, 50%'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué contraste de color es un buen objetivo para texto normal según las pautas de accesibilidad?",
+    "options": [
+     "1:1",
+     "Al menos 4,5:1 entre texto y fondo",
+     "Cualquiera, mientras sea colorido",
+     "Solo negro sobre negro"
+    ],
+    "correctIndex": 1,
+    "explanation": "El gris claro sobre blanco suele fallar. El Accessibility Inspector puede medir el contraste."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué modificador une ícono y texto en un único elemento para VoiceOver?",
+    "options": [
+     ".accessibilityElement(children: .combine)",
+     ".accessibilityHidden(false)",
+     ".accessibilityValue(.combine)",
+     ".accessibilityLabel(.merge)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Combinar evita que el usuario necesite dos gestos para oír una fila de lista con ícono y título."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué texto de imagen es mejor para una foto de perfil?",
+    "options": [
+     "IMG_2048.png",
+     "imagen",
+     "Foto de perfil de Ana",
+     "Haz clic aquí"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las descripciones deben ser cortas y significativas. Los nombres de archivo y términos genéricos no ayudan."
+   },
+   {
+    "id": 5,
+    "question": "¿Por qué localizar la app (traducción) es parte de la inclusión?",
+    "options": [
+     "Aumenta el tamaño del archivo a propósito",
+     "Lo exige el compilador de Swift",
+     "Permite que las personas usen la app en su idioma y formatos culturales",
+     "Reemplaza a VoiceOver"
+    ],
+    "correctIndex": 2,
+    "explanation": "La localización abarca textos, fechas, números, monedas y dirección del texto. En Xcode se usan String Catalogs."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es la mejor forma de probar la accesibilidad de verdad?",
+    "options": [
+     "Usar la app con VoiceOver, textos grandes y Reduce Motion, y probar con personas reales",
+     "Solo leer el código fuente",
+     "Confiar en que SwiftUI se encarga de todo",
+     "Probar solo en modo claro"
+    ],
+    "correctIndex": 0,
+    "explanation": "SwiftUI ayuda, pero las etiquetas útiles y el flujo lógico dependen de ti. Probar con usuarios reales revela lo que la automatización no ve."
+   }
+  ]
+ },
+ {
+  "id": 29,
+  "title": "Privacidad, seguridad de datos e impacto social",
+  "theory": "Los datos personales, como ubicación, contactos, fotos y salud, pueden protegerse o comprometerse según las decisiones de la app. Riesgos comunes: compartir información sin consentimiento, pedir demasiados permisos, phishing (engañar al usuario para que entregue contraseñas), guardar contraseñas en texto plano o en 'UserDefaults' (lo correcto es el Keychain) y usar conexiones inseguras. iOS exige HTTPS por defecto mediante App Transport Security (ATS). Para acceder a recursos sensibles, el Info.plist necesita claves de descripción de uso, como 'NSCameraUsageDescription' y 'NSLocationWhenInUseUsageDescription', que explican al usuario el motivo de la solicitud. Para rastrear usuarios entre apps se requiere App Tracking Transparency ('ATTrackingManager.requestTrackingAuthorization'). En la App Store, los privacy nutrition labels informan qué datos recopila la app, y el privacy manifest ('PrivacyInfo.xcprivacy') declara el uso de datos y de APIs sensibles. Buenas prácticas: minimización de datos (recopilar solo lo necesario), cifrado en tránsito y en reposo y pedir permiso en el momento en que tiene sentido. Leyes como LGPD (Brasil), GDPR (Europa) y COPPA (EE. UU., niños) regulan el tratamiento de datos. También hay impactos éticos y socioeconómicos: brecha digital, adicción a las pantallas, sesgo en algoritmos y accesibilidad. La certificación espera que identifiques riesgos y medidas de protección.",
+  "appleDocUrl": "https://developer.apple.com/design/human-interface-guidelines/privacy",
+  "category": "Planejamento e Design",
+  "corporateCase": "Una app de salud pide solo los datos necesarios, explica cada permiso en el Info.plist, guarda tokens en el Keychain y usa HTTPS. Con consentimiento claro y opción de borrar la cuenta, la empresa se alinea con la LGPD y gana la confianza de los pacientes.",
+  "gameCase": "Un juego infantil no recopila datos personales, desactiva el chat abierto y evita anuncios rastreadores, siguiendo reglas como la COPPA. También limita las sesiones largas y muestra recordatorios de descanso para reducir el riesgo de uso compulsivo.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "¿Qué clave del Info.plist debe contener el motivo por el que la app usa la cámara?",
+    "codeSnippet": "<key>___</key>\n<string>Usamos la cámara para escanear documentos</string>",
+    "correctAnswer": "NSCameraUsageDescription",
+    "hint": "Empieza con 'NS', luego el recurso, y termina con 'UsageDescription'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué método pide al usuario permiso para rastrearlo entre apps y sitios web?",
+    "codeSnippet": "ATTrackingManager.___ { status in }",
+    "correctAnswer": "requestTrackingAuthorization",
+    "hint": "El nombre es 'request' + 'Tracking' + 'Authorization'."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué protocolo exige App Transport Security por defecto en las conexiones de red?",
+    "codeSnippet": "ATS exige conexiones ___ por defecto.",
+    "correctAnswer": "HTTPS",
+    "hint": "Es HTTP con 'S' de seguro (cifrado con TLS)."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es la extensión del archivo de privacy manifest de una app?",
+    "codeSnippet": "PrivacyInfo.___",
+    "correctAnswer": "xcprivacy",
+    "hint": "Empieza con 'xc' (de Xcode) y termina con 'privacy'."
+   },
+   {
+    "id": 5,
+    "question": "¿Dónde se debe guardar una contraseña o token de forma segura en iOS?",
+    "codeSnippet": "Las contraseñas deben guardarse en el ___, no en UserDefaults.",
+    "correctAnswer": "Keychain",
+    "hint": "El servicio del sistema que guarda credenciales cifradas ('llavero')."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo se llama el principio de recopilar solo los datos estrictamente necesarios?",
+    "codeSnippet": "El principio de ___ de datos dice que se recopile solo lo necesario.",
+    "correctAnswer": "minimización",
+    "hint": "Viene de 'mínimo': recopilar lo menos posible."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el papel de las cadenas de descripción de uso en el Info.plist?",
+    "options": [
+     "Conceder permiso automáticamente sin preguntar al usuario",
+     "Cifrar el archivo de la app",
+     "Definir el nombre de la app en la pantalla de inicio",
+     "Explicar al usuario, en la alerta de permiso, por qué la app necesita el recurso"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sin la clave, iOS cierra la app (crash) al acceder al recurso. El texto debe ser honesto y específico, como 'Usamos tu ubicación para mostrar tiendas cercanas'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué es el phishing?",
+    "options": [
+     "Una técnica de compresión de imágenes",
+     "Engañar a una persona, con mensajes o sitios falsos, para que revele datos o contraseñas",
+     "Un tipo de prueba de interfaz",
+     "Una función de Xcode para depuración"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es ingeniería social. La defensa implica desconfiar de enlaces, verificar al remitente y usar autenticación de dos factores."
+   },
+   {
+    "id": 3,
+    "question": "Una app guarda la contraseña del usuario en UserDefaults en texto plano. ¿Cuál es el problema?",
+    "options": [
+     "UserDefaults no es seguro para secretos; lo correcto es el Keychain",
+     "UserDefaults solo acepta números",
+     "Ninguno, es la forma recomendada",
+     "El problema es usar String en lugar de Int"
+    ],
+    "correctIndex": 0,
+    "explanation": "UserDefaults escribe en un archivo legible dentro de la app, y las copias de seguridad o dispositivos con jailbreak pueden exponer el valor. El Keychain protege credenciales."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué afirmación sobre App Tracking Transparency (ATT) es correcta?",
+    "options": [
+     "Bloquea todo uso de internet",
+     "Es obligatorio para toda app, incluso sin rastreo",
+     "La app debe pedir permiso antes de rastrear al usuario entre apps y sitios de otras empresas",
+     "Reemplaza al Info.plist"
+    ],
+    "correctIndex": 2,
+    "explanation": "ATT también usa la clave NSUserTrackingUsageDescription. Las apps que no rastrean no necesitan la alerta."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué muestran los privacy nutrition labels de la App Store?",
+    "options": [
+     "El consumo de batería de la app",
+     "Las calorías de una app de dieta",
+     "Qué datos recopila la app y cómo se usan, antes de descargarla",
+     "El código fuente de la app"
+    ],
+    "correctIndex": 2,
+    "explanation": "Funcionan como la etiqueta de un alimento: ayudan al usuario a decidir con transparencia. La información incorrecta viola las reglas de la App Store."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué práctica refleja la minimización de datos?",
+    "options": [
+     "Pedir solo el correo para crear la cuenta, no la dirección completa ni el documento de identidad",
+     "Recopilar todo por precaución, por si sirve en el futuro",
+     "Guardar datos para siempre",
+     "Vender datos a anunciantes sin avisar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cuantos menos datos, menor el riesgo ante una filtración y menor la carga legal de la app."
+   },
+   {
+    "id": 7,
+    "question": "La LGPD, el GDPR y la COPPA tienen en común…",
+    "options": [
+     "ser lenguajes de programación",
+     "ser leyes que regulan la recopilación y el tratamiento de datos personales",
+     "ser frameworks de Apple",
+     "ser tipos de cifrado"
+    ],
+    "correctIndex": 1,
+    "explanation": "La LGPD es brasileña, el GDPR es europeo y la COPPA es estadounidense y protege a niños menores de 13 años."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué es la brecha digital?",
+    "options": [
+     "Un error de compilación en Xcode",
+     "La división de una View en dos columnas",
+     "Un tipo de ataque de phishing",
+     "La desigualdad en el acceso a dispositivos, internet y habilidades digitales"
+    ],
+    "correctIndex": 3,
+    "explanation": "Al diseñar, considera a quienes tienen conexión lenta, dispositivos antiguos o poca familiaridad, para que la app no excluya a nadie."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Por qué se desaconseja agregar una excepción para permitir HTTP (inseguro) en toda la app?",
+    "options": [
+     "Los datos viajan sin cifrar y pueden ser interceptados",
+     "HTTP es más lento que HTTPS",
+     "Xcode no compila la app",
+     "Solo los juegos pueden usar HTTP"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cualquiera en la misma red puede leer o alterar el tráfico. Prefiere HTTPS y, si es necesario, excepciones por dominio."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuándo es mejor pedir permiso de ubicación?",
+    "options": [
+     "Apenas se abre la app por primera vez, sin contexto",
+     "Cada 5 segundos",
+     "En el momento en que el usuario usa una función que la necesita, explicando el motivo",
+     "Nunca; la app debe asumir que tiene acceso"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las solicitudes con contexto tienen más aceptación. Si el usuario deniega, la app debe seguir funcionando de forma limitada."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué es el cifrado?",
+    "options": [
+     "Borrar los datos después de usarlos",
+     "Transformar datos en un formato ilegible que solo quien tiene la clave puede leer",
+     "Comprimir un archivo para ocupar menos espacio",
+     "Ocultar un botón de la interfaz"
+    ],
+    "correctIndex": 1,
+    "explanation": "Protege datos en tránsito (HTTPS/TLS) y en reposo (almacenamiento). Comprimir no ofrece seguridad."
+   },
+   {
+    "id": 4,
+    "question": "Un algoritmo de recomendación sugiere empleos solo a hombres porque fue entrenado con datos históricos sesgados. ¿Cuál es el problema ético?",
+    "options": [
+     "Exceso de accesibilidad",
+     "Falta de memoria en el dispositivo",
+     "Uso de HTTPS",
+     "Sesgo algorítmico, que reproduce y amplía desigualdades"
+    ],
+    "correctIndex": 3,
+    "explanation": "Datos sesgados generan resultados sesgados. Hay que auditar los datos, probar con grupos diversos y permitir impugnaciones."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué recurso de diseño puede agravar el uso compulsivo de una app?",
+    "options": [
+     "Recordatorios de pausa y límites de tiempo",
+     "Textos con buen contraste",
+     "Una política de privacidad clara",
+     "Scroll infinito y notificaciones constantes diseñadas para retener la atención"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los diseñadores tienen responsabilidad ética. Herramientas como Tiempo de uso y recordatorios ayudan al usuario a mantener el control."
+   },
+   {
+    "id": 6,
+    "question": "Recibes un SMS que dice 'Tu banco bloqueó tu cuenta, haz clic en el enlace y confirma tu contraseña'. ¿Qué debes hacer?",
+    "options": [
+     "Hacer clic rápido para evitar el bloqueo",
+     "No hacer clic; entrar por tu cuenta a la app o al sitio oficial y denunciar el mensaje",
+     "Responder con la contraseña por SMS",
+     "Reenviar el enlace a amigos"
+    ],
+    "correctIndex": 1,
+    "explanation": "La urgencia y el pedido de contraseña son señales clásicas de phishing. Los bancos legítimos no piden la contraseña por un enlace."
+   }
+  ]
+ }
+]

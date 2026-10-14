@@ -15,10 +15,12 @@ final class FlashcardStore: ObservableObject {
     static let shared = FlashcardStore()
     /// Days until the next review for each Leitner box.
     static let intervals = [0, 1, 3, 7, 14, 30]
-    private let key = "flashcards"
-    @Published private(set) var cards: [Flashcard]
+    private var key: String { Storage.key("flashcards") }
+    @Published private(set) var cards: [Flashcard] = []
 
-    private init() {
+    private init() { reload() }
+
+    func reload() {
         if let data = UserDefaults.standard.data(forKey: key),
            let saved = try? JSONDecoder().decode([Flashcard].self, from: data) {
             cards = saved

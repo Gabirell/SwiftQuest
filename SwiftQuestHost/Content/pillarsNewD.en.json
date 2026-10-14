@@ -1,0 +1,902 @@
+[
+ {
+  "id": 30,
+  "title": "Navigating an Xcode Project",
+  "theory": "The Xcode window is split into areas: the toolbar at the top, the navigator on the left, the editor in the center, the inspector on the right and the debug area at the bottom. You show or hide the navigator with ⌘0, the inspector with ⌥⌘0 and the debug area with ⇧⌘Y, which the certification asks about. The navigator has tabs reachable with ⌘1 to ⌘9: Project, Source Control, Symbol, Find, Issue, Test, Debug, Breakpoint and Report. The most common files are '.swift' (code), '.xcodeproj' (the project), '.xcworkspace' (groups projects and packages), '.xcassets' (catalog of images and colors), '.plist' (properties, such as Info.plist), '.storyboard' and '.xib' (UIKit interface), '.xcconfig' (text build settings), '.entitlements' (app capabilities), '.xctestplan' (test plan) and '.xcstrings' (string catalog for localized text). A target is a product to be built, a scheme defines which target to build and how to run it, and the destination chooses where to run, such as a Simulator or a device. Build (⌘B) only compiles; Run (⌘R) compiles and runs the app on the chosen destination, and Stop is ⌘. . Info.plist stores metadata such as display name, version and permission usage strings. In SwiftUI, the '#Preview' macro shows the view in the canvas without launching the Simulator, which is still needed to test the full app. A common mistake is editing the wrong file by confusing '.xcodeproj' with '.xcworkspace': if a '.xcworkspace' exists (for example, with CocoaPods or several projects), always open the workspace.",
+  "appleDocUrl": "https://developer.apple.com/tutorials/develop-in-swift/meet-xcode",
+  "category": "Xcode e Ferramentas",
+  "corporateCase": "On a team maintaining a multi-module banking app, a new developer opens the '.xcworkspace', picks the staging scheme and an iPhone Simulator destination, and uses ⌘1 and ⌘5 to switch between files and issues. Server addresses live in '.xcconfig' files, one per build configuration, instead of being scattered across the code.",
+  "gameCase": "In a platformer game, the studio uses '#Preview' to tweak the main menu without running the whole game and hides the navigator with ⌘0 to gain editing space. Sprites live in '.xcassets', and permission texts live in Info.plist and capabilities such as Game Center appear in the '.entitlements' file.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which number goes with ⌘ to show or hide the navigator?",
+    "codeSnippet": "Navigator shortcut: ⌘___",
+    "correctAnswer": "0",
+    "hint": "It is the same number used, with ⌥, for the inspector."
+   },
+   {
+    "id": 2,
+    "question": "Complete the shortcut that shows or hides the debug area.",
+    "codeSnippet": "Debug area: ⇧⌘___",
+    "correctAnswer": "Y",
+    "hint": "It is a single letter after ⇧⌘, near the end of the alphabet."
+   },
+   {
+    "id": 3,
+    "question": "What is the file extension of the string catalog (localized text)?",
+    "codeSnippet": "File: Localizable.___",
+    "correctAnswer": "xcstrings",
+    "hint": "It starts with 'xc' and ends with 'strings'."
+   },
+   {
+    "id": 4,
+    "question": "Which macro displays a SwiftUI view in the canvas?",
+    "codeSnippet": "___ { ContentView() }",
+    "correctAnswer": "#Preview",
+    "hint": "It starts with # and its name means 'a look ahead of time'."
+   },
+   {
+    "id": 5,
+    "question": "⌘B only builds; what does ⌘R do after building?",
+    "codeSnippet": "⌘R builds and ___ the app on the destination.",
+    "correctAnswer": "runs",
+    "hint": "Verb (third person) for making the app run (Run)."
+   },
+   {
+    "id": 6,
+    "question": "What is the place chosen next to the Run button, such as the Simulator or an iPhone, called?",
+    "codeSnippet": "The scheme defines what to build and the ___ defines where to run.",
+    "correctAnswer": "destination",
+    "hint": "The English word for where you are headed."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which shortcut shows or hides the inspector (right pane)?",
+    "options": [
+     "⌘0",
+     "⇧⌘Y",
+     "⌥⌘0",
+     "⌘B"
+    ],
+    "correctIndex": 2,
+    "explanation": "⌥⌘0 toggles the inspector; ⌘0 toggles the navigator and ⇧⌘Y the debug area. ⌘B is Build."
+   },
+   {
+    "id": 2,
+    "question": "Which navigator shows compile errors and warnings?",
+    "options": [
+     "Project navigator",
+     "Issue navigator",
+     "Symbol navigator",
+     "Report navigator"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Issue navigator (⌘5) lists errors and warnings. The Report navigator keeps the history of builds and runs."
+   },
+   {
+    "id": 3,
+    "question": "Which file holds the app's catalog of images, colors and icons?",
+    "options": [
+     "Info.plist",
+     "Assets.xcassets",
+     "Package.swift",
+     "Main.storyboard"
+    ],
+    "correctIndex": 1,
+    "explanation": "Assets.xcassets is the asset catalog. Info.plist stores metadata and Main.storyboard describes UIKit screens."
+   },
+   {
+    "id": 4,
+    "question": "What is the difference between Build and Run?",
+    "options": [
+     "Build compiles the project; Run compiles (if needed) and launches the app",
+     "Build launches and Run only compiles",
+     "Run deletes temporary files",
+     "There is no difference"
+    ],
+    "correctIndex": 0,
+    "explanation": "⌘B only checks that the code compiles; ⌘R also installs and opens the app on the destination."
+   },
+   {
+    "id": 5,
+    "question": "What does a scheme define?",
+    "options": [
+     "Only the icon color",
+     "Which targets to build and how to run, test or archive them",
+     "The app language",
+     "The Swift version"
+    ],
+    "correctIndex": 1,
+    "explanation": "A scheme groups the Build, Run, Test, Profile, Analyze and Archive actions for one or more targets."
+   },
+   {
+    "id": 6,
+    "question": "What is the Info.plist file for?",
+    "options": [
+     "To store images",
+     "To write the main code",
+     "To store app metadata such as name, version and permission usage strings",
+     "To define the tests"
+    ],
+    "correctIndex": 2,
+    "explanation": "Info.plist is a property list read by the system, for example NSCameraUsageDescription, which explains why the app asks for the camera."
+   },
+   {
+    "id": 7,
+    "question": "Your project uses CocoaPods and has an .xcworkspace. What should you open?",
+    "options": [
+     ".xcodeproj",
+     ".xcworkspace",
+     "Info.plist",
+     ".xcassets"
+    ],
+    "correctIndex": 1,
+    "explanation": "The workspace groups the project and its dependencies; opening only the .xcodeproj may miss the Pods."
+   },
+   {
+    "id": 8,
+    "question": "Which shortcut opens the Issue navigator?",
+    "options": [
+     "⌘1",
+     "⌘3",
+     "⌘4",
+     "⌘5"
+    ],
+    "correctIndex": 3,
+    "explanation": "⌘1 Project, ⌘2 Source Control, ⌘3 Symbol, ⌘4 Find, ⌘5 Issue, ⌘6 Test, ⌘7 Debug, ⌘8 Breakpoint, ⌘9 Report."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "In an app project, what is a target?",
+    "options": [
+     "A product to build, with its files and build settings",
+     "A type of breakpoint",
+     "A Finder folder",
+     "A device simulator"
+    ],
+    "correctIndex": 0,
+    "explanation": "A project can have several targets, such as the app and its tests. Each has its own Build Settings and Build Phases."
+   },
+   {
+    "id": 2,
+    "question": "Which extension stores build settings as plain text?",
+    "options": [
+     ".entitlements",
+     ".xctestplan",
+     ".xcconfig",
+     ".xib"
+    ],
+    "correctIndex": 2,
+    "explanation": ".xcconfig holds KEY = value pairs and makes build settings easy to version. .entitlements stores capabilities and .xctestplan configures tests."
+   },
+   {
+    "id": 3,
+    "question": "You need to test the whole app with gestures and lifecycle. What should you use?",
+    "options": [
+     "Only the #Preview canvas",
+     "A Simulator or a physical device",
+     "The Issue navigator",
+     "Info.plist"
+    ],
+    "correctIndex": 1,
+    "explanation": "The canvas is great for iterating on a view, but the full app runs in the Simulator or on a device."
+   },
+   {
+    "id": 4,
+    "question": "Which navigator lets you search for text across all project files?",
+    "options": [
+     "Find navigator",
+     "Test navigator",
+     "Debug navigator",
+     "Breakpoint navigator"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Find navigator (⌘4) searches the whole project, with replace options. The Symbol navigator lists types and functions."
+   },
+   {
+    "id": 5,
+    "question": "What does ⌘. (Command + period) do in Xcode?",
+    "options": [
+     "Builds the project",
+     "Runs the tests",
+     "Opens the console",
+     "Stops the running app (Stop)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Stop is ⌘. ; Build is ⌘B, Run ⌘R and Test ⌘U."
+   },
+   {
+    "id": 6,
+    "question": "Which file represents the interface of a single UIKit screen or view, rather than many?",
+    "options": [
+     ".xib",
+     ".storyboard",
+     ".plist",
+     ".xcstrings"
+    ],
+    "correctIndex": 0,
+    "explanation": "A .xib describes a single view; a .storyboard describes several screens and the segues between them."
+   }
+  ]
+ },
+ {
+  "id": 31,
+  "title": "Project Assets and Resources",
+  "theory": "The asset catalog ('Assets.xcassets') is the central place for the app's images, colors, icons and data. An image set stores the same image at 1x, 2x and 3x scales (or a single vector image) and can have Any and Dark variants for dark mode. A color set defines a named color with light, dark and high-contrast variants. The app icon also lives in the catalog, and SF Symbols are vector system icons used by name, with no files to import. A data set stores arbitrary files that you read with 'NSDataAsset'. To import, drag the file into Xcode and check 'Copy items if needed' and the right target (target membership): without it, the file exists on disk but does not ship in the app. In code, use 'Image(\"logo\")' in SwiftUI, 'UIImage(named: \"logo\")' in UIKit (which returns an Optional) and 'Color(\"Brand\")'; since Xcode 15 there are also generated symbols such as 'Image(.logo)'. Files outside the catalog, such as a JSON or a sound, sit in the bundle and are read with 'Bundle.main.url(forResource:withExtension:)'. Translatable text goes in a string catalog ('Localizable.xcstrings') and the launch screen is configured in Info.plist or in a 'LaunchScreen.storyboard'. If an image does not show, check the exact name (typos or wrong capitalization make the lookup fail), the target membership and whether the asset is really in the catalog.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/managing-assets-with-asset-catalogs",
+  "category": "Xcode e Ferramentas",
+  "corporateCase": "In a retail app, brand colors live in color sets with light and dark variants, so the whole interface switches theme with no extra code. When a promotion icon did not show up, the team found the file was in the project but without the app's target membership.",
+  "gameCase": "In a casual game, characters are image sets with 2x and 3x versions and the level JSON file is read from the bundle with 'Bundle.main.url'. A misspelled sprite name ('Heroi' instead of 'Hero') made the hero vanish, until someone noticed 'UIImage(named:)' was returning nil.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Show the asset catalog image named 'logo' in SwiftUI.",
+    "codeSnippet": "___(\"logo\")",
+    "correctAnswer": "Image",
+    "hint": "The view that draws a picture."
+   },
+   {
+    "id": 2,
+    "question": "Load the image 'foto' in UIKit.",
+    "codeSnippet": "let img = UIImage(___: \"foto\")",
+    "correctAnswer": "named",
+    "hint": "The argument label is the asset name."
+   },
+   {
+    "id": 3,
+    "question": "Use a catalog color named 'Marca'.",
+    "codeSnippet": "Text(\"Olá\").foregroundStyle(___(\"Marca\"))",
+    "correctAnswer": "Color",
+    "hint": "The SwiftUI type that represents colors."
+   },
+   {
+    "id": 4,
+    "question": "Show an SF Symbol, the system vector icon, by name.",
+    "codeSnippet": "Image(___: \"star.fill\")",
+    "correctAnswer": "systemName",
+    "hint": "The argument starts with 'system'."
+   },
+   {
+    "id": 5,
+    "question": "Locate a data file inside the app from the main bundle.",
+    "codeSnippet": "Bundle.___.url(forResource: \"niveis\", withExtension: \"json\")",
+    "correctAnswer": "main",
+    "hint": "It is the app's own bundle, not a framework's."
+   },
+   {
+    "id": 6,
+    "question": "Which option, checked when importing a file, makes sure it ships in the app?",
+    "codeSnippet": "Check Copy items if needed and the right ___ membership.",
+    "correctAnswer": "target",
+    "hint": "It is the checkbox that chooses which product the file goes into."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which extension does the Xcode asset catalog use?",
+    "options": [
+     ".xcassets",
+     ".xcstrings",
+     ".storyboard",
+     ".plist"
+    ],
+    "correctIndex": 0,
+    "explanation": ".xcassets holds images, colors, icons and data. .xcstrings is the text catalog."
+   },
+   {
+    "id": 2,
+    "question": "What are the @2x and @3x suffixes on image files for?",
+    "options": [
+     "To indicate the language",
+     "For screens with higher pixel density (more pixels per point)",
+     "For iOS versions",
+     "For dark mode"
+    ],
+    "correctIndex": 1,
+    "explanation": "The 2x and 3x versions have more pixels and the system picks the right one for the device. Dark mode uses the Dark variant."
+   },
+   {
+    "id": 3,
+    "question": "What does 'UIImage(named: \"foto\")' return if the name does not exist in the catalog?",
+    "options": [
+     "An empty image",
+     "An immediate crash",
+     "nil",
+     "A string"
+    ],
+    "correctIndex": 2,
+    "explanation": "The initializer is failable and returns 'UIImage?'. Using '!' on a wrong name causes an 'unexpectedly found nil' crash."
+   },
+   {
+    "id": 4,
+    "question": "How do you make an image adapt automatically to dark mode?",
+    "options": [
+     "Add the Dark variant under Appearances in the image set",
+     "Rename the file with _dark",
+     "Write an if in code for each image",
+     "It is not possible"
+    ],
+    "correctIndex": 0,
+    "explanation": "In the Attributes inspector, Appearances: Any, Dark. The system picks the variant according to the theme."
+   },
+   {
+    "id": 5,
+    "question": "What happens if you drag a file into Xcode but do not check the app target?",
+    "options": [
+     "The file is included anyway",
+     "Xcode deletes the file",
+     "The app builds, but the resource is not in the bundle and fails at runtime",
+     "Xcode shows a syntax error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Without target membership the file is not copied into the bundle. Check it in the File inspector."
+   },
+   {
+    "id": 6,
+    "question": "What is the correct way to use an SF Symbol in SwiftUI?",
+    "options": [
+     "Image(\"heart.fill\")",
+     "Image(systemName: \"heart.fill\")",
+     "Symbol(\"heart.fill\")",
+     "UIImage(named: \"heart.fill\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "Image(systemName:) requests a system symbol. Image(\"name\") looks in your catalog."
+   },
+   {
+    "id": 7,
+    "question": "Where do the translatable texts of a modern Xcode app live?",
+    "options": [
+     "In Localizable.xcstrings (string catalog)",
+     "In Info.plist",
+     "In Assets.xcassets",
+     "In .gitignore"
+    ],
+    "correctIndex": 0,
+    "explanation": "The string catalog lists keys and translations per language. Text(\"Hello\") already uses the localizable key."
+   },
+   {
+    "id": 8,
+    "question": "An app shows Image(\"Logotype\"), but the asset is named 'logo'. What is the likely result?",
+    "options": [
+     "The image appears normally",
+     "Xcode fixes the name",
+     "The app does not compile",
+     "The image does not show, since no asset has that name"
+    ],
+    "correctIndex": 3,
+    "explanation": "The name is a string only checked at runtime. That is why generated symbols such as Image(.logo) help catch the error at build time."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the advantage of a vector image (PDF/SVG or SF Symbol) in the catalog?",
+    "options": [
+     "Scales without losing sharpness",
+     "Always takes more memory",
+     "Works only in light mode",
+     "Cannot have color"
+    ],
+    "correctIndex": 0,
+    "explanation": "Vectors are drawn from shapes, so they suit any size. Enable Preserve Vector Data if you must resize at runtime."
+   },
+   {
+    "id": 2,
+    "question": "To read a 'config.json' file stored in the project, what is the correct approach?",
+    "options": [
+     "Image(\"config\")",
+     "Bundle.main.url(forResource: \"config\", withExtension: \"json\")",
+     "Color(\"config\")",
+     "UIImage(named: \"config.json\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "App resources live in the bundle. The function returns an optional URL, which should be handled with 'if let' or 'guard let'."
+   },
+   {
+    "id": 3,
+    "question": "Which option best describes a color set?",
+    "options": [
+     "A PNG file of one color",
+     "A reusable named color with appearance variants",
+     "A list of strings",
+     "A font type"
+    ],
+    "correctIndex": 1,
+    "explanation": "You change the color in one place and the whole app updates, dark mode included."
+   },
+   {
+    "id": 4,
+    "question": "Where is the app icon configured?",
+    "options": [
+     "In the AppIcon item of the asset catalog",
+     "In the .gitignore file",
+     "In a #Preview",
+     "In Package.swift"
+    ],
+    "correctIndex": 0,
+    "explanation": "AppIcon lives in Assets.xcassets; today you can supply a single 1024 by 1024 pixel image and Xcode generates the sizes."
+   },
+   {
+    "id": 5,
+    "question": "An image appears in #Preview but not in the app on a device. What cause should you check first?",
+    "options": [
+     "The Swift version",
+     "The scheme name",
+     "The color set",
+     "The file's target membership and the correct asset name"
+    ],
+    "correctIndex": 3,
+    "explanation": "Differences between preview and app usually come from target membership or file names; confirm in the File inspector."
+   },
+   {
+    "id": 6,
+    "question": "What is the role of the launch screen?",
+    "options": [
+     "To be displayed briefly while the app starts",
+     "To ask the user for permissions",
+     "To store offline data",
+     "To show ads"
+    ],
+    "correctIndex": 0,
+    "explanation": "It gives the feeling of an instant launch and is set in Info.plist or in a LaunchScreen.storyboard. It should not be a marketing screen."
+   }
+  ]
+ },
+ {
+  "id": 32,
+  "title": "Git and Swift Package Manager (SPM)",
+  "theory": "Git is the version control system: it records the project's history as commits, which are snapshots of the code with a message. In Xcode you create the repository when creating the project (Create Git repository option) or with 'git init', and use the Source Control menu and the Source Control navigator (⌘2) to commit, create branches, merge, push and pull. A branch is an independent line of work, and a merge brings one branch into another; when two people change the same lines a conflict arises, marked in the file with '<<<<<<<', '=======' and '>>>>>>>', and you choose the final result and commit. The '.gitignore' lists what should not be versioned, such as 'xcuserdata', 'DerivedData', '.DS_Store' and '.build'. A good commit message is short, in the imperative and says what changed, for example 'Add login screen', rather than 'changes'. The Swift Package Manager (SPM) manages dependencies: a package is described by a 'Package.swift', which declares 'products' (what the package offers, such as a library), 'targets' (code modules) and 'dependencies'. To add a package in Xcode use File > Add Package Dependencies, paste the URL and choose the version rule (Up to Next Major, Up to Next Minor, Exact, Branch or Commit); then use 'import ModuleName'. Local packages let you split the app into modules, which helps organization, testing and reuse.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app",
+  "category": "Xcode e Ferramentas",
+  "corporateCase": "A five-person team works on short branches, opens a review before merging into 'main' and resolves conflicts in Xcode's merge editor. They add a networking library via SPM with the Up to Next Major rule, and 'Package.resolved' makes sure everyone uses the same versions.",
+  "gameCase": "An indie studio moves the game's physics logic into a local package, so it can be reused across two games and tested in isolation. Before trying a risky new mechanic, it creates an 'experimento-pulo' branch and, if it fails, discards the branch without touching the main game.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Record the changes in a commit with a message.",
+    "codeSnippet": "git ___ -m \"Adiciona tela de login\"",
+    "correctAnswer": "commit",
+    "hint": "The command has the same name as the record it creates."
+   },
+   {
+    "id": 2,
+    "question": "Bring the 'feature' branch into the current branch.",
+    "codeSnippet": "git ___ feature",
+    "correctAnswer": "merge",
+    "hint": "It means to combine two things into one."
+   },
+   {
+    "id": 3,
+    "question": "Which marker separates the two versions in a conflict?",
+    "codeSnippet": "<<<<<<< HEAD\nnome = \"A\"\n___\nnome = \"B\"\n>>>>>>> feature",
+    "correctAnswer": "=======",
+    "hint": "It is a line of seven equals signs."
+   },
+   {
+    "id": 4,
+    "question": "Declare a package dependency starting at version 1.2.0 (up to the next major).",
+    "codeSnippet": ".package(url: \"https://github.com/apple/swift-algorithms\", ___: \"1.2.0\")",
+    "correctAnswer": "from",
+    "hint": "The label that means 'starting at'."
+   },
+   {
+    "id": 5,
+    "question": "Use the package's module in a Swift file.",
+    "codeSnippet": "___ Algorithms",
+    "correctAnswer": "import",
+    "hint": "The keyword that brings a module into the file."
+   },
+   {
+    "id": 6,
+    "question": "In Package.swift, what does the product list to say which modules it exposes?",
+    "codeSnippet": ".library(name: \"Core\", ___: [\"Core\"])",
+    "correctAnswer": "targets",
+    "hint": "It is the plural of the code module declared in the package."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is a commit?",
+    "options": [
+     "A copy of the project in the cloud",
+     "A record of the code state with a message in the history",
+     "A compile error",
+     "A type of branch"
+    ],
+    "correctIndex": 1,
+    "explanation": "Each commit is a point in history you can return to. Sending it to the cloud is push."
+   },
+   {
+    "id": 2,
+    "question": "Which is the best commit message?",
+    "options": [
+     "update",
+     "changes",
+     "Fix crash when opening a profile with no photo",
+     "asdf"
+    ],
+    "correctIndex": 2,
+    "explanation": "A good message is short, specific and in the imperative. 'update' and 'changes' do not say what or why."
+   },
+   {
+    "id": 3,
+    "question": "When does a merge conflict happen?",
+    "options": [
+     "When two branches change the same lines in different ways",
+     "Whenever there is a new branch",
+     "When Xcode is closed",
+     "When .gitignore exists"
+    ],
+    "correctIndex": 0,
+    "explanation": "Git does not know which version to keep and asks you to decide, removing the markers and committing."
+   },
+   {
+    "id": 4,
+    "question": "Which item usually goes in the .gitignore of an Xcode project?",
+    "options": [
+     "Package.swift",
+     "Os arquivos .swift",
+     "O Assets.xcassets",
+     "DerivedData e xcuserdata"
+    ],
+    "correctIndex": 3,
+    "explanation": "DerivedData and xcuserdata are generated per machine and user. Code and assets must be versioned."
+   },
+   {
+    "id": 5,
+    "question": "What does 'Package.swift' do?",
+    "options": [
+     "Describes the package: name, products, targets and dependencies",
+     "Stores the images",
+     "Stores Git passwords",
+     "Replaces Info.plist"
+    ],
+    "correctIndex": 0,
+    "explanation": "It is a Swift file that SPM reads to know how to build the package and which packages to download."
+   },
+   {
+    "id": 6,
+    "question": "Which version rule accepts 2.3.0 or 2.9.1, but not 3.0.0?",
+    "options": [
+     "Exact Version 2.3.0",
+     "Branch main",
+     "Up to Next Major Version 2.3.0",
+     "Up to Next Minor Version 2.3.0"
+    ],
+    "correctIndex": 2,
+    "explanation": "Up to Next Major accepts compatible updates within major 2. Up to Next Minor would accept only 2.3.x."
+   },
+   {
+    "id": 7,
+    "question": "What is the difference between a 'target' and a 'product' in a Swift package?",
+    "options": [
+     "None",
+     "A target is a code module; a product is what the package offers to others, such as a library",
+     "Target is for testing and product is for production",
+     "A product is an image file"
+    ],
+    "correctIndex": 1,
+    "explanation": "Targets compile code; products choose which targets are visible to those who depend on the package."
+   },
+   {
+    "id": 8,
+    "question": "What is the main benefit of splitting an app into local packages?",
+    "options": [
+     "The app always runs faster",
+     "Xcode no longer needs to compile",
+     "Removes the need for Git",
+     "Code organized into modules with clear boundaries, reusable and testable"
+    ],
+    "correctIndex": 3,
+    "explanation": "Modules force you to expose only what is public and allow independent tests."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which command downloads and integrates remote repository changes?",
+    "options": [
+     "git push",
+     "git init",
+     "git pull",
+     "git add"
+    ],
+    "correctIndex": 2,
+    "explanation": "pull brings remote commits into your local repo; push sends your commits."
+   },
+   {
+    "id": 2,
+    "question": "Why create a branch for a new feature?",
+    "options": [
+     "To isolate the work without affecting 'main' until it is ready",
+     "To erase the history",
+     "To build faster",
+     "To rename the app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Branches allow parallel work and review before merging."
+   },
+   {
+    "id": 3,
+    "question": "Where do you add a third-party package through Xcode's interface?",
+    "options": [
+     "File > Add Package Dependencies",
+     "Product > Clean Build Folder",
+     "Debug > Pause",
+     "Window > Organizer"
+    ],
+    "correctIndex": 0,
+    "explanation": "Paste the repository URL and choose the version rule and the target that will use the package."
+   },
+   {
+    "id": 4,
+    "question": "What happens if you use the 'Branch: main' rule for a dependency?",
+    "options": [
+     "You are stuck forever on the first version",
+     "The dependency tracks the latest code on that branch, with no stable version guarantee",
+     "Xcode ignores the package",
+     "The package becomes a local package"
+    ],
+    "correctIndex": 1,
+    "explanation": "For production apps prefer tagged versions, which are predictable and reproducible."
+   },
+   {
+    "id": 5,
+    "question": "What is the role of the Package.resolved file?",
+    "options": [
+     "Stores passwords",
+     "Lists images",
+     "Stores the exact resolved versions of the dependencies",
+     "Sets the icon"
+    ],
+    "correctIndex": 2,
+    "explanation": "Committing this file ensures reproducible builds for the whole team."
+   },
+   {
+    "id": 6,
+    "question": "Which command creates a new branch and switches to it?",
+    "options": [
+     "git switch -c nova",
+     "git merge nova",
+     "git status nova",
+     "git log nova"
+    ],
+    "correctIndex": 0,
+    "explanation": "'git switch -c' (or 'git checkout -b') creates and switches branches. Merge only combines branches."
+   }
+  ]
+ },
+ {
+  "id": 33,
+  "title": "Debugging: Breakpoints, Console and Errors",
+  "theory": "There are three kinds of errors: syntax or compile errors (the code does not build and shows in the Issue navigator), runtime errors (the app crashes while running) and logic errors (the app runs but does the wrong thing). Common console messages are 'Fatal error: Unexpectedly found nil while unwrapping an Optional value' (a '!' on nil), 'Index out of range' (an index outside the array) and 'Thread 1: signal SIGABRT', which means the app aborted. In UIKit, 'this class is not key value coding-compliant for the key X' almost always comes from an IBOutlet that is still connected in the storyboard but was deleted or renamed in code; open the connections inspector (the last tab of the right inspector), find the connection with a warning triangle and remove or redo it. A breakpoint pauses the app at a line: you click the editor gutter, and can make it conditional or add an action, such as logging a message and continuing automatically. An exception breakpoint pauses when an exception is thrown, and a symbolic breakpoint pauses when a method is called by name. With the app paused, use Step Over (F6), Step Into (F7), Step Out (F8) and Continue, and inspect values in the variables view or in LLDB with 'po' and 'p'. To log messages, 'print' is good for quick tests, 'dump' shows the structure of a value and 'Logger' (from the os framework) offers levels and categories at low cost. 'assert' checks assumptions only in debug builds, and Instruments, opened via Product > Profile, helps measure performance and memory.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/setting-breakpoints-to-pause-your-running-app",
+  "category": "Xcode e Ferramentas",
+  "corporateCase": "A support team receives reports of a crash when opening the profile. The developer reproduces the problem, sees 'unexpectedly found nil' in the console and sets a conditional breakpoint that pauses only when the user has no photo. In production the code uses 'Logger' with a 'profile' category instead of 'print', making messages easier to filter.",
+  "gameCase": "In a game the score was wrong only on level 5, a logic error with no crash. The dev uses a breakpoint with the condition 'nivel == 5', advances with Step Over and runs 'po pontos' in LLDB until the swapped calculation shows up. Afterwards an 'assert(vidas >= 0)' warns if it ever happens again.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Safely unwrap a field's text, leaving if it is nil.",
+    "codeSnippet": "guard ___ nome = campo.text else { return }",
+    "correctAnswer": "let",
+    "hint": "It avoids the '!' that causes 'unexpectedly found nil'."
+   },
+   {
+    "id": 2,
+    "question": "Print a variable's value from the LLDB console.",
+    "codeSnippet": "(lldb) ___ pontos",
+    "correctAnswer": "po",
+    "hint": "Two letters, short for 'print object'."
+   },
+   {
+    "id": 3,
+    "question": "Check an assumption only in debug builds.",
+    "codeSnippet": "___(vidas >= 0)",
+    "correctAnswer": "assert",
+    "hint": "The function's name means 'to declare something true'."
+   },
+   {
+    "id": 4,
+    "question": "Create an os framework logger with subsystem and category.",
+    "codeSnippet": "let log = ___(subsystem: \"com.app\", category: \"rede\")",
+    "correctAnswer": "Logger",
+    "hint": "The modern logging type, capitalized."
+   },
+   {
+    "id": 5,
+    "question": "Moving to the next line without entering the function is which step? Complete the key.",
+    "codeSnippet": "Step Over: F___",
+    "correctAnswer": "6",
+    "hint": "Step Over, Step Into and Step Out use F6, F7 and F8; it is the first in the list."
+   },
+   {
+    "id": 6,
+    "question": "An index outside an array only shows when the app runs. What kind of error is it?",
+    "codeSnippet": "It is an error at ___ time",
+    "correctAnswer": "run",
+    "hint": "It happens while the app runs, not when compiling."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which type of error is a forgotten closing brace '}'?",
+    "options": [
+     "Syntax (compile) error",
+     "Runtime error",
+     "Logic error",
+     "Memory warning"
+    ],
+    "correctIndex": 0,
+    "explanation": "The compiler detects it before running and shows it in the Issue navigator."
+   },
+   {
+    "id": 2,
+    "question": "The console shows 'Fatal error: Unexpectedly found nil while unwrapping an Optional value'. What is the likely cause?",
+    "options": [
+     "Out of memory",
+     "An empty array",
+     "A '!' or implicitly unwrapped IBOutlet whose value was nil",
+     "A network error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Prefer 'if let' or 'guard let'. For IBOutlets, nil can indicate a missing connection."
+   },
+   {
+    "id": 3,
+    "question": "'this class is not key value coding-compliant for the key meuLabel' usually indicates:",
+    "options": [
+     "An IBOutlet still connected in the storyboard but missing in code",
+     "An internet error",
+     "A missing icon",
+     "Wrong iOS version"
+    ],
+    "correctIndex": 0,
+    "explanation": "Open the connections inspector, find the broken connection (yellow warning) and delete it or reconnect it to the right outlet."
+   },
+   {
+    "id": 4,
+    "question": "What is a conditional breakpoint?",
+    "options": [
+     "One that only works in debug",
+     "One that deletes variables",
+     "One that builds code",
+     "One that only pauses when an expression is true"
+    ],
+    "correctIndex": 3,
+    "explanation": "You set the condition (e.g. 'indice == 10') in Edit Breakpoint. It avoids useless pauses in long loops."
+   },
+   {
+    "id": 5,
+    "question": "Which breakpoint pauses the app as soon as an exception is thrown, showing the culprit line?",
+    "options": [
+     "Exception breakpoint",
+     "Symbolic breakpoint",
+     "Watchpoint",
+     "Test breakpoint"
+    ],
+    "correctIndex": 0,
+    "explanation": "Add it in the Breakpoint navigator with +. It helps when the crash only shows SIGABRT in main."
+   },
+   {
+    "id": 6,
+    "question": "What is the difference between Step Over and Step Into?",
+    "options": [
+     "None",
+     "Over runs the whole line, including calls; Into goes inside the called function",
+     "Over restarts the app",
+     "Into deletes the breakpoint"
+    ],
+    "correctIndex": 1,
+    "explanation": "Step Out finishes the current function and returns to the caller. Continue runs to the next breakpoint."
+   },
+   {
+    "id": 7,
+    "question": "Which option best suits logs organized by category and level in a real app?",
+    "options": [
+     "print",
+     "Logger",
+     "dump",
+     "fatalError"
+    ],
+    "correctIndex": 1,
+    "explanation": "Logger (os) offers levels such as debug, info and error and console filters. print is just for quick tests."
+   },
+   {
+    "id": 8,
+    "question": "You open the connections inspector and see an outlet with a yellow triangle. What does it suggest?",
+    "options": [
+     "The outlet is working",
+     "The app is slow",
+     "Git has a conflict",
+     "The connection points to something that no longer exists in code or in the storyboard"
+    ],
+    "correctIndex": 3,
+    "explanation": "Remove the broken connection by clicking X and redo it with a Control-drag from the object to the code."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What does 'Index out of range' mean at runtime?",
+    "options": [
+     "The array does not exist",
+     "An index greater than or equal to 'count' (or negative) was used",
+     "The string is too long",
+     "Xcode is outdated"
+    ],
+    "correctIndex": 1,
+    "explanation": "Indices start at 0, so the last one is 'count - 1'. Check 'indices.contains(i)' or use 'first'/'last'."
+   },
+   {
+    "id": 2,
+    "question": "Which LLDB command shows a description of an object, such as 'po usuario'?",
+    "options": [
+     "po",
+     "git",
+     "ls",
+     "cd"
+    ],
+    "correctIndex": 0,
+    "explanation": "'po' (print object) calls the value's description; 'p' shows the value with its type."
+   },
+   {
+    "id": 3,
+    "question": "What is the difference between 'assert' and 'precondition'?",
+    "options": [
+     "assert is only evaluated in debug builds; precondition also in release (-O)",
+     "None, they are identical",
+     "precondition only works in tests",
+     "assert deletes the app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Use assert for development checks and precondition for requirements that must always hold."
+   },
+   {
+    "id": 4,
+    "question": "What is Instruments meant for?",
+    "options": [
+     "Writing storyboards",
+     "Measuring performance, memory usage and leaks",
+     "Making commits",
+     "Translating text"
+    ],
+    "correctIndex": 1,
+    "explanation": "With Product > Profile (⌘I) you use templates such as Time Profiler, Allocations and Leaks."
+   },
+   {
+    "id": 5,
+    "question": "A button does not react to taps, and there is no error or crash. What is the most likely hypothesis?",
+    "options": [
+     "Syntax error",
+     "Out of memory",
+     "Disconnected IBAction on the button, or wrong logic in the method",
+     "SIGABRT"
+    ],
+    "correctIndex": 2,
+    "explanation": "With no crash, think of a logic error or a missing connection. Set a breakpoint in the action and check the connections inspector."
+   },
+   {
+    "id": 6,
+    "question": "Which breakpoint pauses when a method is called, even without knowing the file?",
+    "options": [
+     "Line breakpoint",
+     "Exception breakpoint",
+     "Constraint breakpoint",
+     "Symbolic breakpoint"
+    ],
+    "correctIndex": 3,
+    "explanation": "A symbolic breakpoint uses the symbol name, such as 'viewDidLoad', and pauses in any implementation."
+   }
+  ]
+ }
+]

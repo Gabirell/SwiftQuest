@@ -1,576 +1,576 @@
 [
-  {
-    "id": 12,
-    "exercises": [
-      {
-        "id": 3,
-        "question": "Declare um protocolo chamado 'Drawable' com o requisito 'draw()'",
-        "codeSnippet": "___ Drawable { func draw() }",
-        "correctAnswer": "protocol",
-        "hint": "A palavra-chave que declara um contrato de métodos e propriedades."
-      },
-      {
-        "id": 4,
-        "question": "Estenda apenas as coleções cujos elementos sejam 'Equatable' (extension condicional)",
-        "codeSnippet": "extension Collection ___ Element: Equatable { }",
-        "correctAnswer": "where",
-        "hint": "Cláusula que adiciona uma restrição à extension."
-      },
-      {
-        "id": 5,
-        "question": "No Swift 6, como se escreve o tipo existencial de um protocolo em um array heterogêneo?",
-        "codeSnippet": "let shapes: [___ Drawable] = [Circle(), Square()]",
-        "correctAnswer": "any",
-        "hint": "Palavra-chave que marca explicitamente um existencial (caixa dinâmica)."
-      }
+ {
+  "id": 12,
+  "exercises": [
+   {
+    "id": 3,
+    "question": "Declare um protocolo chamado 'Drawable' com o requisito 'draw()'",
+    "codeSnippet": "___ Drawable { func draw() }",
+    "correctAnswer": "protocol",
+    "hint": "A palavra-chave que declara um contrato de métodos e propriedades."
+   },
+   {
+    "id": 4,
+    "question": "Estenda apenas as coleções cujos elementos sejam 'Equatable' (extension condicional)",
+    "codeSnippet": "extension Collection ___ Element: Equatable { }",
+    "correctAnswer": "where",
+    "hint": "Cláusula que adiciona uma restrição à extension."
+   },
+   {
+    "id": 5,
+    "question": "No Swift 6, como se escreve o tipo existencial de um protocolo em um array heterogêneo?",
+    "codeSnippet": "let shapes: [___ Drawable] = [Circle(), Square()]",
+    "correctAnswer": "any",
+    "hint": "Palavra-chave que marca explicitamente um existencial (caixa dinâmica)."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "Um método é implementado em uma 'extension' do protocolo, mas NÃO é declarado como requisito do protocolo. Uma variável do tipo 'any Protocolo' chama esse método. O que acontece?",
+    "options": [
+     "Sempre executa a versão do tipo concreto, via dispatch dinâmico",
+     "Executa a implementação da extension (dispatch estático), ignorando a versão do tipo concreto",
+     "Gera erro de compilação",
+     "Chama o método da superclasse"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "Um método é implementado em uma 'extension' do protocolo, mas NÃO é declarado como requisito do protocolo. Uma variável do tipo 'any Protocolo' chama esse método. O que acontece?",
-        "options": [
-          "Sempre executa a versão do tipo concreto, via dispatch dinâmico",
-          "Executa a implementação da extension (dispatch estático), ignorando a versão do tipo concreto",
-          "Gera erro de compilação",
-          "Chama o método da superclasse"
-        ],
-        "correctIndex": 1,
-        "explanation": "Só os requisitos declarados no protocolo usam a protocol witness table (dispatch dinâmico). Métodos que existem apenas na extension são despachados estaticamente. Declare o método no protocolo para permitir customização."
-      },
-      {
-        "id": 3,
-        "question": "Para que serve um 'associatedtype' em um protocolo?",
-        "options": [
-          "Para declarar um tipo placeholder que cada tipo conforme define",
-          "Para criar uma subclasse do protocolo",
-          "Para tornar o protocolo opcional",
-          "Para impedir que structs adotem o protocolo"
-        ],
-        "correctIndex": 0,
-        "explanation": "'associatedtype' é um tipo genérico no nível do protocolo (ex: 'Element' em 'Sequence'). Cada tipo conforme escolhe o tipo concreto, mantendo type safety sem tornar o protocolo uma classe genérica."
-      },
-      {
-        "id": 4,
-        "question": "Como restringir um protocolo para ser adotado somente por classes (reference types)?",
-        "options": [
-          "protocol P: Class",
-          "protocol P: AnyObject",
-          "protocol P: Reference",
-          "class protocol P"
-        ],
-        "correctIndex": 1,
-        "explanation": "Herdar de 'AnyObject' limita o protocolo a classes. É útil para delegates com referência 'weak', pois 'weak' só funciona com reference types."
-      },
-      {
-        "id": 5,
-        "question": "Qual é a diferença principal entre 'some Protocolo' e 'any Protocolo'?",
-        "options": [
-          "Nenhuma, são sinônimos",
-          "'some' só funciona com classes",
-          "'some' é mais lento por usar uma caixa dinâmica",
-          "'some' esconde um único tipo concreto fixo (opaco); 'any' permite tipos diferentes em tempo de execução (existencial)"
-        ],
-        "correctIndex": 3,
-        "explanation": "'some' preserva a identidade do tipo e permite otimização em tempo de compilação (usado em 'some View'). 'any' usa uma caixa existencial e permite misturar tipos diferentes, com custo de dispatch dinâmico."
-      }
-    ]
-  },
-  {
-    "id": 13,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Declare uma struct genérica 'Stack' com o placeholder 'Element'",
-        "codeSnippet": "struct Stack___ { var items: [Element] = [] }",
-        "correctAnswer": "<Element>",
-        "hint": "Entre sinais de menor e maior, logo após o nome do tipo."
-      },
-      {
-        "id": 3,
-        "question": "Restrinja 'T' para que seja possível usar o operador '>'",
-        "codeSnippet": "func largest<T: ___>(_ a: T, _ b: T) -> T { a > b ? a : b }",
-        "correctAnswer": "Comparable",
-        "hint": "O protocolo que fornece <, >, <= e >=."
-      },
-      {
-        "id": 4,
-        "question": "Adicione uma cláusula 'where' exigindo que os elementos sejam comparáveis por igualdade",
-        "codeSnippet": "func allEqual<C: Collection>(_ c: C) -> Bool where C.Element: ___",
-        "correctAnswer": "Equatable",
-        "hint": "O protocolo que fornece o operador '=='."
-      },
-      {
-        "id": 5,
-        "question": "Declare o tipo associado 'Item' em um protocolo de contêiner",
-        "codeSnippet": "protocol Container { ___ Item; mutating func append(_ i: Item) }",
-        "correctAnswer": "associatedtype",
-        "hint": "A palavra-chave que cria um placeholder de tipo em protocolos."
-      }
+    "correctIndex": 1,
+    "explanation": "Só os requisitos declarados no protocolo usam a protocol witness table (dispatch dinâmico). Métodos que existem apenas na extension são despachados estaticamente. Declare o método no protocolo para permitir customização."
+   },
+   {
+    "id": 3,
+    "question": "Para que serve um 'associatedtype' em um protocolo?",
+    "options": [
+     "Para declarar um tipo placeholder que cada tipo conforme define",
+     "Para criar uma subclasse do protocolo",
+     "Para tornar o protocolo opcional",
+     "Para impedir que structs adotem o protocolo"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "Por que usar Generics em vez de 'Any' para um contêiner reutilizável?",
-        "options": [
-          "Generics preservam o tipo concreto em tempo de compilação, evitando casts e erros em runtime",
-          "'Any' não existe em Swift",
-          "Generics só funcionam com números",
-          "Generics são sempre mais lentos"
-        ],
-        "correctIndex": 0,
-        "explanation": "Com 'Any' você perde a informação do tipo e precisa de 'as?' para recuperar. Com generics, 'Stack<Int>' garante que só entram e saem 'Int', verificado pelo compilador."
-      },
-      {
-        "id": 3,
-        "question": "O que acontece ao usar '>' em 'func f<T>(_ a: T, _ b: T)' sem nenhuma constraint?",
-        "options": [
-          "Funciona para qualquer tipo",
-          "Crash em runtime",
-          "Erro de compilação: T não garante suportar o operador",
-          "O compilador infere 'Int'"
-        ],
-        "correctIndex": 2,
-        "explanation": "Dentro de uma função genérica, o compilador só conhece o que as constraints garantem. Sem 'Comparable', 'T' não oferece '>'. Isso é verificação em tempo de compilação, não em runtime."
-      },
-      {
-        "id": 4,
-        "question": "O que significa 'extension Array: Equatable where Element: Equatable'?",
-        "options": [
-          "Todo Array é sempre Equatable",
-          "Array<T> é Equatable somente quando T for Equatable (conformidade condicional)",
-          "Array precisa ser uma classe",
-          "Remove a conformidade de Array"
-        ],
-        "correctIndex": 1,
-        "explanation": "Conformidade condicional faz o tipo genérico herdar capacidades dos seus parâmetros. '[Int]' é comparável com '==', mas '[() -> Void]' não é."
-      },
-      {
-        "id": 5,
-        "question": "Em 'func fetch<T: Decodable>(_ type: T.Type) async throws -> T', como o compilador sabe qual T usar?",
-        "options": [
-          "Pelo argumento de metatype, ex: 'fetch(User.self)', ou pelo tipo anotado do resultado",
-          "Sempre usa 'String' como padrão",
-          "Pergunta ao usuário em runtime",
-          "É impossível inferir; exige cast"
-        ],
-        "correctIndex": 0,
-        "explanation": "Swift infere 'T' a partir dos argumentos ou do contexto de retorno. Passar 'T.self' (metatype) é o padrão de APIs como 'JSONDecoder.decode(_:from:)'."
-      }
-    ]
-  },
-  {
-    "id": 14,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Leia a fase da cena atual do SwiftUI via Environment",
-        "codeSnippet": "@Environment(\\.___) private var scenePhase",
-        "correctAnswer": "scenePhase",
-        "hint": "O nome da propriedade é o tipo ScenePhase com a primeira letra minúscula."
-      },
-      {
-        "id": 3,
-        "question": "Salve os dados quando o app for para o segundo plano",
-        "codeSnippet": ".onChange(of: scenePhase) { _, newPhase in if newPhase == .___ { save() } }",
-        "correctAnswer": "background",
-        "hint": "É um dos casos de ScenePhase: active, inactive e ..."
-      },
-      {
-        "id": 4,
-        "question": "Declare o ponto de entrada de um app SwiftUI",
-        "codeSnippet": "@main struct MyApp: ___ { var body: some Scene { WindowGroup { ContentView() } } }",
-        "correctAnswer": "App",
-        "hint": "O protocolo cujo 'body' retorna uma Scene."
-      },
-      {
-        "id": 5,
-        "question": "Execute trabalho assíncrono atrelado ao ciclo de vida da view (cancelado quando ela some)",
-        "codeSnippet": "Text(\"Olá\").___ { await load() }",
-        "correctAnswer": "task",
-        "hint": "Modifier que aceita um closure async, alternativa moderna a onAppear."
-      }
+    "correctIndex": 0,
+    "explanation": "'associatedtype' é um tipo genérico no nível do protocolo (ex: 'Element' em 'Sequence'). Cada tipo conforme escolhe o tipo concreto, mantendo type safety sem tornar o protocolo uma classe genérica."
+   },
+   {
+    "id": 4,
+    "question": "Como restringir um protocolo para ser adotado somente por classes (reference types)?",
+    "options": [
+     "protocol P: Class",
+     "protocol P: AnyObject",
+     "protocol P: Reference",
+     "class protocol P"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "Quais são os valores de 'ScenePhase' no SwiftUI?",
-        "options": [
-          ".launching, .running, .terminated",
-          ".active, .paused, .stopped",
-          ".foreground, .background, .suspended",
-          ".active, .inactive, .background"
-        ],
-        "correctIndex": 3,
-        "explanation": "'.active' é a cena em primeiro plano e interativa; '.inactive' é transicional (ex: seletor de apps, ligação); '.background' é invisível ao usuário."
-      },
-      {
-        "id": 3,
-        "question": "No UIKit, qual a diferença entre 'viewDidLoad' e 'viewWillAppear'?",
-        "options": [
-          "'viewDidLoad' roda uma vez ao carregar a view; 'viewWillAppear' roda toda vez que ela vai aparecer",
-          "São idênticos",
-          "'viewDidLoad' roda toda vez que a tela aparece",
-          "'viewWillAppear' só roda no primeiro lançamento do app"
-        ],
-        "correctIndex": 0,
-        "explanation": "Configuração única (outlets, subviews) vai em 'viewDidLoad'. Atualizações que precisam repetir a cada retorno à tela (ex: recarregar dados ao voltar de um push) vão em 'viewWillAppear'."
-      },
-      {
-        "id": 4,
-        "question": "Como usar um AppDelegate em um app SwiftUI que precisa de callbacks como push notifications?",
-        "options": [
-          "Não é possível; SwiftUI proíbe AppDelegate",
-          "Trocando @main por @UIApplicationMain na struct App",
-          "Com '@UIApplicationDelegateAdaptor(MyAppDelegate.self)' dentro da struct App",
-          "Criando um UIWindow manualmente"
-        ],
-        "correctIndex": 2,
-        "explanation": "'@UIApplicationDelegateAdaptor' conecta uma classe que adota 'UIApplicationDelegate' ao ciclo de vida SwiftUI, permitindo receber callbacks do sistema que ainda não têm equivalente nativo."
-      },
-      {
-        "id": 5,
-        "question": "Qual vantagem do modifier '.task' sobre '.onAppear' para carregar dados assíncronos?",
-        "options": [
-          "Roda apenas uma vez por instalação",
-          "Aceita 'await' diretamente e a Task é cancelada automaticamente quando a view desaparece",
-          "Roda na thread de background obrigatoriamente",
-          "Não há diferença"
-        ],
-        "correctIndex": 1,
-        "explanation": "'.task' cria uma Task estruturada ligada ao ciclo de vida da view: cancela ao sumir e pode reiniciar com '.task(id:)'. Com '.onAppear' você precisaria criar e cancelar a Task manualmente."
-      }
-    ]
-  },
-  {
-    "id": 15,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Qual método de UIViewRepresentable atualiza a UIView quando o estado SwiftUI muda?",
-        "codeSnippet": "func ___(_ uiView: UILabel, context: Context) { uiView.text = text }",
-        "correctAnswer": "updateUIView",
-        "hint": "Nome: update + UIView."
-      },
-      {
-        "id": 3,
-        "question": "Apresente uma view SwiftUI dentro do UIKit",
-        "codeSnippet": "let host = ___(rootView: ContentView())",
-        "correctAnswer": "UIHostingController",
-        "hint": "É um UIViewController que hospeda conteúdo SwiftUI."
-      },
-      {
-        "id": 4,
-        "question": "Crie o objeto que fará a ponte de delegates do UIKit para o SwiftUI",
-        "codeSnippet": "func makeCoordinator() -> ___ { Coordinator(self) }",
-        "correctAnswer": "Coordinator",
-        "hint": "O mesmo nome do tipo aninhado que você cria dentro da struct."
-      },
-      {
-        "id": 5,
-        "question": "Compartilhe o texto entre SwiftUI e o UITextField de forma bidirecional",
-        "codeSnippet": "struct MyField: UIViewRepresentable { @___ var text: String }",
-        "correctAnswer": "Binding",
-        "hint": "Property wrapper que referencia um estado pertencente a outra view."
-      }
+    "correctIndex": 1,
+    "explanation": "Herdar de 'AnyObject' limita o protocolo a classes. É útil para delegates com referência 'weak', pois 'weak' só funciona com reference types."
+   },
+   {
+    "id": 5,
+    "question": "Qual é a diferença principal entre 'some Protocolo' e 'any Protocolo'?",
+    "options": [
+     "Nenhuma, são sinônimos",
+     "'some' só funciona com classes",
+     "'some' é mais lento por usar uma caixa dinâmica",
+     "'some' esconde um único tipo concreto fixo (opaco); 'any' permite tipos diferentes em tempo de execução (existencial)"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "Quando o SwiftUI chama 'makeUIView' em um UIViewRepresentable?",
-        "options": [
-          "A cada mudança de estado",
-          "Uma vez, para criar a UIView; mudanças posteriores passam por 'updateUIView'",
-          "Nunca; a UIView vem do Storyboard",
-          "Somente ao fechar o app"
-        ],
-        "correctIndex": 1,
-        "explanation": "A UIView é criada uma vez por identidade da view SwiftUI. Depois, sempre que o estado relevante muda, o SwiftUI chama 'updateUIView' para sincronizar. Por isso a criação cara fica em 'makeUIView'."
-      },
-      {
-        "id": 3,
-        "question": "Como incluir uma tela UIKit inteira (UIViewController) em SwiftUI?",
-        "options": [
-          "Com UIHostingController",
-          "Com 'UIViewControllerRepresentable' e 'makeUIViewController'",
-          "Com NSViewRepresentable",
-          "Não é possível"
-        ],
-        "correctIndex": 1,
-        "explanation": "'UIViewControllerRepresentable' é o equivalente para controllers (câmeras, PHPicker, SFSafariViewController). 'UIHostingController' faz o caminho inverso: SwiftUI dentro do UIKit."
-      },
-      {
-        "id": 4,
-        "question": "Como exibir uma view SwiftUI dentro de uma célula de UITableView/UICollectionView (iOS 16+)?",
-        "options": [
-          "Com 'cell.contentConfiguration = UIHostingConfiguration { ... }'",
-          "Adicionando um UIHostingController por célula manualmente",
-          "Usando um Storyboard",
-          "Não é suportado"
-        ],
-        "correctIndex": 0,
-        "explanation": "'UIHostingConfiguration' integra SwiftUI com o reuso de células, sem gerenciar child view controllers manualmente, e permite migrar telas de lista aos poucos."
-      },
-      {
-        "id": 5,
-        "question": "Por que o Coordinator de um UIViewRepresentable normalmente herda de 'NSObject'?",
-        "options": [
-          "Porque o SwiftUI exige",
-          "Para ter acesso ao Core Data",
-          "Para ser um struct",
-          "Porque delegates do UIKit (ex: UITextFieldDelegate) são protocolos Objective-C que exigem uma classe NSObject"
-        ],
-        "correctIndex": 3,
-        "explanation": "Muitos protocolos de delegate do UIKit herdam de 'NSObjectProtocol', então o adotante precisa ser uma classe NSObject. O Coordinator guarda o 'Binding' para devolver os eventos ao SwiftUI."
-      }
-    ]
-  },
-  {
-    "id": 16,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Verifique se o HealthKit está disponível no dispositivo",
-        "codeSnippet": "if HKHealthStore.___() { /* ok */ }",
-        "correctAnswer": "isHealthDataAvailable",
-        "hint": "Método estático 'isHealthData...'."
-      },
-      {
-        "id": 3,
-        "question": "Defina o tipo de dado de frequência cardíaca",
-        "codeSnippet": "let type = HKQuantityType(.___)",
-        "correctAnswer": "heartRate",
-        "hint": "Em inglês, 'frequência cardíaca' é 'heart rate', em camelCase."
-      },
-      {
-        "id": 4,
-        "question": "Configure um treino de corrida",
-        "codeSnippet": "let config = HKWorkoutConfiguration(); config.activityType = .___",
-        "correctAnswer": "running",
-        "hint": "Caso de HKWorkoutActivityType para corrida."
-      },
-      {
-        "id": 5,
-        "question": "Qual chave do Info.plist explica ao usuário por que o app LÊ dados de saúde?",
-        "codeSnippet": "<key>___</key><string>Usamos seus dados para o treino.</string>",
-        "correctAnswer": "NSHealthShareUsageDescription",
-        "hint": "'Share' refere-se à leitura; a chave de escrita usa 'Update'."
-      }
+    "correctIndex": 3,
+    "explanation": "'some' preserva a identidade do tipo e permite otimização em tempo de compilação (usado em 'some View'). 'any' usa uma caixa existencial e permite misturar tipos diferentes, com custo de dispatch dinâmico."
+   }
+  ]
+ },
+ {
+  "id": 13,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Declare uma struct genérica 'Stack' com o placeholder 'Element'",
+    "codeSnippet": "struct Stack___ { var items: [Element] = [] }",
+    "correctAnswer": "<Element>",
+    "hint": "Entre sinais de menor e maior, logo após o nome do tipo."
+   },
+   {
+    "id": 3,
+    "question": "Restrinja 'T' para que seja possível usar o operador '>'",
+    "codeSnippet": "func largest<T: ___>(_ a: T, _ b: T) -> T { a > b ? a : b }",
+    "correctAnswer": "Comparable",
+    "hint": "O protocolo que fornece <, >, <= e >=."
+   },
+   {
+    "id": 4,
+    "question": "Adicione uma cláusula 'where' exigindo que os elementos sejam comparáveis por igualdade",
+    "codeSnippet": "func allEqual<C: Collection>(_ c: C) -> Bool where C.Element: ___",
+    "correctAnswer": "Equatable",
+    "hint": "O protocolo que fornece o operador '=='."
+   },
+   {
+    "id": 5,
+    "question": "Declare o tipo associado 'Item' em um protocolo de contêiner",
+    "codeSnippet": "protocol Container { ___ Item; mutating func append(_ i: Item) }",
+    "correctAnswer": "associatedtype",
+    "hint": "A palavra-chave que cria um placeholder de tipo em protocolos."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "Por que usar Generics em vez de 'Any' para um contêiner reutilizável?",
+    "options": [
+     "Generics preservam o tipo concreto em tempo de compilação, evitando casts e erros em runtime",
+     "'Any' não existe em Swift",
+     "Generics só funcionam com números",
+     "Generics são sempre mais lentos"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "O usuário negou o acesso de LEITURA a batimentos cardíacos. O que o HealthKit informa ao app ao consultar esses dados?",
-        "options": [
-          "Lança um erro 'permissionDenied'",
-          "Retorna resultados vazios, sem revelar se há dados, por privacidade",
-          "Fecha o app",
-          "Retorna dados criptografados"
-        ],
-        "correctIndex": 1,
-        "explanation": "Por privacidade, o app não consegue distinguir 'sem permissão' de 'sem dados' para leitura. Projete a UI para lidar com resultado vazio. Já o status de escrita pode ser consultado com 'authorizationStatus(for:)'."
-      },
-      {
-        "id": 3,
-        "question": "Qual é o mecanismo atual para exibir informações de um app no mostrador do Apple Watch?",
-        "options": [
-          "ClockKit com CLKComplicationDataSource, apenas",
-          "WidgetKit (complications são widgets)",
-          "UIKit com UILabel",
-          "Não é possível"
-        ],
-        "correctIndex": 1,
-        "explanation": "Desde o watchOS 9, complications são construídas com WidgetKit e SwiftUI (famílias como '.accessoryCircular'). O ClockKit foi descontinuado."
-      },
-      {
-        "id": 4,
-        "question": "Para que serve uma 'HKWorkoutSession' em um app de treino no Apple Watch?",
-        "options": [
-          "Para desenhar gráficos",
-          "Para sincronizar com o iCloud",
-          "Para manter o app ativo em segundo plano e coletar sensores durante o treino",
-          "Para desativar o HealthKit"
-        ],
-        "correctIndex": 2,
-        "explanation": "A sessão de treino mantém o app em execução com a tela apagada e aumenta a frequência de sensores. Combinada com 'HKLiveWorkoutBuilder', coleta dados e salva o treino no Saúde."
-      },
-      {
-        "id": 5,
-        "question": "Qual query do HealthKit é ideal para somar os passos de um dia?",
-        "options": [
-          "HKStatisticsQuery (ou HKStatisticsCollectionQuery) com '.cumulativeSum'",
-          "HKObserverQuery",
-          "HKCorrelationQuery",
-          "HKSourceQuery"
-        ],
-        "correctIndex": 0,
-        "explanation": "Queries de estatísticas agregam amostras (soma, média, mín/máx) já deduplicando fontes como iPhone e Watch. 'HKSampleQuery' devolve amostras individuais."
-      }
-    ]
-  },
-  {
-    "id": 17,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Declare a cena de Ajustes do app no macOS (abre com Cmd+,)",
-        "codeSnippet": "___ { SettingsView() }",
-        "correctAnswer": "Settings",
-        "hint": "A cena se chama como a janela de preferências."
-      },
-      {
-        "id": 3,
-        "question": "Qual protocolo embrulha uma NSView do AppKit para uso no SwiftUI?",
-        "codeSnippet": "struct Editor: ___ { }",
-        "correctAnswer": "NSViewRepresentable",
-        "hint": "O equivalente macOS de UIViewRepresentable."
-      },
-      {
-        "id": 4,
-        "question": "Associe o atalho Cmd+N a um botão",
-        "codeSnippet": "Button(\"Novo\") { } .keyboardShortcut(\"n\", modifiers: ___)",
-        "correctAnswer": ".command",
-        "hint": "A tecla modificadora Cmd, escrita como valor de EventModifiers."
-      },
-      {
-        "id": 5,
-        "question": "Crie um item na barra de menus do sistema (ícone no canto superior direito)",
-        "codeSnippet": "___(\"Timer\", systemImage: \"timer\") { Text(\"Oi\") }",
-        "correctAnswer": "MenuBarExtra",
-        "hint": "Cena SwiftUI para menu bar extras, disponível desde macOS 13."
-      }
+    "correctIndex": 0,
+    "explanation": "Com 'Any' você perde a informação do tipo e precisa de 'as?' para recuperar. Com generics, 'Stack<Int>' garante que só entram e saem 'Int', verificado pelo compilador."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece ao usar '>' em 'func f<T>(_ a: T, _ b: T)' sem nenhuma constraint?",
+    "options": [
+     "Funciona para qualquer tipo",
+     "Crash em runtime",
+     "Erro de compilação: T não garante suportar o operador",
+     "O compilador infere 'Int'"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "O que a cena 'Settings' do SwiftUI faz automaticamente no macOS?",
-        "options": [
-          "Cria um widget na área de trabalho",
-          "Adiciona o item 'Ajustes...' ao menu do app com o atalho Cmd+, e abre a janela de preferências",
-          "Salva dados no iCloud",
-          "Ativa o App Sandbox"
-        ],
-        "correctIndex": 1,
-        "explanation": "Seguir as convenções do macOS é parte da plataforma: a cena 'Settings' integra a janela de preferências ao menu e ao atalho padrão sem código adicional."
-      },
-      {
-        "id": 3,
-        "question": "Para que serve o App Sandbox em um app macOS?",
-        "options": [
-          "Acelerar a compilação",
-          "Restringir o acesso do app a arquivos, rede e hardware, exigindo entitlements explícitos",
-          "Permitir que o app rode no iOS",
-          "Criar janelas flutuantes"
-        ],
-        "correctIndex": 1,
-        "explanation": "O sandbox é obrigatório na Mac App Store. Por exemplo, acessar a pasta escolhida pelo usuário exige o entitlement 'com.apple.security.files.user-selected.read-only'."
-      },
-      {
-        "id": 4,
-        "question": "Qual a diferença entre Mac Catalyst e um destino nativo macOS em SwiftUI?",
-        "options": [
-          "Catalyst usa AppKit puro",
-          "Não há diferença",
-          "Catalyst adapta um app UIKit para o Mac; o destino nativo compila SwiftUI/AppKit com idioma e APIs próprios do macOS",
-          "Catalyst só roda em Apple Silicon"
-        ],
-        "correctIndex": 2,
-        "explanation": "Catalyst reaproveita o código UIKit com mínimo esforço, mas pode parecer menos 'Mac'. O destino nativo com SwiftUI dá acesso total a MenuBarExtra, janelas múltiplas e AppKit."
-      },
-      {
-        "id": 5,
-        "question": "Como usar um NSApplicationDelegate em um app SwiftUI para macOS?",
-        "options": [
-          "Com '@NSApplicationDelegateAdaptor(MyDelegate.self)' na struct App",
-          "Com '@main' na classe delegate",
-          "Não é possível",
-          "Com UIApplicationDelegateAdaptor"
-        ],
-        "correctIndex": 0,
-        "explanation": "É o equivalente macOS do adaptor do iOS: útil para tratar 'applicationShouldTerminateAfterLastWindowClosed', eventos de Dock e outros callbacks do AppKit."
-      }
-    ]
-  },
-  {
-    "id": 18,
-    "exercises": [
-      {
-        "id": 2,
-        "question": "Declare um espaço totalmente imersivo no visionOS",
-        "codeSnippet": "___(id: \"room\") { RealityView { _ in } }",
-        "correctAnswer": "ImmersiveSpace",
-        "hint": "Uma cena do SwiftUI cujo nome descreve o tipo de espaço."
-      },
-      {
-        "id": 3,
-        "question": "Obtenha a ação do Environment para abrir um espaço imersivo",
-        "codeSnippet": "@Environment(\\.___) var openImmersiveSpace",
-        "correctAnswer": "openImmersiveSpace",
-        "hint": "A chave do Environment tem o mesmo nome da propriedade."
-      },
-      {
-        "id": 4,
-        "question": "Faça uma janela virar um Volume 3D",
-        "codeSnippet": "WindowGroup { Globe() }.windowStyle(.___)",
-        "correctAnswer": "volumetric",
-        "hint": "O estilo de janela com volume (largura, altura e profundidade)."
-      },
-      {
-        "id": 5,
-        "question": "Defina a forma de colisão de uma entidade RealityKit",
-        "codeSnippet": "entity.components.set(___(shapes: [.generateBox(size: 0.1)]))",
-        "correctAnswer": "CollisionComponent",
-        "hint": "Componente que dá forma física para detecção de toques e colisões."
-      }
+    "correctIndex": 2,
+    "explanation": "Dentro de uma função genérica, o compilador só conhece o que as constraints garantem. Sem 'Comparable', 'T' não oferece '>'. Isso é verificação em tempo de compilação, não em runtime."
+   },
+   {
+    "id": 4,
+    "question": "O que significa 'extension Array: Equatable where Element: Equatable'?",
+    "options": [
+     "Todo Array é sempre Equatable",
+     "Array<T> é Equatable somente quando T for Equatable (conformidade condicional)",
+     "Array precisa ser uma classe",
+     "Remove a conformidade de Array"
     ],
-    "quiz": [
-      {
-        "id": 2,
-        "question": "O app pode saber exatamente para onde o usuário está olhando no Vision Pro?",
-        "options": [
-          "Sim, via API de eye tracking sem permissão",
-          "Sim, sempre",
-          "Não; por privacidade, o sistema aplica o efeito de hover e só entrega a posição quando o usuário faz o gesto de seleção",
-          "Somente em Volumes"
-        ],
-        "correctIndex": 2,
-        "explanation": "O olhar é dado sensível. Use '.hoverEffect' para feedback visual processado pelo sistema; o app só recebe o evento quando o usuário toca os dedos (pinch)."
-      },
-      {
-        "id": 3,
-        "question": "O que significa o padrão 'Entity Component System' (ECS) do RealityKit?",
-        "options": [
-          "Entidades são subclasses de views",
-          "Entidades são contêineres vazios; o comportamento vem de componentes (ex: ModelComponent, CollisionComponent) e sistemas",
-          "Cada entidade deve ter sua própria thread",
-          "Só funciona em 2D"
-        ],
-        "correctIndex": 1,
-        "explanation": "ECS favorece composição em vez de herança (mesma filosofia do POP): você monta objetos combinando componentes, e 'Systems' processam todas as entidades que os possuem a cada frame."
-      },
-      {
-        "id": 4,
-        "question": "Qual é o uso mais simples para exibir um modelo 3D (USDZ) dentro de uma janela 2D no visionOS?",
-        "options": [
-          "Usar UIImageView",
-          "Usar WKWebView",
-          "Usar a view 'Model3D(named:)' do RealityKit",
-          "Abrir um ImmersiveSpace obrigatoriamente"
-        ],
-        "correctIndex": 2,
-        "explanation": "'Model3D' carrega e exibe um modelo de forma assíncrona como qualquer view SwiftUI. Para cenas interativas com entidades e componentes, use 'RealityView'."
-      },
-      {
-        "id": 5,
-        "question": "O que um app precisa para usar hand tracking (ARKit) no visionOS?",
-        "options": [
-          "Apenas importar ARKit",
-          "Rodar em uma Window comum",
-          "Estar em um Immersive Space aberto, rodar uma 'ARKitSession' e ter autorização do usuário (NSHandsTrackingUsageDescription)",
-          "Um controle físico conectado"
-        ],
-        "correctIndex": 2,
-        "explanation": "Dados como mãos e ambiente são sensíveis: só ficam disponíveis em um Immersive Space com permissão explícita. As JointAnchors das mãos vêm de 'HandTrackingProvider'."
-      }
-    ]
-  }
+    "correctIndex": 1,
+    "explanation": "Conformidade condicional faz o tipo genérico herdar capacidades dos seus parâmetros. '[Int]' é comparável com '==', mas '[() -> Void]' não é."
+   },
+   {
+    "id": 5,
+    "question": "Em 'func fetch<T: Decodable>(_ type: T.Type) async throws -> T', como o compilador sabe qual T usar?",
+    "options": [
+     "Pelo argumento de metatype, ex: 'fetch(User.self)', ou pelo tipo anotado do resultado",
+     "Sempre usa 'String' como padrão",
+     "Pergunta ao usuário em runtime",
+     "É impossível inferir; exige cast"
+    ],
+    "correctIndex": 0,
+    "explanation": "Swift infere 'T' a partir dos argumentos ou do contexto de retorno. Passar 'T.self' (metatype) é o padrão de APIs como 'JSONDecoder.decode(_:from:)'."
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Leia a fase da cena atual do SwiftUI via Environment",
+    "codeSnippet": "@Environment(\\.___) private var scenePhase",
+    "correctAnswer": "scenePhase",
+    "hint": "O nome da propriedade é o tipo ScenePhase com a primeira letra minúscula."
+   },
+   {
+    "id": 3,
+    "question": "Salve os dados quando o app for para o segundo plano",
+    "codeSnippet": ".onChange(of: scenePhase) { _, newPhase in if newPhase == .___ { save() } }",
+    "correctAnswer": "background",
+    "hint": "É um dos casos de ScenePhase: active, inactive e ..."
+   },
+   {
+    "id": 4,
+    "question": "Declare o ponto de entrada de um app SwiftUI",
+    "codeSnippet": "@main struct MyApp: ___ { var body: some Scene { WindowGroup { ContentView() } } }",
+    "correctAnswer": "App",
+    "hint": "O protocolo cujo 'body' retorna uma Scene."
+   },
+   {
+    "id": 5,
+    "question": "Execute trabalho assíncrono atrelado ao ciclo de vida da view (cancelado quando ela some)",
+    "codeSnippet": "Text(\"Olá\").___ { await load() }",
+    "correctAnswer": "task",
+    "hint": "Modifier que aceita um closure async, alternativa moderna a onAppear."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "Quais são os valores de 'ScenePhase' no SwiftUI?",
+    "options": [
+     ".launching, .running, .terminated",
+     ".active, .paused, .stopped",
+     ".foreground, .background, .suspended",
+     ".active, .inactive, .background"
+    ],
+    "correctIndex": 3,
+    "explanation": "'.active' é a cena em primeiro plano e interativa; '.inactive' é transicional (ex: seletor de apps, ligação); '.background' é invisível ao usuário."
+   },
+   {
+    "id": 3,
+    "question": "No UIKit, qual a diferença entre 'viewDidLoad' e 'viewWillAppear'?",
+    "options": [
+     "'viewDidLoad' roda uma vez ao carregar a view; 'viewWillAppear' roda toda vez que ela vai aparecer",
+     "São idênticos",
+     "'viewDidLoad' roda toda vez que a tela aparece",
+     "'viewWillAppear' só roda no primeiro lançamento do app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Configuração única (outlets, subviews) vai em 'viewDidLoad'. Atualizações que precisam repetir a cada retorno à tela (ex: recarregar dados ao voltar de um push) vão em 'viewWillAppear'."
+   },
+   {
+    "id": 4,
+    "question": "Como usar um AppDelegate em um app SwiftUI que precisa de callbacks como push notifications?",
+    "options": [
+     "Não é possível; SwiftUI proíbe AppDelegate",
+     "Trocando @main por @UIApplicationMain na struct App",
+     "Com '@UIApplicationDelegateAdaptor(MyAppDelegate.self)' dentro da struct App",
+     "Criando um UIWindow manualmente"
+    ],
+    "correctIndex": 2,
+    "explanation": "'@UIApplicationDelegateAdaptor' conecta uma classe que adota 'UIApplicationDelegate' ao ciclo de vida SwiftUI, permitindo receber callbacks do sistema que ainda não têm equivalente nativo."
+   },
+   {
+    "id": 5,
+    "question": "Qual vantagem do modifier '.task' sobre '.onAppear' para carregar dados assíncronos?",
+    "options": [
+     "Roda apenas uma vez por instalação",
+     "Aceita 'await' diretamente e a Task é cancelada automaticamente quando a view desaparece",
+     "Roda na thread de background obrigatoriamente",
+     "Não há diferença"
+    ],
+    "correctIndex": 1,
+    "explanation": "'.task' cria uma Task ligada ao ciclo de vida da view: cancela ao sumir e pode reiniciar com '.task(id:)'. Com '.onAppear' você precisaria criar e cancelar a Task manualmente."
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Qual método de UIViewRepresentable atualiza a UIView quando o estado SwiftUI muda?",
+    "codeSnippet": "func ___(_ uiView: UILabel, context: Context) { uiView.text = text }",
+    "correctAnswer": "updateUIView",
+    "hint": "Nome: update + UIView."
+   },
+   {
+    "id": 3,
+    "question": "Apresente uma view SwiftUI dentro do UIKit",
+    "codeSnippet": "let host = ___(rootView: ContentView())",
+    "correctAnswer": "UIHostingController",
+    "hint": "É um UIViewController que hospeda conteúdo SwiftUI."
+   },
+   {
+    "id": 4,
+    "question": "Crie o objeto que fará a ponte de delegates do UIKit para o SwiftUI",
+    "codeSnippet": "func makeCoordinator() -> ___ { Coordinator(self) }",
+    "correctAnswer": "Coordinator",
+    "hint": "O mesmo nome do tipo aninhado que você cria dentro da struct."
+   },
+   {
+    "id": 5,
+    "question": "Compartilhe o texto entre SwiftUI e o UITextField de forma bidirecional",
+    "codeSnippet": "struct MyField: UIViewRepresentable { @___ var text: String }",
+    "correctAnswer": "Binding",
+    "hint": "Property wrapper que referencia um estado pertencente a outra view."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "Quando o SwiftUI chama 'makeUIView' em um UIViewRepresentable?",
+    "options": [
+     "A cada mudança de estado",
+     "Uma vez, para criar a UIView; mudanças posteriores passam por 'updateUIView'",
+     "Nunca; a UIView vem do Storyboard",
+     "Somente ao fechar o app"
+    ],
+    "correctIndex": 1,
+    "explanation": "A UIView é criada uma vez por identidade da view SwiftUI. Depois, sempre que o estado relevante muda, o SwiftUI chama 'updateUIView' para sincronizar. Por isso a criação cara fica em 'makeUIView'."
+   },
+   {
+    "id": 3,
+    "question": "Como incluir uma tela UIKit inteira (UIViewController) em SwiftUI?",
+    "options": [
+     "Com UIHostingController",
+     "Com 'UIViewControllerRepresentable' e 'makeUIViewController'",
+     "Com NSViewRepresentable",
+     "Não é possível"
+    ],
+    "correctIndex": 1,
+    "explanation": "'UIViewControllerRepresentable' é o equivalente para controllers (câmeras, PHPicker, SFSafariViewController). 'UIHostingController' faz o caminho inverso: SwiftUI dentro do UIKit."
+   },
+   {
+    "id": 4,
+    "question": "Como exibir uma view SwiftUI dentro de uma célula de UITableView/UICollectionView (iOS 16+)?",
+    "options": [
+     "Com 'cell.contentConfiguration = UIHostingConfiguration { ... }'",
+     "Adicionando um UIHostingController por célula manualmente",
+     "Usando um Storyboard",
+     "Não é suportado"
+    ],
+    "correctIndex": 0,
+    "explanation": "'UIHostingConfiguration' integra SwiftUI com o reuso de células, sem gerenciar child view controllers manualmente, e permite migrar telas de lista aos poucos."
+   },
+   {
+    "id": 5,
+    "question": "Por que o Coordinator de um UIViewRepresentable normalmente herda de 'NSObject'?",
+    "options": [
+     "Porque o SwiftUI exige",
+     "Para ter acesso ao Core Data",
+     "Para ser um struct",
+     "Porque delegates do UIKit (ex: UITextFieldDelegate) são protocolos Objective-C que exigem uma classe NSObject"
+    ],
+    "correctIndex": 3,
+    "explanation": "Muitos protocolos de delegate do UIKit herdam de 'NSObjectProtocol', então o adotante precisa ser uma classe NSObject. O Coordinator guarda o 'Binding' para devolver os eventos ao SwiftUI."
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Verifique se o HealthKit está disponível no dispositivo",
+    "codeSnippet": "if HKHealthStore.___() { /* ok */ }",
+    "correctAnswer": "isHealthDataAvailable",
+    "hint": "Método estático 'isHealthData...'."
+   },
+   {
+    "id": 3,
+    "question": "Defina o tipo de dado de frequência cardíaca",
+    "codeSnippet": "let type = HKQuantityType(.___)",
+    "correctAnswer": "heartRate",
+    "hint": "Em inglês, 'frequência cardíaca' é 'heart rate', em camelCase."
+   },
+   {
+    "id": 4,
+    "question": "Configure um treino de corrida",
+    "codeSnippet": "let config = HKWorkoutConfiguration(); config.activityType = .___",
+    "correctAnswer": "running",
+    "hint": "Caso de HKWorkoutActivityType para corrida."
+   },
+   {
+    "id": 5,
+    "question": "Qual chave do Info.plist explica ao usuário por que o app LÊ dados de saúde?",
+    "codeSnippet": "<key>___</key><string>Usamos seus dados para o treino.</string>",
+    "correctAnswer": "NSHealthShareUsageDescription",
+    "hint": "'Share' refere-se à leitura; a chave de escrita usa 'Update'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "O usuário negou o acesso de LEITURA a batimentos cardíacos. O que o HealthKit informa ao app ao consultar esses dados?",
+    "options": [
+     "Lança um erro 'permissionDenied'",
+     "Retorna resultados vazios, sem revelar se há dados, por privacidade",
+     "Fecha o app",
+     "Retorna dados criptografados"
+    ],
+    "correctIndex": 1,
+    "explanation": "Por privacidade, o app não consegue distinguir 'sem permissão' de 'sem dados' para leitura. Projete a UI para lidar com resultado vazio. Já o status de escrita pode ser consultado com 'authorizationStatus(for:)'."
+   },
+   {
+    "id": 3,
+    "question": "Qual é o mecanismo atual para exibir informações de um app no mostrador do Apple Watch?",
+    "options": [
+     "ClockKit com CLKComplicationDataSource, apenas",
+     "WidgetKit (complications são widgets)",
+     "UIKit com UILabel",
+     "Não é possível"
+    ],
+    "correctIndex": 1,
+    "explanation": "Desde o watchOS 9, complications são construídas com WidgetKit e SwiftUI (famílias como '.accessoryCircular'). O ClockKit foi descontinuado."
+   },
+   {
+    "id": 4,
+    "question": "Para que serve uma 'HKWorkoutSession' em um app de treino no Apple Watch?",
+    "options": [
+     "Para desenhar gráficos",
+     "Para sincronizar com o iCloud",
+     "Para manter o app ativo em segundo plano e coletar sensores durante o treino",
+     "Para desativar o HealthKit"
+    ],
+    "correctIndex": 2,
+    "explanation": "A sessão de treino mantém o app em execução com a tela apagada e aumenta a frequência de sensores. Combinada com 'HKLiveWorkoutBuilder', coleta dados e salva o treino no Saúde."
+   },
+   {
+    "id": 5,
+    "question": "Qual query do HealthKit é ideal para somar os passos de um dia?",
+    "options": [
+     "HKStatisticsQuery (ou HKStatisticsCollectionQuery) com '.cumulativeSum'",
+     "HKObserverQuery",
+     "HKCorrelationQuery",
+     "HKSourceQuery"
+    ],
+    "correctIndex": 0,
+    "explanation": "Queries de estatísticas agregam amostras (soma, média, mín/máx) já deduplicando fontes como iPhone e Watch. 'HKSampleQuery' devolve amostras individuais."
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Declare a cena de Ajustes do app no macOS (abre com Cmd+,)",
+    "codeSnippet": "___ { SettingsView() }",
+    "correctAnswer": "Settings",
+    "hint": "A cena se chama como a janela de preferências."
+   },
+   {
+    "id": 3,
+    "question": "Qual protocolo embrulha uma NSView do AppKit para uso no SwiftUI?",
+    "codeSnippet": "struct Editor: ___ { }",
+    "correctAnswer": "NSViewRepresentable",
+    "hint": "O equivalente macOS de UIViewRepresentable."
+   },
+   {
+    "id": 4,
+    "question": "Associe o atalho Cmd+N a um botão",
+    "codeSnippet": "Button(\"Novo\") { } .keyboardShortcut(\"n\", modifiers: ___)",
+    "correctAnswer": ".command",
+    "hint": "A tecla modificadora Cmd, escrita como valor de EventModifiers."
+   },
+   {
+    "id": 5,
+    "question": "Crie um item na barra de menus do sistema (ícone no canto superior direito)",
+    "codeSnippet": "___(\"Timer\", systemImage: \"timer\") { Text(\"Oi\") }",
+    "correctAnswer": "MenuBarExtra",
+    "hint": "Cena SwiftUI para menu bar extras, disponível desde macOS 13."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "O que a cena 'Settings' do SwiftUI faz automaticamente no macOS?",
+    "options": [
+     "Cria um widget na área de trabalho",
+     "Adiciona o item 'Ajustes...' ao menu do app com o atalho Cmd+, e abre a janela de preferências",
+     "Salva dados no iCloud",
+     "Ativa o App Sandbox"
+    ],
+    "correctIndex": 1,
+    "explanation": "Seguir as convenções do macOS é parte da plataforma: a cena 'Settings' integra a janela de preferências ao menu e ao atalho padrão sem código adicional."
+   },
+   {
+    "id": 3,
+    "question": "Para que serve o App Sandbox em um app macOS?",
+    "options": [
+     "Acelerar a compilação",
+     "Restringir o acesso do app a arquivos, rede e hardware, exigindo entitlements explícitos",
+     "Permitir que o app rode no iOS",
+     "Criar janelas flutuantes"
+    ],
+    "correctIndex": 1,
+    "explanation": "O sandbox é obrigatório na Mac App Store. Por exemplo, acessar a pasta escolhida pelo usuário exige o entitlement 'com.apple.security.files.user-selected.read-only'."
+   },
+   {
+    "id": 4,
+    "question": "Qual a diferença entre Mac Catalyst e um destino nativo macOS em SwiftUI?",
+    "options": [
+     "Catalyst usa AppKit puro",
+     "Não há diferença",
+     "Catalyst adapta um app UIKit para o Mac; o destino nativo compila SwiftUI/AppKit com idioma e APIs próprios do macOS",
+     "Catalyst só roda em Apple Silicon"
+    ],
+    "correctIndex": 2,
+    "explanation": "Catalyst reaproveita o código UIKit com mínimo esforço, mas pode parecer menos 'Mac'. O destino nativo com SwiftUI dá acesso total a MenuBarExtra, janelas múltiplas e AppKit."
+   },
+   {
+    "id": 5,
+    "question": "Como usar um NSApplicationDelegate em um app SwiftUI para macOS?",
+    "options": [
+     "Com '@NSApplicationDelegateAdaptor(MyDelegate.self)' na struct App",
+     "Com '@main' na classe delegate",
+     "Não é possível",
+     "Com UIApplicationDelegateAdaptor"
+    ],
+    "correctIndex": 0,
+    "explanation": "É o equivalente macOS do adaptor do iOS: útil para tratar 'applicationShouldTerminateAfterLastWindowClosed', eventos de Dock e outros callbacks do AppKit."
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "exercises": [
+   {
+    "id": 2,
+    "question": "Declare um espaço totalmente imersivo no visionOS",
+    "codeSnippet": "___(id: \"room\") { RealityView { _ in } }",
+    "correctAnswer": "ImmersiveSpace",
+    "hint": "Uma cena do SwiftUI cujo nome descreve o tipo de espaço."
+   },
+   {
+    "id": 3,
+    "question": "Obtenha a ação do Environment para abrir um espaço imersivo",
+    "codeSnippet": "@Environment(\\.___) var openImmersiveSpace",
+    "correctAnswer": "openImmersiveSpace",
+    "hint": "A chave do Environment tem o mesmo nome da propriedade."
+   },
+   {
+    "id": 4,
+    "question": "Faça uma janela virar um Volume 3D",
+    "codeSnippet": "WindowGroup { Globe() }.windowStyle(.___)",
+    "correctAnswer": "volumetric",
+    "hint": "O estilo de janela com volume (largura, altura e profundidade)."
+   },
+   {
+    "id": 5,
+    "question": "Defina a forma de colisão de uma entidade RealityKit",
+    "codeSnippet": "entity.components.set(___(shapes: [.generateBox(size: 0.1)]))",
+    "correctAnswer": "CollisionComponent",
+    "hint": "Componente que dá forma física para detecção de toques e colisões."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 2,
+    "question": "O app pode saber exatamente para onde o usuário está olhando no Vision Pro?",
+    "options": [
+     "Sim, via API de eye tracking sem permissão",
+     "Sim, sempre",
+     "Não; por privacidade, o sistema aplica o efeito de hover e só entrega a posição quando o usuário faz o gesto de seleção",
+     "Somente em Volumes"
+    ],
+    "correctIndex": 2,
+    "explanation": "O olhar é dado sensível. Use '.hoverEffect' para feedback visual processado pelo sistema; o app só recebe o evento quando o usuário toca os dedos (pinch)."
+   },
+   {
+    "id": 3,
+    "question": "O que significa o padrão 'Entity Component System' (ECS) do RealityKit?",
+    "options": [
+     "Entidades são subclasses de views",
+     "Entidades são contêineres vazios; o comportamento vem de componentes (ex: ModelComponent, CollisionComponent) e sistemas",
+     "Cada entidade deve ter sua própria thread",
+     "Só funciona em 2D"
+    ],
+    "correctIndex": 1,
+    "explanation": "ECS favorece composição em vez de herança (mesma filosofia do POP): você monta objetos combinando componentes, e 'Systems' processam todas as entidades que os possuem a cada frame."
+   },
+   {
+    "id": 4,
+    "question": "Qual é o uso mais simples para exibir um modelo 3D (USDZ) dentro de uma janela 2D no visionOS?",
+    "options": [
+     "Usar UIImageView",
+     "Usar WKWebView",
+     "Usar a view 'Model3D(named:)' do RealityKit",
+     "Abrir um ImmersiveSpace obrigatoriamente"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Model3D' carrega e exibe um modelo de forma assíncrona como qualquer view SwiftUI. Para cenas interativas com entidades e componentes, use 'RealityView'."
+   },
+   {
+    "id": 5,
+    "question": "O que um app precisa para usar hand tracking (ARKit) no visionOS?",
+    "options": [
+     "Apenas importar ARKit",
+     "Rodar em uma Window comum",
+     "Estar em um Immersive Space aberto, rodar uma 'ARKitSession' e ter autorização do usuário (NSHandsTrackingUsageDescription)",
+     "Um controle físico conectado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dados como mãos e ambiente são sensíveis: só ficam disponíveis em um Immersive Space com permissão explícita. As JointAnchors das mãos vêm de 'HandTrackingProvider'."
+   }
+  ]
+ }
 ]

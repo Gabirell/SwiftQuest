@@ -37,13 +37,22 @@ struct IntroContent: Codable, Sendable {
     let lessons: [Lesson]
     let glossary: [String: String]   // term -> localized meaning
 
+    /// Extra quiz questions for a lesson (introPlus*.<lang>.json).
+    private struct QuizPlus: Decodable { let lessonId: String; let quiz: [QuizQuestion] }
+
     static func load(_ language: AppLanguage) -> IntroContent {
         for lang in [language, .en] {
-            if let url = Bundle.main.url(forResource: "intro.\(lang.rawValue)", withExtension: "json"),
-               let data = try? Data(contentsOf: url),
-               let content = try? JSONDecoder().decode(IntroContent.self, from: data) {
-                return content
+            guard let url = Bundle.main.url(forResource: "intro.\(lang.rawValue)", withExtension: "json"),
+                  let data = try? Data(contentsOf: url),
+                  let base = try? JSONDecoder().decode(IntroContent.self, from: data) else { continue }
+            let plus: [QuizPlus] = CourseData.loadAll(prefix: "introPlus", lang)
+            let lessons = base.lessons.map { l -> Lesson in
+                let extra = plus.filter { $0.lessonId == l.id }.flatMap(\.quiz)
+                guard !extra.isEmpty else { return l }
+                return Lesson(id: l.id, title: l.title, icon: l.icon, summary: l.summary, sections: l.sections,
+                              exercise: l.exercise, quiz: l.quiz + extra)
             }
+            return IntroContent(lessons: lessons, glossary: base.glossary)
         }
         return IntroContent(lessons: [], glossary: [:])
     }

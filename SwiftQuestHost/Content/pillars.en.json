@@ -1318,7 +1318,7 @@
   "id": 14,
   "title": "Lifecycle (UIKit vs SwiftUI)",
   "theory": "An app's lifecycle defines how it starts, goes to the background and comes back. In the past, the AppDelegate managed everything. Later, the SceneDelegate appeared for multiple windows (iPadOS). In SwiftUI, we use the 'App' struct and the @main wrapper. Understanding these states is essential for saving data, pausing audio and saving battery.",
-  "appleDocUrl": "https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/managing-your-app-s-life-cycle",
   "isAdvanced": true,
   "category": "iOS e iPadOS",
   "corporateCase": "A finance app hides the balance and shows a bank logo (blur) as soon as the app enters 'background', to prevent the information from leaking in the iOS multitasking screen.",

@@ -1,0 +1,677 @@
+[
+ {
+  "id": 46,
+  "title": "SwiftUI: Lists, Navigation and Tabs",
+  "theory": "In SwiftUI, 'List' displays scrollable rows and 'ForEach' generates views from a collection; both must identify each element, either through 'Identifiable' conformance (an 'id' property) or through the 'id:' parameter with a key path such as '\\.self'. 'Section' groups rows under a header, 'swipeActions' adds buttons when a row is swiped, and 'onDelete' and 'onMove' (available on dynamic views such as 'ForEach', not on static rows) enable deleting and reordering. Modern navigation uses 'NavigationStack': you declare 'NavigationLink(value:)' with a 'Hashable' value and, in a single place, 'navigationDestination(for:)' says which view to show for that type. To navigate from code, keep a 'NavigationPath' in '@State', pass it as 'NavigationStack(path:)', and use 'append' to push and 'removeLast' to go back. The title and toolbar are set on the content view with 'navigationTitle' and 'toolbar', never on the NavigationStack itself. 'TabView' with 'Tab' creates tabs, 'NavigationSplitView' builds two- or three-column layouts (which collapse into a stack on iPhone), 'searchable' adds a search field bound to a text (you filter the data yourself) and 'refreshable' enables pull to refresh with an 'async' closure. Common mistakes: forgetting the 'navigationDestination' that matches the value type, using 'ForEach(0..<array.count)' with mutable data, and expecting 'searchable' to filter on its own. In the Certiport exam and the Develop in Swift curriculum, building lists and navigation hierarchies is the foundation of almost every app.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/navigationstack",
+  "category": "SwiftUI",
+  "corporateCase": "An order management app shows a list of orders grouped into sections by status, with 'swipeActions' to archive and 'searchable' to find customers. Tapping an order pushes the detail through 'NavigationLink(value:)', and a 'NavigationPath' lets the user return to the root after finishing the service.",
+  "gameCase": "In a game, the main menu is a 'TabView' with Shop, Inventory and Ranking tabs. The inventory uses 'NavigationSplitView' on iPad, with the item list on the left and the selected item detail on the right, and 'refreshable' reloads the online ranking.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Make the type identifiable so List and ForEach can use it without passing 'id:'",
+    "codeSnippet": "struct Tarefa: ___ { let id = UUID(); var titulo: String }",
+    "correctAnswer": "Identifiable",
+    "hint": "The protocol requires a property named id."
+   },
+   {
+    "id": 2,
+    "question": "Tell a List of Strings how to identify each element, using the value itself",
+    "codeSnippet": "List(nomes, ___: \\.self) { nome in Text(nome) }",
+    "correctAnswer": "id",
+    "hint": "It is the label of the parameter that receives the key path."
+   },
+   {
+    "id": 3,
+    "question": "Create a navigation link that sends a Hashable value to the NavigationStack",
+    "codeSnippet": "NavigationLink(___: tarefa) { Text(tarefa.titulo) }",
+    "correctAnswer": "value",
+    "hint": "Instead of destination, use the label that passes a value."
+   },
+   {
+    "id": 4,
+    "question": "Declare which view appears when a value of type Tarefa is pushed",
+    "codeSnippet": ".___(for: Tarefa.self) { t in DetalheView(tarefa: t) }",
+    "correctAnswer": "navigationDestination",
+    "hint": "The modifier starts with 'navigation' and ends with 'Destination'."
+   },
+   {
+    "id": 5,
+    "question": "Create the state that stores the stack so you can navigate from code",
+    "codeSnippet": "@State private var caminho = ___()",
+    "correctAnswer": "NavigationPath",
+    "hint": "It is the type-erased type that accepts append and removeLast."
+   },
+   {
+    "id": 6,
+    "question": "Add a search field bound to the typed text",
+    "codeSnippet": "List(itens) { Text($0.nome) }\n    .___(text: $busca)",
+    "correctAnswer": "searchable",
+    "hint": "The modifier name means 'able to be searched'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does List(items) { ... } require when you do not pass 'id:'?",
+    "options": [
+     "That the elements be Codable",
+     "That the elements be Identifiable (or that the id be given explicitly)",
+     "That the array contain Strings",
+     "That the list be inside a NavigationStack"
+    ],
+    "correctIndex": 1,
+    "explanation": "To know which row changed, was inserted or removed, SwiftUI needs a stable identity. 'Identifiable' types provide 'id'; otherwise use 'id: \\.property'."
+   },
+   {
+    "id": 2,
+    "question": "Where can 'onDelete(perform:)' be applied to enable swipe-to-delete?",
+    "options": [
+     "On a static List with hand-written rows",
+     "On the ForEach that generates the rows",
+     "On any Text inside the List",
+     "Only on Section"
+    ],
+    "correctIndex": 1,
+    "explanation": "'onDelete' and 'onMove' belong to dynamic views such as 'ForEach'. The closure receives an 'IndexSet' with the positions to remove from your array."
+   },
+   {
+    "id": 3,
+    "question": "You use NavigationLink(value: task) but no screen opens when tapped. What is the most likely cause?",
+    "options": [
+     "A 'navigationDestination(for: Tarefa.self)' is missing inside the NavigationStack",
+     "The value must be a String",
+     "A 'NavigationPath' in @State is missing",
+     "NavigationLink does not work inside a List"
+    ],
+    "correctIndex": 0,
+    "explanation": "With value-based links, the NavigationStack looks for a destination registered for the value's type. Without 'navigationDestination(for:)' for 'Tarefa', nothing is pushed."
+   },
+   {
+    "id": 4,
+    "question": "How do you go back to the root screen from code using 'var path: NavigationPath'?",
+    "options": [
+     "'path.clear()' is the official method",
+     "'dismiss()' always returns to the root",
+     "'path.removeLast(path.count)'",
+     "'path.append(nil)'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'NavigationPath' is a collection of pushed values. Removing every item with 'removeLast(path.count)' returns to the start; 'dismiss' only closes the current screen."
+   },
+   {
+    "id": 5,
+    "question": "Where is 'navigationTitle' correctly applied?",
+    "options": [
+     "On the content view inside the NavigationStack",
+     "On the NavigationStack, after the braces",
+     "Only on the App",
+     "On each NavigationLink"
+    ],
+    "correctIndex": 0,
+    "explanation": "The title belongs to the screen (the content view) shown inside the stack, because each pushed screen can have its own title. Applying it to the NavigationStack itself does not give the expected result."
+   },
+   {
+    "id": 6,
+    "question": "Which code creates a tab in modern SwiftUI (iOS 18+)?",
+    "options": [
+     "Tab(\"Home\", systemImage: \"house\") { HomeView() } inside a TabView",
+     "NavigationTab(\"Home\") { }",
+     "Button(\"Home\") { } inside a TabView",
+     "TabItem(\"Home\") { }"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Tab(_:systemImage:content:)' declares title, icon and content. The earlier form, '.tabItem { }' applied to each view, remains valid in older versions."
+   },
+   {
+    "id": 7,
+    "question": "What does the 'refreshable' modifier receive?",
+    "options": [
+     "An asynchronous closure; the loading indicator stays until it finishes",
+     "A synchronous closure run on every frame",
+     "A number of seconds between refreshes",
+     "A Binding<Bool> for loading"
+    ],
+    "correctIndex": 0,
+    "explanation": "'refreshable { await reload() }' enables the pull-to-refresh gesture. Because the closure is 'async', SwiftUI keeps the spinner until it completes."
+   },
+   {
+    "id": 8,
+    "question": "What is wrong with 'ForEach(0..<tasks.count) { i in ... }' when tasks can be added and removed?",
+    "options": [
+     "'ForEach' does not accept Int",
+     "The range is not constant and can produce invalid indices when the array changes; prefer 'ForEach(tasks)' with Identifiable",
+     "It prevents using 'Section'",
+     "Nothing, it is the recommended form"
+    ],
+    "correctIndex": 1,
+    "explanation": "A ForEach over a variable range depends on indices that stop existing when the array shrinks, causing warnings or crashes. Use the collection itself with a stable identity."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is 'NavigationSplitView' for?",
+    "options": [
+     "Opening two modal screens at once",
+     "Building sidebar, content and detail layouts that collapse into a stack on compact screens",
+     "Splitting a String into parts",
+     "Replacing TabView on iPhone"
+    ],
+    "correctIndex": 1,
+    "explanation": "It is the basis of Mail- and Notes-style apps: two or three columns on iPad and Mac, and stack navigation on iPhone."
+   },
+   {
+    "id": 2,
+    "question": "What happens when you use 'searchable(text: $query)' on a List?",
+    "options": [
+     "SwiftUI shows the field, but you filter the data yourself based on 'query'",
+     "The list is filtered automatically by the row texts",
+     "The field only appears on macOS",
+     "The keyboard is disabled"
+    ],
+    "correctIndex": 0,
+    "explanation": "'searchable' only provides the field and the text binding. The filtering logic (for example a computed property) is your code's responsibility."
+   },
+   {
+    "id": 3,
+    "question": "What is the role of 'Section' in a List?",
+    "options": [
+     "Improving scroll performance",
+     "Allowing onDelete",
+     "Grouping rows with an optional header and footer",
+     "Isolating the list from navigation"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Section(\"Pending\") { ForEach(...) }' organizes rows into groups, which is common in Settings and agenda screens."
+   },
+   {
+    "id": 4,
+    "question": "What is needed for 'onMove' to reorder rows?",
+    "options": [
+     "An edit mode (for example EditButton) and moving the data with 'move(fromOffsets:toOffset:)'",
+     "Nothing, it always works",
+     "Only Strings",
+     "A NavigationPath"
+    ],
+    "correctIndex": 0,
+    "explanation": "The 'onMove' closure receives an 'IndexSet' and a destination, and you must update the array, usually with 'array.move(fromOffsets:toOffset:)'. Edit mode shows the drag handles."
+   },
+   {
+    "id": 5,
+    "question": "How does 'NavigationPath' differ from a typed array like '[Tarefa]' in 'NavigationStack(path:)'?",
+    "options": [
+     "'NavigationPath' accepts Hashable values of different types, while the array holds a single type",
+     "The array is slower",
+     "NavigationPath only works on macOS",
+     "There is no difference"
+    ],
+    "correctIndex": 0,
+    "explanation": "With 'NavigationPath' you push mixed types (Tarefa, Cliente...), each with its own 'navigationDestination'. A typed array fits when the whole stack has one type."
+   },
+   {
+    "id": 6,
+    "question": "What is the advantage of 'NavigationLink(value:)' over 'NavigationLink(destination:)'?",
+    "options": [
+     "It always needs less code",
+     "The destination is decoupled and declared once, and the stack can be controlled from code",
+     "It works without a NavigationStack",
+     "It prevents going back"
+    ],
+    "correctIndex": 1,
+    "explanation": "With values, the destination is registered centrally and created only when needed, and the same value can be pushed from code through 'NavigationPath'."
+   }
+  ]
+ },
+ {
+  "id": 47,
+  "title": "SwiftUI: Forms and Input Controls",
+  "theory": "'Form' is a container that groups input controls and adapts to the platform style (on iOS, a grouped list). Controls connect to state through a Binding, obtained with the '$' prefix on a '@State' property: 'TextField' and 'SecureField' edit a String, 'TextEditor' edits multi-line text, 'Toggle(isOn:)' edits a Bool, 'Slider' and 'Stepper' edit numbers (Slider uses Double) and 'DatePicker' edits a Date. 'Picker' ties the selection to the 'tag' of each option, and the tag type must be exactly the selection type, including Optional. Styles such as '.menu', '.segmented', '.wheel' and '.navigationLink' change the appearance. 'Button' accepts a 'role' such as '.destructive' or '.cancel', which gives semantic and visual meaning, and 'Menu' groups actions. For the keyboard, 'keyboardType', 'textContentType', 'submitLabel' and 'onSubmit' improve typing, and '@FocusState' with 'focused(_:equals:)' controls which field is active. Validation is usually done with computed properties that feed 'disabled()' on the submit button. 'Link' opens a URL and 'ShareLink' opens the share sheet. For accessibility, the control's title becomes the VoiceOver label; icon-only controls need 'accessibilityLabel'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/form",
+  "category": "SwiftUI",
+  "corporateCase": "A banking app has a sign-up form with an email TextField (email keyboard and 'submitLabel(.next)'), a password SecureField and a 'Create account' button that stays 'disabled' until the email and password are valid. '@FocusState' moves the cursor to the next field when the user taps Return.",
+  "gameCase": "On a game's settings screen, a 'Slider' adjusts the volume, a 'Toggle' turns vibration on, a segmented 'Picker' chooses the difficulty and a 'Stepper' sets the number of players. A 'ShareLink' lets players share the room code with friends.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Bind the TextField to the 'nome' state using the correct parameter",
+    "codeSnippet": "TextField(\"Nome\", ___: $nome)",
+    "correctAnswer": "text",
+    "hint": "The parameter receives the binding of the typed text."
+   },
+   {
+    "id": 2,
+    "question": "Use the text field that hides the typed characters",
+    "codeSnippet": "___(\"Senha\", text: $senha)",
+    "correctAnswer": "SecureField",
+    "hint": "Its name combines 'Secure' with 'Field'."
+   },
+   {
+    "id": 3,
+    "question": "Bind the Toggle to the Bool property 'ativo'",
+    "codeSnippet": "Toggle(\"Notificações\", ___: $ativo)",
+    "correctAnswer": "isOn",
+    "hint": "The parameter label means 'is on'."
+   },
+   {
+    "id": 4,
+    "question": "Associate the Blue option with the Picker selection value",
+    "codeSnippet": "Picker(\"Cor\", selection: $cor) {\n    Text(\"Azul\").___(Cor.azul)\n}",
+    "correctAnswer": "tag",
+    "hint": "The modifier labels each option with a value of the selection."
+   },
+   {
+    "id": 5,
+    "question": "Declare the property that controls which field receives keyboard focus",
+    "codeSnippet": "@___ private var campo: Campo?",
+    "correctAnswer": "FocusState",
+    "hint": "It is a property wrapper named 'Focus' + 'State'."
+   },
+   {
+    "id": 6,
+    "question": "Give the button the semantic role of a destructive action",
+    "codeSnippet": "Button(\"Excluir\", ___: .destructive) { apagar() }",
+    "correctAnswer": "role",
+    "hint": "Provide the parameter whose value is .destructive."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the role of 'Form' in SwiftUI?",
+    "options": [
+     "Grouping input controls, adopting the platform's form style",
+     "Automatically validating the fields",
+     "Sending data to the server",
+     "Replacing TextField"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Form' only organizes and styles controls (on iOS, a grouped list). Validation and submission are your own logic."
+   },
+   {
+    "id": 2,
+    "question": "What does '$text' mean when passed to a TextField?",
+    "options": [
+     "An immutable copy",
+     "A Binding<String> that lets the field read and write the state",
+     "The text value in uppercase",
+     "A reference to an IBOutlet"
+    ],
+    "correctIndex": 1,
+    "explanation": "The '$' prefix accesses the 'projectedValue' of '@State', a Binding. It gives the control read and write access to the state."
+   },
+   {
+    "id": 3,
+    "question": "You have '@State var cor: Cor? = nil' and options with '.tag(Cor.azul)'. The selection never shows. Why?",
+    "options": [
+     "The tag is Cor but the selection is Cor?; the types do not match. Use '.tag(Cor?.some(.azul))'",
+     "Picker does not accept enums",
+     "A Toggle is missing",
+     "tag only works with Int"
+    ],
+    "correctIndex": 0,
+    "explanation": "Picker compares the tag with the selection value, type for type. With an optional selection, the tags must be optional too."
+   },
+   {
+    "id": 4,
+    "question": "What is '@FocusState' for?",
+    "options": [
+     "Animating the view",
+     "Disabling the keyboard",
+     "Reading and setting which text field has focus, together with 'focused(_:equals:)'",
+     "Saving state between launches"
+    ],
+    "correctIndex": 2,
+    "explanation": "With an enum of fields and '.focused($campo, equals: .email)' you move focus from code, for example in 'onSubmit'."
+   },
+   {
+    "id": 5,
+    "question": "Which modifier changes the text of the keyboard's Return key?",
+    "options": [
+     "submitLabel",
+     "keyboardType",
+     "textContentType",
+     "textInputAutocapitalization"
+    ],
+    "correctIndex": 0,
+    "explanation": "'submitLabel(.next)', '.done', '.search' and so on set the key label; 'onSubmit' runs the action when it is tapped."
+   },
+   {
+    "id": 6,
+    "question": "What does the '.destructive' role do on a Button?",
+    "options": [
+     "Prevents double taps",
+     "Semantically marks a destructive action, usually highlighted in red; the action itself is still your code",
+     "Deletes the data automatically",
+     "Closes the app"
+    ],
+    "correctIndex": 1,
+    "explanation": "The role conveys meaning to the system and to accessibility, but it does not run anything by itself."
+   },
+   {
+    "id": 7,
+    "question": "What is the best way to prevent submitting a form with an empty email?",
+    "options": [
+     "'.disabled(email.isEmpty)' on the button, computed from state",
+     "Hiding the button with 'opacity(0)'",
+     "Using try?",
+     "Printing to the console"
+    ],
+    "correctIndex": 0,
+    "explanation": "'disabled' takes a condition derived from state, updated automatically, and also tells accessibility that the button is unavailable."
+   },
+   {
+    "id": 8,
+    "question": "Why does 'Slider(value: $volume, in: 0...10)' not compile when 'volume' is '@State var volume = 5'?",
+    "options": [
+     "The range must be open",
+     "The state must be a String",
+     "Inference creates an Int, but Slider needs a floating-point value such as Double",
+     "Slider does not accept ranges"
+    ],
+    "correctIndex": 2,
+    "explanation": "'5' becomes Int by default. Declare 'var volume: Double = 5' (or '5.0') so the Binding has the expected type."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the main difference between 'TextEditor' and 'TextField'?",
+    "options": [
+     "TextEditor hides the text",
+     "TextEditor edits multi-line text but has no built-in placeholder",
+     "TextEditor only works on iPad",
+     "TextField does not use a Binding"
+    ],
+    "correctIndex": 1,
+    "explanation": "'TextEditor' is the option for long text. For a growing field, 'TextField' with 'axis: .vertical' is also possible."
+   },
+   {
+    "id": 2,
+    "question": "Which parameter limits the DatePicker to choosing only the date, without the time?",
+    "options": [
+     "displayedComponents: .date",
+     "datePickerStyle: .date",
+     "mode: .date",
+     "onlyDate: true"
+    ],
+    "correctIndex": 0,
+    "explanation": "'displayedComponents' accepts '.date', '.hourAndMinute' or both. The 'in:' parameter restricts the allowed range."
+   },
+   {
+    "id": 3,
+    "question": "Which Picker style shows a few options side by side in a segmented control?",
+    "options": [
+     "wheel",
+     "inline",
+     "segmented",
+     "menu"
+    ],
+    "correctIndex": 2,
+    "explanation": "'.pickerStyle(.segmented)' is ideal for 2 to 4 short options. In a Form, the default style on iOS is navigationLink (pushes a selection screen); outside a Form, the default is the menu."
+   },
+   {
+    "id": 4,
+    "question": "What is the difference between 'Link' and 'ShareLink'?",
+    "options": [
+     "Link opens a URL; ShareLink opens the system share sheet",
+     "None",
+     "Link only works with emails",
+     "ShareLink opens Safari"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Link(\"Site\", destination: url)' navigates to the URL; 'ShareLink(item: url)' presents the share sheet to send the content."
+   },
+   {
+    "id": 5,
+    "question": "How does Toggle('Notifications', isOn: $on) behave with VoiceOver?",
+    "options": [
+     "The control's title is used as the label, and the on or off state is announced",
+     "It is ignored",
+     "You must always use accessibilityHint",
+     "It only works with an icon"
+    ],
+    "correctIndex": 0,
+    "explanation": "Standard controls are already accessible; the title becomes the label. Use 'accessibilityLabel' when the label is just an icon or image."
+   },
+   {
+    "id": 6,
+    "question": "What does SecureField guarantee?",
+    "options": [
+     "Sends the text over HTTPS",
+     "Hides the characters shown on screen; protecting the data is the app's responsibility",
+     "Encrypts the password in storage",
+     "Prevents screenshots"
+    ],
+    "correctIndex": 1,
+    "explanation": "'SecureField' only masks the display. For passwords, also use 'textContentType(.password)' for autofill and store credentials in the Keychain."
+   }
+  ]
+ },
+ {
+  "id": 48,
+  "title": "SwiftUI: Animations, Gestures and Presentations",
+  "theory": "There are two ways to animate in SwiftUI: implicit, '.animation(_:value:)', animates changes to animatable properties whenever the observed 'value' changes, and explicit, 'withAnimation { }', animates everything that depends on the state changes made inside the closure. Opacity, scale, rotation, offset and colors are animatable because they can be numerically interpolated. Curves such as '.easeInOut' and springs such as '.spring' (or '.spring(duration:bounce:)', where bounce 0 removes the overshoot) feel natural. A 'transition' defines how a view enters and leaves the hierarchy, but it only animates when the insertion or removal happens inside an animation; 'matchedGeometryEffect' with '@Namespace' makes the same view appear to move between two layouts. Gestures such as 'TapGesture', 'LongPressGesture', 'DragGesture' and 'MagnifyGesture' are attached with 'gesture' and combined with 'simultaneously(with:)', 'sequenced(before:)' or 'exclusively(before:)'; '@GestureState' holds values that return to their initial state when the gesture ends. For presentations, 'sheet', 'fullScreenCover', 'popover', 'alert' and 'confirmationDialog' are driven by a Bool ('isPresented') or an optional item ('item'), and 'presentationDetents' sets the sheet heights. Inside the presented view, '@Environment(\\.dismiss)' closes it. 'onAppear' runs when the view appears, and 'task' runs asynchronous work that is cancelled automatically when the view disappears.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/withanimation(_:_:)",
+  "category": "SwiftUI",
+  "corporateCase": "In a booking app, tapping a hotel opens a 'sheet' with half-height 'presentationDetents', and the Confirm button uses 'withAnimation' to switch screens with a smooth transition. A 'confirmationDialog' asks how to cancel the booking, and '.task' loads availability when the screen appears.",
+  "gameCase": "In a card game, each card uses 'DragGesture' to be dragged and 'matchedGeometryEffect' to fly from the hand to the table. A 'LongPressGesture' shows the card detail and a '.spring' animation adds a bounce when it is released.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Animate the scale whenever the 'grande' property changes, using the observation parameter",
+    "codeSnippet": "Circle()\n    .scaleEffect(grande ? 2 : 1)\n    .animation(.spring, ___: grande)",
+    "correctAnswer": "value",
+    "hint": "The second parameter of animation(_:value:) is named after what it observes."
+   },
+   {
+    "id": 2,
+    "question": "Run the state change inside an explicit animation",
+    "codeSnippet": "___(.easeInOut) { aberto.toggle() }",
+    "correctAnswer": "withAnimation",
+    "hint": "It is the global function that takes an animation and a closure."
+   },
+   {
+    "id": 3,
+    "question": "Apply the modifier that defines how the Text enters and leaves the hierarchy",
+    "codeSnippet": "if mostrar { Text(\"Oi\").___(.slide) }",
+    "correctAnswer": "transition",
+    "hint": "The modifier is named after the idea itself."
+   },
+   {
+    "id": 4,
+    "question": "Control the sheet presentation with a Bool Binding",
+    "codeSnippet": ".sheet(___: $mostrar) { DetalheView() }",
+    "correctAnswer": "isPresented",
+    "hint": "The parameter indicates whether the sheet 'is presented'."
+   },
+   {
+    "id": 5,
+    "question": "Declare the environment action that closes the current view",
+    "codeSnippet": "@Environment(\\.___) private var dismiss",
+    "correctAnswer": "dismiss",
+    "hint": "The Environment key is a verb meaning 'dismiss'."
+   },
+   {
+    "id": 6,
+    "question": "Update the offset while the finger moves during the drag",
+    "codeSnippet": "DragGesture().___ { v in deslocamento = v.translation }",
+    "correctAnswer": "onChanged",
+    "hint": "It is the callback called on every change of the gesture, before onEnded."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the difference between '.animation(_:value:)' and 'withAnimation'?",
+    "options": [
+     "The first animates the view's observed changes when 'value' changes; the second animates every change caused by a block of code",
+     "None",
+     "withAnimation only works with springs",
+     "'.animation' is exclusive to gestures"
+    ],
+    "correctIndex": 0,
+    "explanation": "The implicit form is attached to the view and reacts to a value; the explicit form wraps the state change and affects everything that depends on it."
+   },
+   {
+    "id": 2,
+    "question": "What does 'matchedGeometryEffect(id:in:)' require to work?",
+    "options": [
+     "A Task",
+     "Two views with the same id and the same '@Namespace', in different states of the interface",
+     "A Timer",
+     "A DragGesture"
+    ],
+    "correctIndex": 1,
+    "explanation": "The two views share an identifier and namespace, and SwiftUI interpolates position and size between them when the swap happens inside an animation."
+   },
+   {
+    "id": 3,
+    "question": "'if show { Text(\"Hi\").transition(.slide) }' and 'show.toggle()' with no animation at all. What happens?",
+    "options": [
+     "The view appears and disappears without animating, because the transition only runs inside an animation",
+     "The Text slides normally",
+     "Compile error",
+     "It only animates on removal"
+    ],
+    "correctIndex": 0,
+    "explanation": "Transitions depend on an animation context, such as 'withAnimation { show.toggle() }' or '.animation(_:value:)' on the container."
+   },
+   {
+    "id": 4,
+    "question": "Which gesture modifier runs two gestures in order, the second only after the first succeeds?",
+    "options": [
+     "exclusively(before:)",
+     "highPriorityGesture",
+     "sequenced(before:)",
+     "simultaneously(with:)"
+    ],
+    "correctIndex": 2,
+    "explanation": "'LongPressGesture().sequenced(before: DragGesture())' requires the long press before the drag, a pattern used to reorder items."
+   },
+   {
+    "id": 5,
+    "question": "How do you make a sheet occupy half the screen and be expandable?",
+    "options": [
+     "'.presentationDetents([.medium, .large])' on the sheet content",
+     "'.sheet(...).frame(height: 400)'",
+     "'fullScreenCover'",
+     "'.popover'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'presentationDetents' defines the allowed heights. The modifier goes on the presented content view inside the sheet."
+   },
+   {
+    "id": 6,
+    "question": "How can a view presented by 'sheet' close itself?",
+    "options": [
+     "By using a NavigationPath",
+     "By reading '@Environment(\\.dismiss)' and calling 'dismiss()'",
+     "By calling exit(0)",
+     "It cannot, only the parent closes it"
+    ],
+    "correctIndex": 1,
+    "explanation": "The environment's 'dismiss' action closes the current presentation (sheet, pushed screen and so on), without passing a Binding down."
+   },
+   {
+    "id": 7,
+    "question": "What is the advantage of '.task { }' over '.onAppear { Task { } }'?",
+    "options": [
+     "The asynchronous work is cancelled automatically when the view disappears",
+     "It always runs on another thread",
+     "It is synchronous",
+     "It runs once per second"
+    ],
+    "correctIndex": 0,
+    "explanation": "'task' is tied to the view's lifecycle: it accepts 'await' directly and the task is cancelled on exit. 'task(id:)' restarts when the id changes."
+   },
+   {
+    "id": 8,
+    "question": "What does '.spring(duration: 0.5, bounce: 0)' produce?",
+    "options": [
+     "An error",
+     "An instant animation",
+     "A smooth spring movement with no oscillation past the target",
+     "An animation with a lot of bounce"
+    ],
+    "correctIndex": 2,
+    "explanation": "'bounce' controls the overshoot: 0 never exceeds the final value, while higher values oscillate more."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "When should you choose 'confirmationDialog' over 'alert'?",
+    "options": [
+     "For a fatal error",
+     "For the user to choose among several related actions, such as Save, Discard or Cancel",
+     "To show only an OK",
+     "Never, it is deprecated"
+    ],
+    "correctIndex": 1,
+    "explanation": "'alert' informs or asks for a short confirmation; 'confirmationDialog' presents a set of action choices to the user."
+   },
+   {
+    "id": 2,
+    "question": "How does 'fullScreenCover' differ from 'sheet'?",
+    "options": [
+     "It covers the whole interface and is not dismissed by swiping; you must close it from code",
+     "They are identical",
+     "It only exists on macOS",
+     "It accepts only Strings"
+    ],
+    "correctIndex": 0,
+    "explanation": "'fullScreenCover' is used for immersive flows (onboarding, camera) that the app controls with a button and 'dismiss'."
+   },
+   {
+    "id": 3,
+    "question": "Which gesture detects pinch-to-zoom on iOS 17 and later?",
+    "options": [
+     "DragGesture",
+     "RotateGesture only",
+     "MagnifyGesture, whose value carries the 'magnification' property",
+     "TapGesture"
+    ],
+    "correctIndex": 2,
+    "explanation": "'MagnifyGesture' replaces the older 'MagnificationGesture' and exposes 'value.magnification' to adjust the scale."
+   },
+   {
+    "id": 4,
+    "question": "What happens to a '@GestureState' when the gesture ends?",
+    "options": [
+     "It automatically returns to its initial value",
+     "It keeps the last value",
+     "It raises an error",
+     "It becomes nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "'@GestureState' is temporary: it resets to the initial value when the gesture ends or is cancelled. For permanent values, store the result in '@State' in 'onEnded'."
+   },
+   {
+    "id": 5,
+    "question": "How does a 'popover' behave by default on an iPhone (compact width)?",
+    "options": [
+     "It adapts to a sheet; this can be changed with 'presentationCompactAdaptation'",
+     "It always floats as a bubble",
+     "It does not appear",
+     "It becomes an alert"
+    ],
+    "correctIndex": 0,
+    "explanation": "In compact widths the popover is adapted. 'presentationCompactAdaptation(.popover)' asks to keep it as a bubble."
+   },
+   {
+    "id": 6,
+    "question": "What is the advantage of 'sheet(item:)' over 'sheet(isPresented:)'?",
+    "options": [
+     "It does not allow closing",
+     "It presents using an optional Identifiable item and uses the value to build the content, returning to nil on dismissal",
+     "It is slower",
+     "It removes the need for dismiss"
+    ],
+    "correctIndex": 1,
+    "explanation": "With 'item', the content receives the selected value directly and the Binding returns to nil on dismissal, avoiding inconsistent states."
+   }
+  ]
+ }
+]

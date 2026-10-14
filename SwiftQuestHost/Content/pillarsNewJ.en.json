@@ -1,0 +1,1127 @@
+[
+ {
+  "id": 54,
+  "title": "UserDefaults, @AppStorage and FileManager",
+  "theory": "'UserDefaults' is a small key-value store for user preferences such as theme, language or whether onboarding was seen; it holds simple types (Bool, Int, Double, String, Data, Array, Dictionary, Date, URL) and should stay at a few KB, never large data. Use 'UserDefaults.standard.set(value, forKey:)' to write and 'string(forKey:)', 'bool(forKey:)' or 'integer(forKey:)' to read; missing keys return nil, false or 0, and 'register(defaults:)' sets initial fallback values. In SwiftUI, '@AppStorage(\"key\")' binds a property to a UserDefaults key and re-renders the View when the value changes, while '@SceneStorage' keeps per-scene UI state (selected tab, draft) for state restoration. For files, 'FileManager' accesses the app sandbox: 'Documents' holds user data, 'Library/Application Support' holds internal app data, 'Library/Caches' holds recreatable data the system may delete, and 'tmp' holds temporary files. You get these folders with 'FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)' and build paths with 'URL' ('appendingPathComponent'). 'Data' offers 'write(to:)' and 'Data(contentsOf:)', and with 'JSONEncoder' and 'JSONDecoder' ('Codable' types) you save and load models as JSON files. Resources shipped inside the app (images, seed JSON) live in 'Bundle.main' and are read-only, unlike user data written to the sandbox. A common mistake is using UserDefaults for passwords, tokens (use the Keychain) or large lists (use files, SwiftData or Core Data), because it is not meant for secrets and is loaded entirely into memory.",
+  "appleDocUrl": "https://developer.apple.com/documentation/foundation/userdefaults",
+  "category": "Dados e Rede",
+  "corporateCase": "In an investment banking app, the dark theme and preferred currency live in '@AppStorage', the downloaded PDF statement goes to 'Caches' (it can be downloaded again) and the login token goes to the Keychain, never UserDefaults. A report exported by the user is written to 'Documents' as JSON via 'Codable'.",
+  "gameCase": "In a game, music volume and difficulty live in UserDefaults and the last level viewed in '@SceneStorage'. The player's full progress (inventory, achievements) is encoded as JSON and saved in 'Application Support', while the bundled textures stay in the Bundle.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Access the shared UserDefaults instance and store the user's name",
+    "codeSnippet": "UserDefaults.___.set(\"Ana\", forKey: \"nome\")",
+    "correctAnswer": "standard",
+    "hint": "The shared default instance is called 'standard'."
+   },
+   {
+    "id": 2,
+    "question": "Read back the String stored under the key \"nome\"",
+    "codeSnippet": "let nome = UserDefaults.standard.___(forKey: \"nome\")",
+    "correctAnswer": "string",
+    "hint": "The read method is named after the returned type, in lowercase."
+   },
+   {
+    "id": 3,
+    "question": "Bind a SwiftUI View property to a UserDefaults key",
+    "codeSnippet": "___(\"tema\") var tema = \"claro\"",
+    "correctAnswer": "@AppStorage",
+    "hint": "It is a property wrapper starting with @ whose name is 'Storage' preceded by 'App'."
+   },
+   {
+    "id": 4,
+    "question": "Get the URL of the Documents folder in the user domain",
+    "codeSnippet": "let docs = FileManager.default.urls(for: .documentDirectory, in: .___)",
+    "correctAnswer": "userDomainMask",
+    "hint": "The domain representing the user's home (the app sandbox) is '.userDomainMask'."
+   },
+   {
+    "id": 5,
+    "question": "Write the Data to the file the URL points to",
+    "codeSnippet": "try dados.___(to: url)",
+    "correctAnswer": "write",
+    "hint": "The Data method that writes to disk is 'write(to:)'."
+   },
+   {
+    "id": 6,
+    "question": "Encode a Codable model to JSON using the right encoder type",
+    "codeSnippet": "let dados = try ___().encode(perfil)",
+    "correctAnswer": "JSONEncoder",
+    "hint": "The type that converts Encodable to JSON is 'JSONEncoder'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which data is the worst choice to store in UserDefaults?",
+    "options": [
+     "Light or dark theme",
+     "The user's authentication token and password",
+     "Whether the tutorial was shown",
+     "Last chosen language"
+    ],
+    "correctIndex": 1,
+    "explanation": "UserDefaults is not secure storage: the plist sits in the sandbox with no special protection for secrets. Credentials belong in the Keychain. The other items are simple preferences, the ideal use."
+   },
+   {
+    "id": 2,
+    "question": "Which sandbox folder suits files that can be recreated and that the system may delete when space is low?",
+    "options": [
+     "Documents",
+     "Bundle.main",
+     "UserDefaults itself",
+     "Library/Caches"
+    ],
+    "correctIndex": 3,
+    "explanation": "Caches is for reproducible data (e.g. downloaded images). Documents is for user-created data and is backed up; the Bundle is read-only."
+   },
+   {
+    "id": 3,
+    "question": "What happens when reading 'UserDefaults.standard.integer(forKey: \"pontos\")' if the key was never written?",
+    "options": [
+     "It returns 0",
+     "It returns nil",
+     "It throws an error",
+     "The app crashes"
+    ],
+    "correctIndex": 0,
+    "explanation": "'integer', 'bool' and 'double' return 0/false for missing keys; 'object(forKey:)', 'string(forKey:)' and other methods that return objects return nil. Use 'register(defaults:)' for another default."
+   },
+   {
+    "id": 4,
+    "question": "What does '@AppStorage(\"som\") var som = true' do in a View?",
+    "options": [
+     "It saves the value in the Keychain",
+     "It creates a JSON file in Documents",
+     "It reads and writes the key 'som' in UserDefaults and updates the View when it changes",
+     "It makes the property constant"
+    ],
+    "correctIndex": 2,
+    "explanation": "@AppStorage wraps UserDefaults: the initial value 'true' acts as the default and any change triggers a new render of the View."
+   },
+   {
+    "id": 5,
+    "question": "Which API returns the URL of the app's Application Support folder?",
+    "options": [
+     "Bundle.main.url(forResource: \"AppSupport\", withExtension: nil)",
+     "UserDefaults.standard.url(forKey: \"support\")",
+     "URL(string: \"/support\")",
+     "FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sandbox folders come from FileManager with a SearchPathDirectory. The Bundle contains packaged resources, not writable folders."
+   },
+   {
+    "id": 6,
+    "question": "Why not store 50 MB of images in UserDefaults?",
+    "options": [
+     "Because UserDefaults only accepts String",
+     "The whole plist is loaded into memory and it is not meant for large data; use files in the sandbox",
+     "Because it requires an internet connection",
+     "Because the App Store forbids it"
+    ],
+    "correctIndex": 1,
+    "explanation": "UserDefaults is for small data. Large data belongs in files (FileManager), SwiftData or Core Data."
+   },
+   {
+    "id": 7,
+    "question": "Which pair of calls saves and loads a Codable struct as a JSON file?",
+    "options": [
+     "UserDefaults.set + UserDefaults.get",
+     "Bundle.main.write + Bundle.main.read",
+     "JSONEncoder().encode + Data.write(to:), then Data(contentsOf:) + JSONDecoder().decode",
+     "String.save + String.load"
+    ],
+    "correctIndex": 2,
+    "explanation": "The flow is: encode to Data, write(to: url); to read, Data(contentsOf: url) and decode(Type.self, from:). The type must be Codable."
+   },
+   {
+    "id": 8,
+    "question": "What is the difference between '@AppStorage' and '@SceneStorage'?",
+    "options": [
+     "AppStorage uses UserDefaults (app-wide); SceneStorage keeps each scene's state for restoration",
+     "They are identical",
+     "SceneStorage writes to the Keychain",
+     "AppStorage only works in UIKit"
+    ],
+    "correctIndex": 0,
+    "explanation": "@SceneStorage is per scene and meant to restore UI state (tab, draft); @AppStorage stores preferences shared across the whole app."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "You ship a seed JSON of categories inside the app, which the user can customize. What is the best approach?",
+    "options": [
+     "Edit the Bundle file directly",
+     "Store everything in UserDefaults",
+     "Read the JSON from the Bundle on first launch and save an editable copy in Application Support",
+     "Write to tmp forever"
+    ],
+    "correctIndex": 2,
+    "explanation": "The Bundle is read-only and signed. Copy the seed resource to the writable sandbox and work with the copy."
+   },
+   {
+    "id": 2,
+    "question": "What does this snippet do? 'UserDefaults.standard.register(defaults: [\"fonte\": 14])'",
+    "options": [
+     "Sets 14 as the default value of key 'fonte' while it has not been written",
+     "Permanently writes 14",
+     "Deletes the key",
+     "Creates a file"
+    ],
+    "correctIndex": 0,
+    "explanation": "register(defaults:) only provides a runtime fallback and is not persisted; a later set overrides it."
+   },
+   {
+    "id": 3,
+    "question": "Which folder is included in iCloud/iTunes backups and holds user-created files?",
+    "options": [
+     "Caches",
+     "tmp",
+     "Bundle.main",
+     "Documents"
+    ],
+    "correctIndex": 3,
+    "explanation": "Documents is included in backups and is where user data lives. Caches and tmp may be purged and must not hold irreplaceable data."
+   },
+   {
+    "id": 4,
+    "question": "How do you build the path of a file 'notas.json' inside an already obtained folder (URL 'base')?",
+    "options": [
+     "base + \"notas.json\"",
+     "base.appendingPathComponent(\"notas.json\")",
+     "base.add(\"notas.json\")",
+     "URL(base, \"notas.json\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "URL has 'appendingPathComponent' to create the child URL; operators like + do not exist for URL."
+   },
+   {
+    "id": 5,
+    "question": "Which type is NOT a property list type accepted directly by UserDefaults?",
+    "options": [
+     "A custom struct without conversion",
+     "Bool",
+     "String",
+     "Data"
+    ],
+    "correctIndex": 0,
+    "explanation": "A custom struct is not a property list type; encode it to Data with JSONEncoder before saving (or use another store)."
+   },
+   {
+    "id": 6,
+    "question": "In an app with 5,000 user-editable records and frequent searches, the best storage is:",
+    "options": [
+     "UserDefaults",
+     "@AppStorage",
+     "SwiftData or Core Data",
+     "SceneStorage"
+    ],
+    "correctIndex": 2,
+    "explanation": "Large volume, queries and relationships call for an object database. The storage wrappers are for small preference values."
+   }
+  ]
+ },
+ {
+  "id": 55,
+  "title": "SwiftData: Relationships, Queries and Editing",
+  "theory": "SwiftData is Apple's modern, Swift-based persistence framework. The '@Model' macro turns a class into a persistent model: stored properties become attributes, and types such as String, Int, Date and Codable are supported. Relationships are properties that point to other models: a '[Tarefa]' property forms a one-to-many, and '[Tag]' on both sides forms a many-to-many. '@Relationship(deleteRule:, inverse:)' configures the delete rule: '.cascade' deletes children too, '.nullify' (the default) only clears the reference, '.deny' blocks deletion while related objects exist and '.noAction' does nothing; 'inverse' names the opposite side. '@Attribute(.unique)' requires a unique value, and inserting an object with the same key updates the existing record (upsert). You configure storage with a 'ModelContainer', usually via '.modelContainer(for: Tarefa.self)' on the scene or root View, which injects the 'modelContext' into the environment. With '@Environment(\\.modelContext)' you call 'insert', 'delete' and 'save'; autosave writes changes automatically at appropriate moments, but 'try context.save()' forces a write. '@Query' fetches objects and updates the View on its own, accepting 'sort:' with 'SortDescriptor' and 'filter:' with '#Predicate' (e.g. '#Predicate<Tarefa> { !$0.concluida }'). To edit, a View receives the model with '@Bindable' and binds form fields to it ('TextField(\"Title\", text: $tarefa.titulo)'), since '@Model' is already Observable. In previews, use a 'ModelContainer' with 'ModelConfiguration(isStoredInMemoryOnly: true)' for disposable data. When changing the schema in shipped apps, remember migration: simple changes are lightweight, but complex ones require 'VersionedSchema' and 'SchemaMigrationPlan'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftdata",
+  "category": "Dados e Rede",
+  "corporateCase": "In a project management app, 'Projeto' has many 'Tarefa' with '@Relationship(deleteRule: .cascade)', so deleting the project clears its tasks. The list uses '@Query' with '#Predicate' to show only pending tasks sorted by date, and the edit form uses '@Bindable'.",
+  "gameCase": "In an RPG, 'Personagem' owns many 'Item' in a one-to-many, and 'Missao' and 'Personagem' form a many-to-many. The game uses '.unique' on the character identifier and an in-memory container in previews to test screens without polluting the real save.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Mark the class as a persistent SwiftData model",
+    "codeSnippet": "___ class Tarefa { var titulo: String; init(titulo: String) { self.titulo = titulo } }",
+    "correctAnswer": "@Model",
+    "hint": "It is a macro starting with @ named after the concept: 'Model'."
+   },
+   {
+    "id": 2,
+    "question": "Configure the cascade delete rule on a relationship property",
+    "codeSnippet": "@___(deleteRule: .cascade) var tarefas: [Tarefa] = []",
+    "correctAnswer": "Relationship",
+    "hint": "The macro that describes the relation between models is '@Relationship'."
+   },
+   {
+    "id": 3,
+    "question": "Make the email unique among records",
+    "codeSnippet": "@Attribute(.___) var email: String",
+    "correctAnswer": "unique",
+    "hint": "The @Attribute option that demands a unique value is called 'unique'."
+   },
+   {
+    "id": 4,
+    "question": "Create the storage container for the Tarefa model on the scene",
+    "codeSnippet": "WindowGroup { ContentView() }.modelContainer(for: ___.self)",
+    "correctAnswer": "Tarefa",
+    "hint": "Provide the model type followed by '.self'."
+   },
+   {
+    "id": 5,
+    "question": "Fetch tasks sorted by title and update the View automatically",
+    "codeSnippet": "@___(sort: \\Tarefa.titulo) var tarefas: [Tarefa]",
+    "correctAnswer": "Query",
+    "hint": "It is SwiftData's query property wrapper."
+   },
+   {
+    "id": 6,
+    "question": "Add a new object to the context",
+    "codeSnippet": "contexto.___(novaTarefa)",
+    "correctAnswer": "insert",
+    "hint": "The ModelContext method that inserts a new model is 'insert'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does the '@Model' macro do to a class?",
+    "options": [
+     "Only makes it Codable",
+     "Converts the class into a struct",
+     "Makes the class persistent and observable by SwiftData",
+     "Creates a View automatically"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Model generates the persistence and observation support. Without it the class is not saved by SwiftData and Views do not react to changes."
+   },
+   {
+    "id": 2,
+    "question": "Which delete rule also deletes the related objects?",
+    "options": [
+     "'.cascade'",
+     "'.nullify'",
+     "'.deny'",
+     "'.noAction'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.cascade' propagates deletion to children. '.nullify' only clears the reference, '.deny' blocks deletion if related objects exist and '.noAction' does nothing."
+   },
+   {
+    "id": 3,
+    "question": "A 'Aluno' can have many 'Disciplina' and each 'Disciplina' many 'Aluno'. What kind of relationship is it?",
+    "options": [
+     "One-to-one",
+     "One-to-many only",
+     "Not possible in SwiftData",
+     "Many-to-many, with arrays on both sides"
+    ],
+    "correctIndex": 3,
+    "explanation": "Arrays on both sides form a many-to-many; declare the 'inverse' on one of them to keep both sides in sync."
+   },
+   {
+    "id": 4,
+    "question": "What does '@Attribute(.unique)' guarantee?",
+    "options": [
+     "The value is encrypted",
+     "No two records share the same value; inserting an equal one updates the existing record",
+     "The property is optional",
+     "The property never changes"
+    ],
+    "correctIndex": 1,
+    "explanation": "With .unique SwiftData performs an upsert: a new object with the same value replaces the existing one instead of duplicating it."
+   },
+   {
+    "id": 5,
+    "question": "Where do you inject the container for all Views of an app?",
+    "options": [
+     "In Info.plist",
+     "In each View using UserDefaults",
+     "With '.modelContainer(for:)' on the scene or root View",
+     "Inside the @Model"
+    ],
+    "correctIndex": 2,
+    "explanation": "The modifier creates the ModelContainer and places the modelContext in the environment of the whole hierarchy."
+   },
+   {
+    "id": 6,
+    "question": "Which snippet filters only the not-completed tasks?",
+    "options": [
+     "'@Query(filter: #Predicate<Tarefa> { !$0.concluida }) var tarefas: [Tarefa]'",
+     "'@Query(filter: tarefas.concluida == false)'",
+     "'@Query { !concluida }'",
+     "'@Query(.nao_concluidas)'"
+    ],
+    "correctIndex": 0,
+    "explanation": "The filter is a typed #Predicate; the closure receives each model ($0) and returns Bool. The other syntaxes do not exist."
+   },
+   {
+    "id": 7,
+    "question": "To edit a model in a form, the View should declare:",
+    "options": [
+     "'@State var tarefa: Tarefa' always",
+     "'let tarefa' and assign directly",
+     "'@Query var tarefa'",
+     "'@Bindable var tarefa: Tarefa' to create bindings like '$tarefa.titulo'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Models are Observable, so @Bindable provides the bindings for TextField and Toggle and edits are written to the managed object."
+   },
+   {
+    "id": 8,
+    "question": "How do you get disposable data in a SwiftUI preview?",
+    "options": [
+     "Delete the app from the simulator",
+     "Create a ModelContainer with 'ModelConfiguration(isStoredInMemoryOnly: true)'",
+     "Use the production database",
+     "Use UserDefaults"
+    ],
+    "correctIndex": 1,
+    "explanation": "An in-memory container writes nothing to disk, keeping previews fast, isolated and repeatable."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "You delete a 'Projeto' with the '.deny' rule and it still has related 'Tarefa'. What happens?",
+    "options": [
+     "The deletion is blocked/fails on save",
+     "The tasks are deleted",
+     "The tasks keep a nil reference",
+     "The project is duplicated"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.deny' protects integrity: the project cannot be deleted while related objects exist."
+   },
+   {
+    "id": 2,
+    "question": "What is the default delete rule of a '@Relationship' with no 'deleteRule'?",
+    "options": [
+     "'.cascade'",
+     "'.deny'",
+     "'.unique'",
+     "'.nullify'"
+    ],
+    "correctIndex": 3,
+    "explanation": "The default is nullify: deleting the object only removes the reference in related objects."
+   },
+   {
+    "id": 3,
+    "question": "What does ModelContext autosave do?",
+    "options": [
+     "Sends data to iCloud",
+     "Writes pending changes automatically at opportune moments, with no mandatory manual 'save()'",
+     "Deletes old data",
+     "Creates backups in Documents"
+    ],
+    "correctIndex": 1,
+    "explanation": "Autosave persists insert/delete/edits; you can still call 'try context.save()' to guarantee a write at a specific moment."
+   },
+   {
+    "id": 4,
+    "question": "In '@Query(sort: \\Tarefa.data, order: .reverse)', how do results come?",
+    "options": [
+     "In alphabetical order",
+     "With no defined order",
+     "From the most recent date to the oldest",
+     "Only the first item"
+    ],
+    "correctIndex": 2,
+    "explanation": "order: .reverse flips the default ascending order; it is the same as SortDescriptor(\\Tarefa.data, order: .reverse)."
+   },
+   {
+    "id": 5,
+    "question": "When shipping a version that renames a property of a @Model already in production, what should you do?",
+    "options": [
+     "Nothing, SwiftData guesses",
+     "Delete the app",
+     "Switch to UserDefaults",
+     "Plan the migration with VersionedSchema/SchemaMigrationPlan or @Attribute(originalName:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Schema changes can lose data if not declared; originalName and migration plans tell SwiftData how to map the old data."
+   },
+   {
+    "id": 6,
+    "question": "Where do you access the context to call 'delete' in a View?",
+    "options": [
+     "'@Environment(\\.modelContext) var contexto'",
+     "'@State var contexto'",
+     "'UserDefaults.standard.context'",
+     "'@AppStorage(\"contexto\")'"
+    ],
+    "correctIndex": 0,
+    "explanation": "The container injects the modelContext into the Environment; the View reads it with @Environment and calls insert/delete."
+   }
+  ]
+ },
+ {
+  "id": 56,
+  "title": "Core Data (and comparison with SwiftData)",
+  "theory": "Core Data is Apple's object graph and persistence framework, predating SwiftData (which is built on top of it). 'NSPersistentContainer' encapsulates the model, the store (usually SQLite) and the contexts: you create it with 'NSPersistentContainer(name: \"Modelo\")' (the .xcdatamodeld file name) and call 'loadPersistentStores'. In Xcode's data model editor you define entities, attributes and relationships (with delete rules and inverses), and Xcode generates 'NSManagedObject' subclasses for them. Every object lives in an 'NSManagedObjectContext', a scratchpad that only reaches disk with 'try context.save()'; the 'viewContext' runs on the main thread and serves the UI, while 'newBackgroundContext()' or 'performBackgroundTask' serve heavy work off the main thread, and objects must never cross contexts directly. To fetch data, build an 'NSFetchRequest<Entity>' with an 'NSPredicate' (e.g. 'NSPredicate(format: \"idade >= %d\", 18)') and 'NSSortDescriptor'; in SwiftUI, '@FetchRequest' does this and updates the View. 'mergePolicy' values (like 'NSMergeByPropertyObjectTrumpMergePolicy') define how to resolve save conflicts, and 'automaticallyMergesChangesFromParent' propagates background changes to the viewContext. Simple model changes (adding an attribute, renaming with a 'renaming identifier') use automatic lightweight migration, enabled by default with NSPersistentContainer. Compare: SwiftData has leaner syntax with macros and pure Swift, ideal for new apps; Core Data is more mature, with more control (NSFetchedResultsController, batch operations, finer CloudKit sharing) and supports older iOS versions, making it the choice for existing databases.",
+  "appleDocUrl": "https://developer.apple.com/documentation/coredata/nspersistentcontainer",
+  "category": "Dados e Rede",
+  "corporateCase": "A five-year-old logistics app already uses Core Data. Orders are synced in a 'newBackgroundContext', merged into the 'viewContext' with 'automaticallyMergesChangesFromParent', and the new model version uses lightweight migration to add the 'prioridade' attribute without losing data.",
+  "gameCase": "In a collectible card game, 'Carta' and 'Deck' are Core Data entities with a many-to-many relationship. Downloading a pack of 5,000 cards is written in a background context so the menu screen stays smooth.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Create the container passing the model name (.xcdatamodeld)",
+    "codeSnippet": "let container = NSPersistentContainer(___: \"Modelo\")",
+    "correctAnswer": "name",
+    "hint": "The initializer's labeled parameter is 'name'."
+   },
+   {
+    "id": 2,
+    "question": "Access the main context, tied to the UI, from the container",
+    "codeSnippet": "let contexto = container.___",
+    "correctAnswer": "viewContext",
+    "hint": "The container property for the UI is 'viewContext'."
+   },
+   {
+    "id": 3,
+    "question": "Create a fetch request passing the entity name",
+    "codeSnippet": "let req = NSFetchRequest<Pessoa>(___: \"Pessoa\")",
+    "correctAnswer": "entityName",
+    "hint": "The NSFetchRequest parameter that takes the entity is 'entityName'."
+   },
+   {
+    "id": 4,
+    "question": "Create a predicate from a format string",
+    "codeSnippet": "req.predicate = NSPredicate(___: \"idade >= %d\", 18)",
+    "correctAnswer": "format",
+    "hint": "The first label of the NSPredicate initializer is 'format'."
+   },
+   {
+    "id": 5,
+    "question": "Fetch entities in the SwiftUI View with the Core Data wrapper",
+    "codeSnippet": "@___(sortDescriptors: []) var pessoas: FetchedResults<Pessoa>",
+    "correctAnswer": "FetchRequest",
+    "hint": "The property wrapper is called '@FetchRequest'."
+   },
+   {
+    "id": 6,
+    "question": "Persist the context's pending changes to disk",
+    "codeSnippet": "try contexto.___()",
+    "correctAnswer": "save",
+    "hint": "The NSManagedObjectContext method that writes is 'save'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the role of 'NSPersistentContainer'?",
+    "options": [
+     "Only draw the interface",
+     "Replace NSManagedObject",
+     "Make network calls",
+     "Encapsulate the Core Data model, store and contexts"
+    ],
+    "correctIndex": 3,
+    "explanation": "The container assembles the Core Data stack (model, coordinator, store) and exposes the viewContext."
+   },
+   {
+    "id": 2,
+    "question": "Which context should be used to import thousands of records without freezing the UI?",
+    "options": [
+     "The viewContext",
+     "A background context (newBackgroundContext / performBackgroundTask)",
+     "Any context on any thread",
+     "A context created inside a View"
+    ],
+    "correctIndex": 1,
+    "explanation": "Heavy work on the viewContext blocks the main thread. Background contexts run on their own queue; changes are merged afterwards."
+   },
+   {
+    "id": 3,
+    "question": "What happens if you modify an NSManagedObject and never call 'save()' on the context?",
+    "options": [
+     "The changes stay in memory only and are lost",
+     "They are always saved automatically",
+     "The app fails to launch",
+     "The object becomes a struct"
+    ],
+    "correctIndex": 0,
+    "explanation": "The context is a scratchpad: without save() the changes never reach the persistent store."
+   },
+   {
+    "id": 4,
+    "question": "What is the correct way to create an 'idade >= 18' filter?",
+    "options": [
+     "NSPredicate(\"idade >= 18\")",
+     "NSFilter(idade: 18)",
+     "NSPredicate(format: \"idade >= %d\", 18)",
+     "NSSort(\"idade\")"
+    ],
+    "correctIndex": 2,
+    "explanation": "NSPredicate uses the format language with arguments (%d, %@). NSSortDescriptor is for sorting."
+   },
+   {
+    "id": 5,
+    "question": "Which Xcode tool defines Core Data entities, attributes and relationships?",
+    "options": [
+     "Interface Builder",
+     "The data model editor (.xcdatamodeld)",
+     "Instruments",
+     "The Asset Catalog"
+    ],
+    "correctIndex": 1,
+    "explanation": "The .xcdatamodeld file opens the model editor with entities, attributes, relationships and code generation."
+   },
+   {
+    "id": 6,
+    "question": "What is a 'mergePolicy' for?",
+    "options": [
+     "Sorting results",
+     "Encrypting the store",
+     "Setting the app color",
+     "Resolving conflicts when two changes affect the same object on save"
+    ],
+    "correctIndex": 3,
+    "explanation": "Policies such as NSMergeByPropertyObjectTrumpMergePolicy define who wins in a save conflict."
+   },
+   {
+    "id": 7,
+    "question": "In which scenario does lightweight migration work automatically?",
+    "options": [
+     "Adding an optional attribute or one with a default value to the model",
+     "Switching the database to another engine",
+     "Merging two entities with custom logic",
+     "Changing a String into a relationship"
+    ],
+    "correctIndex": 0,
+    "explanation": "Simple, inferable changes (new attribute, renaming with an identifier) migrate automatically; complex transformations need a mapping model."
+   },
+   {
+    "id": 8,
+    "question": "When should you choose Core Data over SwiftData?",
+    "options": [
+     "Always, in any new app",
+     "Never",
+     "When the app already uses Core Data or needs mature features/fine control or older iOS",
+     "Only for data under 1 KB"
+    ],
+    "correctIndex": 2,
+    "explanation": "SwiftData is the recommended option for new apps on recent iOS, but Core Data remains valid for existing databases and advanced needs."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the 'viewContext'?",
+    "options": [
+     "A background context",
+     "An NSManagedObjectContext tied to the main thread, used by the UI",
+     "The SQLite file",
+     "A SwiftUI View"
+    ],
+    "correctIndex": 1,
+    "explanation": "viewContext operates on the main queue; use it to read and update data shown in the interface."
+   },
+   {
+    "id": 2,
+    "question": "In SwiftUI, how do you inject the Core Data context so @FetchRequest works?",
+    "options": [
+     "'.environment(\\.modelContext, ...)'",
+     "'@State var ctx'",
+     "'.environment(\\.managedObjectContext, container.viewContext)'",
+     "'UserDefaults.standard'"
+    ],
+    "correctIndex": 2,
+    "explanation": "@FetchRequest reads managedObjectContext from the Environment. 'modelContext' belongs to SwiftData."
+   },
+   {
+    "id": 3,
+    "question": "What is the main syntax difference between SwiftData and Core Data?",
+    "options": [
+     "SwiftData uses macros and pure Swift classes (@Model); Core Data uses .xcdatamodeld and NSManagedObject",
+     "There is none",
+     "Core Data uses structs",
+     "SwiftData requires Objective-C"
+    ],
+    "correctIndex": 0,
+    "explanation": "SwiftData reduces boilerplate: the model is declared in code. Core Data uses a model editor and NSManagedObject subclasses."
+   },
+   {
+    "id": 4,
+    "question": "Can an NSManagedObject created in context A be used directly in context B?",
+    "options": [
+     "Yes, always",
+     "Yes, if it is a struct",
+     "Only in the viewContext",
+     "No; pass the NSManagedObjectID and reload it in the other context"
+    ],
+    "correctIndex": 3,
+    "explanation": "Objects belong to the context/queue they were created in. Pass the objectID and fetch the object in the other context."
+   },
+   {
+    "id": 5,
+    "question": "Which class sorts the results of an NSFetchRequest?",
+    "options": [
+     "NSPredicate",
+     "NSEntityDescription",
+     "NSSortDescriptor",
+     "NSMergePolicy"
+    ],
+    "correctIndex": 2,
+    "explanation": "NSSortDescriptor defines the key and direction of ordering (the request's sortDescriptors)."
+   },
+   {
+    "id": 6,
+    "question": "Which property makes the viewContext automatically absorb changes saved in background contexts?",
+    "options": [
+     "shouldMerge",
+     "automaticallyMergesChangesFromParent",
+     "autoSave",
+     "mergeNow"
+    ],
+    "correctIndex": 1,
+    "explanation": "Enabling automaticallyMergesChangesFromParent on the viewContext reflects changes written to the store in the UI."
+   }
+  ]
+ },
+ {
+  "id": 57,
+  "title": "CloudKit and iCloud Sync",
+  "theory": "CloudKit is Apple's service for storing and syncing app data in the cloud using the user's iCloud account. To use it, add the 'iCloud' capability (checking CloudKit) to the app target in Signing & Capabilities, which sets up a 'CKContainer' (e.g. iCloud.com.company.app). Each container has three databases: 'private' (the user's own data, counted against their iCloud quota), 'shared' (data shared with other users) and 'public' (visible to everyone, counted against the developer's quota). Data is stored as 'CKRecord' (a record with fields and a record type), organized in 'CKRecordZone' and fetched with 'CKQuery'; the direct API works with asynchronous operations. The simplest path is letting SwiftData or Core Data (via 'NSPersistentCloudKitContainer') sync: with SwiftData you just enable the capability and it uses the private database. There are important requirements: all properties must be optional or have a default value, '@Attribute(.unique)' cannot be used, and relationships must be optional. For small preference values, 'NSUbiquitousKeyValueStore' syncs key-value pairs (about a 1 MB limit) across devices. Concurrent edit conflicts are resolved by system rules (generally the last write wins), and you must handle account status ('CKContainer.accountStatus()': no account, restricted, iCloud unavailable) and work offline, since changes sync later. Test on real devices or simulators with the same Apple ID, use the CloudKit Dashboard to inspect data and remember to promote the schema to Production before releasing. Privacy: data in the private database is accessible only to the user; disclose what is synced and treat public data as visible to anyone.",
+  "appleDocUrl": "https://developer.apple.com/documentation/cloudkit",
+  "category": "Dados e Rede",
+  "corporateCase": "A corporate notes app enables the iCloud capability and uses SwiftData with CloudKit: notes appear on the same user's iPhone and iPad without any own server. The app checks accountStatus and warns when the user has no iCloud, keeping work local until the connection returns.",
+  "gameCase": "A game stores progress in the private database via CloudKit, and the player continues where they left off on another device. The global leaderboard uses the public database, while light settings (volume) sync with NSUbiquitousKeyValueStore.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Access the shared iCloud key-value store",
+    "codeSnippet": "NSUbiquitousKeyValueStore.___.set(\"azul\", forKey: \"tema\")",
+    "correctAnswer": "default",
+    "hint": "The shared instance is called 'default'."
+   },
+   {
+    "id": 2,
+    "question": "Get the private database of the default container",
+    "codeSnippet": "let banco = CKContainer.default().___CloudDatabase",
+    "correctAnswer": "private",
+    "hint": "The property 'privateCloudDatabase' starts with the word that denotes the user's own database."
+   },
+   {
+    "id": 3,
+    "question": "Create a record of type \"Nota\" to save in CloudKit",
+    "codeSnippet": "let registro = ___(recordType: \"Nota\")",
+    "correctAnswer": "CKRecord",
+    "hint": "The type representing a CloudKit record starts with CK and ends with Record."
+   },
+   {
+    "id": 4,
+    "question": "Build a query that uses an NSPredicate",
+    "codeSnippet": "let consulta = CKQuery(recordType: \"Nota\", ___: NSPredicate(value: true))",
+    "correctAnswer": "predicate",
+    "hint": "The second parameter of CKQuery is called 'predicate'."
+   },
+   {
+    "id": 5,
+    "question": "Check whether the user has an iCloud account available",
+    "codeSnippet": "let status = try await CKContainer.default().___()",
+    "correctAnswer": "accountStatus",
+    "hint": "The async CKContainer method that returns the account state is 'accountStatus'."
+   },
+   {
+    "id": 6,
+    "question": "Let SwiftData pick the CloudKit database configured in the app",
+    "codeSnippet": "ModelConfiguration(cloudKitDatabase: .___)",
+    "correctAnswer": "automatic",
+    "hint": "The value that lets the system decide the container is called 'automatic'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which CloudKit database stores the user's own data and uses their iCloud quota?",
+    "options": [
+     "Private",
+     "Public",
+     "Shared",
+     "Local"
+    ],
+    "correctIndex": 0,
+    "explanation": "The private database is visible only to the user and consumes their storage; the public one uses the developer's quota and is accessible to everyone."
+   },
+   {
+    "id": 2,
+    "question": "What is the first step to use CloudKit in an app?",
+    "options": [
+     "Build your own server",
+     "Install a pod",
+     "Add the iCloud (CloudKit) capability in Signing & Capabilities",
+     "Ask for location permission"
+    ],
+    "correctIndex": 2,
+    "explanation": "The capability creates/associates the CKContainer and sets up entitlements; without it calls fail."
+   },
+   {
+    "id": 3,
+    "question": "Which of these is a requirement to sync SwiftData models with CloudKit?",
+    "options": [
+     "All properties required and unique",
+     "Optional properties or ones with default values, and no '.unique'",
+     "Use only Strings",
+     "Use UserDefaults"
+    ],
+    "correctIndex": 1,
+    "explanation": "CloudKit does not enforce uniqueness and must tolerate partial records; so the schema must be permissive."
+   },
+   {
+    "id": 4,
+    "question": "To sync a simple preference (like the theme) across devices with very little data, the ideal choice is:",
+    "options": [
+     "A public CloudKit query",
+     "A file in the Bundle",
+     "Your own SQLite database",
+     "NSUbiquitousKeyValueStore"
+    ],
+    "correctIndex": 3,
+    "explanation": "It is the iCloud-synced equivalent of UserDefaults, with a total limit of about 1 MB."
+   },
+   {
+    "id": 5,
+    "question": "The user edited the same note on two offline devices. What usually happens on sync?",
+    "options": [
+     "The system resolves the conflict, generally letting the most recent write win",
+     "Both devices crash",
+     "Data is erased",
+     "iCloud asks the developer"
+    ],
+    "correctIndex": 0,
+    "explanation": "CloudKit/SwiftData use a resolution policy (usually last change wins); with the direct API you can handle serverRecordChanged."
+   },
+   {
+    "id": 6,
+    "question": "How should the app react when 'accountStatus' returns 'noAccount'?",
+    "options": [
+     "Close the app",
+     "Delete the data",
+     "Inform the user and keep working locally",
+     "Ignore it and overwrite the cloud"
+    ],
+    "correctIndex": 2,
+    "explanation": "Without an iCloud account there is no sync; the app should degrade gracefully and keep local data."
+   },
+   {
+    "id": 7,
+    "question": "What is a 'CKRecord'?",
+    "options": [
+     "A screen of the app",
+     "An error type",
+     "A certificate",
+     "A record with typed fields, of a record type, stored in a zone"
+    ],
+    "correctIndex": 3,
+    "explanation": "CKRecord is CloudKit's unit of data, organized by type and zone (CKRecordZone)."
+   },
+   {
+    "id": 8,
+    "question": "Before publishing to the App Store, what should you do with the CloudKit schema created in development?",
+    "options": [
+     "Nothing, it is automatic",
+     "Promote it to the Production environment in the CloudKit Dashboard",
+     "Delete it",
+     "Email it"
+    ],
+    "correctIndex": 1,
+    "explanation": "The development environment is separate from production; without promoting the schema, real users cannot sync."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which CloudKit database is accessible to anyone, even for reading without an iCloud login?",
+    "options": [
+     "Private",
+     "Shared only",
+     "None",
+     "Public"
+    ],
+    "correctIndex": 3,
+    "explanation": "The public database allows any user to read data; so it must not contain personal information."
+   },
+   {
+    "id": 2,
+    "question": "Which Core Data class adds CloudKit sync?",
+    "options": [
+     "NSPersistentContainer alone",
+     "NSPersistentCloudKitContainer",
+     "NSCloudStore",
+     "CKDatabaseContainer"
+    ],
+    "correctIndex": 1,
+    "explanation": "NSPersistentCloudKitContainer extends NSPersistentContainer and mirrors the store to CloudKit."
+   },
+   {
+    "id": 3,
+    "question": "How do you test sync in practice?",
+    "options": [
+     "Just reading the code",
+     "Running only on the Mac without a login",
+     "Using two devices/simulators with the same Apple ID and checking the CloudKit Dashboard",
+     "Turning iCloud off"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sync depends on real accounts and network; the Dashboard lets you verify records and schema."
+   },
+   {
+    "id": 4,
+    "question": "Which data should NOT go in CloudKit's public database?",
+    "options": [
+     "The user's personal and sensitive data",
+     "A score leaderboard",
+     "App catalog content",
+     "Help texts"
+    ],
+    "correctIndex": 0,
+    "explanation": "The public database is readable by everyone; personal data must stay in the private one (and protected), respecting privacy."
+   },
+   {
+    "id": 5,
+    "question": "What happens to sync when the device is offline?",
+    "options": [
+     "Nothing is saved",
+     "Changes stay local and sync when the connection returns",
+     "The app is terminated",
+     "Data goes to the public database"
+    ],
+    "correctIndex": 1,
+    "explanation": "The app should be 'offline-first': it writes locally and the system uploads later."
+   },
+   {
+    "id": 6,
+    "question": "Which option represents sharing data between different users in CloudKit?",
+    "options": [
+     "The private database alone",
+     "NSUbiquitousKeyValueStore",
+     "UserDefaults",
+     "The shared database (CKShare)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Shares use CKShare and appear in the invitees' shared database."
+   }
+  ]
+ },
+ {
+  "id": 58,
+  "title": "Keychain and Secure Storage",
+  "theory": "The Keychain is the system's encrypted vault for small secrets: passwords, access tokens, user API keys and certificates. Unlike UserDefaults or plain files, its items are encrypted, in some cases survive reinstalls and can be protected by biometrics. The 'Keychain Services' API uses query dictionaries with keys like 'kSecClass' (for example 'kSecClassGenericPassword'), 'kSecAttrAccount' and 'kSecValueData', and four functions: 'SecItemAdd' (write), 'SecItemCopyMatching' (read), 'SecItemUpdate' (update) and 'SecItemDelete' (delete), all returning an 'OSStatus' that must be compared with 'errSecSuccess'. Adding an item that already exists returns 'errSecDuplicateItem', so the usual pattern is to update or delete first. The 'kSecAttrAccessible' attribute sets the data protection class, such as 'kSecAttrAccessibleWhenUnlocked' (only while the device is unlocked) or '...AfterFirstUnlock' (for background tasks), and 'ThisDeviceOnly' variants prevent migration to other devices. To require Face ID or Touch ID, use 'LocalAuthentication': create an 'LAContext', call 'canEvaluatePolicy' and 'evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason:)', and add the 'NSFaceIDUsageDescription' key to Info.plist, otherwise Face ID fails. Biometrics authenticate the person but do not replace storing the secret in the Keychain. For networking, App Transport Security (ATS) requires HTTPS by default: do not disable it globally; 'certificate pinning' (pinning the expected certificate or public key) is an extra defense against man-in-the-middle attacks. Golden rule: never leave secrets in source code or the repository, because the binary can be inspected; ask the user for the credential or use a server. Secure coding checklist: validate input, use HTTPS, minimize collected data and requested permissions, protect sensitive data at rest and do not log secrets. The certification exam expects you to know how sensitive data can be protected or compromised.",
+  "appleDocUrl": "https://developer.apple.com/documentation/security/keychain-services",
+  "category": "Dados e Rede",
+  "corporateCase": "A banking app stores the refresh token in the Keychain with 'kSecAttrAccessibleWhenUnlockedThisDeviceOnly' and requires Face ID before showing the balance. All calls use HTTPS with ATS, and the server API key stays on the backend, not inside the app.",
+  "gameCase": "An online game stores the player's session token in the Keychain, so they do not need to log in again, and never writes the password to UserDefaults. The app does not place payment service keys in code, since anyone could extract them from the binary.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Set the item class to generic password",
+    "codeSnippet": "let query: [String: Any] = [kSecClass as String: ___, kSecAttrAccount as String: \"ana\"]",
+    "correctAnswer": "kSecClassGenericPassword",
+    "hint": "The constant starts with 'kSecClass' and ends with 'GenericPassword'."
+   },
+   {
+    "id": 2,
+    "question": "Write a new item to the Keychain",
+    "codeSnippet": "let status = ___(query as CFDictionary, nil)",
+    "correctAnswer": "SecItemAdd",
+    "hint": "The function that adds an item is 'SecItemAdd'."
+   },
+   {
+    "id": 3,
+    "question": "Complete the name of the function that reads items matching the query",
+    "codeSnippet": "let status = SecItemCopy___(query as CFDictionary, &item)",
+    "correctAnswer": "Matching",
+    "hint": "The read function is SecItemCopyMatching."
+   },
+   {
+    "id": 4,
+    "question": "Create the local authentication object used for Face ID/Touch ID",
+    "codeSnippet": "let contexto = ___()",
+    "correctAnswer": "LAContext",
+    "hint": "The LocalAuthentication type starts with LA and ends with Context."
+   },
+   {
+    "id": 5,
+    "question": "Provide the text explaining to the user why biometrics is requested",
+    "codeSnippet": "contexto.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, ___: \"Entrar no app\") { ok, erro in }",
+    "correctAnswer": "localizedReason",
+    "hint": "The labeled parameter of evaluatePolicy is 'localizedReason'."
+   },
+   {
+    "id": 6,
+    "question": "Check that the Keychain operation finished successfully",
+    "codeSnippet": "if status == ___ { print(\"Salvo\") }",
+    "correctAnswer": "errSecSuccess",
+    "hint": "The OSStatus success constant is 'errSecSuccess'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the correct place to store a user's access token?",
+    "options": [
+     "UserDefaults",
+     "Keychain",
+     "A text file in Documents",
+     "A constant in the code"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Keychain is encrypted and protected by the system. UserDefaults and plain files are not meant for secrets, and a constant in code can be extracted from the binary."
+   },
+   {
+    "id": 2,
+    "question": "Which Keychain Services function reads an item?",
+    "options": [
+     "SecItemCopyMatching",
+     "SecItemAdd",
+     "SecItemRead",
+     "SecItemFetch"
+    ],
+    "correctIndex": 0,
+    "explanation": "SecItemCopyMatching takes a query and returns the matching item; SecItemRead and SecItemFetch do not exist."
+   },
+   {
+    "id": 3,
+    "question": "What happens when you call SecItemAdd with an item that already exists?",
+    "options": [
+     "It updates the value automatically",
+     "It deletes the old item",
+     "It returns errSecDuplicateItem",
+     "It crashes the app"
+    ],
+    "correctIndex": 2,
+    "explanation": "Add does not upsert in the Keychain: handle errSecDuplicateItem using SecItemUpdate (or deleting first)."
+   },
+   {
+    "id": 4,
+    "question": "What does 'kSecAttrAccessibleWhenUnlockedThisDeviceOnly' mean?",
+    "options": [
+     "Public item",
+     "Item accessible without a passcode",
+     "Item deleted on unlock",
+     "Item accessible only while the device is unlocked and that does not migrate to other devices"
+    ],
+    "correctIndex": 3,
+    "explanation": "The protection class controls when the item can be read; 'ThisDeviceOnly' prevents it from going to backups/new devices."
+   },
+   {
+    "id": 5,
+    "question": "Which Info.plist key is required to use Face ID?",
+    "options": [
+     "NSCameraUsageDescription",
+     "NSBiometricsKey",
+     "NSFaceIDUsageDescription",
+     "UIFaceIDMode"
+    ],
+    "correctIndex": 2,
+    "explanation": "Without NSFaceIDUsageDescription the system does not allow the app to use Face ID; Touch ID does not require this key."
+   },
+   {
+    "id": 6,
+    "question": "Which framework presents the Face ID/Touch ID prompt?",
+    "options": [
+     "AuthenticationServices only",
+     "LocalAuthentication",
+     "CryptoKit",
+     "Security Core"
+    ],
+    "correctIndex": 1,
+    "explanation": "LAContext, from LocalAuthentication, evaluates the biometric policy; it authenticates the person but does not store the secret."
+   },
+   {
+    "id": 7,
+    "question": "About App Transport Security (ATS), what is the good practice?",
+    "options": [
+     "Keep the default (HTTPS required) and open exceptions only when needed and specific",
+     "Disable everything with NSAllowsArbitraryLoads",
+     "Always use HTTP",
+     "Ignore invalid certificates"
+    ],
+    "correctIndex": 0,
+    "explanation": "ATS forces secure connections. Disabling it globally exposes traffic; if needed, limit the exception to one domain."
+   },
+   {
+    "id": 8,
+    "question": "Why not put a secret API key directly in the app code?",
+    "options": [
+     "Because it increases the app size",
+     "Because Swift does not accept long Strings",
+     "Because Xcode blocks it",
+     "Because anyone can extract it from the binary or the repository"
+    ],
+    "correctIndex": 3,
+    "explanation": "Embedded secrets are not secret. Keep them on the server or obtain them with user authentication."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is 'certificate pinning'?",
+    "options": [
+     "Accepting only the server's expected certificate or public key",
+     "Installing the certificate in the user's Keychain",
+     "Disabling HTTPS",
+     "Generating a certificate in the app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Pinning reduces the risk of man-in-the-middle attacks, but you must plan for certificate renewal."
+   },
+   {
+    "id": 2,
+    "question": "For an app that must read the Keychain token in background tasks after the first unlock, which protection class should it use?",
+    "options": [
+     "kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly always",
+     "None, it is impossible",
+     "kSecAttrAccessibleAfterFirstUnlock",
+     "kSecAttrAccessibleWhenUnlocked always"
+    ],
+    "correctIndex": 2,
+    "explanation": "Background tasks may run with the device locked; AfterFirstUnlock allows access after the first unlock since boot."
+   },
+   {
+    "id": 3,
+    "question": "An app shows the balance only after Face ID. If the user has no biometrics enrolled, what should it do?",
+    "options": [
+     "Show the balance unprotected",
+     "Check with canEvaluatePolicy and offer a fallback (such as the device passcode)",
+     "Crash the app",
+     "Print the password in plain text to the log"
+    ],
+    "correctIndex": 1,
+    "explanation": "canEvaluatePolicy reports whether biometrics is available; a good app offers an alternative and does not lock the user out."
+   },
+   {
+    "id": 4,
+    "question": "Which of these is an item of a secure coding checklist?",
+    "options": [
+     "Save passwords in UserDefaults",
+     "Use HTTP for simplicity",
+     "Reuse the same key across all apps",
+     "Do not log passwords and tokens"
+    ],
+    "correctIndex": 3,
+    "explanation": "Logs can leak data. The other items are insecure practices."
+   },
+   {
+    "id": 5,
+    "question": "What does biometrics (Face ID) do with respect to data?",
+    "options": [
+     "Encrypts all the app's files",
+     "Replaces the Keychain",
+     "Authenticates the person but does not by itself encrypt or store the secret",
+     "Sends the face to the server"
+    ],
+    "correctIndex": 2,
+    "explanation": "To protect the data use the Keychain (optionally with biometric access control); Face ID only confirms who is using the device."
+   },
+   {
+    "id": 6,
+    "question": "How do you update the password of an existing Keychain item?",
+    "options": [
+     "SecItemUpdate with the query and the new attributes",
+     "Repeated SecItemAdd",
+     "UserDefaults.set",
+     "SecItemCopyMatching"
+    ],
+    "correctIndex": 0,
+    "explanation": "SecItemUpdate takes the item's query and a dictionary with the attributes to change."
+   }
+  ]
+ }
+]

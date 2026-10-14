@@ -62,9 +62,9 @@ final class Localizer: ObservableObject {
         lessons = intro.lessons
         introGlossary = intro.glossary
         pillars = CourseData.loadPillars(language)
-        challenges = CourseData.load("challenges", language)
-        exams = CourseData.load("mockExams", language)
-        glossary = CourseData.load("glossary", language)
+        challenges = CourseData.load("challenges", language) + CourseData.loadAll(prefix: "challengesMore", language)
+        exams = CourseData.load("mockExams", language) + CourseData.loadAll(prefix: "mockExamsMore", language)
+        glossary = CourseData.load("glossary", language) + CourseData.loadAll(prefix: "glossaryMore", language)
         badges = CourseData.load("badges", language)
 
         // Study bank: every mock-exam question plus the quiz of each introductory lesson.

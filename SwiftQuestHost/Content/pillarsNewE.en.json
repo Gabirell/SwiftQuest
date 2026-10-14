@@ -1,0 +1,1127 @@
+[
+ {
+  "id": 34,
+  "title": "Operators and Basic Types",
+  "theory": "Operators are symbols that combine or transform values. The arithmetic ones are '+', '-', '*', '/' and the remainder '%'; between two 'Int' values, '7 / 2' yields '3' (integer division, no decimals) and '7 % 2' yields '1'. Swift never converts numeric types implicitly: 'Int + Double' does not compile, and you must convert explicitly with 'Double(x)'. The basic types are 'Int', 'Double', 'Float', 'String', 'Character' and 'Bool', and a type annotation ('let price: Double = 10') is optional when the compiler can infer the type. Compound assignment operators ('+=', '-=') update the variable, and comparison operators ('==', '!=', '<', '>=') return 'Bool'. The logical operators '&&', '||' and '!' use short-circuit evaluation: if the left side already decides the result, the right side is never executed. The ranges '1...5' (closed) and '1..<5' (half-open) are heavily used in loops, and the ternary operator 'cond ? a : b' and 'a ?? b' (nil-coalescing, uses 'b' when 'a' is nil) shorten decisions. For reference types, '==' compares values while '===' checks whether two references point to the same instance. 'Int' overflow causes a runtime error; for wrap-around behavior use the '&+', '&-' and '&*' operators. Precedence follows math ('*' before '+'), and parentheses make intent clear. The certification covers exactly these points: predicting the result of expressions and recognizing type errors.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/",
+  "category": "Fundamentos",
+  "corporateCase": "In a finance app, the installment value is computed with 'Double(total) / Double(months)' to avoid the integer division that would drop the cents. The display name uses 'nickname ?? name' so something is always shown on screen.",
+  "gameCase": "In a game, the circular level index uses 'next % totalLevels' to wrap back to the start, and the score uses '&+' or a cap with 'min' so the 'Int' does not overflow. The hero's health check combines '&&' and comparisons, like 'health > 0 && !isInvincible'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Get the remainder of dividing 17 by 5",
+    "codeSnippet": "let resto = 17 ___ 5",
+    "correctAnswer": "%",
+    "hint": "It is the remainder (modulo) operator, not '/'."
+   },
+   {
+    "id": 2,
+    "question": "Create the half-open range from 0 up to 4 (5 is excluded)",
+    "codeSnippet": "for i in 0___5 { print(i) }",
+    "correctAnswer": "..<",
+    "hint": "Two dots followed by the less-than sign."
+   },
+   {
+    "id": 3,
+    "question": "Use \"Anonymous\" when the nickname is nil",
+    "codeSnippet": "let apelido: String? = nil\nlet nome = apelido ___ \"Anônimo\"",
+    "correctAnswer": "??",
+    "hint": "It is the nil-coalescing operator, two question marks."
+   },
+   {
+    "id": 4,
+    "question": "Convert the integer to the decimal type before dividing",
+    "codeSnippet": "let total = 7\nlet metade = ___(total) / 2",
+    "correctAnswer": "Double",
+    "hint": "Swift's default decimal type, used as a conversion function."
+   },
+   {
+    "id": 5,
+    "question": "Add with overflow allowed (no crash) when adding 1 to UInt8.max",
+    "codeSnippet": "let x = UInt8.max ___ 1",
+    "correctAnswer": "&+",
+    "hint": "The addition operator that starts with '&' and wraps around."
+   },
+   {
+    "id": 6,
+    "question": "Check whether 'a' and 'b' are the SAME class instance (identity)",
+    "codeSnippet": "class Caixa {}\nlet a = Caixa()\nlet b = a\nprint(a ___ b)",
+    "correctAnswer": "===",
+    "hint": "It is '==' with one more equals sign."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does 'let r = 7 / 2; print(r)' print?",
+    "options": [
+     "3.5",
+     "3",
+     "4",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "Both literals are inferred as 'Int', so the division is integer division and drops the fractional part: 3. To get 3.5 you would need 'Double'."
+   },
+   {
+    "id": 2,
+    "question": "What does 'print(-7 % 3)' print?",
+    "options": [
+     "2",
+     "1",
+     "-2",
+     "-1"
+    ],
+    "correctIndex": 3,
+    "explanation": "In Swift the remainder takes the sign of the dividend: -7 = 3 * (-2) + (-1). So the result is -1."
+   },
+   {
+    "id": 3,
+    "question": "What happens with 'let a = 5; let b = 2.5; let c = a * b'?",
+    "options": [
+     "c is 12.5",
+     "c is 12",
+     "Compile error: 'Int' and 'Double' cannot be multiplied directly",
+     "Runtime error"
+    ],
+    "correctIndex": 2,
+    "explanation": "'a' is Int and 'b' is Double. Swift does no implicit conversion; you must write 'Double(a) * b'."
+   },
+   {
+    "id": 4,
+    "question": "What is the result of '2 + 3 * 4 - 1'?",
+    "options": [
+     "13",
+     "19",
+     "15",
+     "23"
+    ],
+    "correctIndex": 0,
+    "explanation": "Multiplication has higher precedence: 3 * 4 = 12, then 2 + 12 - 1 = 13."
+   },
+   {
+    "id": 5,
+    "question": "What happens in 'var x: UInt8 = 255; x += 1'?",
+    "options": [
+     "x becomes 0",
+     "x becomes 256",
+     "Runtime error caused by arithmetic overflow",
+     "x stays 255"
+    ],
+    "correctIndex": 2,
+    "explanation": "The regular '+' traps on overflow. To wrap around (result 0) you would use 'x = x &+ 1'."
+   },
+   {
+    "id": 6,
+    "question": "With 'let a = 0; let b = 10', what does 'let ok = a != 0 && b / a > 1' produce?",
+    "options": [
+     "Runtime error: division by zero",
+     "ok is true",
+     "Compile error",
+     "ok is false, because the division is never evaluated"
+    ],
+    "correctIndex": 3,
+    "explanation": "'&&' short-circuits: 'a != 0' is false, so the right side is not executed and there is no division by zero."
+   },
+   {
+    "id": 7,
+    "question": "How many elements does the range '1..<4' have?",
+    "options": [
+     "3",
+     "4",
+     "5",
+     "2"
+    ],
+    "correctIndex": 0,
+    "explanation": "The half-open range excludes the upper bound: 1, 2 and 3. '1...4' would have 4 elements."
+   },
+   {
+    "id": 8,
+    "question": "Which operator checks whether two variables reference the same instance of a class?",
+    "options": [
+     "==",
+     "===",
+     "=",
+     "??"
+    ],
+    "correctIndex": 1,
+    "explanation": "'===' compares identity (same instance). '==' compares value equality and requires 'Equatable'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What does 'let n = 5; print(n % 2 == 0 ? \"even\" : \"odd\")' print?",
+    "options": [
+     "even",
+     "odd",
+     "true",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "5 % 2 is 1, so the condition is false and the ternary picks the second value."
+   },
+   {
+    "id": 2,
+    "question": "What is the result of 'let name: String? = nil; print(name ?? \"N/A\")'?",
+    "options": [
+     "nil",
+     "Optional(\"N/A\")",
+     "N/A",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "'??' returns the default value when the Optional is nil, and the result is already a non-optional 'String'."
+   },
+   {
+    "id": 3,
+    "question": "What is the value of '(2, \"a\") < (1, \"z\")'?",
+    "options": [
+     "true",
+     "false",
+     "Compile error",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tuples are compared element by element from left to right; since 2 < 1 is false and 2 != 1, the result is already false."
+   },
+   {
+    "id": 4,
+    "question": "Which of these declarations compiles?",
+    "options": [
+     "let a: Int = 3.5",
+     "let b: Double = 3",
+     "let c: String = 3",
+     "let d: Bool = 1"
+    ],
+    "correctIndex": 1,
+    "explanation": "The literal '3' can be a 'Double'. The other cases mix incompatible types (decimal in Int, number in String or Bool)."
+   },
+   {
+    "id": 5,
+    "question": "What is the value of 'Int8.max &+ 1'?",
+    "options": [
+     "128",
+     "127",
+     "-128",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "Int8.max is 127; with '&+' the value wraps around to the smallest Int8, -128, without crashing."
+   },
+   {
+    "id": 6,
+    "question": "What is the inferred type of 'let letter = \"A\"'?",
+    "options": [
+     "Character",
+     "Int",
+     "String",
+     "Substring"
+    ],
+    "correctIndex": 2,
+    "explanation": "A quoted literal is inferred as 'String'. To get a 'Character' you must annotate: 'let letter: Character = \"A\"'."
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "title": "Naming, Scope and Shadowing",
+  "theory": "The Swift API Design Guidelines ask for clarity at the point of use: variables, constants, functions and properties use 'lowerCamelCase' ('fullName', 'calculateTotal()'), while types and protocols use 'UpperCamelCase' ('Profile', 'Codable'). An identifier may contain letters, digits and '_', but it cannot start with a digit or contain spaces or hyphens; to use a reserved word as a name, wrap it in backticks (`class`), although it is best to avoid that. Boolean properties should read like an assertion ('isEnabled', 'hasChanges'), and argument labels make a call read like a sentence ('move(from:to:)'). Scope is the region of code where a name is visible: global, function, block (inside 'if', 'for', braces) or type scope (properties and methods). A local variable lives only while its scope runs; using it outside produces the error 'cannot find in scope'. Shadowing happens when an inner name hides an outer one with the same name, as in 'if let name = name' (the new non-optional 'name' hides the optional) or when a parameter has the same name as a property, in which case 'self.name' accesses the property. Forgetting 'self.' in 'name = name' assigns the parameter to itself and fails. Prefer type inference ('let age = 30') because it is cleaner, and use an explicit annotation when the literal would infer the wrong type ('let rate: Double = 5') or when the initial value does not exist yet. The certification exam tests naming conventions, valid identifiers and predicting which variable is in play at each scope.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference",
+  "category": "Fundamentos",
+  "corporateCase": "In a calendar app, the 'isSyncing' property makes it clear it is a Bool, and the method 'schedule(meeting:for:)' reads like a sentence. Inside an 'init', the team uses 'self.title = title' to tell the parameter apart from the property and avoid shadowing bugs.",
+  "gameCase": "In a game, the scoreboard variable 'points' is file-global, but inside the level loop a local 'let points' hides it, and the final score shows up wrong. After renaming ('roundPoints' and 'totalPoints'), the bug disappears.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Use the reserved word 'class' as a constant name (in backticks)",
+    "codeSnippet": "let `___` = \"Matemática\"",
+    "correctAnswer": "class",
+    "hint": "The name is exactly the reserved word inside the backticks."
+   },
+   {
+    "id": 2,
+    "question": "Tell the property apart from the parameter inside the init",
+    "codeSnippet": "struct Pessoa {\n  var nome: String\n  init(nome: String) { ___.nome = nome }\n}",
+    "correctAnswer": "self",
+    "hint": "The word that refers to the current instance."
+   },
+   {
+    "id": 3,
+    "question": "Create a new non-optional constant 'nome' that shadows the optional inside the if",
+    "codeSnippet": "var nome: String? = \"Ana\"\nif ___ nome = nome { print(nome.count) }",
+    "correctAnswer": "let",
+    "hint": "It is the optional-binding keyword that creates a constant."
+   },
+   {
+    "id": 4,
+    "question": "Give the idiomatic name (API Design Guidelines) to a Bool that tells whether something is enabled",
+    "codeSnippet": "var ___: Bool = true",
+    "correctAnswer": "isEnabled",
+    "hint": "Prefix 'is' plus the adjective, in lowerCamelCase."
+   },
+   {
+    "id": 5,
+    "question": "Call the function using the argument's external label",
+    "codeSnippet": "func saudar(a pessoa: String) { print(pessoa) }\nsaudar(___: \"Ana\")",
+    "correctAnswer": "a",
+    "hint": "The first name before the internal parameter is the external label."
+   },
+   {
+    "id": 6,
+    "question": "Which type does Swift infer by default for a decimal literal like 9.99?",
+    "codeSnippet": "let preco: ___ = 9.99",
+    "correctAnswer": "Double",
+    "hint": "It is not Float: it is the 64-bit decimal type."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which function name follows the Swift convention?",
+    "options": [
+     "CalcularTotal()",
+     "calcular_total()",
+     "calcularTotal()",
+     "calcular-total()"
+    ],
+    "correctIndex": 2,
+    "explanation": "Functions use lowerCamelCase. 'CalcularTotal' looks like a type, 'calcular_total' is snake_case and hyphens are not allowed in identifiers."
+   },
+   {
+    "id": 2,
+    "question": "Which of these is a valid identifier for a constant?",
+    "options": [
+     "2aLugar",
+     "meu-valor",
+     "_valor",
+     "for"
+    ],
+    "correctIndex": 2,
+    "explanation": "An identifier can start with '_' or a letter. '2aLugar' starts with a digit, 'meu-valor' has a hyphen and 'for' is a reserved word (it would only work in backticks)."
+   },
+   {
+    "id": 3,
+    "question": "What does this print?\nlet x = 10\nif true { let x = 20; print(x) }\nprint(x)",
+    "options": [
+     "20 and 20",
+     "20 and 10",
+     "10 and 10",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "The 'x' inside the 'if' is a new constant that shadows the outer one only inside the block. Outside it, 'x' is still 10."
+   },
+   {
+    "id": 4,
+    "question": "In 'struct P { var name: String; init(name: String) { name = name } }', what is the problem?",
+    "options": [
+     "None, it compiles fine",
+     "'self.' is missing on the property: the parameter (a constant) is being assigned to itself",
+     "'init' cannot have parameters",
+     "String does not allow assignment"
+    ],
+    "correctIndex": 1,
+    "explanation": "Inside the init, 'nome' refers to the parameter, which shadows the property. The correct form is 'self.nome = nome'."
+   },
+   {
+    "id": 5,
+    "question": "What is the best name for a Bool property that says whether the list is empty?",
+    "options": [
+     "isEmpty",
+     "empty",
+     "checkEmpty",
+     "emptyFlag"
+    ],
+    "correctIndex": 0,
+    "explanation": "Bool properties should read as assertions about the object: 'isEmpty', as in Array."
+   },
+   {
+    "id": 6,
+    "question": "After 'guard let nome = nome else { return }', what is the type of 'nome' in the rest of the function (with 'nome' being a String? before)?",
+    "options": [
+     "String?",
+     "String",
+     "Any",
+     "Substring"
+    ],
+    "correctIndex": 1,
+    "explanation": "'guard let' creates a non-optional constant with the same name (shadowing) that stays visible for the rest of the scope."
+   },
+   {
+    "id": 7,
+    "question": "What is the type of 'let rate = 5' and how do you get a Double?",
+    "options": [
+     "Double; already correct",
+     "Int; write 'let rate: Double = 5'",
+     "Float; write 'let rate = 5f'",
+     "Number; use a cast"
+    ],
+    "correctIndex": 1,
+    "explanation": "An integer literal is inferred as Int. An explicit annotation ('Double') changes the type, since the literal '5' can also be a Double."
+   },
+   {
+    "id": 8,
+    "question": "What happens with 'for i in 1...3 { }; print(i)'?",
+    "options": [
+     "Prints 3",
+     "Prints 0",
+     "Prints nil",
+     "Compile error: 'i' only exists inside the loop"
+    ],
+    "correctIndex": 3,
+    "explanation": "The loop variable belongs to the 'for' block's scope. Outside it the name is not found ('cannot find in scope')."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Given 'func mover(de origem: Int, para destino: Int)', which call is valid?",
+    "options": [
+     "mover(1, 2)",
+     "mover(origem: 1, destino: 2)",
+     "mover(de: 1, para: 2)",
+     "mover(para: 2, de: 1)"
+    ],
+    "correctIndex": 2,
+    "explanation": "In the call you use the external labels ('de' and 'para') in the declared order; 'origem' and 'destino' are internal names used only inside the function."
+   },
+   {
+    "id": 2,
+    "question": "Which type name follows the convention?",
+    "options": [
+     "struct perfilUsuario",
+     "struct PerfilUsuario",
+     "struct perfil_usuario",
+     "struct PERFIL_USUARIO"
+    ],
+    "correctIndex": 1,
+    "explanation": "Types use UpperCamelCase: 'PerfilUsuario'."
+   },
+   {
+    "id": 3,
+    "question": "What does '_' do in 'func f(_ x: Int)'?",
+    "options": [
+     "Makes the parameter optional",
+     "Omits the external label, allowing the call 'f(3)'",
+     "Makes the function private",
+     "Ignores the passed value"
+    ],
+    "correctIndex": 1,
+    "explanation": "The underscore in place of the external label removes the need to write a label in the call."
+   },
+   {
+    "id": 4,
+    "question": "What does this print?\nvar x = 1\nfunc f() { var x = 2; x += 1 }\nf()\nprint(x)",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "The local 'x' in 'f' shadows the global one, so only the local variable changes. The global stays 1."
+   },
+   {
+    "id": 5,
+    "question": "In Swift 5.7 or later, 'if let name { }' is equivalent to what?",
+    "options": [
+     "if let nome = nome { }",
+     "if let nome = nil { }",
+     "if nome == nil { }",
+     "if var nome = 0 { }"
+    ],
+    "correctIndex": 0,
+    "explanation": "It is the shorthand form of optional binding with shadowing: it creates a constant with the same name as the Optional."
+   },
+   {
+    "id": 6,
+    "question": "Why does 'let counter = 0; counter += 1' fail?",
+    "options": [
+     "'let' declares a constant, which cannot be changed",
+     "'+=' does not exist for Int",
+     "The name 'contador' is reserved",
+     "The type annotation is missing"
+    ],
+    "correctIndex": 0,
+    "explanation": "Constants are immutable; use 'var' when the value needs to change."
+   }
+  ]
+ },
+ {
+  "id": 36,
+  "title": "Control Flow",
+  "theory": "Control flow decides which lines run and how many times. 'if / else if / else' evaluates Bool conditions in order and runs only the first true block. 'switch' must be exhaustive (cover every case or have 'default'), does not implicitly fall through to the next case (no 'break' needed) and accepts ranges ('case 90...100'), tuples ('case (0, _)'), value binding ('case let x') and 'where' clauses; 'fallthrough' forces execution to continue into the next case. 'for-in' iterates over ranges, collections and sequences, 'for (i, v) in list.enumerated()' gives index and value, 'stride(from:to:by:)' allows steps other than 1 and 'where' filters iterations. 'while' tests the condition before each pass, whereas 'repeat-while' tests after and therefore runs the body at least once. 'break' ends the loop or the 'switch', 'continue' skips to the next iteration and labels ('outer: for ...') let you choose which loop to stop. 'guard' is the early exit: if the condition fails, the 'else' must leave the scope ('return', 'throw', 'break', 'continue'), keeping the happy path free of nesting. The classic mistakes are the off-by-one (using '...' instead of '..<' and accessing 'array[array.count]', which crashes) and infinite loops from forgetting to update the condition. The certification asks you to predict the output of loops and 'switch'; do a step-by-step desk check.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/",
+  "category": "Fundamentos",
+  "corporateCase": "In an ordering app, a 'switch' over the order status ('.paid', '.shipped', '.delivered') shows the right message, and the compiler warns if a new status is forgotten. In form validation, several 'guard' statements at the top of the function exit early when the email or password is invalid.",
+  "gameCase": "In a board game, two nested 'for' loops walk rows and columns, and a labeled loop ('search: for ...') is ended with 'break search' as soon as the piece is found. The main loop uses 'while gameIsRunning' and ends when the player loses all lives.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Write the closed range from 90 to 100 in the case",
+    "codeSnippet": "switch nota {\ncase 90___100: print(\"A\")\ndefault: print(\"outra\")\n}",
+    "correctAnswer": "...",
+    "hint": "Three dots include the upper bound."
+   },
+   {
+    "id": 2,
+    "question": "Complete the early exit: leave if the age is under 18",
+    "codeSnippet": "func entrar(idade: Int) {\n  ___ idade >= 18 else { return }\n  print(\"Bem-vindo\")\n}",
+    "correctAnswer": "guard",
+    "hint": "It is the statement that requires an else that leaves the scope."
+   },
+   {
+    "id": 3,
+    "question": "Iterate from 0 to 10 in steps of 2 (excluding 10)",
+    "codeSnippet": "for i in ___(from: 0, to: 10, by: 2) { print(i) }",
+    "correctAnswer": "stride",
+    "hint": "The function that generates a sequence with a step."
+   },
+   {
+    "id": 4,
+    "question": "Make the body run at least once before testing the condition",
+    "codeSnippet": "var n = 0\nrepeat { n += 1 } ___ n < 3",
+    "correctAnswer": "while",
+    "hint": "The condition comes after the block, with the same word as the regular loop."
+   },
+   {
+    "id": 5,
+    "question": "Get index and value while iterating over the array",
+    "codeSnippet": "for (i, fruta) in frutas.___() {\n  print(i, fruta)\n}",
+    "correctAnswer": "enumerated",
+    "hint": "Method that returns (offset, element) pairs."
+   },
+   {
+    "id": 6,
+    "question": "Fully end the labeled loop 'externo' from inside the inner loop",
+    "codeSnippet": "externo: for a in 1...3 {\n  for b in 1...3 {\n    if a * b == 4 { ___ externo }\n  }\n}",
+    "correctAnswer": "break",
+    "hint": "Stops a loop (here the labeled one) instead of only skipping one iteration."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does 'for i in 0..<3 { print(i) }' print?",
+    "options": [
+     "0 1 2 3",
+     "1 2 3",
+     "0 1 2",
+     "1 2"
+    ],
+    "correctIndex": 2,
+    "explanation": "The half-open range goes from 0 to 2; 3 is excluded."
+   },
+   {
+    "id": 2,
+    "question": "Given 'let a = [10, 20, 30]', what happens with 'for i in 0...a.count { print(a[i]) }'?",
+    "options": [
+     "Prints 10, 20 and 30 normally",
+     "Prints 10, 20, 30 and then crashes with an out-of-range index",
+     "Compile error",
+     "Prints 0, 1, 2, 3"
+    ],
+    "correctIndex": 1,
+    "explanation": "A classic off-by-one: '0...3' includes index 3, which does not exist. The correct form is '0..<a.count' (or iterate over 'a' directly)."
+   },
+   {
+    "id": 3,
+    "question": "What happens in 'let n = 5; switch n { case 1: print(\"one\"); case 2: print(\"two\") }'?",
+    "options": [
+     "Prints nothing",
+     "Prints \"two\"",
+     "Compile error",
+     "Runtime error"
+    ],
+    "correctIndex": 2,
+    "explanation": "A 'switch' on Int must be exhaustive. Without 'default', the compiler rejects the code."
+   },
+   {
+    "id": 4,
+    "question": "What does this print?\nswitch 2 {\ncase 2: print(\"a\"); fallthrough\ncase 3: print(\"b\")\ndefault: print(\"c\")\n}",
+    "options": [
+     "a, b and c",
+     "only a",
+     "a and b",
+     "b"
+    ],
+    "correctIndex": 2,
+    "explanation": "It enters 'case 2' (prints a) and 'fallthrough' continues into the next body (prints b) without testing the condition of 'case 3'. 'default' does not run."
+   },
+   {
+    "id": 5,
+    "question": "What does this print?\nvar n = 10\nrepeat { print(n); n += 1 } while n < 5",
+    "options": [
+     "Nothing",
+     "10",
+     "10 11 12 13 14",
+     "Infinite loop"
+    ],
+    "correctIndex": 1,
+    "explanation": "'repeat-while' runs the body before testing: it prints 10, n becomes 11 and the condition 'n < 5' is false, ending the loop."
+   },
+   {
+    "id": 6,
+    "question": "What does this print?\nfor i in 1...5 {\n  if i % 2 == 0 { continue }\n  print(i)\n}",
+    "options": [
+     "2 4",
+     "1 3 5",
+     "1 2 3 4 5",
+     "1"
+    ],
+    "correctIndex": 1,
+    "explanation": "'continue' skips the rest of the iteration when 'i' is even, so only the odd numbers are printed."
+   },
+   {
+    "id": 7,
+    "question": "Which values does 'stride(from: 0, to: 10, by: 5)' generate?",
+    "options": [
+     "0, 5",
+     "0, 5, 10",
+     "5, 10",
+     "0, 10"
+    ],
+    "correctIndex": 0,
+    "explanation": "With 'to:' the limit is exclusive, so 10 is not included. To include it use 'stride(from:through:by:)'."
+   },
+   {
+    "id": 8,
+    "question": "What MUST the 'else' block of a 'guard' do?",
+    "options": [
+     "Print an error message",
+     "Assign a default value",
+     "Restart the function",
+     "Leave the current scope (return, throw, break or continue)"
+    ],
+    "correctIndex": 3,
+    "explanation": "The compiler requires the 'guard' 'else' not to fall through to the following code, guaranteeing that after it the condition is true."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "In 'let p = (0, 5); switch p { case (0, _): print(\"Y axis\"); case (_, 0): print(\"X axis\"); default: print(\"other\") }', what is printed?",
+    "options": [
+     "X axis",
+     "other",
+     "Compile error",
+     "Y axis"
+    ],
+    "correctIndex": 3,
+    "explanation": "The first pattern '(0, _)' matches because the first value is 0; '_' ignores the second. The switch stops at the first matching case."
+   },
+   {
+    "id": 2,
+    "question": "What does 'where' do in 'case let x where x < 0:'?",
+    "options": [
+     "Declares a global variable",
+     "Adds an extra condition to the pattern; the case only matches if it is true",
+     "Turns the switch into a loop",
+     "Makes 'x' optional"
+    ],
+    "correctIndex": 1,
+    "explanation": "Value binding captures the value in 'x' and 'where' restricts it: here only negative values enter."
+   },
+   {
+    "id": 3,
+    "question": "How many times does 'total += 1' run?\nvar total = 0\nfor i in 1...3 {\n  for j in 1...3 {\n    if j == 2 { continue }\n    total += 1\n  }\n}",
+    "options": [
+     "9",
+     "3",
+     "6",
+     "4"
+    ],
+    "correctIndex": 2,
+    "explanation": "In each outer pass (3), the inner loop runs for j = 1 and j = 3 (j = 2 is skipped): 3 x 2 = 6."
+   },
+   {
+    "id": 4,
+    "question": "What happens with 'var i = 0; while i < 3 { print(i) }'?",
+    "options": [
+     "Prints 0 1 2",
+     "Prints 0 only once",
+     "Compile error",
+     "Infinite loop printing 0, since 'i' is never updated"
+    ],
+    "correctIndex": 3,
+    "explanation": "The condition 'i < 3' never becomes false because 'i += 1' is missing inside the loop."
+   },
+   {
+    "id": 5,
+    "question": "With 'let score = 85', what does this print?\nif score >= 70 { print(\"B\") }\nelse if score >= 90 { print(\"A\") }\nelse { print(\"C\") }",
+    "options": [
+     "B",
+     "A",
+     "C",
+     "B and A"
+    ],
+    "correctIndex": 0,
+    "explanation": "Conditions are tested in order and only the first true block runs. 85 >= 70, so it prints B."
+   },
+   {
+    "id": 6,
+    "question": "In Swift, what happens at the end of a 'switch' case without 'break'?",
+    "options": [
+     "The switch ends, without falling into the next case",
+     "Runs the next case, like in C",
+     "Compile error",
+     "Restarts the switch"
+    ],
+    "correctIndex": 0,
+    "explanation": "Unlike C, Swift has no implicit fallthrough; 'break' is optional and 'fallthrough' is only used when you want to continue."
+   }
+  ]
+ },
+ {
+  "id": 37,
+  "title": "Collections: Arrays, Sets and Dictionaries",
+  "theory": "Swift has three main collections. 'Array' stores ordered elements accessed by an index starting at 0: 'let names = [\"Ana\", \"Bia\"]', 'Array(repeating: 0, count: 5)'. Accessing a missing index ('names[2]') causes a runtime error, so use 'isEmpty', 'count', 'first' and 'last' (the last two return Optionals). The most common methods are 'append', 'insert(_:at:)', 'remove(at:)', 'contains', 'firstIndex(of:)', 'sort()' (mutates the array) and 'sorted()' (returns a sorted copy); slices like 'a[1...2]' produce an 'ArraySlice' that keeps the original indices. 'Set' stores unique values with no guaranteed order and offers 'union', 'intersection' and 'subtracting'. 'Dictionary' maps unique keys to values: the lookup 'd[\"x\"]' returns an Optional, 'd[\"x\", default: 0]' returns a default value, 'updateValue(_:forKey:)' returns the old value and assigning 'nil' removes the key. Collections are value types: copying an array creates an independent copy, and 'let' makes the collection immutable while 'var' allows changes. To transform data use 'map' (transforms each element), 'filter' (keeps those that pass the test), 'reduce' (combines into a single value) and 'compactMap' (transforms and discards nils). Arrays of structs, like '[Product]', are also common and are traversed with 'for-in' or 'enumerated()'. The certification asks you to predict the results of these methods and to recognize the out-of-range crash.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/",
+  "category": "Fundamentos",
+  "corporateCase": "In a shop app, the cart is a '[CartItem]' (array of structs) and the total is computed with 'items.reduce(0) { $0 + $1.price }'. A '[String: Int]' dictionary stores stock quantity per product code, and 'stock[code, default: 0]' avoids Optionals.",
+  "gameCase": "In a game, the inventory is a 'Set<String>' to prevent duplicate items, and the leaderboard is an array of structs sorted with 'sorted { $0.points > $1.points }'. To list the top three, 'leaderboard.prefix(3)' is used.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Create an array with five zeros using the repeating initializer",
+    "codeSnippet": "let zeros = Array(___: 0, count: 5)",
+    "correctAnswer": "repeating",
+    "hint": "The label means to repeat the value."
+   },
+   {
+    "id": 2,
+    "question": "Add the number 4 to the end of the array",
+    "codeSnippet": "var nums = [1, 2, 3]\nnums.___(4)",
+    "correctAnswer": "append",
+    "hint": "Method that adds at the end."
+   },
+   {
+    "id": 3,
+    "question": "Read \"Ana\"'s grade, returning 0 if the key does not exist",
+    "codeSnippet": "let notas = [\"Bia\": 9]\nlet n = notas[\"Ana\", ___: 0]",
+    "correctAnswer": "default",
+    "hint": "It is the label of the default value in the dictionary subscript."
+   },
+   {
+    "id": 4,
+    "question": "Combine the elements of two Sets, without duplicates",
+    "codeSnippet": "let a: Set = [1, 2]\nlet b: Set = [2, 3]\nlet todos = a.___(b)",
+    "correctAnswer": "union",
+    "hint": "The set operation 'A ∪ B'."
+   },
+   {
+    "id": 5,
+    "question": "Convert strings to numbers discarding the invalid ones",
+    "codeSnippet": "let textos = [\"1\", \"a\", \"3\"]\nlet nums = textos.___ { Int($0) }",
+    "correctAnswer": "compactMap",
+    "hint": "Transforms and removes nil results."
+   },
+   {
+    "id": 6,
+    "question": "Add all numbers in the array into a single value, starting at 0",
+    "codeSnippet": "let total = [1, 2, 3].___(0, +)",
+    "correctAnswer": "reduce",
+    "hint": "Combines all elements into an accumulated value."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What happens with 'let a = [1, 2, 3]; a.append(4)'?",
+    "options": [
+     "a now has 4 elements",
+     "Compile error: a 'let' array is immutable",
+     "Runtime error",
+     "The 4 is ignored"
+    ],
+    "correctIndex": 1,
+    "explanation": "With 'let' the collection cannot be changed. To use 'append' declare it with 'var'."
+   },
+   {
+    "id": 2,
+    "question": "What happens in 'let a = [1, 2, 3]; print(a[3])'?",
+    "options": [
+     "nil",
+     "0",
+     "Runtime error: index out of range",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Valid indices are 0 to 2. Accessing 3 crashes at runtime (it does not return nil). Use 'a.indices.contains(3)' or 'a.first'."
+   },
+   {
+    "id": 3,
+    "question": "What is the type of 'dict[\"x\"]' in 'let dict = [\"x\": 1]'?",
+    "options": [
+     "Int",
+     "Int?",
+     "[String: Int]",
+     "(String, Int)"
+    ],
+    "correctIndex": 1,
+    "explanation": "The key may not exist, so the lookup returns 'Int?' and needs unwrapping (if let, ?? or default:)."
+   },
+   {
+    "id": 4,
+    "question": "How many elements does 'Set([1, 2, 2, 3, 3, 3])' have?",
+    "options": [
+     "6",
+     "1",
+     "2",
+     "3"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sets store only unique values: {1, 2, 3}, so 3 elements."
+   },
+   {
+    "id": 5,
+    "question": "What is the result of '[1, 2, 3, 4].filter { $0 % 2 == 0 }.map { $0 * 10 }'?",
+    "options": [
+     "[10, 30]",
+     "[20, 40]",
+     "[2, 4]",
+     "[10, 20, 30, 40]"
+    ],
+    "correctIndex": 1,
+    "explanation": "'filter' keeps the evens [2, 4] and 'map' multiplies each by 10: [20, 40]."
+   },
+   {
+    "id": 6,
+    "question": "With 'let a = [10, 20, 30, 40]; let s = a[1...2]', what is 's[1]'?",
+    "options": [
+     "10",
+     "30",
+     "Runtime error",
+     "20"
+    ],
+    "correctIndex": 3,
+    "explanation": "An 'ArraySlice' keeps the original array's indices: the slice's first element is at index 1 and is 20. 's[0]' would be the one to crash."
+   },
+   {
+    "id": 7,
+    "question": "What is the result of '[\"1\", \"a\", \"3\"].compactMap { Int($0) }'?",
+    "options": [
+     "[1, nil, 3]",
+     "[1, 3]",
+     "[1, 0, 3]",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Int(\"a\")' returns nil; 'compactMap' discards nils and unwraps the rest, giving [1, 3] of type [Int]."
+   },
+   {
+    "id": 8,
+    "question": "What does 'd[\"a\"] = nil' do in 'var d = [\"a\": 1, \"b\": 2]'?",
+    "options": [
+     "Removes the key \"a\" from the dictionary",
+     "Stores nil as the value of \"a\"",
+     "Compile error",
+     "Resets the value to 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Assigning nil through the subscript removes the key-value pair. There is also 'removeValue(forKey:)', which returns the removed value."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What does 'let v: [Int] = []; print(v.first)' print?",
+    "options": [
+     "Runtime error",
+     "0",
+     "nil",
+     "[]"
+    ],
+    "correctIndex": 2,
+    "explanation": "'first' returns an Optional (Int?): on an empty array it is nil, with no crash. 'v[0]' would crash."
+   },
+   {
+    "id": 2,
+    "question": "What is the result of 'Set([1, 2, 3]).intersection([2, 3, 4])'?",
+    "options": [
+     "{1, 2, 3, 4}",
+     "{1, 4}",
+     "{2, 3}",
+     "{1}"
+    ],
+    "correctIndex": 2,
+    "explanation": "The intersection contains only the elements present in both sets: 2 and 3 (a Set's order is not guaranteed)."
+   },
+   {
+    "id": 3,
+    "question": "What is 'd' after 'var d = [String: Int](); d[\"x\", default: 0] += 1'?",
+    "options": [
+     "[:]",
+     "[\"x\": 1]",
+     "Compile error",
+     "[\"x\": 0]"
+    ],
+    "correctIndex": 1,
+    "explanation": "The subscript with 'default:' reads 0 when the key does not exist, adds 1 and stores the result. It is the idiom for counting occurrences."
+   },
+   {
+    "id": 4,
+    "question": "What does 'updateValue(_:forKey:)' return?",
+    "options": [
+     "Nothing (Void)",
+     "The new value",
+     "The old value as an Optional (nil if the key was new)",
+     "A success Bool"
+    ],
+    "correctIndex": 2,
+    "explanation": "The method stores the new value and returns the previous one ('Value?'), or nil if there was no key."
+   },
+   {
+    "id": 5,
+    "question": "What does this print?\nlet a = [3, 1, 2]\nlet b = a.sorted()\nprint(a)",
+    "options": [
+     "[1, 2, 3]",
+     "[3, 1, 2]",
+     "[3, 2, 1]",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "'sorted()' returns a new array and does not change 'a'. The in-place method is 'sort()', available only on 'var'."
+   },
+   {
+    "id": 6,
+    "question": "What does this print?\nvar a = [1, 2]\nvar b = a\nb.append(3)\nprint(a.count)",
+    "options": [
+     "3",
+     "2",
+     "1",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "Arrays are value types: 'b' is an independent copy. Changing 'b' does not affect 'a', which still has 2 elements."
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "title": "Functions and Closures in Depth",
+  "theory": "A function is declared with 'func name(parameters) -> Type'. Each parameter has an external label (used in the call) and an internal name (used inside the function): 'func move(from origin: Int, to destination: Int)' is called as 'move(from: 1, to: 2)', and '_' omits the label ('func double(_ n: Int)' is called as 'double(4)'). Parameters can have a default value ('func hello(name: String = \"world\")'), be variadic ('Int...', seen inside the function as an array) or 'inout' (the function changes the original variable, and the call requires '&'). Functions can return named tuples, and a single-expression function has an implicit return, with no 'return' keyword. Functions are values: they have a type ('(Int, Int) -> Int'), can be assigned to variables, passed as arguments, returned and nested inside other functions, capturing variables from the outer scope. Closures are unnamed functions: '{ (a: Int) -> Int in a * 2 }'. With inference they can be shortened, using '$0', '$1' in place of the parameters, and the trailing closure is written after the parentheses ('nums.map { $0 * 2 }'). A closure that outlives the function (stored in a property or run later) must be '@escaping'; when capturing 'self' in it, use the capture list '[weak self]' to avoid reference cycles. 'map', 'filter', 'reduce' and 'sorted(by:)' are higher-order functions, meaning they take functions. The certification asks for the correct call with labels, the use of '_', default values and predicting the result of a call.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/",
+  "category": "Fundamentos",
+  "corporateCase": "In a banking app, 'func calculateInterest(capital: Double, rate: Double = 0.01, months: Int)' has a default value for the rate, and the transaction list is sorted with 'transactions.sorted { $0.date > $1.date }'. The network call takes an '@escaping' closure that runs when the response arrives, using '[weak self]' so it does not hold the screen.",
+  "gameCase": "In a game, 'func dealDamage(_ target: inout Enemy, amount: Int)' changes the original enemy's health. A factory function 'makeCounter()' returns a closure that remembers the score (variable capture) on every call.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Omit the external label of parameter 'n' so you can call 'dobro(4)'",
+    "codeSnippet": "func dobro(___ n: Int) -> Int { n * 2 }",
+    "correctAnswer": "_",
+    "hint": "A single character, the underscore."
+   },
+   {
+    "id": 2,
+    "question": "Give the parameter a default value of \"mundo\"",
+    "codeSnippet": "func ola(nome: String ___ \"mundo\") {\n  print(\"Olá, \\(nome)\")\n}",
+    "correctAnswer": "=",
+    "hint": "The same symbol used in assignments."
+   },
+   {
+    "id": 3,
+    "question": "Declare the parameter as variadic (accepts several integers)",
+    "codeSnippet": "func somar(_ numeros: Int___) -> Int {\n  numeros.reduce(0, +)\n}",
+    "correctAnswer": "...",
+    "hint": "Three dots right after the type."
+   },
+   {
+    "id": 4,
+    "question": "Let the function change the original variable it receives",
+    "codeSnippet": "func zerar(_ x: ___ Int) { x = 0 }",
+    "correctAnswer": "inout",
+    "hint": "A modifier on the parameter type; the call uses '&'."
+   },
+   {
+    "id": 5,
+    "question": "Use the shorthand syntax for the closure's first parameter",
+    "codeSnippet": "let dobrados = [1, 2, 3].map { ___ * 2 }",
+    "correctAnswer": "$0",
+    "hint": "It starts with a dollar sign and uses index zero."
+   },
+   {
+    "id": 6,
+    "question": "Mark the closure as able to outlive the function (run later)",
+    "codeSnippet": "var tarefas: [() -> Void] = []\nfunc agendar(_ f: @___ () -> Void) {\n  tarefas.append(f)\n}",
+    "correctAnswer": "escaping",
+    "hint": "An attribute whose name means 'that escapes'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Given 'func mover(de a: Int, para b: Int)', which call is valid?",
+    "options": [
+     "mover(a: 1, b: 2)",
+     "mover(1, 2)",
+     "mover(de: 1, para: 2)",
+     "mover(para: 2, de: 1)"
+    ],
+    "correctIndex": 2,
+    "explanation": "The call uses the external labels in the declared order; 'a' and 'b' are internal names."
+   },
+   {
+    "id": 2,
+    "question": "Given 'func f(_ x: Int, y: Int = 5) -> Int { x + y }', what is the value of 'f(1)'?",
+    "options": [
+     "6",
+     "Compile error",
+     "1",
+     "5"
+    ],
+    "correctIndex": 0,
+    "explanation": "'y' uses the default value 5, so 1 + 5 = 6. The function has an implicit return because it is a single expression."
+   },
+   {
+    "id": 3,
+    "question": "How do you call a function 'func zerar(_ x: inout Int)' with 'var n = 3'?",
+    "options": [
+     "zerar(n)",
+     "zerar(&n)",
+     "zerar(inout n)",
+     "zerar(n!)"
+    ],
+    "correctIndex": 1,
+    "explanation": "'inout' arguments require '&' in the call and a variable ('var'), not a constant."
+   },
+   {
+    "id": 4,
+    "question": "What is the result of '[3, 1, 2].sorted { $0 > $1 }'?",
+    "options": [
+     "[1, 2, 3]",
+     "[3, 1, 2]",
+     "Compile error",
+     "[3, 2, 1]"
+    ],
+    "correctIndex": 3,
+    "explanation": "The closure (trailing closure) says 'a' comes before 'b' if a > b, sorting in descending order: [3, 2, 1]."
+   },
+   {
+    "id": 5,
+    "question": "When does a closure parameter need '@escaping'?",
+    "options": [
+     "Whenever it has parameters",
+     "When it is stored or run after the function returns",
+     "When it returns Void",
+     "Never, it is optional"
+    ],
+    "correctIndex": 1,
+    "explanation": "If the closure outlives the call (e.g. appended to an array or used in an async callback), the compiler requires '@escaping'."
+   },
+   {
+    "id": 6,
+    "question": "What is '[weak self]' in a closure's capture list for?",
+    "options": [
+     "Making the closure faster",
+     "Allowing it to be called on another thread",
+     "Avoiding a strong reference cycle between 'self' and the closure",
+     "Making 'self' constant"
+    ],
+    "correctIndex": 2,
+    "explanation": "A weak capture does not keep 'self' alive. Inside the closure 'self' becomes Optional, so you use 'guard let self' or 'self?'."
+   },
+   {
+    "id": 7,
+    "question": "Given 'func limites(_ a: [Int]) -> (min: Int, max: Int)', how do you read the largest value from 'let r = limites([4, 9, 2])'?",
+    "options": [
+     "r.max",
+     "r[1]",
+     "r.maior",
+     "max(r)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Named tuple elements are accessed by name with dot syntax: 'r.max' (also 'r.1' by position, but not 'r[1]')."
+   },
+   {
+    "id": 8,
+    "question": "What is an 'implicit return'?",
+    "options": [
+     "A function that returns Void automatically",
+     "Omitting the word 'return' in single-expression functions or closures",
+     "Always returning nil",
+     "A return inside a loop"
+    ],
+    "correctIndex": 1,
+    "explanation": "When the body is a single expression, its value is returned: 'func dobro(_ n: Int) -> Int { n * 2 }'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Given 'func soma(_ a: Int, _ b: Int) -> Int { a + b }' and 'let f = soma', what is the result of 'f(2, 3)'?",
+    "options": [
+     "Compile error",
+     "23",
+     "6",
+     "5"
+    ],
+    "correctIndex": 3,
+    "explanation": "Functions are values: 'f' has type '(Int, Int) -> Int' and can be called like the original. The result is 5."
+   },
+   {
+    "id": 2,
+    "question": "What does this print?\nfunc criar() -> () -> Int {\n  var n = 0\n  return { n += 1; return n }\n}\nlet c = criar()\n_ = c(); _ = c()\nprint(c())",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "The closure captures and keeps the variable 'n' between calls. After three calls it is 3."
+   },
+   {
+    "id": 3,
+    "question": "In 'func total(_ nums: Int...) -> Int', what is the type of 'nums' inside the function?",
+    "options": [
+     "[Int]",
+     "Int",
+     "Set<Int>",
+     "Int?"
+    ],
+    "correctIndex": 0,
+    "explanation": "A variadic parameter reaches the function as an array, so 'nums.count' and 'reduce' work."
+   },
+   {
+    "id": 4,
+    "question": "What is the type of 'let r = [1, 2, 3].map { String($0) }'?",
+    "options": [
+     "[Int]",
+     "String",
+     "[String]",
+     "[Character]"
+    ],
+    "correctIndex": 2,
+    "explanation": "'map' applies the closure to each element and returns an array of the results: a '[String]'."
+   },
+   {
+    "id": 5,
+    "question": "Given 'func f(a: Int = 1, b: Int = 2) -> Int { a * 10 + b }', what is 'f(b: 5)'?",
+    "options": [
+     "15",
+     "7",
+     "25",
+     "12"
+    ],
+    "correctIndex": 0,
+    "explanation": "Only 'b' is provided; 'a' uses the default 1: 1 * 10 + 5 = 15."
+   },
+   {
+    "id": 6,
+    "question": "What is the result of '[1, 2, 3, 4].filter { $0 > 2 }'?",
+    "options": [
+     "[1, 2]",
+     "[3, 4]",
+     "[2, 3, 4]",
+     "true"
+    ],
+    "correctIndex": 1,
+    "explanation": "'filter' keeps only the elements for which the closure returns true: 3 and 4."
+   }
+  ]
+ }
+]

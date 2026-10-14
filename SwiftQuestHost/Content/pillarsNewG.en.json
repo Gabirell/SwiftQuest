@@ -1,0 +1,677 @@
+[
+ {
+  "id": 43,
+  "title": "SwiftUI: Views, Modifiers and Composition",
+  "theory": "In SwiftUI, an interface is described by values that conform to the 'View' protocol. It requires a single computed property, 'var body: some View', which returns the screen content. 'some View' is an opaque type: the compiler knows the exact concrete type, but you only declare that it is some View. Built-in views such as 'Text', 'Image', 'Button' and 'Label' are the basic building blocks, and you customize them with modifiers like '.font()', '.padding()' and '.background()'. Each modifier does not change the original view: it returns a NEW view that wraps it, so ORDER matters. 'Text(\"Hi\").padding().background(.yellow)' also paints the padding area, while 'Text(\"Hi\").background(.yellow).padding()' paints only the text and leaves the spacing transparent. 'ViewBuilder' is the attribute that lets you list several views inside a closure without 'return', and it supports 'if' and 'switch'. To avoid a giant 'body', extract pieces into subviews (your own structs) with properties as parameters, and reuse styles with 'ViewModifier'. Views are lightweight, cheap structs: SwiftUI recreates them often, and persistent state lives outside them (for example in '@State'), tied to the view's identity in the hierarchy. Use '#Preview' to see the screen in the Xcode canvas without running the app. The exam expects you to recognize 'View', 'body' and the effect of modifier order.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/view",
+  "category": "SwiftUI",
+  "corporateCase": "In a banking app, the team builds a 'CartaoConta' subview with parameters (name, balance) and a card-style 'ViewModifier' used across dozens of screens. This keeps the look consistent, and each '#Preview' shows the card in different states without running the app.",
+  "gameCase": "In a card game, the card is a reusable view 'CartaView(valor:, naipe:)'. The '.padding()' modifier before '.background()' creates the colored frame around the number, and the reverse order would leave the frame tight against the text.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare a SwiftUI screen: the type must conform to the framework's core protocol",
+    "codeSnippet": "struct Ola: ___ { var body: some View { Text(\"Oi\") } }",
+    "correctAnswer": "View",
+    "hint": "The protocol has the same name as the concept: a visual component."
+   },
+   {
+    "id": 2,
+    "question": "Complete the opaque return type of 'body'",
+    "codeSnippet": "var body: ___ View { Text(\"Oi\") }",
+    "correctAnswer": "some",
+    "hint": "Keyword meaning 'some type that conforms to View'."
+   },
+   {
+    "id": 3,
+    "question": "Add inner space around the text BEFORE painting the background",
+    "codeSnippet": "Text(\"Oi\").___(16).background(.yellow)",
+    "correctAnswer": "padding",
+    "hint": "The modifier that pushes content away from the view's own edges."
+   },
+   {
+    "id": 4,
+    "question": "Show the 'Ola' view in the Xcode canvas using the preview macro",
+    "codeSnippet": "___ { Ola() }",
+    "correctAnswer": "#Preview",
+    "hint": "It is a macro that starts with '#'."
+   },
+   {
+    "id": 5,
+    "question": "Create a reusable style: the type must conform to the custom modifier protocol",
+    "codeSnippet": "struct Destaque: ___ { func body(content: Content) -> some View { content.font(.title).bold() } }",
+    "correctAnswer": "ViewModifier",
+    "hint": "The name combines 'View' and 'Modifier'."
+   },
+   {
+    "id": 6,
+    "question": "Apply the custom 'Destaque' ViewModifier to a Text",
+    "codeSnippet": "Text(\"Oi\").___(Destaque())",
+    "correctAnswer": "modifier",
+    "hint": "The View method that takes a ViewModifier as argument."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the difference between 'Text(\"A\").padding().background(.yellow)' and 'Text(\"A\").background(.yellow).padding()'?",
+    "options": [
+     "None, the result is identical",
+     "In the first, yellow covers the text and the padding; in the second, only the text",
+     "In the first, yellow covers only the text; in the second, also the padding",
+     "The second does not compile"
+    ],
+    "correctIndex": 1,
+    "explanation": "Each modifier wraps the result of the previous one. With 'padding' first, the background is applied to the already enlarged view. With 'background' first, the padding comes after and stays transparent."
+   },
+   {
+    "id": 2,
+    "question": "What does 'some View' mean in the type of 'body'?",
+    "options": [
+     "An opaque type: a single concrete type, known to the compiler, that conforms to View",
+     "Any type can be returned at runtime",
+     "That body is optional",
+     "That the View is invisible"
+    ],
+    "correctIndex": 0,
+    "explanation": "'some' hides the concrete type from the caller, but it is fixed and known at compile time, which enables optimizations. That is why a plain 'if' cannot return different types without the ViewBuilder."
+   },
+   {
+    "id": 3,
+    "question": "The same block of 5 views with identical look appears on 3 screens. What is the best approach?",
+    "options": [
+     "Copy and paste the code on each screen",
+     "Put everything in one giant 'body'",
+     "Extract a subview (struct conforming to View) with properties as parameters",
+     "Use global variables holding ready-made views"
+    ],
+    "correctIndex": 2,
+    "explanation": "Subviews with parameters are SwiftUI's unit of composition: they reduce duplication, keep 'body' readable and allow isolated previews."
+   },
+   {
+    "id": 4,
+    "question": "What does a modifier like '.padding()' actually return?",
+    "options": [
+     "The same view, mutated in place",
+     "A new view that wraps the original",
+     "Void",
+     "A Bool success value"
+    ],
+    "correctIndex": 1,
+    "explanation": "Views are immutable values. Each modifier creates a new view around the previous one, forming a chain, which is why order changes the result."
+   },
+   {
+    "id": 5,
+    "question": "What is the purpose of '#Preview'?",
+    "options": [
+     "Publish the app to the App Store",
+     "Run unit tests",
+     "Build the app for physical devices",
+     "Render the view in the Xcode canvas to see and iterate without running the whole app"
+    ],
+    "correctIndex": 3,
+    "explanation": "The canvas updates as you edit code. You can have several '#Preview' blocks with different data, light/dark mode or font sizes."
+   },
+   {
+    "id": 6,
+    "question": "In 'Button(\"Salvar\") { guardar() }', what is the closure in braces?",
+    "options": [
+     "The action run when the button is tapped",
+     "The button's text",
+     "The button's visual style",
+     "A layout modifier"
+    ],
+    "correctIndex": 0,
+    "explanation": "The 'Button(_:action:)' initializer takes the title and the action; with a trailing closure, the block is the 'action'. For a custom label, use 'Button(action:label:)'."
+   },
+   {
+    "id": 7,
+    "question": "What is the '@ViewBuilder' attribute for?",
+    "options": [
+     "To compile views faster",
+     "To create views in the background",
+     "To allow several views (and 'if'/'switch') in a closure without 'return', combining them into one",
+     "To save the view's state"
+    ],
+    "correctIndex": 2,
+    "explanation": "It is a result builder. 'body' and the content closures of stacks and containers use it implicitly; you can also apply it to your own functions and properties."
+   },
+   {
+    "id": 8,
+    "question": "What should 'body' do regarding side effects?",
+    "options": [
+     "It should download network data on every call",
+     "It must be fast and only describe the interface from state, with no side effects",
+     "It should write to disk to save the screen",
+     "It runs exactly once in the view's life"
+    ],
+    "correctIndex": 1,
+    "explanation": "SwiftUI may call 'body' many times. Effects such as networking and I/O belong in '.task', '.onAppear' or actions, never in computing 'body'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the correct way to create a label with text and an SF Symbol icon?",
+    "options": [
+     "Text(\"Favoritos\", icon: \"star\")",
+     "Icon(\"Favoritos\", \"star\")",
+     "Image(\"Favoritos\").text(\"star\")",
+     "Label(\"Favoritos\", systemImage: \"star\")"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Label' combines title and image and adapts to the context (lists, bars, buttons). 'systemImage' uses an SF Symbol; 'Image(systemName:)' is the equivalent for a standalone image."
+   },
+   {
+    "id": 2,
+    "question": "What is the difference between '.frame(width: 100).background(.blue)' and '.background(.blue).frame(width: 100)' on a short Text?",
+    "options": [
+     "None",
+     "In the first, the blue background spans 100 points wide; in the second, it covers only the text and the frame is transparent",
+     "In the second, the background spans 100 points",
+     "The first causes a compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "'frame' creates a container view of the requested size. A 'background' applied afterward covers that container; applied before, it covers only the original text."
+   },
+   {
+    "id": 3,
+    "question": "Why do people often create 'extension View { func destaque() -> some View { modifier(Destaque()) } }'?",
+    "options": [
+     "To call the style as '.destaque()', which is more readable and chainable",
+     "Because ViewModifier only works inside extensions",
+     "To make the modifier faster",
+     "To prevent the view from being recreated"
+    ],
+    "correctIndex": 0,
+    "explanation": "It is purely ergonomics: '.destaque()' matches the style of built-in modifiers, instead of '.modifier(Destaque())'."
+   },
+   {
+    "id": 4,
+    "question": "A '@State' inside a view is lost when an 'if' switches branches. Why?",
+    "options": [
+     "It is a SwiftUI bug",
+     "Because @State only works in 'Text'",
+     "Because each branch has a different structural identity; when leaving the hierarchy, the view and its state are discarded",
+     "Because Xcode clears memory manually"
+    ],
+    "correctIndex": 2,
+    "explanation": "State is tied to the view's identity in the hierarchy. If it leaves the screen (the 'if' branch not taken), its state is destroyed. To preserve it, lift the state up or use modifiers such as '.opacity' instead of 'if'."
+   },
+   {
+    "id": 5,
+    "question": "What is the difference between 'Image(\"foto\")' and 'Image(systemName: \"star\")'?",
+    "options": [
+     "They are identical",
+     "The first loads an asset from the Asset Catalog; the second uses a system SF Symbol",
+     "The first uses an SF Symbol and the second a file",
+     "The second only works on macOS"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Image(\"name\")' looks up the project's Asset Catalog. SF Symbols are vector system icons that follow font weight and can be tinted with '.foregroundStyle'."
+   },
+   {
+    "id": 6,
+    "question": "Why is splitting a large screen into several small subviews good practice?",
+    "options": [
+     "Readability and reuse, plus isolated previews and more localized updates",
+     "The app necessarily gets bigger",
+     "Because Xcode requires at most 10 lines per body",
+     "Because it avoids using modifiers"
+    ],
+    "correctIndex": 0,
+    "explanation": "Small structs are cheap in SwiftUI. Splitting improves organization and reuse, and the framework can re-evaluate only the subviews whose inputs changed."
+   }
+  ]
+ },
+ {
+  "id": 44,
+  "title": "SwiftUI: Layout with Stacks, Grids and Alignment",
+  "theory": "SwiftUI layout follows a three-step conversation: the parent PROPOSES a size to the child, the child CHOOSES its own size, and the parent PLACES it. 'VStack' stacks vertically, 'HStack' horizontally and 'ZStack' overlays views; all accept 'alignment' and 'spacing' (for example 'VStack(alignment: .leading, spacing: 8)'). 'Spacer()' takes all free space along the stack's axis and pushes neighboring views away. With 'frame' you propose sizes (including '.frame(maxWidth: .infinity)'), 'fixedSize()' makes a view use its ideal size without being compressed, and 'layoutPriority' decides who gets space first. 'ScrollView' scrolls content; inside it, 'LazyVStack' and 'LazyVGrid' only create the visible views, ideal for long lists. 'GridItem' defines columns: '.fixed', '.flexible' or '.adaptive(minimum:)', which fits as many columns as possible. 'Grid' and 'GridRow' align rows and columns in tables. By default content respects the safe area (notch, home indicator); use '.ignoresSafeArea()' on backgrounds. To adapt to different devices and orientations, use 'ViewThatFits', the '@Environment' 'horizontalSizeClass' and, sparingly, 'GeometryReader', which reads the available size but expands to fill all space. For custom layouts there is the 'Layout' protocol ('sizeThatFits' and 'placeSubviews' methods). Common mistake: using 'GeometryReader' for everything and hardcoding point sizes, which breaks on other screens and with Dynamic Type.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/vstack",
+  "category": "SwiftUI",
+  "corporateCase": "In a product catalog app, the storefront uses 'LazyVGrid' with 'GridItem(.adaptive(minimum: 150))': iPhone shows 2 columns and a landscape iPad shows more, with no extra code. The header uses 'ViewThatFits' to switch between horizontal and vertical layout depending on space.",
+  "gameCase": "In a puzzle game, the HUD uses a 'ZStack' with '.topTrailing' alignment to place the score over the board, and an 'HStack' with 'Spacer()' separates lives and pause. The 4x4 board is a 'Grid' with 'GridRow', keeping the tiles aligned.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Stack two texts vertically",
+    "codeSnippet": "___ { Text(\"A\"); Text(\"B\") }",
+    "correctAnswer": "VStack",
+    "hint": "The container whose name starts with the letter of the vertical direction."
+   },
+   {
+    "id": 2,
+    "question": "Set 12 points of distance between the stack's children",
+    "codeSnippet": "HStack(___: 12) { Text(\"A\"); Text(\"B\") }",
+    "correctAnswer": "spacing",
+    "hint": "The parameter that controls the space between elements."
+   },
+   {
+    "id": 3,
+    "question": "Push 'A' to the left and 'B' to the right, taking the free space",
+    "codeSnippet": "HStack { Text(\"A\"); ___(); Text(\"B\") }",
+    "correctAnswer": "Spacer",
+    "hint": "The flexible view that 'spaces'."
+   },
+   {
+    "id": 4,
+    "question": "Align the overlapped views to the bottom-trailing corner",
+    "codeSnippet": "ZStack(___: .bottomTrailing) { Fundo(); Selo() }",
+    "correctAnswer": "alignment",
+    "hint": "Parameter that takes values like .leading or .center."
+   },
+   {
+    "id": 5,
+    "question": "Create a grid with 2 flexible columns",
+    "codeSnippet": "LazyVGrid(___: [GridItem(.flexible()), GridItem(.flexible())]) { ForEach(itens) { Cell($0) } }",
+    "correctAnswer": "columns",
+    "hint": "The vertical grid takes the list of GridItem in this parameter."
+   },
+   {
+    "id": 6,
+    "question": "Make the text use its ideal height without being truncated, keeping the proposed width",
+    "codeSnippet": "Text(longo).___(horizontal: false, vertical: true)",
+    "correctAnswer": "fixedSize",
+    "hint": "The modifier that 'fixes' the ideal size on the chosen axes."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "How does SwiftUI's layout process work?",
+    "options": [
+     "The child dictates the size and the parent obeys",
+     "The parent proposes a size, the child picks its own and the parent places it",
+     "All sizes are fixed in points",
+     "The system computes everything ignoring the hierarchy"
+    ],
+    "correctIndex": 1,
+    "explanation": "This negotiation explains why a 'Text' takes only what it needs and why the order of 'frame' and 'padding' changes the result."
+   },
+   {
+    "id": 2,
+    "question": "What does a 'Spacer()' do inside an 'HStack'?",
+    "options": [
+     "Adds exactly 8 points of space",
+     "Hides neighboring views",
+     "Creates a divider line",
+     "Expands to fill the free horizontal space, pushing the other views apart"
+    ],
+    "correctIndex": 3,
+    "explanation": "The Spacer is flexible along the stack's axis. Several Spacers share the space equally."
+   },
+   {
+    "id": 3,
+    "question": "When should you prefer 'LazyVStack' over 'VStack'?",
+    "options": [
+     "For long content inside a ScrollView, since it only creates views that become visible",
+     "Always, since it is always faster",
+     "When you want horizontal alignment",
+     "When there are only 3 static views"
+    ],
+    "correctIndex": 0,
+    "explanation": "VStack creates all children at once. LazyVStack defers creation until scrolling. For few items a plain VStack is simpler and sufficient."
+   },
+   {
+    "id": 4,
+    "question": "What does 'GridItem(.adaptive(minimum: 80))' mean?",
+    "options": [
+     "A single column of exactly 80 points",
+     "80 columns",
+     "As many columns as fit, each at least 80 points wide",
+     "A column that never exceeds 80 points"
+    ],
+    "correctIndex": 2,
+    "explanation": "The adaptive type is ideal for grids that adjust themselves to different screen sizes, such as iPhone and iPad."
+   },
+   {
+    "id": 5,
+    "question": "What is the default behavior of the safe area?",
+    "options": [
+     "Content is drawn behind the notch and home indicator",
+     "Content avoids system areas; use '.ignoresSafeArea()' to extend backgrounds to the edges",
+     "The safe area only exists on iPad",
+     "You must calculate margins manually"
+    ],
+    "correctIndex": 1,
+    "explanation": "Respecting the safe area keeps buttons from sitting under the notch. Extending only the background (colors, images) is the typical use of 'ignoresSafeArea'."
+   },
+   {
+    "id": 6,
+    "question": "What does 'ViewThatFits' do?",
+    "options": [
+     "Shows the first of its options that fits in the available space",
+     "Resizes any view to fit",
+     "Shows all options together",
+     "Hides views that overflow the screen and deletes them"
+    ],
+    "correctIndex": 0,
+    "explanation": "Useful for adaptive layouts: put the horizontal version first and the vertical one as a fallback, without testing sizes manually."
+   },
+   {
+    "id": 7,
+    "question": "What is a common side effect of 'GeometryReader'?",
+    "options": [
+     "It shrinks to the smallest possible size",
+     "It prevents scrolling in all cases",
+     "It expands to fill all the proposed space, which can disrupt the layout",
+     "It only works in previews"
+    ],
+    "correctIndex": 2,
+    "explanation": "Use GeometryReader only when you need the size of the space (for example proportions). For everything else, prefer flexible frames, stacks and adaptive containers."
+   },
+   {
+    "id": 8,
+    "question": "What does the view '.frame(maxWidth: .infinity)' do?",
+    "options": [
+     "Sets the exact width to infinity",
+     "Causes a layout error",
+     "Gives the view no width",
+     "Lets the view expand to the full width proposed by the parent"
+    ],
+    "correctIndex": 3,
+    "explanation": "It does not create infinite width: it just accepts the maximum offered. Common for full-width buttons."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is 'layoutPriority' for?",
+    "options": [
+     "To decide which view gets space first when space is short; lower-priority views get compressed",
+     "To order views by z-index",
+     "To choose animation order",
+     "To increase rendering speed"
+    ],
+    "correctIndex": 0,
+    "explanation": "In an HStack with two long texts, giving one higher priority keeps it from being truncated while the other yields space."
+   },
+   {
+    "id": 2,
+    "question": "What is the main difference between 'Grid' (with 'GridRow') and 'LazyVGrid'?",
+    "options": [
+     "None",
+     "'Grid' only works on macOS",
+     "'Grid' creates all cells and aligns rows and columns like a table; 'LazyVGrid' creates on demand and is defined by columns",
+     "'LazyVGrid' does not scroll"
+    ],
+    "correctIndex": 2,
+    "explanation": "Use Grid for few cells with precise alignment (forms, small tables) and LazyVGrid for many cells in a ScrollView."
+   },
+   {
+    "id": 3,
+    "question": "What changes with 'VStack(alignment: .leading)'?",
+    "options": [
+     "Text is always read right to left",
+     "Children align to the leading edge (left in LTR languages) on the horizontal axis",
+     "The stack becomes horizontal",
+     "Spacing is set to zero"
+    ],
+    "correctIndex": 1,
+    "explanation": "'leading' and 'trailing' adapt to right-to-left languages, unlike 'left' and 'right'. VStack's default is .center."
+   },
+   {
+    "id": 4,
+    "question": "What is the difference between '.overlay' and '.background'?",
+    "options": [
+     "They are the same",
+     "'overlay' only accepts colors",
+     "'background' only works on Text",
+     "'background' draws behind the view and 'overlay' draws on top; both match the base view's size"
+    ],
+    "correctIndex": 3,
+    "explanation": "Unlike a ZStack, overlay and background do not change the base view's size, great for badges and borders."
+   },
+   {
+    "id": 5,
+    "question": "How can you adapt a layout between a compact iPhone and a regular iPad?",
+    "options": [
+     "Read '@Environment(\\.horizontalSizeClass)' and choose the structure based on '.compact' or '.regular'",
+     "Build two separate apps",
+     "Hardcode widths in points for each device",
+     "Disable rotation"
+    ],
+    "correctIndex": 0,
+    "explanation": "Size classes describe available space, not the device model. Combine with adaptive grids and ViewThatFits for robust layouts."
+   },
+   {
+    "id": 6,
+    "question": "In the 'Layout' protocol, which methods do you conceptually implement?",
+    "options": [
+     "'draw' and 'render'",
+     "'sizeThatFits' to report the container size and 'placeSubviews' to position the children",
+     "Only 'init' and 'deinit'",
+     "'onAppear' and 'onDisappear'"
+    ],
+    "correctIndex": 1,
+    "explanation": "This mirrors the layout negotiation: the container reports a size and then places each subview in the rectangle it receives."
+   }
+  ]
+ },
+ {
+  "id": 45,
+  "title": "SwiftUI: State and Data Flow",
+  "theory": "In SwiftUI the interface is a function of state: when data changes, the views that read it are re-evaluated. The core principle is a SINGLE source of truth for each piece of data, which one owner holds and the others just read or reference. '@State' stores simple state (values like Int, Bool, String) owned by a view, usually 'private'. '@Binding' is a read-write reference to another view's state; the '$' prefix in '$counter' produces that Binding (for example 'Toggle(\"Sound\", isOn: $enabled)'). For richer models, the Observation framework offers the '@Observable' macro on classes: SwiftUI tracks which properties each 'body' reads and updates only what is needed. The instance should be kept in '@State' by the view that creates it, and '@Bindable' lets you create bindings ('$model.name') from a received observable model. '@Environment' reads values injected by ancestors (such as '\\.dismiss' or '\\.colorScheme') and is also used to share models with '.environment(model)' and custom keys in 'EnvironmentValues'. In the legacy style, 'ObservableObject' with '@Published' and the '@StateObject' (owner) and '@ObservedObject' (observer) wrappers now map to '@Observable' with '@State' and plain properties. Lift state up to the common ancestor when two views need the same data. Common mistakes: duplicating data in two '@State' properties, mutating state inside 'body', and forgetting '@State' on a model, which causes it to be recreated on every update.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app",
+  "category": "SwiftUI",
+  "corporateCase": "In a task-management app, an '@Observable' model called 'ListaDeTarefas' is created once at the root with '@State' and shared via '.environment'. The detail screen edits the title with '@Bindable', and the list updates by itself without duplicating data.",
+  "gameCase": "In a game, the 'Placar' is an '@Observable' model with points and lives; the HUD only reads 'points' and is therefore re-evaluated only when it changes. The pause button receives a '@Binding' to the 'paused' state owned by the main screen.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare simple state owned by the view",
+    "codeSnippet": "___ private var contador = 0",
+    "correctAnswer": "@State",
+    "hint": "It is the property wrapper for local values that make the view update."
+   },
+   {
+    "id": 2,
+    "question": "The child view needs to read and write a value owned by the parent",
+    "codeSnippet": "struct Botao: View { ___ var ligado: Bool; var body: some View { Toggle(\"Som\", isOn: $ligado) } }",
+    "correctAnswer": "@Binding",
+    "hint": "The wrapper for a reference to another view's state."
+   },
+   {
+    "id": 3,
+    "question": "Pass a Binding derived from the '@State ligado' property",
+    "codeSnippet": "Toggle(\"Som\", isOn: ___)",
+    "correctAnswer": "$ligado",
+    "hint": "Use the prefix that accesses the wrapper's projected value."
+   },
+   {
+    "id": 4,
+    "question": "Make the class observable by SwiftUI using the Observation framework",
+    "codeSnippet": "___ class Carrinho { var itens: [String] = [] }",
+    "correctAnswer": "@Observable",
+    "hint": "It is a macro, not a property wrapper."
+   },
+   {
+    "id": 5,
+    "question": "Read the color scheme (light/dark) provided by the system",
+    "codeSnippet": "@___(\\.colorScheme) var esquema",
+    "correctAnswer": "Environment",
+    "hint": "The wrapper that reads values injected by ancestors, using a key path."
+   },
+   {
+    "id": 6,
+    "question": "Create bindings ('$perfil.nome') from a received '@Observable' model",
+    "codeSnippet": "struct Editor: View { ___ var perfil: Perfil; var body: some View { TextField(\"Nome\", text: $perfil.nome) } }",
+    "correctAnswer": "@Bindable",
+    "hint": "The wrapper that enables '$' on properties of an observable model."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does 'single source of truth' mean in SwiftUI?",
+    "options": [
+     "All data must live in global variables",
+     "Each view must keep its own copy of the data",
+     "Each piece of data has one owner and other views read or reference it",
+     "The data cannot change"
+    ],
+    "correctIndex": 2,
+    "explanation": "Copying data in several places causes inconsistencies. With one owner and Bindings or shared models, every view reflects the same value."
+   },
+   {
+    "id": 2,
+    "question": "Why is '@State' usually declared 'private'?",
+    "options": [
+     "Because the state belongs to the view itself; other views should receive it via Binding or a model, not change it directly",
+     "Because otherwise it does not compile",
+     "To save memory",
+     "Because @State only works with Int"
+    ],
+    "correctIndex": 0,
+    "explanation": "'private' communicates ownership of the state. It is not required by the compiler but is Apple's recommended convention."
+   },
+   {
+    "id": 3,
+    "question": "What does the '$' prefix produce in '$counter' when 'counter' is '@State'?",
+    "options": [
+     "A copy of the value",
+     "A String",
+     "An optional value",
+     "A Binding, a read-write reference to the state"
+    ],
+    "correctIndex": 3,
+    "explanation": "The Binding lets controls (Toggle, TextField) and child views read and change the original value without owning it."
+   },
+   {
+    "id": 4,
+    "question": "With '@Observable', when is a view re-evaluated?",
+    "options": [
+     "When any property of the model changes",
+     "Only when properties its 'body' read change",
+     "Every second",
+     "Never automatically"
+    ],
+    "correctIndex": 1,
+    "explanation": "Observation tracks accesses made during 'body'. With legacy 'ObservableObject', any changed '@Published' invalidated all observing views."
+   },
+   {
+    "id": 5,
+    "question": "What is the modern equivalent of 'ObservableObject' + '@Published' + '@StateObject'?",
+    "options": [
+     "'@Binding' on all properties",
+     "'@Environment' only",
+     "An '@Observable' class held by the owning view with '@State'",
+     "A struct without wrappers"
+    ],
+    "correctIndex": 2,
+    "explanation": "'@Observable' removes the need for '@Published', and '@State' becomes the model's owner instead of '@StateObject'. Views that only read receive the model as a plain property."
+   },
+   {
+    "id": 6,
+    "question": "A child view receives 'var count: Int' and tries 'count += 1'. What happens and what is the fix?",
+    "options": [
+     "It works normally",
+     "It does not compile, since 'body' is non-mutating and it is just a copy; use '@Binding var count: Int'",
+     "It compiles but silently changes the parent",
+     "Change Int to Double"
+    ],
+    "correctIndex": 1,
+    "explanation": "Values are copied. To write to the parent's data, the child needs a '@Binding', which the parent provides with '$count'."
+   },
+   {
+    "id": 7,
+    "question": "What is '@Environment' used for?",
+    "options": [
+     "Read values provided by the system or ancestors, such as '\\.dismiss', '\\.colorScheme' or injected models",
+     "Create macOS environment variables",
+     "Store data on disk",
+     "Compile for another environment"
+    ],
+    "correctIndex": 0,
+    "explanation": "The environment avoids passing data through many layers of initializers. '@Observable' models are injected with '.environment(model)' and read with '@Environment(Model.self)'."
+   },
+   {
+    "id": 8,
+    "question": "Why is it a mistake to change a '@State' inside 'body'?",
+    "options": [
+     "Because the compiler blocks all mutation",
+     "Because it slows the app by 1 second",
+     "Because it only works in Previews",
+     "Because 'body' runs to compute the interface; changing state there triggers another update, causing loops and warnings"
+    ],
+    "correctIndex": 3,
+    "explanation": "Change state in response to events: button actions, '.onChange', '.task'. 'body' should be pure, only describing the interface."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "When should you use '@Bindable'?",
+    "options": [
+     "To create reusable views",
+     "To get bindings ('$model.property') from an '@Observable' model that is not the view's own '@State'",
+     "To make a struct observable",
+     "To save to disk"
+    ],
+    "correctIndex": 1,
+    "explanation": "With '@State private var model = Model()', '$model.name' already works. For a model received as a parameter, '@Bindable var model: Model' enables '$'."
+   },
+   {
+    "id": 2,
+    "question": "What is 'lifting state up'?",
+    "options": [
+     "Moving state down to a child view",
+     "Saving state to the cloud",
+     "Moving state to the common ancestor of the views that use it, passing it via Binding or model",
+     "Converting @State to a constant"
+    ],
+    "correctIndex": 2,
+    "explanation": "If two sibling views need the same data, it should not live in either one. The parent becomes the owner and the children receive '@Binding'."
+   },
+   {
+    "id": 3,
+    "question": "In the legacy style, what is the difference between '@StateObject' and '@ObservedObject'?",
+    "options": [
+     "'@StateObject' owns and keeps the instance across updates; '@ObservedObject' only observes an instance created elsewhere",
+     "They are identical",
+     "'@ObservedObject' creates and destroys the object",
+     "'@StateObject' only accepts structs"
+    ],
+    "correctIndex": 0,
+    "explanation": "Creating the object with '@ObservedObject' inside the view makes the instance get recreated when the parent updates, losing data. Today, '@State' with '@Observable' solves this."
+   },
+   {
+    "id": 4,
+    "question": "To create a custom environment key with 'EnvironmentKey', what does it require?",
+    "options": [
+     "A 'draw' method",
+     "A class with @Published",
+     "Nothing, the name is enough",
+     "A static 'defaultValue' and an 'EnvironmentValues' extension exposing the property"
+    ],
+    "correctIndex": 3,
+    "explanation": "The 'defaultValue' is used when no ancestor injected a value. The extension lets you read with '@Environment(\\.myKey)' and write with '.environment(\\.myKey, value)'."
+   },
+   {
+    "id": 5,
+    "question": "Why should an '@Observable' model created in a view be stored with '@State'?",
+    "options": [
+     "To make it immutable",
+     "So SwiftUI preserves the same instance across re-evaluations of the struct, instead of recreating it",
+     "Because classes cannot be properties",
+     "To save to iCloud"
+    ],
+    "correctIndex": 1,
+    "explanation": "The view struct is recreated often; without '@State', 'var model = Model()' would produce a new instance and lose data on every update."
+   },
+   {
+    "id": 6,
+    "question": "Which statement about '@Binding' is correct?",
+    "options": [
+     "It stores an independent copy of the value",
+     "It only works with classes",
+     "It does not own the data, it only reads and writes a value owned by another source",
+     "It replaces '@State' in the data owner"
+    ],
+    "correctIndex": 2,
+    "explanation": "A Binding is like a safe pointer to the owner's data. For previews use '.constant(value)' to create a fixed Binding."
+   }
+  ]
+ }
+]

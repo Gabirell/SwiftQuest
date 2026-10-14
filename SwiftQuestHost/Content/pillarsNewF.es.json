@@ -1,0 +1,902 @@
+[
+ {
+  "id": 39,
+  "title": "Structs: Propiedades, Inicializadores y Métodos",
+  "theory": "Una 'struct' es un tipo de valor que agrupa datos (propiedades) y comportamientos (métodos) bajo un nombre, como 'struct Ponto { var x = 0; var y = 0 }'. Las propiedades almacenadas guardan un valor (con o sin valor por defecto), mientras que las propiedades calculadas obtienen el valor en cada acceso, como 'var area: Double { largura * altura }'. Toda struct recibe gratis un inicializador memberwise, por ejemplo 'Ponto(x: 1, y: 2)', y puedes escribir tu propio 'init'; si lo declaras dentro del cuerpo de la struct, el memberwise deja de generarse (decláralo en una 'extension' para conservar ambos). Los métodos que modifican propiedades deben marcarse como 'mutating', porque la struct es un tipo de valor. Los miembros 'static' pertenecen al tipo ('Config.versao') y no a cada instancia. Como las structs tienen semántica de copia, 'var b = a' crea una copia independiente: cambiar 'b' no afecta a 'a'. Además, una instancia guardada en un 'let' es totalmente inmutable, aunque sus propiedades sean 'var'. Los tipos anidados (un 'enum' dentro de una struct) ayudan a organizar el código. La guía de Apple es preferir structs y usar class solo cuando necesitas identidad, herencia o estado compartido. La certificación cubre propiedades, init, métodos y creación de instancias.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/",
+  "category": "Fundamentos",
+  "corporateCase": "Una app bancaria modela cada 'Transacao' como struct con monto, fecha y categoría. Al ser un tipo de valor, pasar la transacción a otra pantalla nunca la modifica por accidente, lo que facilita las pruebas y evita errores de estado compartido.",
+  "gameCase": "Un juego define 'struct Posicao' con x e y y un método 'mutating mover(para:)'. Guardar la posición anterior es solo copiar la struct, lo que facilita implementar el deshacer de jugadas.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declara un tipo de valor llamado Ponto con dos propiedades",
+    "codeSnippet": "___ Ponto {\n    var x = 0\n    var y = 0\n}",
+    "correctAnswer": "struct",
+    "hint": "La palabra clave que declara un tipo de valor (no es class ni enum)."
+   },
+   {
+    "id": 2,
+    "question": "Marca el método que modifica una propiedad de la propia struct",
+    "codeSnippet": "struct Contador {\n    var total = 0\n    ___ func incrementar() { total += 1 }\n}",
+    "correctAnswer": "mutating",
+    "hint": "Modificador que va antes de 'func' en structs que cambian su propio estado."
+   },
+   {
+    "id": 3,
+    "question": "Crea una constante que pertenece al tipo, accedida como Config.versao",
+    "codeSnippet": "struct Config {\n    ___ let versao = \"1.0\"\n}\nprint(Config.versao)",
+    "correctAnswer": "static",
+    "hint": "Modificador de miembro de tipo, sin necesitar instancia."
+   },
+   {
+    "id": 4,
+    "question": "Escribe el inicializador personalizado de la struct",
+    "codeSnippet": "struct Ponto {\n    var x: Int\n    ___(x: Int) { self.x = x }\n}",
+    "correctAnswer": "init",
+    "hint": "Es el nombre del método especial que crea instancias, sin la palabra func."
+   },
+   {
+    "id": 5,
+    "question": "Las structs se copian al asignar. ¿Qué valor se imprime para a.x?",
+    "codeSnippet": "var a = Ponto(x: 1)\nvar b = a\nb.x = 9\nprint(a.x) // ___",
+    "correctAnswer": "1",
+    "hint": "'b' es una copia independiente de 'a'; cambiar b.x no modifica a. Responde solo con el número."
+   },
+   {
+    "id": 6,
+    "question": "Declara la instancia de modo que sus propiedades no se puedan modificar",
+    "codeSnippet": "___ p = Ponto(x: 1)\np.x = 5 // erro de compilação",
+    "correctAnswer": "let",
+    "hint": "Usa la palabra clave de constante, en lugar de var."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Dada 'struct Pessoa { var nome: String; var idade = 0 }', ¿qué llamada compila usando el inicializador memberwise?",
+    "options": [
+     "Pessoa()",
+     "Pessoa(nome: \"Ana\")",
+     "Pessoa(\"Ana\")",
+     "Pessoa(idade: 30, nome: \"Ana\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las propiedades con valor por defecto (idade) pasan a ser parámetros opcionales, pero 'nome' es obligatorio, con etiqueta, y los argumentos siguen el orden de declaración."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre propiedad almacenada y calculada?",
+    "options": [
+     "La calculada guarda el valor en disco automáticamente",
+     "La almacenada solo puede declararse con let",
+     "No hay diferencia; son solo sintaxis distintas",
+     "La calculada no guarda valor: lo calcula en cada acceso a partir de otros datos"
+    ],
+    "correctIndex": 3,
+    "explanation": "'var area: Double { largura * altura }' no ocupa memoria propia; se recalcula cada vez que se lee. La almacenada mantiene un valor en la instancia."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué ocurre con 'let p = Ponto(x: 1, y: 2); p.x = 5'?",
+    "options": [
+     "Error de compilación: una instancia de struct en let es totalmente inmutable",
+     "Funciona, pues x se declara con var",
+     "Funciona, pero solo dentro de métodos mutating",
+     "Compila con advertencia e ignora la asignación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Como struct es un tipo de valor, declarar la instancia con 'let' vuelve inmutables todas sus propiedades, incluso las 'var'. Con class sería distinto, porque lo constante es la referencia."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es la salida? 'var a = Ponto(x: 1); var b = a; b.x = 9; print(a.x, b.x)'",
+    "options": [
+     "9 9",
+     "1 1",
+     "1 9",
+     "9 1"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las structs tienen semántica de copia: 'var b = a' crea una copia independiente. Cambiar b.x no cambia a.x."
+   },
+   {
+    "id": 5,
+    "question": "¿Por qué los métodos que modifican propiedades de una struct necesitan 'mutating'?",
+    "options": [
+     "Para poder sobrescribir el método en subclases",
+     "Para volver el método estático",
+     "Porque por defecto 'self' es inmutable en tipos de valor; 'mutating' permite modificar la propia instancia",
+     "Para evitar que el método se llame fuera del archivo"
+    ],
+    "correctIndex": 2,
+    "explanation": "En structs y enums, los métodos no modifican self por defecto. 'mutating' declara la intención y solo puede llamarse en instancias declaradas con 'var'."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo se accede a 'static let versao' declarada en 'struct Config'?",
+    "options": [
+     "Config().versao",
+     "Config.versao, directamente en el tipo",
+     "self.versao en cualquier lugar",
+     "Config.init().versao"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los miembros static pertenecen al tipo, así que se acceden con el nombre del tipo, sin crear instancia."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué ocurre al declarar un 'init' personalizado dentro del cuerpo de la struct?",
+    "options": [
+     "El inicializador memberwise automático deja de generarse",
+     "El memberwise pasa a ser obligatorio",
+     "Nada, ambos siguen disponibles",
+     "La struct se convierte en class"
+    ],
+    "correctIndex": 0,
+    "explanation": "Para conservar ambos, declara el init personalizado en una 'extension' de la struct. Dentro del cuerpo, solo existe tu init."
+   },
+   {
+    "id": 8,
+    "question": "Según la guía de Apple, ¿cuándo elegir class en lugar de struct?",
+    "options": [
+     "Siempre que el tipo tenga más de tres propiedades",
+     "Siempre que haya métodos",
+     "Cuando se quiere que el tipo sea más rápido en todos los casos",
+     "Cuando se necesita identidad compartida, herencia o interoperabilidad con Objective-C"
+    ],
+    "correctIndex": 3,
+    "explanation": "Apple recomienda empezar con struct. Class entra cuando la instancia debe compartirse por referencia, heredar de otra clase o usar APIs basadas en NSObject."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Dada 'struct Circulo { var raio = 1.0; var diametro: Double { raio * 2 } }', ¿qué ocurre con 'c.diametro = 10'?",
+    "options": [
+     "Cambia el radio a 5",
+     "Funciona y guarda 10",
+     "Error de compilación: la propiedad calculada solo tiene getter",
+     "Funciona solo si c es let"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sin 'set', la propiedad es de solo lectura. Para aceptar asignación habría que declarar get y set."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué ocurre en 'func f(_ p: Ponto) { p.x = 1 }', siendo Ponto una struct?",
+    "options": [
+     "Error: los parámetros son constantes; haría falta 'inout' y 'var' en la llamada",
+     "Modifica el punto original del llamador",
+     "Crea una copia y la modifica, sin error",
+     "Funciona si la llamada pasa el punto como 'var'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los parámetros son constantes dentro de la función. Para modificar la variable del llamador se usa 'inout' (pasando '&ponto'). Con una class sí se podrían cambiar propiedades, pues p es una referencia."
+   },
+   {
+    "id": 3,
+    "question": "¿Cómo se hace referencia al enum 'Status' declarado dentro de 'struct Pedido'?",
+    "options": [
+     "Status.Pedido",
+     "Pedido::Status",
+     "Solo Status, desde cualquier lugar",
+     "Pedido.Status"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los tipos anidados viven en el ámbito del tipo externo y se acceden con punto, como Pedido.Status.pago."
+   },
+   {
+    "id": 4,
+    "question": "Dado 'var lista = [Ponto(x: 1)]; var copia = lista; copia[0].x = 5', ¿cuál es el valor de 'lista[0].x'?",
+    "options": [
+     "5",
+     "1",
+     "0",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Arrays y structs son tipos de valor: 'copia' es independiente de 'lista' y el cambio no se propaga."
+   },
+   {
+    "id": 5,
+    "question": "En 'init(x: Int) { self.x = x }', ¿por qué hace falta 'self'?",
+    "options": [
+     "Para volver el init conveniente",
+     "Para diferenciar la propiedad del parámetro que tiene el mismo nombre",
+     "Porque init siempre exige self",
+     "Para que la struct se vuelva class"
+    ],
+    "correctIndex": 1,
+    "explanation": "Dentro del init, 'x' solo se refiere al parámetro (sombreado). 'self.x' apunta a la propiedad de la instancia."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué tipo es la mejor opción para modelar una coordenada con latitud y longitud?",
+    "options": [
+     "class, para compartirla",
+     "actor, para evitar copias",
+     "struct, por ser un dato pequeño y de valor, sin necesidad de identidad",
+     "protocol, pues guarda datos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las coordenadas son valores simples: dos coordenadas iguales son intercambiables. Es el caso típico de struct (así trata MapKit a CLLocationCoordinate2D)."
+   }
+  ]
+ },
+ {
+  "id": 40,
+  "title": "Clases, Herencia y Control de Acceso",
+  "theory": "Una 'class' es un tipo de referencia: varias variables pueden apuntar a la misma instancia, y '===' verifica si dos referencias son el mismo objeto (identidad), a diferencia de '==' que compara valores. Todo inicializador designado de una clase debe inicializar sus propias propiedades y solo después llamar a 'super.init'; los inicializadores 'convenience' delegan a uno designado de la misma clase con 'self.init'. 'required init' obliga a las subclases a implementarlo. Una subclase hereda de una superclase y redefine comportamiento con 'override', llamando a 'super' cuando quiere reutilizar el original; 'final' impide herencia o override. 'deinit' se ejecuta cuando ARC libera la instancia (conteo de referencias en cero). El control de acceso tiene cinco niveles: 'open' (otros módulos pueden usar y heredar), 'public' (usar, pero no heredar), 'internal' (por defecto, dentro del módulo), 'fileprivate' (dentro del archivo) y 'private' (dentro de la declaración); 'private(set)' permite leer desde fuera pero escribir solo desde dentro. Los enums también son tipos propios: 'enum' con raw values ('enum Dia: Int'), associated values ('case erro(String)'), 'switch' exhaustivo y 'CaseIterable' para obtener 'allCases'. Regla práctica: enum para un conjunto cerrado de estados, struct para datos, class para identidad y herencia.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/inheritance/",
+  "category": "Fundamentos",
+  "corporateCase": "Una app corporativa tiene una clase base 'Documento' con subclases 'Contrato' y 'Fatura' que sobrescriben 'validar()'. La propiedad 'protocolo' es 'private(set)', así que las pantallas pueden leer el número, pero solo el propio modelo lo modifica.",
+  "gameCase": "En un juego, 'class Inimigo' tiene subclases como 'Chefe', que hace 'override' de 'atacar()'. Varias partes del juego guardan una referencia al mismo enemigo, y el estado del nivel es un enum con casos como menu, jogando y fimDeJogo.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Redefine en la subclase el método heredado falar()",
+    "codeSnippet": "class Animal {\n    func falar() { print(\"...\") }\n}\nclass Cachorro: Animal {\n    ___ func falar() { print(\"Au!\") }\n}",
+    "correctAnswer": "override",
+    "hint": "Palabra obligatoria antes de func para sobrescribir."
+   },
+   {
+    "id": 2,
+    "question": "Llama al inicializador de la superclase",
+    "codeSnippet": "class Cachorro: Animal {\n    init(nome: String) {\n        ___.init(nome: nome)\n    }\n}",
+    "correctAnswer": "super",
+    "hint": "Es la palabra que se refiere a la clase padre."
+   },
+   {
+    "id": 3,
+    "question": "Impide que Configuracao tenga subclases",
+    "codeSnippet": "___ class Configuracao { }",
+    "correctAnswer": "final",
+    "hint": "Modificador que significa 'final, no se puede extender'."
+   },
+   {
+    "id": 4,
+    "question": "Marca el init que delega a otro init de la misma clase",
+    "codeSnippet": "class Usuario {\n    var nome: String\n    init(nome: String) { self.nome = nome }\n    ___ init() { self.init(nome: \"Visitante\") }\n}",
+    "correctAnswer": "convenience",
+    "hint": "Inicializador de apoyo, secundario."
+   },
+   {
+    "id": 5,
+    "question": "Verifica si a y b apuntan a la misma instancia",
+    "codeSnippet": "let a = Caixa()\nlet b = a\nif a ___ b { print(\"mesma instância\") }",
+    "correctAnswer": "===",
+    "hint": "Operador de identidad, con tres signos."
+   },
+   {
+    "id": 6,
+    "question": "Permite leer 'saldo' desde fuera, pero escribir solo dentro de la clase",
+    "codeSnippet": "public class Conta {\n    public ___(set) var saldo = 0\n}",
+    "correctAnswer": "private",
+    "hint": "Nivel de acceso usado en 'xxx(set)'; significa 'privado'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Dado 'class Caixa { var v = 0 }', 'let a = Caixa(); let b = a; b.v = 5; print(a.v)' imprime:",
+    "options": [
+     "0",
+     "Error, pues a es let",
+     "5",
+     "nil"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las clases son tipos de referencia: a y b apuntan al mismo objeto. El 'let' fija la referencia, pero no impide modificar propiedades 'var'."
+   },
+   {
+    "id": 2,
+    "question": "En un init designado de subclase, ¿cuál es el orden correcto?",
+    "options": [
+     "Inicializar las propiedades de la propia subclase y luego llamar a super.init",
+     "Llamar a super.init y luego inicializar las propias propiedades",
+     "Llamar a self.init primero",
+     "No hace falta inicializar nada"
+    ],
+    "correctIndex": 0,
+    "explanation": "En la inicialización en dos fases de Swift, la subclase debe inicializar todas sus propiedades antes de delegar al init de la superclase."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué palabra es obligatoria para redefinir un método heredado?",
+    "options": [
+     "super",
+     "final",
+     "required",
+     "override"
+    ],
+    "correctIndex": 3,
+    "explanation": "El compilador exige 'override' para dejar explícito que estás reemplazando el método heredado, evitando sobrescrituras accidentales."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué garantiza 'final class Servico'?",
+    "options": [
+     "Que Servico no se puede instanciar",
+     "Que nadie puede crear subclases de Servico",
+     "Que las propiedades son constantes",
+     "Que Servico solo vive en el archivo actual"
+    ],
+    "correctIndex": 1,
+    "explanation": "'final' impide herencia y override, lo que además permite al compilador optimizar las llamadas."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué nivel de acceso permite que OTRO módulo herede de la clase y sobrescriba sus métodos?",
+    "options": [
+     "open",
+     "public",
+     "internal",
+     "fileprivate"
+    ],
+    "correctIndex": 0,
+    "explanation": "'public' permite usar desde fuera, pero no heredar ni sobrescribir; 'open' permite ambas cosas. Es el nivel típico de clases de frameworks, como UIViewController."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué hace 'private(set) var total = 0'?",
+    "options": [
+     "Vuelve total una constante",
+     "Oculta total por completo",
+     "Cualquier código lee total, pero solo el código interno lo escribe",
+     "Permite escribir solo en subclases"
+    ],
+    "correctIndex": 2,
+    "explanation": "'private(set)' restringe solo el setter. Expone el valor para lectura y protege la regla de modificación dentro del tipo."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuándo se ejecuta el 'deinit' de una clase?",
+    "options": [
+     "Cuando se cierra la app",
+     "Cuando desaparece la última referencia fuerte a la instancia y ARC la libera",
+     "Cada vez que cambia una propiedad",
+     "Cuando se llama deinit() manualmente"
+    ],
+    "correctIndex": 1,
+    "explanation": "deinit se llama automáticamente antes de liberar la memoria y solo existe en clases. Los ciclos de referencias fuertes impiden que se ejecute."
+   },
+   {
+    "id": 8,
+    "question": "Dado 'enum Direcao: CaseIterable { case norte, sul, leste, oeste }', ¿cuál es el valor de 'Direcao.allCases.count'?",
+    "options": [
+     "0",
+     "1",
+     "Error, falta rawValue",
+     "4"
+    ],
+    "correctIndex": 3,
+    "explanation": "CaseIterable genera la colección 'allCases' con todos los casos, útil para llenar menús y Pickers."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Dado 'enum Planeta: Int { case mercurio = 1, venus, terra }', ¿cuál es el valor de 'Planeta.terra.rawValue'?",
+    "options": [
+     "2",
+     "3",
+     "0",
+     "\"terra\""
+    ],
+    "correctIndex": 1,
+    "explanation": "Con raw value entero, los casos siguientes se incrementan automáticamente: mercurio = 1, venus = 2, terra = 3."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre raw value y associated value en enums?",
+    "options": [
+     "Son la misma función con nombres distintos",
+     "Associated value solo acepta Int",
+     "Raw value permite tipos distintos por caso",
+     "El raw value es fijo e igual para cada caso de ese tipo; el associated value guarda datos distintos cada vez que se usa el caso"
+    ],
+    "correctIndex": 3,
+    "explanation": "'case erro(String)' guarda un texto distinto en cada uso, extraído en el 'switch' con 'case .erro(let msg)'. El raw value es una constante definida en la declaración."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es la diferencia entre '==' y '===' en clases?",
+    "options": [
+     "'==' compara valores (si es Equatable); '===' verifica si son la misma instancia",
+     "Son equivalentes",
+     "'===' compara solo el tipo",
+     "'==' es solo para struct"
+    ],
+    "correctIndex": 0,
+    "explanation": "Dos instancias distintas pueden tener datos iguales ('==' verdadero) y seguir siendo objetos diferentes ('===' falso)."
+   },
+   {
+    "id": 4,
+    "question": "Un 'convenience init' debe:",
+    "options": [
+     "Llamar directamente a super.init",
+     "Inicializar todas las propiedades sin delegar",
+     "Llamar, directa o indirectamente, a un init designado de la propia clase con self.init",
+     "Ser final"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los convenience inits delegan 'hacia el lado' (misma clase); solo los inits designados delegan 'hacia arriba' (super.init)."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es la diferencia entre 'private' y 'fileprivate'?",
+    "options": [
+     "No hay diferencia",
+     "private vale para todo el módulo",
+     "fileprivate solo vale para clases",
+     "private limita a la declaración (y extensiones en el mismo archivo); fileprivate abre todo el archivo"
+    ],
+    "correctIndex": 3,
+    "explanation": "El valor por defecto, sin modificador, es 'internal' (todo el módulo). Preferir el nivel más restrictivo posible ayuda al encapsulamiento."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué tipo es más adecuado para representar los estados 'cargando', 'error' y 'éxito' de una pantalla?",
+    "options": [
+     "enum, pues es un conjunto cerrado de casos, con datos asociados si hace falta",
+     "class, para heredar estados",
+     "struct con varios strings",
+     "Array de String"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un enum con 'switch' exhaustivo hace que el compilador avise cuando se olvida un estado, y los associated values llevan los datos de cada uno."
+   }
+  ]
+ },
+ {
+  "id": 41,
+  "title": "Propiedades Avanzadas y Property Wrappers",
+  "theory": "Además de las propiedades almacenadas simples, Swift ofrece recursos que controlan cómo se inicializa, lee y escribe un valor. Una propiedad 'lazy var' solo calcula su valor inicial la primera vez que se accede a ella, útil para trabajo costoso; debe ser 'var'. Las propiedades calculadas usan 'get' y 'set' (con 'newValue' implícito) y no guardan valor. Los observadores 'willSet' (recibe 'newValue') y 'didSet' (recibe 'oldValue') se ejecutan cuando el valor cambia, pero no durante la inicialización del propio tipo. Las propiedades 'static' (y 'class', en clases, que se pueden sobrescribir) pertenecen al tipo. Los key paths como '\\Pessoa.nome' referencian una propiedad sin leerla, y se usan con 'pessoa[keyPath: \\.nome]', 'map' y en SwiftUI y SwiftData. Un property wrapper es un tipo marcado con '@propertyWrapper' que tiene 'wrappedValue' (el valor real) y opcionalmente 'projectedValue', accedido con '$'. SwiftUI está construido así: '@State' guarda el estado y '$nome' entrega un 'Binding'; '@AppStorage' persiste en UserDefaults y actualiza la vista. Las propiedades también pueden ser Optional ('var apelido: String?'), con valor por defecto nil, y leerse con optional chaining.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Property-Wrappers",
+  "category": "Fundamentos",
+  "corporateCase": "En una app de ajustes, '@AppStorage(\"tema\")' guarda el tema elegido y la pantalla se actualiza sola. Un wrapper propio '@Limitado' garantiza que el volumen se mantenga entre 0 y 100 en cualquier parte de la app.",
+  "gameCase": "Un juego usa 'didSet' en 'vidas' para reproducir un sonido y mostrar 'Game Over' al llegar a cero. El mapa del nivel es una propiedad 'lazy', cargada solo cuando el jugador entra en la fase.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Haz que la propiedad dados se calcule solo en el primer acceso",
+    "codeSnippet": "struct Relatorio {\n    ___ var dados = carregarDados()\n}",
+    "correctAnswer": "lazy",
+    "hint": "Palabra clave que significa 'perezosa'."
+   },
+   {
+    "id": 2,
+    "question": "Escribe el observador que se ejecuta después de que nivel cambia",
+    "codeSnippet": "var nivel = 0 {\n    ___ { print(\"antes: \\(oldValue)\") }\n}",
+    "correctAnswer": "didSet",
+    "hint": "Observador con acceso a oldValue."
+   },
+   {
+    "id": 3,
+    "question": "Completa el bloque que asigna un nuevo valor a la propiedad calculada",
+    "codeSnippet": "var celsius = 0.0\nvar fahrenheit: Double {\n    get { celsius * 9 / 5 + 32 }\n    ___ { celsius = (newValue - 32) * 5 / 9 }\n}",
+    "correctAnswer": "set",
+    "hint": "El par de get es este bloque; recibe newValue."
+   },
+   {
+    "id": 4,
+    "question": "Declara una constante que pertenece al tipo Jogo",
+    "codeSnippet": "struct Jogo {\n    ___ let pontosMaximos = 100\n}",
+    "correctAnswer": "static",
+    "hint": "Modificador de miembro de tipo."
+   },
+   {
+    "id": 5,
+    "question": "Marca la struct como un property wrapper",
+    "codeSnippet": "___\nstruct Limitado {\n    var wrappedValue: Int\n}",
+    "correctAnswer": "@propertyWrapper",
+    "hint": "Atributo que empieza con @ y habla de 'property wrapper'."
+   },
+   {
+    "id": 6,
+    "question": "Pasa un Binding al TextField usando el valor proyectado",
+    "codeSnippet": "@State private var nome = \"\"\n\nTextField(\"Nome\", text: ___nome)",
+    "correctAnswer": "$",
+    "hint": "El prefijo de un solo símbolo que accede al projectedValue."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Por qué una propiedad 'lazy' debe declararse con 'var'?",
+    "options": [
+     "Porque lazy solo funciona en clases",
+     "Porque let es más lento",
+     "Porque lazy convierte el tipo en Optional",
+     "Porque su valor inicial se define después, en el primer acceso, lo que modifica la propiedad"
+    ],
+    "correctIndex": 3,
+    "explanation": "Como la instancia se crea sin el valor y este se completa más tarde, la propiedad no puede ser constante."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre willSet y didSet?",
+    "options": [
+     "willSet se ejecuta después, didSet antes",
+     "willSet se ejecuta antes del cambio (newValue); didSet, después (oldValue)",
+     "Son idénticos",
+     "Ambos solo se ejecutan en la inicialización"
+    ],
+    "correctIndex": 1,
+    "explanation": "Dentro de willSet el valor nuevo está en 'newValue'; en didSet el valor anterior está en 'oldValue' y la propiedad ya tiene el nuevo."
+   },
+   {
+    "id": 3,
+    "question": "Dado 'struct Vida { var valor: Int { didSet { print(\"mudou\") } }; init() { valor = 3 } }', 'Vida()' imprime:",
+    "options": [
+     "Nada, pues los observadores no se ejecutan al asignar dentro del init del propio tipo",
+     "mudou",
+     "3",
+     "Error de compilación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los observadores solo se disparan en cambios posteriores a la inicialización. Las asignaciones en el init del tipo definen el valor inicial."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué caracteriza a una propiedad calculada?",
+    "options": [
+     "Siempre guarda el valor en caché",
+     "Solo puede ser static",
+     "No almacena valor: usa get (y opcionalmente set) para calcular",
+     "Exige @propertyWrapper"
+    ],
+    "correctIndex": 2,
+    "explanation": "Expone un valor derivado de otras propiedades; sin set es de solo lectura."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el tipo de '\\Pessoa.nome' cuando 'nome' es un 'let' de tipo String?",
+    "options": [
+     "String",
+     "Pessoa",
+     "KeyPath<Pessoa, String>, que referencia la propiedad y se usa con [keyPath:]",
+     "() -> String"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los key paths representan el camino hacia una propiedad sin leer el valor; 'pessoa[keyPath: \\.nome]' sí lo lee."
+   },
+   {
+    "id": 6,
+    "question": "En '@State var contador = 0', ¿qué representan 'contador' y '$contador'?",
+    "options": [
+     "contador es el wrappedValue (Int); $contador es el projectedValue (Binding<Int>)",
+     "Ambos son Int",
+     "contador es Binding; $contador es Int",
+     "$contador es lo mismo que contador"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los property wrappers exponen el valor real y, opcionalmente, un valor proyectado accedido con '$'. En @State es un Binding para pasar a vistas hijas."
+   },
+   {
+    "id": 7,
+    "question": "¿Cómo usa SwiftUI los property wrappers como @State?",
+    "options": [
+     "Es una palabra reservada del compilador sin implementación en Swift",
+     "Solo funciona con clases",
+     "Copia la vista entera en cada cambio",
+     "@State es un tipo marcado con @propertyWrapper que guarda el valor fuera de la struct de la vista y avisa a SwiftUI cuando cambia"
+    ],
+    "correctIndex": 3,
+    "explanation": "El wrapper mantiene el almacenamiento gestionado por SwiftUI y, al cambiar el valor, invalida el 'body'. Es una función del lenguaje, no magia del compilador."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué wrapper guarda una preferencia simple en UserDefaults y actualiza la vista al cambiar?",
+    "options": [
+     "@State",
+     "@AppStorage",
+     "@Binding",
+     "@Environment"
+    ],
+    "correctIndex": 1,
+    "explanation": "@AppStorage lee y escribe en UserDefaults por clave y reconstruye la vista cuando el valor cambia. @State solo guarda en memoria."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la característica de una propiedad 'static'?",
+    "options": [
+     "Es única y compartida, pertenece al tipo y se accede como Tipo.propiedad",
+     "Existe una copia por instancia",
+     "Solo se puede leer dentro del init",
+     "Solo existe en enums"
+    ],
+    "correctIndex": 0,
+    "explanation": "Úsala para constantes y ajustes del tipo, como 'Jogo.pontosMaximos'."
+   },
+   {
+    "id": 2,
+    "question": "Dado el wrapper 'Limitado' con 'init(wrappedValue: Int) { v = min(wrappedValue, 10) }' y setter con 'v = min(newValue, 10)', ¿qué imprime 'var j = Jogo(); j.vidas = 15; print(j.vidas)' si 'struct Jogo { @Limitado var vidas = 3 }'?",
+    "options": [
+     "15",
+     "3",
+     "10",
+     "Error de compilación"
+    ],
+    "correctIndex": 2,
+    "explanation": "El setter del wrappedValue limita el valor a 10. El wrapper centraliza la regla y la reutiliza en cualquier propiedad."
+   },
+   {
+    "id": 3,
+    "question": "Si 'var apelido: String?' en Pessoa, ¿cuál es el tipo de 'pessoa.apelido?.count'?",
+    "options": [
+     "Int",
+     "String?",
+     "Error de compilación",
+     "Int? (nil si apelido es nil)"
+    ],
+    "correctIndex": 3,
+    "explanation": "El optional chaining termina en nil cuando la propiedad es nil y envuelve el resultado en un Optional."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué permite 'class var' que 'static var' no permite en una clase?",
+    "options": [
+     "Modificarse en runtime",
+     "Que las subclases sobrescriban la propiedad calculada de tipo",
+     "Ser lazy",
+     "Ser privada"
+    ],
+    "correctIndex": 1,
+    "explanation": "static en una clase equivale a 'final class': no se puede sobrescribir. Una 'class var' calculada puede ser redefinida por subclases."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el argumento correcto para una vista hija que necesita leer y escribir el @State del padre?",
+    "options": [
+     "contador, pasado por valor",
+     "$contador, que entrega un Binding",
+     "@contador",
+     "self.contador.copy()"
+    ],
+    "correctIndex": 1,
+    "explanation": "Pasar 'contador' envía solo una copia. El '$' entrega un Binding, una conexión de lectura y escritura con la fuente de verdad."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué ocurre si, dentro del didSet de una propiedad, asignas un nuevo valor a la propia propiedad?",
+    "options": [
+     "Recursión infinita",
+     "Error de compilación",
+     "El observador no se llama otra vez para esa asignación, así que no hay recursión infinita",
+     "El valor se ignora"
+    ],
+    "correctIndex": 2,
+    "explanation": "Swift evita la recursión: la asignación dentro del propio didSet cambia el valor sin disparar de nuevo los observadores."
+   }
+  ]
+ },
+ {
+  "id": 42,
+  "title": "Strings, Caracteres y Texto",
+  "theory": "En Swift, 'String' es una colección de 'Character', y cada Character es un grapheme cluster de Unicode: un único carácter visible, aunque use varios code points (por ejemplo '🇧🇷' cuenta como 1). Por eso 'count' recorre el texto y no existe indexación por entero: se usa 'index(_:offsetBy:)' o 'startIndex'. Al cortar un String (como 'prefix(3)') se obtiene un 'Substring', que comparte memoria con el original y debe convertirse con 'String(...)' para guardarse. La interpolación '\"Olá, \\(nome)\"' inserta valores, y los literales multilínea usan '\"\"\"'. Métodos comunes: 'isEmpty', 'hasPrefix', 'hasSuffix', 'uppercased()', 'contains', 'split(separator:)', 'replacingOccurrences(of:with:)' y 'trimmingCharacters(in:)' (Foundation). Comparar con '==' distingue mayúsculas; para texto mostrado al usuario usa 'localizedCompare' y 'localizedCaseInsensitiveCompare'. Para dar formato, '.formatted()' aplica reglas de idioma y región a números y fechas, como en 'Date.now.formatted(date: .abbreviated, time: .omitted)'. Las expresiones regulares usan el tipo 'Regex' y literales como '/\\d+/' (en modo Swift 5 el literal con barra simple exige la opción bare-slash-regex; la forma '#/\\d+/#' siempre funciona). 'AttributedString' guarda estilos por tramo, y en SwiftUI un literal en 'Text(\"chave\")' es un 'LocalizedStringKey' buscado en los archivos de traducción.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/",
+  "category": "Fundamentos",
+  "corporateCase": "Una app de registro limpia lo que escribe el usuario con 'trimmingCharacters' y valida el formato del documento con una Regex. Las fechas y montos en moneda se muestran con '.formatted()', respetando la región del usuario.",
+  "gameCase": "Un juego divide el comando escrito ('atacar goblin') con 'split(separator: \" \")' para interpretar verbo y objetivo. Los textos de la interfaz usan LocalizedStringKey para mostrar el juego en varios idiomas.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Obtén la cantidad de caracteres del string",
+    "codeSnippet": "let s = \"Olá\"\nprint(s.___) // 3",
+    "correctAnswer": "count",
+    "hint": "Propiedad que cuenta los Characters."
+   },
+   {
+    "id": 2,
+    "question": "Verifica si el texto empieza con 'Dr.'",
+    "codeSnippet": "let nome = \"Dr. Silva\"\nif nome.___(\"Dr.\") { print(\"médico\") }",
+    "correctAnswer": "hasPrefix",
+    "hint": "Método de String que prueba el comienzo del texto."
+   },
+   {
+    "id": 3,
+    "question": "Convierte el string a mayúsculas",
+    "codeSnippet": "let grito = \"swift\".___()\nprint(grito) // SWIFT",
+    "correctAnswer": "uppercased",
+    "hint": "Método terminado en 'ed' que devuelve un nuevo String."
+   },
+   {
+    "id": 4,
+    "question": "Divide el string en las comas",
+    "codeSnippet": "let partes = \"a,b,c\".___(separator: \",\")",
+    "correctAnswer": "split",
+    "hint": "Método que parte el texto en trozos usando un separador."
+   },
+   {
+    "id": 5,
+    "question": "Completa el parámetro del método de reemplazo",
+    "codeSnippet": "let t = \"casa\".replacingOccurrences(of: \"a\", ___: \"o\")",
+    "correctAnswer": "with",
+    "hint": "La segunda etiqueta de replacingOccurrences(of:___:)."
+   },
+   {
+    "id": 6,
+    "question": "Verifica si el string no tiene ningún carácter",
+    "codeSnippet": "let vazio = \"\"\nif vazio.___ { print(\"sem texto\") }",
+    "correctAnswer": "isEmpty",
+    "hint": "Propiedad booleana mejor que comparar count == 0."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuánto vale '\"🇧🇷\".count' en Swift?",
+    "options": [
+     "1, pues un Character es un grapheme cluster, aunque tenga varios scalars Unicode",
+     "2",
+     "4",
+     "8"
+    ],
+    "correctIndex": 0,
+    "explanation": "La bandera se forma con dos code points regionales, pero aparece como un solo carácter. 'utf8.count' devolvería 8."
+   },
+   {
+    "id": 2,
+    "question": "¿Por qué 'let c = texto[1]' no compila?",
+    "options": [
+     "Porque el índice empieza en 1",
+     "Porque texto es let",
+     "Los strings no aceptan índice entero; hay que usar String.Index, como texto[texto.index(texto.startIndex, offsetBy: 1)]",
+     "Porque Character no es Equatable"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cada Character puede tener un tamaño distinto en memoria, así que el acceso por entero costaría O(n) y se omitió a propósito."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué produce 'let p = \"Swift\".prefix(3)'?",
+    "options": [
+     "Un String independiente",
+     "Un Substring que comparte almacenamiento con el original",
+     "Un Array de Character",
+     "Un Optional<String>"
+    ],
+    "correctIndex": 1,
+    "explanation": "Para guardar el resultado por mucho tiempo, conviértelo: 'String(p)'. Así el String original puede liberarse."
+   },
+   {
+    "id": 4,
+    "question": "En un literal multilínea con '\"\"\"', ¿qué define la indentación que se quita?",
+    "options": [
+     "El primer carácter de la primera línea",
+     "Siempre cuatro espacios",
+     "Nada; la indentación siempre se mantiene",
+     "La posición del delimitador de cierre '\"\"\"'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cualquier espacio antes del delimitador de cierre se descuenta de todas las líneas, permitiendo indentar el literal junto con el código."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué expresión compara dos Strings ignorando mayúsculas y minúsculas?",
+    "options": [
+     "a === b",
+     "a.caseInsensitiveCompare(b) == .orderedSame",
+     "a.hasPrefix(b)",
+     "a == b"
+    ],
+    "correctIndex": 1,
+    "explanation": "'==' distingue 'Ana' de 'ana'. Para texto de interfaz, 'localizedCaseInsensitiveCompare' también respeta las reglas del idioma."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué hace 'Date.now.formatted(date: .abbreviated, time: .omitted)'?",
+    "options": [
+     "Convierte la fecha a Int",
+     "Modifica Date.now",
+     "Siempre devuelve el formato estadounidense",
+     "Genera un texto con la fecha en formato abreviado, siguiendo el idioma y la región del usuario"
+    ],
+    "correctIndex": 3,
+    "explanation": "'.formatted()' usa la Locale actual, así que la misma fecha aparece como 'Oct 14, 2026' o '14 oct 2026' según la región."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué hace 'if \"Pedido 42\".contains(/\\d+/)'?",
+    "options": [
+     "Devuelve verdadero, pues la Regex encuentra uno o más dígitos",
+     "Error, contains solo acepta String",
+     "Devuelve falso, pues falta Foundation",
+     "Devuelve el número 42"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los literales de regex '/.../' crean un valor Regex, que métodos como contains y firstMatch(of:) aceptan desde Swift 5.7. En modo Swift 5 sin la opción bare-slash-regex, usa '#/\\d+/#'."
+   },
+   {
+    "id": 8,
+    "question": "En SwiftUI, ¿cuál es la diferencia entre 'Text(\"bem_vindo\")' y 'Text(verbatim: \"bem_vindo\")'?",
+    "options": [
+     "No hay diferencia",
+     "El segundo traduce automáticamente",
+     "El primero trata el literal como LocalizedStringKey y busca la traducción; el segundo muestra el texto tal cual",
+     "El primero solo acepta variables"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un literal en Text se vuelve LocalizedStringKey. Usa 'verbatim' cuando el texto no deba traducirse, como identificadores."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué imprime 'let n = 3; print(\"\\(n + 1) itens\")'?",
+    "options": [
+     "3 itens",
+     "n + 1 itens",
+     "Error de compilación",
+     "4 itens"
+    ],
+    "correctIndex": 3,
+    "explanation": "La interpolación '\\( )' evalúa cualquier expresión Swift e inserta el resultado en el texto."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es el resultado de '\"a,,b\".split(separator: \",\").count'?",
+    "options": [
+     "2, pues split descarta las partes vacías por defecto",
+     "3",
+     "1",
+     "0"
+    ],
+    "correctIndex": 0,
+    "explanation": "El resultado es [Substring] con 'a' y 'b'. Para conservar las vacías, usa 'omittingEmptySubsequences: false'."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué declaración es inválida?",
+    "options": [
+     "let c: Character = \"a\"",
+     "let c: Character = \"é\"",
+     "let c: Character = \"ab\"",
+     "let c: Character = \"😀\""
+    ],
+    "correctIndex": 2,
+    "explanation": "Un Character guarda exactamente un grapheme cluster. Con dos caracteres el compilador marca error."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué tipo guarda texto con estilos distintos por tramo (negrita, enlaces)?",
+    "options": [
+     "Substring",
+     "AttributedString",
+     "LocalizedStringKey",
+     "Character"
+    ],
+    "correctIndex": 1,
+    "explanation": "AttributedString asocia atributos a rangos del texto y puede mostrarse con Text en SwiftUI. También se puede crear a partir de Markdown."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué imprime 'let s = \"casa\"; let t = s.replacingOccurrences(of: \"a\", with: \"o\"); print(s, t)'?",
+    "options": [
+     "casa coso",
+     "coso coso",
+     "casa casa",
+     "coso casa"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los strings son tipos de valor: replacingOccurrences devuelve un nuevo String y no modifica el original."
+   },
+   {
+    "id": 6,
+    "question": "¿Por qué usar 'localizedCompare' en lugar de '<' para ordenar nombres mostrados al usuario?",
+    "options": [
+     "Porque es más rápido",
+     "Porque aplica las reglas de ordenación del idioma, como acentos y mayúsculas",
+     "Porque '<' no existe para String",
+     "Porque ignora espacios"
+    ],
+    "correctIndex": 1,
+    "explanation": "La comparación '<' usa el orden Unicode, que puede poner 'Ágata' después de 'Zeca'. La localizada respeta la Locale del usuario."
+   }
+  ]
+ }
+]

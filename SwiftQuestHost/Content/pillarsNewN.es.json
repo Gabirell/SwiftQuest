@@ -1,0 +1,677 @@
+[
+ {
+  "id": 68,
+  "title": "Firma de Código, Capabilities y Aprovisionamiento",
+  "theory": "Toda app que se ejecuta en un dispositivo real debe estar firmada digitalmente: la firma demuestra quién la creó y que no fue alterada. Una Apple Account gratuita permite instalar en tus propios dispositivos, pero el Apple Developer Program (de pago, anual) es necesario para capabilities como Push Notifications, TestFlight y la publicación en la App Store. Tu equipo se identifica con un 'Team ID' de 10 caracteres, y cada app con un 'bundle identifier' en DNS inverso, como 'com.ejemplo.MiApp', que se convierte en un App ID. El 'certificado' (Development o Distribution) te identifica a ti; el 'provisioning profile' reúne el App ID, los certificados, los dispositivos registrados (en desarrollo) y los entitlements en un solo archivo que el dispositivo valida. Los 'entitlements' están en un archivo '.entitlements' y declaran permisos del sistema como iCloud, 'aps-environment' (Push), App Groups y Sign in with Apple. En la pestaña 'Signing & Capabilities' del target eliges el Team, el bundle identifier y usas el botón '+ Capability' para agregar recursos; con 'Automatically manage signing' marcado, Xcode crea certificados, registra el App ID y los dispositivos y genera los perfiles solo, mientras que el modo manual exige que elijas cada perfil. Errores comunes son 'No account for team', 'Failed to register bundle identifier' (el ID pertenece a otro equipo: cámbialo), 'No profiles for ... were found' y 'Provisioning profile doesn't include signing certificate' (falta el certificado en este Mac). En apps de macOS, 'Sign to Run Locally' firma la app de forma ad hoc, solo para ejecutarla en tu propio Mac. La certificación espera que sepas que la firma y los perfiles son requisitos para instalar en un dispositivo y distribuir.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/capabilities",
+  "category": "Distribuição",
+  "corporateCase": "Una empresa contrata a un nuevo desarrollador y el build falla con 'No signing certificate'. El equipo lo agrega al Team en App Store Connect, él inicia sesión con su Apple Account en Xcode y, con 'Automatically manage signing' activado, Xcode genera el certificado y el perfil. Las notificaciones push solo funcionan después de agregar la capability Push Notifications al target.",
+  "gameCase": "Un estudio indie quiere sincronizar el progreso del jugador con iCloud y compartir datos con una extensión de widget mediante App Groups. Agregan las capabilities iCloud y App Groups en la pestaña Signing & Capabilities, y Xcode actualiza el App ID y el archivo .entitlements automáticamente. Para probar en un iPhone nuevo, registran el dispositivo en la cuenta.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Completa: 'com.ejemplo.MiApp' es el ___ identifier de la app.",
+    "codeSnippet": "'com.ejemplo.MiApp' es el ___ identifier de la app.",
+    "correctAnswer": "bundle",
+    "hint": "Es el identificador en DNS inverso que también se convierte en el App ID."
+   },
+   {
+    "id": 2,
+    "question": "El archivo '.entitlements' declara los permisos especiales de la app. ¿Cómo se llama este concepto?",
+    "codeSnippet": "El archivo MiApp.___ lista iCloud, Push y App Groups.",
+    "correctAnswer": "entitlements",
+    "hint": "La extensión del archivo es la palabra para 'derechos/permisos'."
+   },
+   {
+    "id": 3,
+    "question": "En Signing & Capabilities, marca 'Automatically manage ___' para que Xcode gestione certificados y perfiles.",
+    "codeSnippet": "Automatically manage ___",
+    "correctAnswer": "signing",
+    "hint": "Es la palabra en inglés para 'firma'."
+   },
+   {
+    "id": 4,
+    "question": "Para enviar la app a la App Store usas un certificado de tipo ___.",
+    "codeSnippet": "Certificado ___ (para publicar en la App Store)",
+    "correctAnswer": "Distribution",
+    "hint": "No es el de Development, que sirve para ejecutar en dispositivos de prueba."
+   },
+   {
+    "id": 5,
+    "question": "El código de 10 caracteres que identifica tu cuenta de desarrollador se llama ___ ID.",
+    "codeSnippet": "Tu cuenta de desarrollador se identifica con el ___ ID.",
+    "correctAnswer": "Team",
+    "hint": "Identifica al equipo en el Apple Developer Program."
+   },
+   {
+    "id": 6,
+    "question": "En una app de macOS sin cuenta de pago, la opción de firma es 'Sign to Run ___'.",
+    "codeSnippet": "Sign to Run ___",
+    "correctAnswer": "Locally",
+    "hint": "Significa 'ejecutar solo en la máquina local'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué contiene el provisioning profile?",
+    "options": [
+     "Solo el código fuente de la app",
+     "El App ID, los certificados, los dispositivos autorizados (en desarrollo) y los entitlements",
+     "Solo la contraseña de la Apple Account",
+     "Las capturas de pantalla de la App Store"
+    ],
+    "correctIndex": 1,
+    "explanation": "El perfil une en un solo archivo el App ID, los certificados permitidos, la lista de dispositivos (perfiles de desarrollo/ad hoc) y los entitlements. El dispositivo lo valida al instalar la app."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre un certificado de Development y uno de Distribution?",
+    "options": [
+     "Development sirve para ejecutar en dispositivos de prueba; Distribution sirve para TestFlight, App Store o distribución externa",
+     "Distribution solo vale para macOS",
+     "Development solo funciona en el Simulator",
+     "No hay diferencia"
+    ],
+    "correctIndex": 0,
+    "explanation": "El certificado de desarrollo firma builds para tus dispositivos registrados. El de distribución firma la app para subirla a TestFlight y a la App Store."
+   },
+   {
+    "id": 3,
+    "question": "¿Dónde agregas la capability 'Push Notifications' a una app?",
+    "options": [
+     "En Assets.xcassets",
+     "En Package.swift",
+     "En el Info.plist escribiendo el nombre",
+     "En la pestaña Signing & Capabilities del target, con el botón '+ Capability'"
+    ],
+    "correctIndex": 3,
+    "explanation": "La pestaña Signing & Capabilities agrega la capability, actualiza el App ID en tu cuenta y escribe los entitlements (como 'aps-environment') en el archivo .entitlements."
+   },
+   {
+    "id": 4,
+    "question": "Con 'Automatically manage signing' activado, ¿qué hace Xcode?",
+    "options": [
+     "Envía la app a revisión",
+     "Impide que el build se ejecute en un dispositivo",
+     "Crea y renueva certificados, registra App IDs y dispositivos y genera perfiles automáticamente",
+     "Elimina los entitlements"
+    ],
+    "correctIndex": 2,
+    "explanation": "La firma automática delega en Xcode la creación de certificados y perfiles. En modo manual tú eliges los perfiles y eres responsable de mantenerlos al día."
+   },
+   {
+    "id": 5,
+    "question": "Ves 'Failed to register bundle identifier: the app identifier is not available'. ¿Cuál es la causa probable?",
+    "options": [
+     "El Simulator está apagado",
+     "El bundle identifier ya está registrado por otro equipo, así que debes elegir uno único",
+     "Xcode está desactualizado",
+     "Falta un ícono"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los bundle identifiers son únicos globalmente. Cuando otro desarrollador ya lo usa, debes cambiarlo por uno propio, como 'com.tudominio.NombreDeLaApp'."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué es el Team ID?",
+    "options": [
+     "Un identificador de 10 caracteres de tu equipo en el Apple Developer Program",
+     "El número de serie del iPhone",
+     "La versión de Xcode",
+     "El nombre de tu app"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Team ID identifica la cuenta/equipo y aparece en los ajustes de firma y en el portal Apple Developer. Forma parte de la identidad que firma la app."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué capability exige el Apple Developer Program de pago?",
+    "options": [
+     "Usar SF Symbols",
+     "Abrir el Simulator",
+     "Ejecutar una app simple en tu iPhone con cuenta gratuita",
+     "Push Notifications y distribución por TestFlight/App Store"
+    ],
+    "correctIndex": 3,
+    "explanation": "La cuenta gratuita instala apps simples en dispositivos propios con limitaciones, pero Push, TestFlight y la App Store exigen el programa de pago."
+   },
+   {
+    "id": 8,
+    "question": "¿Para qué sirve registrar un dispositivo en la cuenta de desarrollador?",
+    "options": [
+     "Para aumentar la memoria",
+     "Para activar el Simulator",
+     "Para descargar Xcode",
+     "Para que los perfiles de desarrollo y ad hoc puedan instalar builds en ese dispositivo específico"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los perfiles de desarrollo solo instalan en dispositivos cuyo UDID esté registrado en la cuenta. Con la firma automática, Xcode suele registrar el dispositivo cuando lo conectas."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué hace 'Sign to Run Locally' en una app de macOS?",
+    "options": [
+     "Registra el Team ID",
+     "Publica la app en la Mac App Store",
+     "Firma de forma ad hoc solo para ejecutar en tu Mac",
+     "Crea un certificado Distribution"
+    ],
+    "correctIndex": 2,
+    "explanation": "Es una firma local, sin cuenta de desarrollador, que solo sirve para ejecutar en tu propio Mac. No permite distribuir la app a otras personas de forma confiable."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué archivo guarda los permisos como iCloud y App Groups del target?",
+    "options": [
+     "Solo el Info.plist",
+     "El archivo .entitlements",
+     "El Package.resolved",
+     "El Assets.xcassets"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las capabilities agregan claves al archivo '.entitlements'. Se incorpora a la firma y el sistema solo concede el recurso si el perfil lo autoriza."
+   },
+   {
+    "id": 3,
+    "question": "Aparece 'Provisioning profile doesn't include signing certificate'. ¿Qué hacer?",
+    "options": [
+     "Asegurar que el certificado de desarrollo esté en este Mac y en el perfil, dejando que Xcode lo regenere con firma automática",
+     "Reinstalar macOS",
+     "Cambiar el idioma de Xcode",
+     "Borrar la app"
+    ],
+    "correctIndex": 0,
+    "explanation": "El perfil lista certificados específicos. Si el certificado no está en tu Keychain o no consta en el perfil, hay que crear/descargar el certificado o regenerar el perfil."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué capability usarías para compartir datos entre la app y una extensión de widget?",
+    "options": [
+     "Sign in with Apple",
+     "Push Notifications",
+     "Background Modes",
+     "App Groups"
+    ],
+    "correctIndex": 3,
+    "explanation": "App Groups crea un contenedor compartido entre la app y sus extensiones del mismo desarrollador, accesible mediante un identificador de grupo."
+   },
+   {
+    "id": 5,
+    "question": "Sign in with Apple se agrega como...",
+    "options": [
+     "Una opción del Simulator",
+     "Una biblioteca de terceros",
+     "Una capability en la pestaña Signing & Capabilities",
+     "Un archivo .storyboard"
+    ],
+    "correctIndex": 2,
+    "explanation": "Es una capability. Agrega el entitlement correspondiente, y el inicio de sesión se implementa con el framework AuthenticationServices."
+   },
+   {
+    "id": 6,
+    "question": "Tu app funciona en el Simulator, pero falla en un iPhone con un error de firma. ¿Por qué?",
+    "options": [
+     "La app es demasiado grande",
+     "El Simulator ignora la firma de dispositivo real, mientras que el dispositivo exige certificado y perfil válidos",
+     "El iPhone no soporta Swift",
+     "El Simulator es más rápido"
+    ],
+    "correctIndex": 1,
+    "explanation": "En el Simulator no hace falta un perfil de aprovisionamiento de dispositivo. En un dispositivo real, el sistema solo ejecuta apps firmadas con certificado y perfil válidos."
+   }
+  ]
+ },
+ {
+  "id": 69,
+  "title": "TestFlight y Pruebas Beta",
+  "theory": "TestFlight es la plataforma de Apple para distribuir versiones beta a testers antes del lanzamiento. El flujo empieza en Xcode: elige un destino de dispositivo genérico, usa 'Product > Archive' y, en el Organizer que se abre, haz clic en 'Distribute App' y 'App Store Connect' para subir. Tras la subida, App Store Connect 'procesa' el build, lo que puede tardar de minutos a unas horas, y respondes la pregunta de cumplimiento de exportación (cifrado). Cada subida necesita un 'build number' (CFBundleVersion) único dentro de la misma 'version' (CFBundleShortVersionString, como 1.2.0), que es el número que ve el usuario en la App Store. Los testers 'internos' son hasta 100 miembros del equipo con un rol en App Store Connect y reciben builds sin Beta App Review; los testers 'externos' (hasta 10.000) se invitan por correo o por enlace público, y el primer build para ellos pasa por la 'Beta App Review'. Organizas los testers en grupos y escribes el texto 'What to Test' para orientarlos. Los testers envían feedback con capturas de pantalla e informes de crash mediante la app TestFlight, y tú los ves en App Store Connect y en el Organizer de Xcode. Todo build expira 90 días después de la subida, así que debes subir builds nuevos para mantener la prueba activa. Antes de enviar a revisión, sigue una checklist: probar en dispositivos reales, en distintas versiones de iOS, sin red, con Dark Mode y Dynamic Type, y revisar permisos y flujos de compra.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases",
+  "category": "Distribuição",
+  "corporateCase": "El equipo de una app bancaria sube un build a TestFlight todos los viernes. Los empleados internos prueban de inmediato, y un grupo externo de clientes piloto recibe el build tras la Beta App Review. Los informes de crash de TestFlight muestran una falla en un iPhone antiguo antes del lanzamiento oficial.",
+  "gameCase": "Un estudio de juegos crea un enlace público de TestFlight y lo comparte en la comunidad del juego para reunir 5.000 testers. El campo 'What to Test' les pide evaluar el nuevo tutorial. Como cada build expira en 90 días, el estudio sube builds nuevos cada dos semanas.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Para generar el archivo que se enviará a App Store Connect, usa el menú Product > ___.",
+    "codeSnippet": "Product > ___",
+    "correctAnswer": "Archive",
+    "hint": "Es el comando que empaqueta la app para distribución."
+   },
+   {
+    "id": 2,
+    "question": "La ventana de Xcode que lista los archives y permite distribuirlos se llama ___.",
+    "codeSnippet": "Window > ___",
+    "correctAnswer": "Organizer",
+    "hint": "También muestra crashes y métricas de la app."
+   },
+   {
+    "id": 3,
+    "question": "El número de ___ (CFBundleVersion) debe ser único en cada subida de la misma versión.",
+    "codeSnippet": "Version 1.0 (___ 7)",
+    "correctAnswer": "build",
+    "hint": "Es el contador interno de cada subida, no la versión que ve el usuario."
+   },
+   {
+    "id": 4,
+    "question": "Los testers ___ son miembros del equipo y no necesitan Beta App Review.",
+    "codeSnippet": "Testers ___ reciben builds sin revisión beta.",
+    "correctAnswer": "internos",
+    "hint": "Es lo opuesto a 'externos'."
+   },
+   {
+    "id": 5,
+    "question": "Los builds de TestFlight expiran después de ___ días.",
+    "codeSnippet": "Cada build expira en ___ días.",
+    "correctAnswer": "90",
+    "hint": "Unos tres meses."
+   },
+   {
+    "id": 6,
+    "question": "El texto que indica a los testers qué evaluar en cada build se llama 'What to ___'.",
+    "codeSnippet": "What to ___",
+    "correctAnswer": "Test",
+    "hint": "Lo escribes para cada build en TestFlight."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el orden correcto para enviar un build a TestFlight?",
+    "options": [
+     "Product > Run, luego enviar por correo",
+     "Product > Archive, Distribute App en el Organizer y App Store Connect",
+     "Copiar el .app a iCloud",
+     "Exportar el storyboard"
+    ],
+    "correctIndex": 1,
+    "explanation": "Archive genera el paquete de distribución y el Organizer sube el build a App Store Connect, donde se procesa antes de aparecer en TestFlight."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es la diferencia entre 'version' y 'build number'?",
+    "options": [
+     "Version es el número que ve el usuario (1.2.0); build number identifica cada subida dentro de esa versión",
+     "Build number se muestra en la App Store",
+     "Version cambia con cada subida",
+     "Son idénticos"
+    ],
+    "correctIndex": 0,
+    "explanation": "La versión (CFBundleShortVersionString) es la de marketing. El build (CFBundleVersion) debe ser único en cada subida de la misma versión; por eso lo incrementas en cada envío."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuántos testers internos permite TestFlight?",
+    "options": [
+     "Ilimitados",
+     "Hasta 10",
+     "Hasta 1.000 de cualquier persona",
+     "Hasta 100 miembros del equipo con un rol en App Store Connect"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los testers internos son usuarios de tu equipo en App Store Connect, hasta 100. Los externos pueden llegar a 10.000."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué requiere Beta App Review?",
+    "options": [
+     "Ningún build",
+     "Cualquier build interno",
+     "El primer build de una versión enviado a testers externos",
+     "Builds del Simulator"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los builds externos pasan por una revisión beta más ligera de Apple antes de liberarse a los testers externos. Los internos no la necesitan."
+   },
+   {
+    "id": 5,
+    "question": "Un build subido a TestFlight hace 91 días...",
+    "options": [
+     "Sigue válido para siempre",
+     "Expiró y los testers ya no pueden instalarlo",
+     "Se envió automáticamente a la App Store",
+     "Se vuelve un build interno"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los builds de TestFlight expiran 90 días después de la subida. Para seguir probando, sube un build nuevo."
+   },
+   {
+    "id": 6,
+    "question": "Intentas subir de nuevo el build 7 de la versión 1.0 y la subida es rechazada. ¿Cuál es la solución?",
+    "options": [
+     "Aumentar el build number, por ejemplo a 8, y archivar de nuevo",
+     "Reiniciar el Mac",
+     "Cambiar el Team ID",
+     "Cambiar el ícono"
+    ],
+    "correctIndex": 0,
+    "explanation": "App Store Connect rechaza un build number ya usado para la misma versión. Incrementa el build y genera un nuevo archive."
+   },
+   {
+    "id": 7,
+    "question": "¿Cómo puede unirse un tester externo sin invitación por correo?",
+    "options": [
+     "Mediante el Finder",
+     "Solo con cable USB",
+     "No puede",
+     "Mediante un enlace público de TestFlight creado para un grupo"
+    ],
+    "correctIndex": 3,
+    "explanation": "Creas un enlace público para un grupo externo y defines un límite de testers. Cualquiera con el enlace y la app TestFlight puede unirse hasta el límite."
+   },
+   {
+    "id": 8,
+    "question": "¿Dónde pueden los testers enviar feedback con capturas de pantalla?",
+    "options": [
+     "Solo en el Simulator",
+     "En Package.swift",
+     "En la app TestFlight",
+     "Por correo postal"
+    ],
+    "correctIndex": 2,
+    "explanation": "La app TestFlight permite enviar feedback y capturas de pantalla, y además envía informes de crash automáticamente, que ves en App Store Connect y en Xcode."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué ocurre después de subir el build a App Store Connect?",
+    "options": [
+     "Se elimina",
+     "Queda disponible de inmediato para todos",
+     "Pasa por procesamiento antes de aparecer para pruebas",
+     "Se publica en la App Store"
+    ],
+    "correctIndex": 2,
+    "explanation": "El build se procesa (y puede pedir información de cumplimiento de exportación) antes de quedar disponible. Suele tardar de unos minutos a unas horas."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué elemento NO forma parte de una buena checklist antes de enviar a revisión?",
+    "options": [
+     "Revisar permisos y textos de uso",
+     "Enviar sin probar para ahorrar tiempo",
+     "Probar en dispositivos reales y distintas versiones de iOS",
+     "Probar sin red y con Dynamic Type"
+    ],
+    "correctIndex": 1,
+    "explanation": "Probar con anticipación evita rechazos y crashes. Una checklist incluye dispositivos reales, estados sin red, accesibilidad y flujos de compra."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué grupo es el correcto para que el equipo de QA de la empresa reciba builds sin Beta App Review?",
+    "options": [
+     "Grupo interno",
+     "Ninguno",
+     "Grupo público",
+     "Grupo externo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los miembros del equipo con rol en App Store Connect forman el grupo interno y reciben builds apenas termina el procesamiento."
+   },
+   {
+    "id": 4,
+    "question": "¿Dónde ves los informes de crash de builds de TestFlight en Xcode?",
+    "options": [
+     "En Interface Builder",
+     "En Package.swift",
+     "En las Preferencias del Simulator",
+     "En la pestaña Crashes del Organizer"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Organizer reúne los crashes de builds de TestFlight y de la App Store, con stack traces simbolizados, para abrirlos directo en el código."
+   },
+   {
+    "id": 5,
+    "question": "¿Por qué importa el campo 'What to Test'?",
+    "options": [
+     "Define el ícono",
+     "Define el precio",
+     "Orienta a los testers sobre qué evaluar en esa versión y produce feedback más útil",
+     "Elimina la revisión"
+    ],
+    "correctIndex": 2,
+    "explanation": "Aparece a los testers en TestFlight. Decir qué cambió y qué probar mejora la calidad del feedback."
+   },
+   {
+    "id": 6,
+    "question": "Ya tienes la versión 2.0 (build 12) en TestFlight. ¿Cuál es la siguiente subida de la misma versión?",
+    "options": [
+     "2.0 (build 12) otra vez",
+     "2.0 (build 13)",
+     "1.0 (build 1)",
+     "Cualquiera, App Store Connect lo ignora"
+    ],
+    "correctIndex": 1,
+    "explanation": "El build debe ser único y creciente para la misma versión. Subirlo a 13 mantiene la versión 2.0 e identifica la nueva subida."
+   }
+  ]
+ },
+ {
+  "id": 70,
+  "title": "App Store Connect, Pautas de Revisión y StoreKit",
+  "theory": "App Store Connect es el portal donde creas el 'app record' (nombre, bundle ID, idioma principal, SKU) y preparas la página de la app: nombre (hasta 30 caracteres), subtítulo (30), descripción, palabras clave (hasta 100 bytes, separadas por comas), URL de soporte, capturas de pantalla y vistas previas en video en los tamaños exigidos para cada familia de dispositivos. También completas las 'etiquetas de privacidad' (App Privacy), que declaran los datos recopilados y si se usan para rastreo, indicas la URL de la política de privacidad y respondes el cuestionario de clasificación por edades (4+, 9+, 13+, 16+, 18+). La revisión sigue las App Review Guidelines, agrupadas en Seguridad, Rendimiento, Negocios, Diseño y Legal; rechazos comunes son crashes y bugs (2.1), metadatos engañosos o incompletos, falta de política de privacidad, pedir permisos sin justificación y pagos digitales fuera de In-App Purchase. Si la app ofrece inicio de sesión de terceros (Google, Facebook), la pauta 4.8 exige una opción de inicio de sesión que proteja la privacidad, como Sign in with Apple. En la liberación por fases (phased release), la actualización llega gradualmente en 7 días a los usuarios con actualización automática. Los modelos de monetización incluyen app de pago, compras dentro de la app (consumibles, no consumibles) y suscripciones. StoreKit 2 usa Swift moderno: 'Product.products(for:)' obtiene productos, 'product.purchase()' devuelve un 'Product.PurchaseResult', '.success' trae una verificación (.verified o .unverified) cuya 'Transaction' debe recibir 'finish()', y 'Transaction.currentEntitlements' lista lo que el usuario posee. Para probar sin cuenta real, crea un 'StoreKit Configuration File' en Xcode con productos locales.",
+  "appleDocUrl": "https://developer.apple.com/app-store/review/guidelines",
+  "category": "Distribuição",
+  "corporateCase": "Una startup lanza una app por suscripción. Antes de enviar, completa las etiquetas de privacidad, agrega la URL de la política y capturas de pantalla para cada tamaño de iPhone. Como la app ofrece inicio de sesión con Google, agrega también Sign in with Apple y evita el rechazo por la pauta 4.8.",
+  "gameCase": "Un juego gratuito vende monedas virtuales como consumibles y un 'Pase Premium' como suscripción con StoreKit 2. Durante el desarrollo, el equipo usa un StoreKit Configuration File para simular compras. En el lanzamiento, usa la liberación por fases para detectar problemas con pocos usuarios antes de llegar a todos.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Las etiquetas que declaran los datos que recopila la app se llaman App ___ labels.",
+    "codeSnippet": "App ___ labels",
+    "correctAnswer": "Privacy",
+    "hint": "Se relacionan con los datos personales de los usuarios."
+   },
+   {
+    "id": 2,
+    "question": "Obtén productos con StoreKit 2: Product.___(for: ids).",
+    "codeSnippet": "let lista = try await Product.___(for: [\"pro\"])",
+    "correctAnswer": "products",
+    "hint": "Es el plural del tipo, un método estático asíncrono."
+   },
+   {
+    "id": 3,
+    "question": "Inicia la compra de un producto: producto.___().",
+    "codeSnippet": "let resultado = try await producto.___()",
+    "correctAnswer": "purchase",
+    "hint": "En inglés, 'comprar'."
+   },
+   {
+    "id": 4,
+    "question": "Tras entregar el contenido, finaliza la transacción con transaccion.___().",
+    "codeSnippet": "await transaccion.___()",
+    "correctAnswer": "finish",
+    "hint": "Significa 'terminar' en inglés."
+   },
+   {
+    "id": 5,
+    "question": "Para probar compras localmente, crea un StoreKit ___ File en Xcode.",
+    "codeSnippet": "StoreKit ___ File",
+    "correctAnswer": "Configuration",
+    "hint": "Archivo con los productos locales usados en la prueba."
+   },
+   {
+    "id": 6,
+    "question": "Lista los derechos actuales del usuario: Transaction.___.",
+    "codeSnippet": "for await r in Transaction.___ { }",
+    "correctAnswer": "currentEntitlements",
+    "hint": "Son los 'derechos actuales' en inglés, en una sola palabra camelCase."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué elemento NO es obligatorio para publicar en la App Store?",
+    "options": [
+     "Capturas de pantalla",
+     "El código fuente completo de la app",
+     "URL de la política de privacidad",
+     "Descripción"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los metadatos como descripción, capturas y política de privacidad son necesarios. El código fuente nunca se sube: solo envías el binario firmado."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es el límite del campo de palabras clave?",
+    "options": [
+     "100 bytes",
+     "10 palabras",
+     "1.000 caracteres",
+     "No hay límite"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las palabras clave se separan con comas, sin espacios innecesarios, y están limitadas a 100 bytes (en texto latino, unos 100 caracteres)."
+   },
+   {
+    "id": 3,
+    "question": "Tu app ofrece inicio de sesión con Google. ¿Qué exige la pauta 4.8?",
+    "options": [
+     "Quitar el inicio de sesión",
+     "Cobrar una tarifa",
+     "Nada",
+     "Ofrecer también una opción de inicio de sesión que proteja la privacidad, como Sign in with Apple"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las apps que usan inicio de sesión de terceros deben ofrecer una opción equivalente que limite la recopilación de datos y permita ocultar el correo, como Sign in with Apple."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es una causa común de rechazo?",
+    "options": [
+     "Usar SwiftUI",
+     "Tener más de una pantalla",
+     "Crashes y bugs en el build enviado",
+     "Tener un ícono colorido"
+    ],
+    "correctIndex": 2,
+    "explanation": "La pauta de rendimiento (2.1) exige apps completas y sin crashes. Los metadatos engañosos y los permisos sin justificación también causan rechazos."
+   },
+   {
+    "id": 5,
+    "question": "¿Cómo vender contenido digital dentro de la app?",
+    "options": [
+     "Con un enlace a un sitio de pago externo, siempre",
+     "Con In-App Purchase mediante StoreKit",
+     "Por transferencia bancaria",
+     "No está permitido vender"
+    ],
+    "correctIndex": 1,
+    "explanation": "El contenido digital y las funciones desbloqueadas en la app generalmente deben usar In-App Purchase, según las pautas de negocios."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué hace la liberación por fases (phased release)?",
+    "options": [
+     "Libera la actualización gradualmente en 7 días a usuarios con actualización automática",
+     "Libera la app solo en Brasil",
+     "Cancela la revisión",
+     "Hace la app gratuita"
+    ],
+    "correctIndex": 0,
+    "explanation": "La actualización se pone disponible por etapas durante 7 días para quienes usan actualización automática. Puedes pausarla; quien descarga manualmente siempre recibe la última versión."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué devuelve 'product.purchase()' en StoreKit 2?",
+    "options": [
+     "Un String",
+     "Nada",
+     "Un Bool",
+     "Un Product.PurchaseResult, con casos como .success, .userCancelled y .pending"
+    ],
+    "correctIndex": 3,
+    "explanation": "El resultado es un enum. En el caso .success recibes un VerificationResult que debe verificarse antes de liberar el contenido y finalizarse con finish()."
+   },
+   {
+    "id": 8,
+    "question": "¿Para qué sirve un StoreKit Configuration File?",
+    "options": [
+     "Para firmar la app",
+     "Para publicar productos en la App Store",
+     "Para simular productos y compras localmente en Xcode y el Simulator, sin cuenta real",
+     "Para cambiar el ícono"
+    ],
+    "correctIndex": 2,
+    "explanation": "Define productos y suscripciones locales para pruebas. También puedes simular renovaciones, reembolsos y fallas."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué clasificaciones por edad existen en la App Store actual?",
+    "options": [
+     "3+, 7+, 12+",
+     "Solo 18+",
+     "4+, 9+, 13+, 16+ y 18+",
+     "Solo 12+"
+    ],
+    "correctIndex": 2,
+    "explanation": "La clasificación por edad actual usa 4+, 9+, 13+, 16+ y 18+, definida mediante un cuestionario en App Store Connect."
+   },
+   {
+    "id": 2,
+    "question": "¿Para qué sirve Transaction.currentEntitlements?",
+    "options": [
+     "Registrar el dispositivo",
+     "Listar los derechos que el usuario posee, como suscripciones activas y compras no consumibles",
+     "Borrar compras",
+     "Listar todos los productos de la tienda"
+    ],
+    "correctIndex": 1,
+    "explanation": "La secuencia asíncrona devuelve las transacciones válidas, usadas para decidir qué recursos liberar."
+   },
+   {
+    "id": 3,
+    "question": "Si la verificación de la transacción es .unverified, ¿qué hacer?",
+    "options": [
+     "No liberar el contenido, pues la firma de la transacción no pudo validarse",
+     "Reiniciar el dispositivo",
+     "Borrar la app",
+     "Liberar el contenido de todos modos"
+    ],
+    "correctIndex": 0,
+    "explanation": "StoreKit 2 valida el JWS de la transacción. Si falla, la app no debe liberar el contenido."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es un ejemplo de compra no consumible?",
+    "options": [
+     "Suscripción mensual",
+     "Vidas extra",
+     "Monedas del juego",
+     "Desbloquear la app completa (pro) una sola vez"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los no consumibles se compran una vez y se conservan para siempre, y pueden restaurarse. Los consumibles se gastan y pueden comprarse de nuevo."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué debe reflejar la etiqueta de privacidad?",
+    "options": [
+     "El precio",
+     "Solo los datos de tu código, sin SDKs",
+     "Todos los datos recopilados por la app y por SDKs de terceros",
+     "Nada"
+    ],
+    "correctIndex": 2,
+    "explanation": "Eres responsable de declarar los datos recopilados, incluso por bibliotecas de terceros, y si se usan para rastreo."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué sección de las App Review Guidelines trata de pagos y suscripciones?",
+    "options": [
+     "Seguridad",
+     "Negocios",
+     "Diseño",
+     "Hardware"
+    ],
+    "correctIndex": 1,
+    "explanation": "La sección Negocios cubre pagos, suscripciones, anuncios y reglas de monetización. Las demás tratan de seguridad, rendimiento, diseño y aspectos legales."
+   }
+  ]
+ }
+]

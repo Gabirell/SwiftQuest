@@ -1,0 +1,608 @@
+[
+  {
+    "lessonId": "values",
+    "quiz": [
+      {
+        "id": "values-10",
+        "prompt": "What does this print?\n```swift\nvar a = 5\nlet b = a\na += 1\nprint(b)\n```",
+        "choices": [
+          "5",
+          "6",
+          "11",
+          "Compile error"
+        ],
+        "answer": 0,
+        "explanation": "Integers are value types: `let b = a` copies the value. Changing `a` afterwards does not affect `b`, so it prints 5."
+      },
+      {
+        "id": "values-11",
+        "prompt": "What happens with this code?\n```swift\nlet n = 10\nn = 20\n```",
+        "choices": [
+          "It prints 20",
+          "Compile error: `n` is a constant",
+          "Runtime crash",
+          "`n` silently stays 10"
+        ],
+        "answer": 1,
+        "explanation": "A `let` constant cannot be reassigned. The compiler rejects it; use `var` if the value must change."
+      },
+      {
+        "id": "values-12",
+        "prompt": "What does `print(7 / 2)` output?",
+        "choices": [
+          "3.5",
+          "4",
+          "3",
+          "Compile error"
+        ],
+        "answer": 2,
+        "explanation": "Both operands are `Int`, so Swift performs integer division and drops the remainder: 3. Use `7.0 / 2` to get 3.5."
+      },
+      {
+        "id": "values-13",
+        "prompt": "Given `let x: Int = 3` and `let y = 2.5`, which expression compiles?",
+        "choices": [
+          "x * y",
+          "x * Double(y)",
+          "x as Double * y",
+          "Double(x) * y"
+        ],
+        "answer": 3,
+        "explanation": "Swift never converts between numeric types implicitly. Convert explicitly with an initializer: `Double(x) * y`."
+      },
+      {
+        "id": "values-14",
+        "prompt": "What does `print(\"\\(2 + 3)\")` output?",
+        "choices": [
+          "2 + 3",
+          "5",
+          "\\(2 + 3)",
+          "Compile error"
+        ],
+        "answer": 1,
+        "explanation": "Anything inside `\\( )` is evaluated as an expression and inserted into the string, so the result is 5."
+      },
+      {
+        "id": "values-15",
+        "prompt": "Which delimiter starts and ends a multi-line string literal?",
+        "choices": [
+          "\"\"\"",
+          "'''",
+          "/* */",
+          "<<<"
+        ],
+        "answer": 0,
+        "explanation": "Triple double quotes (`\"\"\"`) delimit multi-line strings. Swift has no single-quote string literals."
+      },
+      {
+        "id": "values-16",
+        "prompt": "What is `1_000_000` in Swift?",
+        "choices": [
+          "A syntax error",
+          "A tuple",
+          "A String",
+          "The Int 1000000; underscores only improve readability"
+        ],
+        "answer": 3,
+        "explanation": "Underscores are ignored inside numeric literals and only make long numbers easier to read."
+      },
+      {
+        "id": "values-17",
+        "prompt": "What does this print?\n```swift\nvar x = 5\nx += 2\nx *= 3\nprint(x)\n```",
+        "choices": [
+          "15",
+          "17",
+          "21",
+          "Compile error"
+        ],
+        "answer": 2,
+        "explanation": "x becomes 7 after `+= 2`, then 21 after `*= 3`."
+      }
+    ]
+  },
+  {
+    "lessonId": "optionals",
+    "quiz": [
+      {
+        "id": "opt-10",
+        "prompt": "What does this print?\n```swift\nlet a: Int? = 5\nprint(a)\n```",
+        "choices": [
+          "5",
+          "Optional(5)",
+          "nil",
+          "Compile error"
+        ],
+        "answer": 1,
+        "explanation": "Printing an optional shows its wrapper: `Optional(5)` (the compiler also warns). Unwrap it first to print just 5."
+      },
+      {
+        "id": "opt-11",
+        "prompt": "What does this print?\n```swift\nlet s: String? = nil\nprint(s ?? \"none\")\n```",
+        "choices": [
+          "none",
+          "nil",
+          "Crash",
+          "Compile error"
+        ],
+        "answer": 0,
+        "explanation": "The nil-coalescing operator `??` supplies a default when the optional is nil, so the result is `none`."
+      },
+      {
+        "id": "opt-12",
+        "prompt": "What is the type of `Int(\"abc\")`?",
+        "choices": [
+          "Int",
+          "Int!",
+          "Int?",
+          "Never"
+        ],
+        "answer": 2,
+        "explanation": "Failable initializers return an optional. `Int(\"abc\")` is `Int?` and evaluates to nil because the text is not a number."
+      },
+      {
+        "id": "opt-13",
+        "prompt": "If `user` is `User?` and `name` is a `String`, what is the type of `user?.name.count`?",
+        "choices": [
+          "Int",
+          "String?",
+          "Int!",
+          "Int?"
+        ],
+        "answer": 3,
+        "explanation": "Optional chaining makes the whole result optional: `Int?`. It is nil if `user` is nil."
+      },
+      {
+        "id": "opt-14",
+        "prompt": "Why does `var age: Int = nil` not compile?",
+        "choices": [
+          "Non-optional types cannot hold nil; use `Int?`",
+          "`nil` is reserved for classes",
+          "Int must be a `let`",
+          "`var` cannot be used with nil"
+        ],
+        "answer": 0,
+        "explanation": "Only optional types can be nil. Declare `var age: Int? = nil` if the value may be missing."
+      },
+      {
+        "id": "opt-15",
+        "prompt": "Which is valid shorthand optional binding (Swift 5.7+)?",
+        "choices": [
+          "if name? { print(name) }",
+          "if let name { print(name) }",
+          "if let name? { print(name) }",
+          "if name != nil let { }"
+        ],
+        "answer": 1,
+        "explanation": "`if let name { ... }` unwraps an existing optional named `name` into a non-optional constant with the same name."
+      },
+      {
+        "id": "opt-16",
+        "prompt": "What does this print?\n```swift\nlet a: Int? = nil\nlet b: Int? = 4\nprint(a ?? b ?? 0)\n```",
+        "choices": [
+          "Optional(4)",
+          "nil",
+          "0",
+          "4"
+        ],
+        "answer": 3,
+        "explanation": "`??` chains right to left: `b ?? 0` is 4, and `a ?? 4` falls back to 4. The result is a plain Int."
+      },
+      {
+        "id": "opt-17",
+        "prompt": "What is true of `var name: String!`?",
+        "choices": [
+          "It can never be nil",
+          "It is a compile error",
+          "It is an optional that is force-unwrapped automatically on use, crashing if nil",
+          "It is a constant"
+        ],
+        "answer": 2,
+        "explanation": "An implicitly unwrapped optional is still optional, but Swift force-unwraps it when needed. Accessing it while nil crashes."
+      }
+    ]
+  },
+  {
+    "lessonId": "functions",
+    "quiz": [
+      {
+        "id": "fn-10",
+        "prompt": "What does this print?\n```swift\nfunc greet(name: String = \"World\") { print(\"Hello, \\(name)\") }\ngreet()\n```",
+        "choices": [
+          "Hello, World",
+          "Hello, ",
+          "Compile error: missing argument",
+          "Hello, name"
+        ],
+        "answer": 0,
+        "explanation": "A default value lets the caller omit the argument, so `name` is `World`."
+      },
+      {
+        "id": "fn-11",
+        "prompt": "Given `func add(_ a: Int, _ b: Int) -> Int`, which call is correct?",
+        "choices": [
+          "add(a: 2, b: 3)",
+          "add(2, 3)",
+          "add(_: 2, _: 3)",
+          "add 2 3"
+        ],
+        "answer": 1,
+        "explanation": "The underscore removes the argument labels, so you call it as `add(2, 3)`."
+      },
+      {
+        "id": "fn-12",
+        "prompt": "Given `func move(from start: Int, to end: Int)`, which call is correct?",
+        "choices": [
+          "move(start: 1, end: 5)",
+          "move(1, 5)",
+          "move(from: 1, to: 5)",
+          "move(from start: 1, to end: 5)"
+        ],
+        "answer": 2,
+        "explanation": "The first name is the external label used by callers (`from`, `to`); the second is the internal name used in the body."
+      },
+      {
+        "id": "fn-13",
+        "prompt": "What is wrong with this function?\n```swift\nfunc area(w: Int, h: Int) -> Int {\n    let a = w * h\n}\n```",
+        "choices": [
+          "Parameters must be `var`",
+          "`Int` cannot be returned",
+          "The function should return Void",
+          "It never returns a value (missing `return`)"
+        ],
+        "answer": 3,
+        "explanation": "A function declared `-> Int` must return an Int on every path. Add `return a` (or make it a single expression)."
+      },
+      {
+        "id": "fn-14",
+        "prompt": "What does this print?\n```swift\nfunc inc(_ x: inout Int) { x += 1 }\nvar n = 1\ninc(&n)\nprint(n)\n```",
+        "choices": [
+          "1",
+          "2",
+          "Compile error",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "`inout` passes the variable by copy-in copy-out, so the change is written back. The caller must pass `&n`."
+      },
+      {
+        "id": "fn-15",
+        "prompt": "What does this print?\n```swift\nfunc range() -> (min: Int, max: Int) { (1, 9) }\nlet r = range()\nprint(r.max)\n```",
+        "choices": [
+          "1",
+          "(1, 9)",
+          "9",
+          "Compile error"
+        ],
+        "answer": 2,
+        "explanation": "A function can return a labeled tuple; `r.max` reads the element labeled `max`."
+      },
+      {
+        "id": "fn-16",
+        "prompt": "What does this print?\n```swift\nlet sq = { (x: Int) in x * x }\nprint([1, 2, 3].map(sq))\n```",
+        "choices": [
+          "[1, 2, 3]",
+          "[2, 4, 6]",
+          "[1, 4, 9]",
+          "14"
+        ],
+        "answer": 2,
+        "explanation": "`map` applies the closure to each element and returns a new array: [1, 4, 9]."
+      },
+      {
+        "id": "fn-17",
+        "prompt": "Inside `func sum(_ n: Int...)`, what is the type of `n`?",
+        "choices": [
+          "Int",
+          "[Int]",
+          "Int?",
+          "Any"
+        ],
+        "answer": 1,
+        "explanation": "A variadic parameter is received as an array of the given type, so `n` is `[Int]`."
+      }
+    ]
+  },
+  {
+    "lessonId": "types",
+    "quiz": [
+      {
+        "id": "ty-10",
+        "prompt": "Is this allowed?\n```swift\nclass C { var v = 1 }\nlet a = C()\na.v = 5\n```",
+        "choices": [
+          "Yes: `let` fixes the reference, not the object's `var` properties",
+          "No: `a` is a constant",
+          "No: classes cannot have `var`",
+          "Only inside an init"
+        ],
+        "answer": 0,
+        "explanation": "With a class, `let` means the variable always refers to the same instance, but that instance's `var` properties can still change."
+      },
+      {
+        "id": "ty-11",
+        "prompt": "What happens here?\n```swift\nstruct P { var x = 0 }\nlet p = P()\np.x = 1\n```",
+        "choices": [
+          "`p.x` becomes 1",
+          "Runtime crash",
+          "Compile error: `p` is a constant struct",
+          "`p.x` stays 0"
+        ],
+        "answer": 2,
+        "explanation": "A struct is a value type, so a `let` struct is fully immutable, including its `var` properties."
+      },
+      {
+        "id": "ty-12",
+        "prompt": "Which keyword must a struct method use to modify its own properties?",
+        "choices": [
+          "mutating",
+          "inout",
+          "static",
+          "final"
+        ],
+        "answer": 0,
+        "explanation": "Struct methods are non-mutating by default; mark them `mutating` to change `self`."
+      },
+      {
+        "id": "ty-13",
+        "prompt": "What does this print?\n```swift\nenum R { case ok(Int), fail(String) }\nlet r = R.ok(3)\nswitch r {\ncase .ok(let v): print(v)\ncase .fail: print(0)\n}\n```",
+        "choices": [
+          "0",
+          "ok(3)",
+          "Compile error",
+          "3"
+        ],
+        "answer": 3,
+        "explanation": "The associated value 3 is bound to `v` by the pattern, so it prints 3."
+      },
+      {
+        "id": "ty-14",
+        "prompt": "Given `struct S { var a: Int; var b: String }`, which creates an instance?",
+        "choices": [
+          "S(1, \"x\")",
+          "S(a: 1, b: \"x\")",
+          "S { a: 1, b: \"x\" }",
+          "new S(a: 1, b: \"x\")"
+        ],
+        "answer": 1,
+        "explanation": "Structs get a memberwise initializer with labels in declaration order. Swift has no `new` keyword."
+      },
+      {
+        "id": "ty-15",
+        "prompt": "What does this print?\n```swift\nclass C { var n = 0 }\nlet a = C()\nlet b = a\nb.n = 9\nprint(a.n)\n```",
+        "choices": [
+          "0",
+          "9",
+          "Compile error",
+          "nil"
+        ],
+        "answer": 1,
+        "explanation": "`a` and `b` reference the same instance, so the change through `b` is visible through `a`."
+      },
+      {
+        "id": "ty-16",
+        "prompt": "What does `a === b` check for two class instances?",
+        "choices": [
+          "Equal property values",
+          "Same type",
+          "Both are non-nil",
+          "They are the same instance"
+        ],
+        "answer": 3,
+        "explanation": "`===` is the identity operator: it is true only when both references point to the exact same object."
+      },
+      {
+        "id": "ty-17",
+        "prompt": "Given `struct Config { static let version = 2 }`, how do you read the value?",
+        "choices": [
+          "Config().version",
+          "Config.version",
+          "Config->version",
+          "self.version"
+        ],
+        "answer": 1,
+        "explanation": "A `static` property belongs to the type itself, so you access it on the type: `Config.version`."
+      }
+    ]
+  },
+  {
+    "lessonId": "collections",
+    "quiz": [
+      {
+        "id": "co-10",
+        "prompt": "What does this print?\n```swift\nvar a = [1, 2, 3]\na.append(4)\na.remove(at: 0)\nprint(a)\n```",
+        "choices": [
+          "[1, 2, 3]",
+          "[2, 3, 4]",
+          "[1, 2, 3, 4]",
+          "[3, 4]"
+        ],
+        "answer": 1,
+        "explanation": "After appending 4 the array is [1, 2, 3, 4]; `remove(at: 0)` drops the first element, leaving [2, 3, 4]."
+      },
+      {
+        "id": "co-11",
+        "prompt": "Why does this fail?\n```swift\nlet a = [1, 2, 3]\na.append(4)\n```",
+        "choices": [
+          "Arrays are fixed size",
+          "`append` does not exist",
+          "An array declared with `let` is immutable",
+          "Needs `[Int]` annotation"
+        ],
+        "answer": 2,
+        "explanation": "Collections are value types: a `let` array cannot be mutated. Declare it with `var`."
+      },
+      {
+        "id": "co-12",
+        "prompt": "What does `[1, 2, 3, 4].filter { $0 % 2 == 0 }` return?",
+        "choices": [
+          "[1, 3]",
+          "[2, 4]",
+          "[false, true, false, true]",
+          "[2, 4, 6, 8]"
+        ],
+        "answer": 1,
+        "explanation": "`filter` keeps elements for which the closure returns true: the even numbers 2 and 4."
+      },
+      {
+        "id": "co-13",
+        "prompt": "What does this print?\n```swift\nlet s: Set = [1, 2, 2, 3]\nprint(s.count)\n```",
+        "choices": [
+          "4",
+          "2",
+          "1",
+          "3"
+        ],
+        "answer": 3,
+        "explanation": "A Set stores unique values, so the duplicate 2 is stored once and the count is 3."
+      },
+      {
+        "id": "co-14",
+        "prompt": "What happens?\n```swift\nlet a = [10, 20, 30]\nprint(a[5])\n```",
+        "choices": [
+          "Prints nil",
+          "Runtime crash: index out of range",
+          "Prints 0",
+          "Compile error"
+        ],
+        "answer": 1,
+        "explanation": "Array subscripts are not optional. An invalid index traps at runtime. Check `a.indices` or use `a.first` / `a.last`."
+      },
+      {
+        "id": "co-15",
+        "prompt": "What does this print?\n```swift\nvar d = [\"a\": 1]\nd[\"b\"] = 2\nd[\"a\"] = nil\nprint(d)\n```",
+        "choices": [
+          "[\"a\": 1, \"b\": 2]",
+          "[\"a\": nil, \"b\": 2]",
+          "[\"b\": 2]",
+          "Compile error"
+        ],
+        "answer": 2,
+        "explanation": "Assigning a new key adds it; assigning nil to an existing key removes that entry."
+      },
+      {
+        "id": "co-16",
+        "prompt": "What does `[1, 2, 3, 4].reduce(0, +)` return?",
+        "choices": [
+          "10",
+          "24",
+          "0",
+          "[1, 2, 3, 4]"
+        ],
+        "answer": 0,
+        "explanation": "`reduce` combines elements starting from 0 using `+`: 0+1+2+3+4 = 10."
+      },
+      {
+        "id": "co-17",
+        "prompt": "What does the first iteration print?\n```swift\nfor (i, x) in [\"a\", \"b\"].enumerated() {\n    print(i, x)\n}\n```",
+        "choices": [
+          "1 a",
+          "0 a",
+          "a 0",
+          "0 b"
+        ],
+        "answer": 1,
+        "explanation": "`enumerated()` yields (offset, element) pairs, with offsets starting at 0."
+      }
+    ]
+  },
+  {
+    "lessonId": "swiftui",
+    "quiz": [
+      {
+        "id": "ui-10",
+        "prompt": "What is the type of a SwiftUI view's `body` property?",
+        "choices": [
+          "some View",
+          "View?",
+          "[View]",
+          "AnyObject"
+        ],
+        "answer": 0,
+        "explanation": "`body` returns `some View`, an opaque type: one concrete view type that the caller does not need to name."
+      },
+      {
+        "id": "ui-11",
+        "prompt": "What does `Text(\"A\").padding().background(.red)` color red?",
+        "choices": [
+          "Only the text glyphs",
+          "The whole screen",
+          "The text plus its padding",
+          "Nothing"
+        ],
+        "answer": 2,
+        "explanation": "Modifiers apply in order. `background` is applied after `padding`, so it fills the padded area as well."
+      },
+      {
+        "id": "ui-12",
+        "prompt": "Which creates a toggle bound to a `@State var isOn`?",
+        "choices": [
+          "Toggle(\"On\", isOn: isOn)",
+          "Toggle(\"On\", isOn: &isOn)",
+          "Toggle(\"On\", isOn: @isOn)",
+          "Toggle(\"On\", isOn: $isOn)"
+        ],
+        "answer": 3,
+        "explanation": "`$isOn` is the projected value: a `Binding<Bool>` that lets the Toggle read and write the state."
+      },
+      {
+        "id": "ui-13",
+        "prompt": "Which correctly lists `names: [String]` in a ForEach?",
+        "choices": [
+          "ForEach(names) { Text($0) }",
+          "ForEach(names, id: \\.self) { Text($0) }",
+          "ForEach(names.count) { Text(names) }",
+          "ForEach(in: names) { Text($0) }"
+        ],
+        "answer": 1,
+        "explanation": "Plain strings are not `Identifiable`, so supply an id key path such as `id: \\.self`."
+      },
+      {
+        "id": "ui-14",
+        "prompt": "What is wrong with `@State let count = 0`?",
+        "choices": [
+          "Nothing, it is valid",
+          "It must be `private let`",
+          "State must be declared with `var` because it changes",
+          "It needs `@Binding`"
+        ],
+        "answer": 2,
+        "explanation": "`@State` stores mutable value that SwiftUI manages, so it must be a `var`."
+      },
+      {
+        "id": "ui-15",
+        "prompt": "What does `Spacer()` do inside an HStack?",
+        "choices": [
+          "Draws a divider",
+          "Adds a fixed 8 pt gap",
+          "Hides the neighbors",
+          "Expands to push views apart"
+        ],
+        "answer": 3,
+        "explanation": "A Spacer takes all available space along the stack axis, pushing other views to the edges."
+      },
+      {
+        "id": "ui-16",
+        "prompt": "Which container provides push/pop navigation between screens?",
+        "choices": [
+          "ScrollView",
+          "NavigationStack",
+          "GeometryReader",
+          "TabView"
+        ],
+        "answer": 1,
+        "explanation": "`NavigationStack` manages a stack of screens, used with `NavigationLink` or a path."
+      },
+      {
+        "id": "ui-17",
+        "prompt": "Which macro (iOS 17+) makes a class observable so SwiftUI updates views when its properties change?",
+        "choices": [
+          "@Observable",
+          "@Stateful",
+          "@Observed",
+          "@Published class"
+        ],
+        "answer": 0,
+        "explanation": "`@Observable` from the Observation framework tracks the properties a view reads and refreshes it when they change."
+      }
+    ]
+  }
+]

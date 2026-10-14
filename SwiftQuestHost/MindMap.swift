@@ -17,7 +17,7 @@ struct MindMapView: View {
         var nodes: [Node] = [], edges: [Edge] = []
         var row = 0
         var catPoints: [CGPoint] = []
-        for (ci, cat) in CourseData.categoryOrder.enumerated() {
+        for (ci, cat) in (CourseData.categoryOrder + Set(loc.pillars.map(\.categoryName)).subtracting(CourseData.categoryOrder).sorted()).enumerated() {
             let items = loc.pillars.filter { $0.categoryName == cat }.sorted { $0.id < $1.id }
             guard !items.isEmpty else { continue }
             let color = palette[ci % palette.count]

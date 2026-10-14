@@ -1,0 +1,198 @@
+{
+ "pillars": {
+  "71": [
+   {
+    "title": "Writing code with intelligence in Xcode",
+    "url": "https://developer.apple.com/documentation/xcode/writing-code-with-intelligence-in-xcode"
+   },
+   {
+    "title": "Xcode | Apple Developer Documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Generative AI | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/generative-ai"
+   },
+   {
+    "title": "Foundation Models",
+    "url": "https://developer.apple.com/documentation/foundationmodels"
+   }
+  ],
+  "72": [
+   {
+    "title": "Core ML",
+    "url": "https://developer.apple.com/documentation/coreml"
+   },
+   {
+    "title": "Getting a Core ML Model",
+    "url": "https://developer.apple.com/documentation/coreml/getting-a-core-ml-model"
+   },
+   {
+    "title": "Create ML",
+    "url": "https://developer.apple.com/documentation/createml"
+   },
+   {
+    "title": "MLModel",
+    "url": "https://developer.apple.com/documentation/coreml/mlmodel"
+   },
+   {
+    "title": "Machine learning | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/machine-learning"
+   }
+  ],
+  "73": [
+   {
+    "title": "Vision",
+    "url": "https://developer.apple.com/documentation/vision"
+   },
+   {
+    "title": "Natural Language",
+    "url": "https://developer.apple.com/documentation/naturallanguage"
+   },
+   {
+    "title": "VNRecognizeTextRequest",
+    "url": "https://developer.apple.com/documentation/vision/vnrecognizetextrequest"
+   },
+   {
+    "title": "NLTagger",
+    "url": "https://developer.apple.com/documentation/naturallanguage/nltagger"
+   },
+   {
+    "title": "VNImageRequestHandler",
+    "url": "https://developer.apple.com/documentation/vision/vnimagerequesthandler"
+   }
+  ],
+  "74": [
+   {
+    "title": "LanguageModelSession",
+    "url": "https://developer.apple.com/documentation/foundationmodels/languagemodelsession"
+   },
+   {
+    "title": "Foundation Models",
+    "url": "https://developer.apple.com/documentation/foundationmodels"
+   },
+   {
+    "title": "SystemLanguageModel",
+    "url": "https://developer.apple.com/documentation/foundationmodels/systemlanguagemodel"
+   },
+   {
+    "title": "Generating content and performing tasks with Foundation Models",
+    "url": "https://developer.apple.com/documentation/foundationmodels/generating-content-and-performing-tasks-with-foundation-models"
+   },
+   {
+    "title": "Generative AI | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/generative-ai"
+   }
+  ],
+  "75": [
+   {
+    "title": "Image Playground",
+    "url": "https://developer.apple.com/documentation/imageplayground"
+   },
+   {
+    "title": "ImageCreator",
+    "url": "https://developer.apple.com/documentation/imageplayground/imagecreator"
+   },
+   {
+    "title": "Generative AI | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/generative-ai"
+   },
+   {
+    "title": "Machine learning | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/machine-learning"
+   }
+  ],
+  "76": [
+   {
+    "title": "visionOS",
+    "url": "https://developer.apple.com/documentation/visionos"
+   },
+   {
+    "title": "Windows | HIG (visionOS)",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/windows"
+   },
+   {
+    "title": "Ornaments | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/ornaments"
+   },
+   {
+    "title": "Designing for visionOS | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos"
+   },
+   {
+    "title": "RealityView",
+    "url": "https://developer.apple.com/documentation/realitykit/realityview"
+   }
+  ],
+  "77": [
+   {
+    "title": "watchOS apps",
+    "url": "https://developer.apple.com/documentation/watchos-apps"
+   },
+   {
+    "title": "ClockKit / WidgetKit complications",
+    "url": "https://developer.apple.com/documentation/widgetkit/creating-accessory-widgets-and-watch-complications"
+   },
+   {
+    "title": "HealthKit",
+    "url": "https://developer.apple.com/documentation/healthkit"
+   },
+   {
+    "title": "HKWorkoutSession",
+    "url": "https://developer.apple.com/documentation/healthkit/hkworkoutsession"
+   },
+   {
+    "title": "Designing for watchOS | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-watchos"
+   }
+  ],
+  "78": [
+   {
+    "title": "DocumentGroup",
+    "url": "https://developer.apple.com/documentation/swiftui/documentgroup"
+   },
+   {
+    "title": "Building a document-based app with SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/building-a-document-based-app-with-swiftui"
+   },
+   {
+    "title": "Commands",
+    "url": "https://developer.apple.com/documentation/swiftui/commands"
+   },
+   {
+    "title": "Windows | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/windows"
+   },
+   {
+    "title": "The menu bar | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/the-menu-bar"
+   },
+   {
+    "title": "Designing for macOS | HIG",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-macos"
+   }
+  ],
+  "79": [
+   {
+    "title": "SpriteKit",
+    "url": "https://developer.apple.com/documentation/spritekit"
+   },
+   {
+    "title": "SKScene",
+    "url": "https://developer.apple.com/documentation/spritekit/skscene"
+   },
+   {
+    "title": "GameKit",
+    "url": "https://developer.apple.com/documentation/gamekit"
+   },
+   {
+    "title": "GKLocalPlayer",
+    "url": "https://developer.apple.com/documentation/gamekit/gklocalplayer"
+   },
+   {
+    "title": "SKPhysicsBody",
+    "url": "https://developer.apple.com/documentation/spritekit/skphysicsbody"
+   }
+  ]
+ }
+}

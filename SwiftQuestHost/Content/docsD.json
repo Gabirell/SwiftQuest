@@ -1,0 +1,132 @@
+{
+ "pillars": {
+  "62": [
+   {
+    "title": "WidgetKit | Apple Developer Documentation",
+    "url": "https://developer.apple.com/documentation/widgetkit"
+   },
+   {
+    "title": "Creating a widget extension",
+    "url": "https://developer.apple.com/documentation/widgetkit/creating-a-widget-extension"
+   },
+   {
+    "title": "Keeping a widget up to date",
+    "url": "https://developer.apple.com/documentation/widgetkit/keeping-a-widget-up-to-date"
+   },
+   {
+    "title": "TimelineProvider | WidgetKit",
+    "url": "https://developer.apple.com/documentation/widgetkit/timelineprovider"
+   },
+   {
+    "title": "Human Interface Guidelines: Widgets",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/widgets"
+   }
+  ],
+  "63": [
+   {
+    "title": "AppIntent | App Intents",
+    "url": "https://developer.apple.com/documentation/appintents/appintent"
+   },
+   {
+    "title": "App Intents | Apple Developer Documentation",
+    "url": "https://developer.apple.com/documentation/appintents"
+   },
+   {
+    "title": "AppShortcutsProvider | App Intents",
+    "url": "https://developer.apple.com/documentation/appintents/appshortcutsprovider"
+   },
+   {
+    "title": "AppEntity | App Intents",
+    "url": "https://developer.apple.com/documentation/appintents/appentity"
+   },
+   {
+    "title": "Human Interface Guidelines: Siri",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/siri"
+   }
+  ],
+  "64": [
+   {
+    "title": "NavigationSplitView | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/navigationsplitview"
+   },
+   {
+    "title": "Human Interface Guidelines: Multitasking",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/multitasking"
+   },
+   {
+    "title": "Human Interface Guidelines: Layout",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/layout"
+   },
+   {
+    "title": "horizontalSizeClass | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/environmentvalues/horizontalsizeclass"
+   },
+   {
+    "title": "ViewThatFits | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/viewthatfits"
+   }
+  ],
+  "65": [
+   {
+    "title": "XCUIAutomation",
+    "url": "https://developer.apple.com/documentation/xcuiautomation"
+   },
+   {
+    "title": "XCUIApplication | XCUIAutomation",
+    "url": "https://developer.apple.com/documentation/xcuiautomation/xcuiapplication"
+   },
+   {
+    "title": "Determining how much code your tests cover",
+    "url": "https://developer.apple.com/documentation/xcode/determining-how-much-code-your-tests-cover"
+   },
+   {
+    "title": "measure(metrics:block:) | XCTest",
+    "url": "https://developer.apple.com/documentation/xctest/xctestcase/measure(metrics:block:)"
+   },
+   {
+    "title": "XCUIElement | XCUIAutomation",
+    "url": "https://developer.apple.com/documentation/xcuiautomation/xcuielement"
+   }
+  ],
+  "66": [
+   {
+    "title": "Improving your app's performance",
+    "url": "https://developer.apple.com/documentation/xcode/improving-your-app-s-performance"
+   },
+   {
+    "title": "Reducing your app's memory use",
+    "url": "https://developer.apple.com/documentation/xcode/reducing-your-app-s-memory-use"
+   },
+   {
+    "title": "Understanding hangs in your app",
+    "url": "https://developer.apple.com/documentation/xcode/understanding-hangs-in-your-app"
+   },
+   {
+    "title": "Automatic Reference Counting",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/"
+   }
+  ],
+  "67": [
+   {
+    "title": "Concurrency | Swift",
+    "url": "https://developer.apple.com/documentation/swift/concurrency"
+   },
+   {
+    "title": "The Swift Programming Language: Concurrency",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/"
+   },
+   {
+    "title": "The Swift Programming Language: Concurrency \u2014 Tasks and Task Groups",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Tasks-and-Task-Groups"
+   },
+   {
+    "title": "MainActor | Swift",
+    "url": "https://developer.apple.com/documentation/swift/mainactor"
+   },
+   {
+    "title": "Task | Swift",
+    "url": "https://developer.apple.com/documentation/swift/task"
+   }
+  ]
+ }
+}

@@ -1,0 +1,1127 @@
+[
+ {
+  "id": 34,
+  "title": "Operadores y Tipos Básicos",
+  "theory": "Los operadores son símbolos que combinan o transforman valores. Los aritméticos son '+', '-', '*', '/' y el resto '%'; entre dos 'Int', '7 / 2' da '3' (división entera, sin decimales) y '7 % 2' da '1'. Swift nunca convierte tipos numéricos de forma implícita: 'Int + Double' no compila y debes convertir explícitamente con 'Double(x)'. Los tipos básicos son 'Int', 'Double', 'Float', 'String', 'Character' y 'Bool', y la anotación de tipo ('let precio: Double = 10') es opcional cuando el compilador puede inferir. Los operadores de asignación compuesta ('+=', '-=') actualizan la variable, y los de comparación ('==', '!=', '<', '>=') devuelven 'Bool'. Los lógicos '&&', '||' y '!' usan evaluación en cortocircuito: si el lado izquierdo ya decide el resultado, el derecho ni se ejecuta. Los rangos '1...5' (cerrado) y '1..<5' (semiabierto) se usan mucho en bucles, y el operador ternario 'cond ? a : b' y 'a ?? b' (coalescencia nula, usa 'b' si 'a' es nil) abrevian decisiones. En tipos de referencia, '==' compara valores y '===' verifica si dos referencias apuntan a la misma instancia. El overflow de 'Int' causa un error en tiempo de ejecución; para el comportamiento de 'dar la vuelta' usa los operadores '&+', '&-' y '&*'. La precedencia sigue las matemáticas ('*' antes de '+') y los paréntesis aclaran la intención. La certificación cubre exactamente estos puntos: predecir el resultado de expresiones y reconocer errores de tipo.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/",
+  "category": "Fundamentos",
+  "corporateCase": "En una app de finanzas, el valor de la cuota se calcula con 'Double(total) / Double(meses)' para evitar la división entera que descartaría los centavos. El nombre mostrado usa 'apodo ?? nombre' para que siempre se muestre algo en pantalla.",
+  "gameCase": "En un juego, el índice circular de niveles usa 'siguiente % totalNiveles' para volver al inicio, y el puntaje usa '&+' o un límite con 'min' para que el 'Int' no se desborde. La comprobación de vida del héroe combina '&&' y comparaciones, como 'vida > 0 && !esInvencible'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Obtén el resto de dividir 17 entre 5",
+    "codeSnippet": "let resto = 17 ___ 5",
+    "correctAnswer": "%",
+    "hint": "Es el operador de resto (módulo), no '/'."
+   },
+   {
+    "id": 2,
+    "question": "Crea el rango semiabierto de 0 hasta 4 (el 5 no entra)",
+    "codeSnippet": "for i in 0___5 { print(i) }",
+    "correctAnswer": "..<",
+    "hint": "Dos puntos seguidos del signo menor que."
+   },
+   {
+    "id": 3,
+    "question": "Usa \"Anónimo\" cuando el apodo sea nil",
+    "codeSnippet": "let apelido: String? = nil\nlet nome = apelido ___ \"Anônimo\"",
+    "correctAnswer": "??",
+    "hint": "Es el operador de coalescencia nula, dos signos de interrogación."
+   },
+   {
+    "id": 4,
+    "question": "Convierte el entero al tipo decimal antes de dividir",
+    "codeSnippet": "let total = 7\nlet metade = ___(total) / 2",
+    "correctAnswer": "Double",
+    "hint": "El tipo decimal por defecto de Swift, usado como función de conversión."
+   },
+   {
+    "id": 5,
+    "question": "Suma permitiendo overflow (sin fallar) al sumar 1 a UInt8.max",
+    "codeSnippet": "let x = UInt8.max ___ 1",
+    "correctAnswer": "&+",
+    "hint": "El operador de suma que empieza con '&' y da la vuelta."
+   },
+   {
+    "id": 6,
+    "question": "Verifica si 'a' y 'b' son la MISMA instancia de la clase (identidad)",
+    "codeSnippet": "class Caixa {}\nlet a = Caixa()\nlet b = a\nprint(a ___ b)",
+    "correctAnswer": "===",
+    "hint": "Es el '==' con un signo igual más."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué imprime 'let r = 7 / 2; print(r)'?",
+    "options": [
+     "3.5",
+     "3",
+     "4",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ambos literales se infieren como 'Int', así que la división es entera y descarta la parte decimal: 3. Para obtener 3.5 haría falta 'Double'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué imprime 'print(-7 % 3)'?",
+    "options": [
+     "2",
+     "1",
+     "-2",
+     "-1"
+    ],
+    "correctIndex": 3,
+    "explanation": "En Swift el resto toma el signo del dividendo: -7 = 3 * (-2) + (-1). Por eso el resultado es -1."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué pasa con 'let a = 5; let b = 2.5; let c = a * b'?",
+    "options": [
+     "c vale 12.5",
+     "c vale 12",
+     "Error de compilación: 'Int' y 'Double' no se pueden multiplicar directamente",
+     "Error de ejecución"
+    ],
+    "correctIndex": 2,
+    "explanation": "'a' es Int y 'b' es Double. Swift no hace conversión implícita; hay que escribir 'Double(a) * b'."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es el resultado de '2 + 3 * 4 - 1'?",
+    "options": [
+     "13",
+     "19",
+     "15",
+     "23"
+    ],
+    "correctIndex": 0,
+    "explanation": "La multiplicación tiene mayor precedencia: 3 * 4 = 12, luego 2 + 12 - 1 = 13."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué ocurre en 'var x: UInt8 = 255; x += 1'?",
+    "options": [
+     "x pasa a valer 0",
+     "x pasa a valer 256",
+     "Error de ejecución por overflow aritmético",
+     "x sigue siendo 255"
+    ],
+    "correctIndex": 2,
+    "explanation": "El '+' normal provoca un trap en overflow. Para dar la vuelta (resultado 0) habría que usar 'x = x &+ 1'."
+   },
+   {
+    "id": 6,
+    "question": "Con 'let a = 0; let b = 10', ¿qué produce 'let ok = a != 0 && b / a > 1'?",
+    "options": [
+     "Error de ejecución: división por cero",
+     "ok vale true",
+     "Error de compilación",
+     "ok vale false, pues la división ni se evalúa"
+    ],
+    "correctIndex": 3,
+    "explanation": "El '&&' evalúa en cortocircuito: 'a != 0' es false, así que el lado derecho no se ejecuta y no hay división por cero."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuántos elementos tiene el rango '1..<4'?",
+    "options": [
+     "3",
+     "4",
+     "5",
+     "2"
+    ],
+    "correctIndex": 0,
+    "explanation": "El rango semiabierto excluye el límite superior: 1, 2 y 3. En cambio '1...4' tendría 4 elementos."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué operador verifica si dos variables referencian la misma instancia de una clase?",
+    "options": [
+     "==",
+     "===",
+     "=",
+     "??"
+    ],
+    "correctIndex": 1,
+    "explanation": "'===' compara identidad (misma instancia). '==' compara igualdad de valor y exige 'Equatable'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué imprime 'let n = 5; print(n % 2 == 0 ? \"par\" : \"impar\")'?",
+    "options": [
+     "par",
+     "impar",
+     "true",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "5 % 2 vale 1, así que la condición es false y el ternario elige el segundo valor."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es el resultado de 'let nombre: String? = nil; print(nombre ?? \"N/D\")'?",
+    "options": [
+     "nil",
+     "Optional(\"N/D\")",
+     "N/D",
+     "Error de compilación"
+    ],
+    "correctIndex": 2,
+    "explanation": "El '??' devuelve el valor por defecto cuando el Optional es nil, y el resultado ya es un 'String' no opcional."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es el valor de '(2, \"a\") < (1, \"z\")'?",
+    "options": [
+     "true",
+     "false",
+     "Error de compilación",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las tuplas se comparan elemento a elemento de izquierda a derecha; como 2 < 1 es false y 2 != 1, el resultado ya es false."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál de estas declaraciones compila?",
+    "options": [
+     "let a: Int = 3.5",
+     "let b: Double = 3",
+     "let c: String = 3",
+     "let d: Bool = 1"
+    ],
+    "correctIndex": 1,
+    "explanation": "El literal '3' puede ser un 'Double'. Los demás casos mezclan tipos incompatibles (decimal en Int, número en String o Bool)."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el valor de 'Int8.max &+ 1'?",
+    "options": [
+     "128",
+     "127",
+     "-128",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "Int8.max es 127; con '&+' el valor da la vuelta al menor Int8, -128, sin fallar."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es el tipo inferido de 'let letra = \"A\"'?",
+    "options": [
+     "Character",
+     "Int",
+     "String",
+     "Substring"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un literal entre comillas se infiere como 'String'. Para obtener un 'Character' hay que anotar: 'let letra: Character = \"A\"'."
+   }
+  ]
+ },
+ {
+  "id": 35,
+  "title": "Nomenclatura, Alcance y Shadowing",
+  "theory": "Las Swift API Design Guidelines piden claridad en el punto de uso: variables, constantes, funciones y propiedades usan 'lowerCamelCase' ('nombreCompleto', 'calcularTotal()'), mientras que los tipos y protocolos usan 'UpperCamelCase' ('Perfil', 'Codable'). Un identificador puede contener letras, dígitos y '_', pero no puede empezar por un dígito ni contener espacios o guiones; para usar una palabra reservada como nombre, enciérrala entre acentos graves (`class`), aunque lo ideal es evitarlo. Las propiedades booleanas deben sonar como una afirmación ('isEnabled', 'hasChanges'), y las etiquetas de argumento hacen que la llamada se lea como una frase ('mover(de:a:)'). El alcance (scope) es la región del código donde un nombre es visible: global, de función, de bloque (dentro de 'if', 'for', llaves) o de tipo (propiedades y métodos). Una variable local vive solo mientras se ejecuta su alcance; usarla fuera produce el error 'cannot find in scope'. El shadowing ocurre cuando un nombre interno oculta otro externo con el mismo nombre, como en 'if let nombre = nombre' (el nuevo 'nombre' no opcional oculta al opcional) o cuando un parámetro tiene el mismo nombre que una propiedad, caso en el que 'self.nombre' accede a la propiedad. Olvidar el 'self.' en 'nombre = nombre' asigna el parámetro a sí mismo y falla. Prefiere la inferencia de tipo ('let edad = 30') por ser más limpia, y usa anotación explícita cuando el literal inferiría el tipo equivocado ('let tasa: Double = 5') o cuando aún no existe el valor inicial. El examen de certificación evalúa convenciones de nombres, identificadores válidos y predecir qué variable está en juego en cada alcance.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference",
+  "category": "Fundamentos",
+  "corporateCase": "En una app de agenda, la propiedad 'isSyncing' deja claro que es un Bool, y el método 'agendar(reunion:para:)' se lee como una frase. Dentro de un 'init', el equipo usa 'self.titulo = titulo' para distinguir el parámetro de la propiedad y evitar bugs de shadowing.",
+  "gameCase": "En un juego, la variable 'puntos' del marcador es global al archivo, pero dentro del bucle del nivel un 'let puntos' local la oculta y el puntaje final aparece mal. Tras cambiar los nombres ('puntosDeRonda' y 'puntosTotales'), el bug desaparece.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Usa la palabra reservada 'class' como nombre de constante (entre acentos graves)",
+    "codeSnippet": "let `___` = \"Matemática\"",
+    "correctAnswer": "class",
+    "hint": "El nombre es exactamente la palabra reservada entre acentos graves."
+   },
+   {
+    "id": 2,
+    "question": "Diferencia la propiedad del parámetro dentro del init",
+    "codeSnippet": "struct Pessoa {\n  var nome: String\n  init(nome: String) { ___.nome = nome }\n}",
+    "correctAnswer": "self",
+    "hint": "La palabra que se refiere a la instancia actual."
+   },
+   {
+    "id": 3,
+    "question": "Crea una nueva constante 'nome' no opcional que oculta al opcional dentro del if",
+    "codeSnippet": "var nome: String? = \"Ana\"\nif ___ nome = nome { print(nome.count) }",
+    "correctAnswer": "let",
+    "hint": "Es la palabra del optional binding que crea una constante."
+   },
+   {
+    "id": 4,
+    "question": "Da el nombre idiomático (API Design Guidelines) a un Bool que indica si algo está habilitado",
+    "codeSnippet": "var ___: Bool = true",
+    "correctAnswer": "isEnabled",
+    "hint": "Prefijo 'is' más el adjetivo en inglés, en lowerCamelCase."
+   },
+   {
+    "id": 5,
+    "question": "Llama a la función usando la etiqueta externa del argumento",
+    "codeSnippet": "func saudar(a pessoa: String) { print(pessoa) }\nsaudar(___: \"Ana\")",
+    "correctAnswer": "a",
+    "hint": "El primer nombre antes del parámetro interno es la etiqueta externa."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué tipo infiere Swift por defecto para un literal decimal como 9.99?",
+    "codeSnippet": "let preco: ___ = 9.99",
+    "correctAnswer": "Double",
+    "hint": "No es Float: es el tipo decimal de 64 bits."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué nombre de función sigue la convención de Swift?",
+    "options": [
+     "CalcularTotal()",
+     "calcular_total()",
+     "calcularTotal()",
+     "calcular-total()"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las funciones usan lowerCamelCase. 'CalcularTotal' parece un tipo, 'calcular_total' es snake_case y los guiones no se permiten en identificadores."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál de estos es un identificador válido para una constante?",
+    "options": [
+     "2aLugar",
+     "meu-valor",
+     "_valor",
+     "for"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un identificador puede empezar con '_' o letra. '2aLugar' empieza con dígito, 'meu-valor' tiene guion y 'for' es palabra reservada (solo funcionaría entre acentos graves)."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué imprime?\nlet x = 10\nif true { let x = 20; print(x) }\nprint(x)",
+    "options": [
+     "20 y 20",
+     "20 y 10",
+     "10 y 10",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "El 'x' dentro del 'if' es una nueva constante que oculta (shadowing) a la externa solo dentro del bloque. Fuera, 'x' sigue valiendo 10."
+   },
+   {
+    "id": 4,
+    "question": "En 'struct P { var nombre: String; init(nombre: String) { nombre = nombre } }', ¿cuál es el problema?",
+    "options": [
+     "Ninguno, compila normalmente",
+     "Falta 'self.' en la propiedad: el parámetro (una constante) se asigna a sí mismo",
+     "'init' no puede tener parámetros",
+     "El tipo String no permite asignación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Dentro del init, 'nombre' se refiere al parámetro, que oculta a la propiedad. Lo correcto es 'self.nombre = nombre'."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el mejor nombre para una propiedad Bool que indica si la lista está vacía?",
+    "options": [
+     "isEmpty",
+     "empty",
+     "checkEmpty",
+     "emptyFlag"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las propiedades Bool deben leerse como afirmaciones sobre el objeto: 'isEmpty', como en Array."
+   },
+   {
+    "id": 6,
+    "question": "Después de 'guard let nome = nome else { return }', ¿cuál es el tipo de 'nome' en el resto de la función (siendo 'nome' un String? antes)?",
+    "options": [
+     "String?",
+     "String",
+     "Any",
+     "Substring"
+    ],
+    "correctIndex": 1,
+    "explanation": "'guard let' crea una constante no opcional con el mismo nombre (shadowing) que permanece visible en el resto del alcance."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál es el tipo de 'let tasa = 5' y cómo obtener un Double?",
+    "options": [
+     "Double; ya está correcto",
+     "Int; escribir 'let tasa: Double = 5'",
+     "Float; escribir 'let tasa = 5f'",
+     "Number; usar un cast"
+    ],
+    "correctIndex": 1,
+    "explanation": "El literal entero se infiere como Int. Una anotación explícita ('Double') cambia el tipo, ya que el literal '5' también puede ser Double."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué pasa con 'for i in 1...3 { }; print(i)'?",
+    "options": [
+     "Imprime 3",
+     "Imprime 0",
+     "Imprime nil",
+     "Error de compilación: 'i' solo existe dentro del bucle"
+    ],
+    "correctIndex": 3,
+    "explanation": "La variable del bucle pertenece al alcance del bloque 'for'. Fuera de él el nombre no se encuentra ('cannot find in scope')."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Dada 'func mover(de origem: Int, para destino: Int)', ¿qué llamada es válida?",
+    "options": [
+     "mover(1, 2)",
+     "mover(origem: 1, destino: 2)",
+     "mover(de: 1, para: 2)",
+     "mover(para: 2, de: 1)"
+    ],
+    "correctIndex": 2,
+    "explanation": "En la llamada se usan las etiquetas externas ('de' y 'para') en el orden declarado; 'origem' y 'destino' son nombres internos usados solo dentro de la función."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué nombre de tipo sigue la convención?",
+    "options": [
+     "struct perfilUsuario",
+     "struct PerfilUsuario",
+     "struct perfil_usuario",
+     "struct PERFIL_USUARIO"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los tipos usan UpperCamelCase: 'PerfilUsuario'."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué hace '_' en 'func f(_ x: Int)'?",
+    "options": [
+     "Hace el parámetro opcional",
+     "Omite la etiqueta externa, permitiendo llamar 'f(3)'",
+     "Hace la función privada",
+     "Ignora el valor pasado"
+    ],
+    "correctIndex": 1,
+    "explanation": "El guion bajo en lugar de la etiqueta externa elimina la necesidad de escribir etiqueta en la llamada."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué imprime?\nvar x = 1\nfunc f() { var x = 2; x += 1 }\nf()\nprint(x)",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "Error de compilación"
+    ],
+    "correctIndex": 0,
+    "explanation": "El 'x' local de 'f' oculta al global, así que solo se modifica la variable local. El global sigue en 1."
+   },
+   {
+    "id": 5,
+    "question": "En Swift 5.7 o superior, 'if let nombre { }' equivale a qué?",
+    "options": [
+     "if let nome = nome { }",
+     "if let nome = nil { }",
+     "if nome == nil { }",
+     "if var nome = 0 { }"
+    ],
+    "correctIndex": 0,
+    "explanation": "Es la forma abreviada del optional binding con shadowing: crea una constante con el mismo nombre del Optional."
+   },
+   {
+    "id": 6,
+    "question": "¿Por qué falla 'let contador = 0; contador += 1'?",
+    "options": [
+     "'let' declara una constante, que no puede modificarse",
+     "'+=' no existe para Int",
+     "El nombre 'contador' es reservado",
+     "Falta la anotación de tipo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las constantes son inmutables; usa 'var' cuando el valor deba cambiar."
+   }
+  ]
+ },
+ {
+  "id": 36,
+  "title": "Control de Flujo",
+  "theory": "El control de flujo decide qué líneas se ejecutan y cuántas veces. 'if / else if / else' evalúa condiciones Bool en orden y ejecuta solo el primer bloque verdadero. El 'switch' debe ser exhaustivo (cubrir todos los casos o tener 'default'), no cae implícitamente al caso siguiente (no necesita 'break') y acepta rangos ('case 90...100'), tuplas ('case (0, _)'), value binding ('case let x') y cláusulas 'where'; 'fallthrough' fuerza la continuación al siguiente caso. 'for-in' recorre rangos, colecciones y secuencias, 'for (i, v) in lista.enumerated()' da índice y valor, 'stride(from:to:by:)' permite pasos distintos de 1 y 'where' filtra iteraciones. 'while' prueba la condición antes de cada vuelta, mientras que 'repeat-while' prueba después y por tanto ejecuta el cuerpo al menos una vez. 'break' termina el bucle o el 'switch', 'continue' salta a la siguiente iteración y las etiquetas ('externo: for ...') permiten elegir qué bucle interrumpir. 'guard' es la salida anticipada: si la condición falla, el 'else' debe salir del alcance ('return', 'throw', 'break', 'continue'), manteniendo el camino feliz sin anidamiento. Los errores clásicos son el off-by-one (usar '...' en lugar de '..<' y acceder a 'array[array.count]', que falla) y los bucles infinitos por olvidar actualizar la condición. La certificación pide predecir la salida de bucles y 'switch'; haz una prueba de escritorio paso a paso.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/",
+  "category": "Fundamentos",
+  "corporateCase": "En una app de pedidos, un 'switch' sobre el estado del pedido ('.pagado', '.enviado', '.entregado') muestra el mensaje correcto, y el compilador avisa si se olvida un nuevo estado. En la validación del formulario, varios 'guard' al inicio de la función salen pronto cuando el email o la contraseña son inválidos.",
+  "gameCase": "En un juego de tablero, dos 'for' anidados recorren filas y columnas, y un bucle etiquetado ('busqueda: for ...') se termina con 'break busqueda' en cuanto se encuentra la pieza. El bucle principal usa 'while juegoActivo' y termina cuando el jugador pierde todas las vidas.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Escribe el rango cerrado de 90 a 100 en el case",
+    "codeSnippet": "switch nota {\ncase 90___100: print(\"A\")\ndefault: print(\"outra\")\n}",
+    "correctAnswer": "...",
+    "hint": "Tres puntos incluyen el límite superior."
+   },
+   {
+    "id": 2,
+    "question": "Completa la salida anticipada: salir si la edad es menor de 18",
+    "codeSnippet": "func entrar(idade: Int) {\n  ___ idade >= 18 else { return }\n  print(\"Bem-vindo\")\n}",
+    "correctAnswer": "guard",
+    "hint": "Es la instrucción que exige un else que salga del alcance."
+   },
+   {
+    "id": 3,
+    "question": "Recorre de 0 a 10 de 2 en 2 (sin incluir el 10)",
+    "codeSnippet": "for i in ___(from: 0, to: 10, by: 2) { print(i) }",
+    "correctAnswer": "stride",
+    "hint": "La función que genera una secuencia con paso."
+   },
+   {
+    "id": 4,
+    "question": "Haz que el cuerpo se ejecute al menos una vez antes de probar la condición",
+    "codeSnippet": "var n = 0\nrepeat { n += 1 } ___ n < 3",
+    "correctAnswer": "while",
+    "hint": "La condición viene después del bloque, con la misma palabra del bucle común."
+   },
+   {
+    "id": 5,
+    "question": "Obtén índice y valor al iterar sobre el array",
+    "codeSnippet": "for (i, fruta) in frutas.___() {\n  print(i, fruta)\n}",
+    "correctAnswer": "enumerated",
+    "hint": "Método que devuelve pares (offset, elemento)."
+   },
+   {
+    "id": 6,
+    "question": "Termina por completo el bucle etiquetado 'externo' desde dentro del bucle interno",
+    "codeSnippet": "externo: for a in 1...3 {\n  for b in 1...3 {\n    if a * b == 4 { ___ externo }\n  }\n}",
+    "correctAnswer": "break",
+    "hint": "Interrumpe un bucle (aquí el etiquetado) en lugar de saltar solo una iteración."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué imprime 'for i in 0..<3 { print(i) }'?",
+    "options": [
+     "0 1 2 3",
+     "1 2 3",
+     "0 1 2",
+     "1 2"
+    ],
+    "correctIndex": 2,
+    "explanation": "El rango semiabierto va de 0 a 2; el 3 queda excluido."
+   },
+   {
+    "id": 2,
+    "question": "Dado 'let a = [10, 20, 30]', ¿qué pasa con 'for i in 0...a.count { print(a[i]) }'?",
+    "options": [
+     "Imprime 10, 20 y 30 normalmente",
+     "Imprime 10, 20, 30 y luego falla con índice fuera de rango",
+     "Error de compilación",
+     "Imprime 0, 1, 2, 3"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es un off-by-one clásico: '0...3' incluye el índice 3, que no existe. Lo correcto es '0..<a.count' (o iterar directamente sobre 'a')."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué ocurre en 'let n = 5; switch n { case 1: print(\"uno\"); case 2: print(\"dos\") }'?",
+    "options": [
+     "No imprime nada",
+     "Imprime \"dos\"",
+     "Error de compilación",
+     "Error de ejecución"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un 'switch' sobre Int debe ser exhaustivo. Sin 'default', el compilador rechaza el código."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué imprime?\nswitch 2 {\ncase 2: print(\"a\"); fallthrough\ncase 3: print(\"b\")\ndefault: print(\"c\")\n}",
+    "options": [
+     "a, b y c",
+     "solo a",
+     "a y b",
+     "b"
+    ],
+    "correctIndex": 2,
+    "explanation": "Entra en 'case 2' (imprime a) y 'fallthrough' continúa en el siguiente cuerpo (imprime b) sin probar la condición de 'case 3'. El 'default' no se ejecuta."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué imprime?\nvar n = 10\nrepeat { print(n); n += 1 } while n < 5",
+    "options": [
+     "Nada",
+     "10",
+     "10 11 12 13 14",
+     "Bucle infinito"
+    ],
+    "correctIndex": 1,
+    "explanation": "'repeat-while' ejecuta el cuerpo antes de probar: imprime 10, n pasa a 11 y la condición 'n < 5' es false, terminando el bucle."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué imprime?\nfor i in 1...5 {\n  if i % 2 == 0 { continue }\n  print(i)\n}",
+    "options": [
+     "2 4",
+     "1 3 5",
+     "1 2 3 4 5",
+     "1"
+    ],
+    "correctIndex": 1,
+    "explanation": "'continue' salta el resto de la iteración cuando 'i' es par, así que solo se imprimen los impares."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué valores genera 'stride(from: 0, to: 10, by: 5)'?",
+    "options": [
+     "0, 5",
+     "0, 5, 10",
+     "5, 10",
+     "0, 10"
+    ],
+    "correctIndex": 0,
+    "explanation": "Con 'to:' el límite es exclusivo, así que el 10 no entra. Para incluirlo usa 'stride(from:through:by:)'."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué DEBE hacer el bloque 'else' de un 'guard'?",
+    "options": [
+     "Imprimir un mensaje de error",
+     "Asignar un valor por defecto",
+     "Reiniciar la función",
+     "Salir del alcance actual (return, throw, break o continue)"
+    ],
+    "correctIndex": 3,
+    "explanation": "El compilador exige que el 'else' del 'guard' no 'caiga' al código siguiente, garantizando que después de él la condición es verdadera."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "En 'let p = (0, 5); switch p { case (0, _): print(\"eje Y\"); case (_, 0): print(\"eje X\"); default: print(\"otro\") }', ¿qué se imprime?",
+    "options": [
+     "eje X",
+     "otro",
+     "Error de compilación",
+     "eje Y"
+    ],
+    "correctIndex": 3,
+    "explanation": "El primer patrón '(0, _)' coincide porque el primer valor es 0; '_' ignora el segundo. El switch se detiene en el primer caso que coincide."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué hace 'where' en 'case let x where x < 0:'?",
+    "options": [
+     "Declara una variable global",
+     "Agrega una condición extra al patrón; el case solo coincide si es verdadera",
+     "Convierte el switch en un bucle",
+     "Hace 'x' opcional"
+    ],
+    "correctIndex": 1,
+    "explanation": "El value binding captura el valor en 'x' y el 'where' restringe: aquí solo entran valores negativos."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuántas veces se ejecuta 'total += 1'?\nvar total = 0\nfor i in 1...3 {\n  for j in 1...3 {\n    if j == 2 { continue }\n    total += 1\n  }\n}",
+    "options": [
+     "9",
+     "3",
+     "6",
+     "4"
+    ],
+    "correctIndex": 2,
+    "explanation": "En cada vuelta externa (3), el bucle interno se ejecuta para j = 1 y j = 3 (j = 2 se salta): 3 x 2 = 6."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué pasa con 'var i = 0; while i < 3 { print(i) }'?",
+    "options": [
+     "Imprime 0 1 2",
+     "Imprime 0 solo una vez",
+     "Error de compilación",
+     "Bucle infinito imprimiendo 0, ya que 'i' nunca se actualiza"
+    ],
+    "correctIndex": 3,
+    "explanation": "La condición 'i < 3' nunca pasa a false porque falta 'i += 1' dentro del bucle."
+   },
+   {
+    "id": 5,
+    "question": "Con 'let nota = 85', ¿qué imprime?\nif nota >= 70 { print(\"B\") }\nelse if nota >= 90 { print(\"A\") }\nelse { print(\"C\") }",
+    "options": [
+     "B",
+     "A",
+     "C",
+     "B y A"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las condiciones se prueban en orden y solo se ejecuta el primer bloque verdadero. 85 >= 70, así que imprime B."
+   },
+   {
+    "id": 6,
+    "question": "En Swift, ¿qué pasa al final de un 'case' del 'switch' sin 'break'?",
+    "options": [
+     "El switch termina, sin caer en el siguiente caso",
+     "Ejecuta el siguiente case, como en C",
+     "Error de compilación",
+     "Reinicia el switch"
+    ],
+    "correctIndex": 0,
+    "explanation": "A diferencia de C, Swift no tiene caída implícita; el 'break' es opcional y 'fallthrough' solo se usa cuando se quiere continuar."
+   }
+  ]
+ },
+ {
+  "id": 37,
+  "title": "Colecciones: Arrays, Sets y Diccionarios",
+  "theory": "Swift tiene tres colecciones principales. 'Array' guarda elementos ordenados y accedidos por un índice que empieza en 0: 'let nombres = [\"Ana\", \"Bia\"]', 'Array(repeating: 0, count: 5)'. Acceder a un índice inexistente ('nombres[2]') causa un error de ejecución, por eso usa 'isEmpty', 'count', 'first' y 'last' (estos dos devuelven Optional). Los métodos más comunes son 'append', 'insert(_:at:)', 'remove(at:)', 'contains', 'firstIndex(of:)', 'sort()' (modifica el array) y 'sorted()' (devuelve una copia ordenada); los cortes como 'a[1...2]' producen un 'ArraySlice' que conserva los índices originales. 'Set' guarda valores únicos sin orden garantizado y ofrece 'union', 'intersection' y 'subtracting'. 'Dictionary' asocia claves únicas con valores: la consulta 'd[\"x\"]' devuelve un Optional, 'd[\"x\", default: 0]' devuelve un valor por defecto, 'updateValue(_:forKey:)' devuelve el valor anterior y asignar 'nil' elimina la clave. Las colecciones son tipos de valor: copiar un array crea una copia independiente, y 'let' hace la colección inmutable mientras 'var' permite modificarla. Para transformar datos usa 'map' (transforma cada elemento), 'filter' (conserva los que pasan la prueba), 'reduce' (combina en un único valor) y 'compactMap' (transforma y descarta los nil). También es común tener arrays de structs, como '[Producto]', y recorrerlos con 'for-in' o 'enumerated()'. La certificación pide predecir los resultados de estos métodos y reconocer el crash por índice fuera de rango.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/",
+  "category": "Fundamentos",
+  "corporateCase": "En una app de tienda, el carrito es un '[ItemCarrito]' (array de structs) y el total se calcula con 'items.reduce(0) { $0 + $1.precio }'. Un diccionario '[String: Int]' guarda la cantidad en stock por código de producto, y 'stock[codigo, default: 0]' evita Optionals.",
+  "gameCase": "En un juego, el inventario es un 'Set<String>' para impedir objetos repetidos, y el ranking es un array de structs ordenado con 'sorted { $0.puntos > $1.puntos }'. Para listar los tres mejores se usa 'ranking.prefix(3)'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Crea un array con cinco ceros usando el inicializador de repetición",
+    "codeSnippet": "let zeros = Array(___: 0, count: 5)",
+    "correctAnswer": "repeating",
+    "hint": "La etiqueta significa repetir el valor."
+   },
+   {
+    "id": 2,
+    "question": "Agrega el número 4 al final del array",
+    "codeSnippet": "var nums = [1, 2, 3]\nnums.___(4)",
+    "correctAnswer": "append",
+    "hint": "Método que agrega al final."
+   },
+   {
+    "id": 3,
+    "question": "Lee la nota de \"Ana\" devolviendo 0 si la clave no existe",
+    "codeSnippet": "let notas = [\"Bia\": 9]\nlet n = notas[\"Ana\", ___: 0]",
+    "correctAnswer": "default",
+    "hint": "Es la etiqueta del valor por defecto en el subscript del diccionario."
+   },
+   {
+    "id": 4,
+    "question": "Une los elementos de dos Sets, sin repeticiones",
+    "codeSnippet": "let a: Set = [1, 2]\nlet b: Set = [2, 3]\nlet todos = a.___(b)",
+    "correctAnswer": "union",
+    "hint": "La operación de conjuntos 'A ∪ B'."
+   },
+   {
+    "id": 5,
+    "question": "Convierte textos en números descartando los que no son válidos",
+    "codeSnippet": "let textos = [\"1\", \"a\", \"3\"]\nlet nums = textos.___ { Int($0) }",
+    "correctAnswer": "compactMap",
+    "hint": "Transforma y elimina los resultados nil."
+   },
+   {
+    "id": 6,
+    "question": "Suma todos los números del array en un único valor, empezando en 0",
+    "codeSnippet": "let total = [1, 2, 3].___(0, +)",
+    "correctAnswer": "reduce",
+    "hint": "Combina todos los elementos en un acumulado."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué pasa con 'let a = [1, 2, 3]; a.append(4)'?",
+    "options": [
+     "a pasa a tener 4 elementos",
+     "Error de compilación: un array 'let' es inmutable",
+     "Error de ejecución",
+     "El 4 se ignora"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con 'let' la colección no puede modificarse. Para usar 'append' decláralo con 'var'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué pasa en 'let a = [1, 2, 3]; print(a[3])'?",
+    "options": [
+     "nil",
+     "0",
+     "Error de ejecución: índice fuera de rango",
+     "Error de compilación"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los índices válidos son 0 a 2. Acceder al 3 provoca un crash en tiempo de ejecución (no devuelve nil). Usa 'a.indices.contains(3)' o 'a.first'."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es el tipo de 'dict[\"x\"]' en 'let dict = [\"x\": 1]'?",
+    "options": [
+     "Int",
+     "Int?",
+     "[String: Int]",
+     "(String, Int)"
+    ],
+    "correctIndex": 1,
+    "explanation": "La clave puede no existir, así que la consulta devuelve 'Int?' y necesita unwrap (if let, ?? o default:)."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuántos elementos tiene 'Set([1, 2, 2, 3, 3, 3])'?",
+    "options": [
+     "6",
+     "1",
+     "2",
+     "3"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los Sets guardan solo valores únicos: {1, 2, 3}, por tanto 3 elementos."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es el resultado de '[1, 2, 3, 4].filter { $0 % 2 == 0 }.map { $0 * 10 }'?",
+    "options": [
+     "[10, 30]",
+     "[20, 40]",
+     "[2, 4]",
+     "[10, 20, 30, 40]"
+    ],
+    "correctIndex": 1,
+    "explanation": "'filter' conserva los pares [2, 4] y 'map' multiplica cada uno por 10: [20, 40]."
+   },
+   {
+    "id": 6,
+    "question": "Con 'let a = [10, 20, 30, 40]; let s = a[1...2]', ¿cuánto es 's[1]'?",
+    "options": [
+     "10",
+     "30",
+     "Error de ejecución",
+     "20"
+    ],
+    "correctIndex": 3,
+    "explanation": "Un 'ArraySlice' conserva los índices del array original: el primer elemento del corte está en el índice 1 y vale 20. 's[0]' sería el que fallaría."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál es el resultado de '[\"1\", \"a\", \"3\"].compactMap { Int($0) }'?",
+    "options": [
+     "[1, nil, 3]",
+     "[1, 3]",
+     "[1, 0, 3]",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "'Int(\"a\")' devuelve nil; 'compactMap' descarta los nil y desenvuelve el resto, dando [1, 3] de tipo [Int]."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué hace 'd[\"a\"] = nil' en 'var d = [\"a\": 1, \"b\": 2]'?",
+    "options": [
+     "Elimina la clave \"a\" del diccionario",
+     "Guarda nil como valor de \"a\"",
+     "Error de compilación",
+     "Pone el valor en 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Asignar nil mediante el subscript elimina el par clave-valor. También existe 'removeValue(forKey:)', que devuelve el valor eliminado."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué imprime 'let v: [Int] = []; print(v.first)'?",
+    "options": [
+     "Error de ejecución",
+     "0",
+     "nil",
+     "[]"
+    ],
+    "correctIndex": 2,
+    "explanation": "'first' devuelve Optional (Int?): en un array vacío es nil, sin crash. En cambio 'v[0]' fallaría."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es el resultado de 'Set([1, 2, 3]).intersection([2, 3, 4])'?",
+    "options": [
+     "{1, 2, 3, 4}",
+     "{1, 4}",
+     "{2, 3}",
+     "{1}"
+    ],
+    "correctIndex": 2,
+    "explanation": "La intersección contiene solo los elementos presentes en ambos conjuntos: 2 y 3 (el orden de un Set no está garantizado)."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuánto vale 'd' tras 'var d = [String: Int](); d[\"x\", default: 0] += 1'?",
+    "options": [
+     "[:]",
+     "[\"x\": 1]",
+     "Error de compilación",
+     "[\"x\": 0]"
+    ],
+    "correctIndex": 1,
+    "explanation": "El subscript con 'default:' lee 0 cuando la clave no existe, suma 1 y guarda el resultado. Es el idioma para contar ocurrencias."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué devuelve 'updateValue(_:forKey:)'?",
+    "options": [
+     "Nada (Void)",
+     "El nuevo valor",
+     "El valor anterior como Optional (nil si la clave era nueva)",
+     "Un Bool de éxito"
+    ],
+    "correctIndex": 2,
+    "explanation": "El método guarda el nuevo valor y devuelve el anterior ('Value?'), o nil si no existía la clave."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué imprime?\nlet a = [3, 1, 2]\nlet b = a.sorted()\nprint(a)",
+    "options": [
+     "[1, 2, 3]",
+     "[3, 1, 2]",
+     "[3, 2, 1]",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "'sorted()' devuelve un nuevo array y no modifica 'a'. El método que modifica en el lugar es 'sort()', disponible solo en 'var'."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué imprime?\nvar a = [1, 2]\nvar b = a\nb.append(3)\nprint(a.count)",
+    "options": [
+     "3",
+     "2",
+     "1",
+     "Error de compilación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los arrays son tipos de valor: 'b' es una copia independiente. Modificar 'b' no afecta a 'a', que sigue con 2 elementos."
+   }
+  ]
+ },
+ {
+  "id": 38,
+  "title": "Funciones y Closures en Profundidad",
+  "theory": "Una función se declara con 'func nombre(parámetros) -> Tipo'. Cada parámetro tiene una etiqueta externa (usada en la llamada) y un nombre interno (usado dentro de la función): 'func mover(de origen: Int, a destino: Int)' se llama 'mover(de: 1, a: 2)', y el '_' omite la etiqueta ('func doble(_ n: Int)' se llama 'doble(4)'). Los parámetros pueden tener valor por defecto ('func hola(nombre: String = \"mundo\")'), ser variádicos ('Int...', visto dentro de la función como array) o 'inout' (la función modifica la variable original y la llamada exige '&'). Las funciones pueden devolver tuplas con nombre, y una función de una sola expresión tiene retorno implícito, sin 'return'. Las funciones son valores: tienen tipo ('(Int, Int) -> Int'), pueden asignarse a variables, pasarse como argumento, devolverse y anidarse dentro de otras funciones, capturando las variables del alcance externo. Los closures son funciones sin nombre: '{ (a: Int) -> Int in a * 2 }'. Con inferencia pueden abreviarse, usando '$0', '$1' en lugar de los parámetros, y la trailing closure se escribe después de los paréntesis ('nums.map { $0 * 2 }'). Un closure que sobrevive a la función (guardado en una propiedad o ejecutado después) debe ser '@escaping'; al capturar 'self' en él, usa la lista de captura '[weak self]' para evitar ciclos de referencia. 'map', 'filter', 'reduce' y 'sorted(by:)' son funciones de orden superior, es decir, reciben funciones. La certificación pide la llamada correcta con etiquetas, el uso de '_', los valores por defecto y predecir el resultado de una llamada.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/",
+  "category": "Fundamentos",
+  "corporateCase": "En una app bancaria, 'func calcularIntereses(capital: Double, tasa: Double = 0.01, meses: Int)' tiene valor por defecto para la tasa, y la lista de transacciones se ordena con 'transacciones.sorted { $0.fecha > $1.fecha }'. La llamada de red recibe un closure '@escaping' que se ejecuta cuando llega la respuesta, usando '[weak self]' para no retener la pantalla.",
+  "gameCase": "En un juego, 'func causarDanio(_ objetivo: inout Enemigo, cantidad: Int)' modifica la vida del enemigo original. Una función fábrica 'crearContador()' devuelve un closure que recuerda el puntaje (captura de variable) en cada llamada.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Omite la etiqueta externa del parámetro 'n' para llamar 'dobro(4)'",
+    "codeSnippet": "func dobro(___ n: Int) -> Int { n * 2 }",
+    "correctAnswer": "_",
+    "hint": "Un único carácter, el guion bajo."
+   },
+   {
+    "id": 2,
+    "question": "Dale al parámetro un valor por defecto de \"mundo\"",
+    "codeSnippet": "func ola(nome: String ___ \"mundo\") {\n  print(\"Olá, \\(nome)\")\n}",
+    "correctAnswer": "=",
+    "hint": "El mismo símbolo usado en asignaciones."
+   },
+   {
+    "id": 3,
+    "question": "Declara el parámetro como variádico (acepta varios enteros)",
+    "codeSnippet": "func somar(_ numeros: Int___) -> Int {\n  numeros.reduce(0, +)\n}",
+    "correctAnswer": "...",
+    "hint": "Tres puntos justo después del tipo."
+   },
+   {
+    "id": 4,
+    "question": "Permite que la función modifique la variable original recibida",
+    "codeSnippet": "func zerar(_ x: ___ Int) { x = 0 }",
+    "correctAnswer": "inout",
+    "hint": "Modificador del tipo del parámetro; la llamada usa '&'."
+   },
+   {
+    "id": 5,
+    "question": "Usa la sintaxis abreviada para el primer parámetro del closure",
+    "codeSnippet": "let dobrados = [1, 2, 3].map { ___ * 2 }",
+    "correctAnswer": "$0",
+    "hint": "Empieza con un signo de dólar y usa el índice cero."
+   },
+   {
+    "id": 6,
+    "question": "Marca el closure como capaz de sobrevivir a la función (ejecutado después)",
+    "codeSnippet": "var tarefas: [() -> Void] = []\nfunc agendar(_ f: @___ () -> Void) {\n  tarefas.append(f)\n}",
+    "correctAnswer": "escaping",
+    "hint": "Atributo cuyo nombre significa 'que escapa'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Dada 'func mover(de a: Int, para b: Int)', ¿qué llamada es válida?",
+    "options": [
+     "mover(a: 1, b: 2)",
+     "mover(1, 2)",
+     "mover(de: 1, para: 2)",
+     "mover(para: 2, de: 1)"
+    ],
+    "correctIndex": 2,
+    "explanation": "La llamada usa las etiquetas externas en el orden declarado; 'a' y 'b' son nombres internos."
+   },
+   {
+    "id": 2,
+    "question": "Dada 'func f(_ x: Int, y: Int = 5) -> Int { x + y }', ¿cuál es el valor de 'f(1)'?",
+    "options": [
+     "6",
+     "Error de compilación",
+     "1",
+     "5"
+    ],
+    "correctIndex": 0,
+    "explanation": "'y' usa el valor por defecto 5, así que 1 + 5 = 6. La función tiene retorno implícito por ser una sola expresión."
+   },
+   {
+    "id": 3,
+    "question": "¿Cómo se llama una función 'func zerar(_ x: inout Int)' con 'var n = 3'?",
+    "options": [
+     "zerar(n)",
+     "zerar(&n)",
+     "zerar(inout n)",
+     "zerar(n!)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los argumentos 'inout' exigen '&' en la llamada y una variable ('var'), no una constante."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es el resultado de '[3, 1, 2].sorted { $0 > $1 }'?",
+    "options": [
+     "[1, 2, 3]",
+     "[3, 1, 2]",
+     "Error de compilación",
+     "[3, 2, 1]"
+    ],
+    "correctIndex": 3,
+    "explanation": "El closure (trailing closure) dice que 'a' va antes que 'b' si a > b, ordenando de forma descendente: [3, 2, 1]."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuándo necesita '@escaping' un parámetro closure?",
+    "options": [
+     "Siempre que tenga parámetros",
+     "Cuando se guarda o se ejecuta después de que la función retorna",
+     "Cuando devuelve Void",
+     "Nunca, es opcional"
+    ],
+    "correctIndex": 1,
+    "explanation": "Si el closure sobrevive a la llamada (p. ej. se agrega a un array o se usa en un callback asíncrono), el compilador exige '@escaping'."
+   },
+   {
+    "id": 6,
+    "question": "¿Para qué sirve '[weak self]' en la lista de captura de un closure?",
+    "options": [
+     "Hacer el closure más rápido",
+     "Permitir que se llame en otro hilo",
+     "Evitar un ciclo de referencia fuerte entre 'self' y el closure",
+     "Hacer 'self' constante"
+    ],
+    "correctIndex": 2,
+    "explanation": "La captura débil no mantiene 'self' vivo. Dentro del closure 'self' pasa a ser Optional, por eso se usa 'guard let self' o 'self?'."
+   },
+   {
+    "id": 7,
+    "question": "Dada 'func limites(_ a: [Int]) -> (min: Int, max: Int)', ¿cómo se lee el mayor valor de 'let r = limites([4, 9, 2])'?",
+    "options": [
+     "r.max",
+     "r[1]",
+     "r.maior",
+     "max(r)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los elementos de tuplas con nombre se acceden por nombre con punto: 'r.max' (también 'r.1' por posición, pero no 'r[1]')."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué es el 'retorno implícito'?",
+    "options": [
+     "Una función que devuelve Void automáticamente",
+     "La omisión de la palabra 'return' en funciones o closures de una sola expresión",
+     "Devolver siempre nil",
+     "Un return dentro de un bucle"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cuando el cuerpo es una sola expresión, su valor se devuelve: 'func doble(_ n: Int) -> Int { n * 2 }'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Dadas 'func soma(_ a: Int, _ b: Int) -> Int { a + b }' y 'let f = soma', ¿cuál es el resultado de 'f(2, 3)'?",
+    "options": [
+     "Error de compilación",
+     "23",
+     "6",
+     "5"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las funciones son valores: 'f' tiene el tipo '(Int, Int) -> Int' y puede llamarse como la original. El resultado es 5."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué imprime?\nfunc criar() -> () -> Int {\n  var n = 0\n  return { n += 1; return n }\n}\nlet c = criar()\n_ = c(); _ = c()\nprint(c())",
+    "options": [
+     "1",
+     "2",
+     "3",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "El closure captura y mantiene la variable 'n' entre llamadas. Tras tres llamadas vale 3."
+   },
+   {
+    "id": 3,
+    "question": "En 'func total(_ nums: Int...) -> Int', ¿cuál es el tipo de 'nums' dentro de la función?",
+    "options": [
+     "[Int]",
+     "Int",
+     "Set<Int>",
+     "Int?"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un parámetro variádico llega a la función como un array, así que 'nums.count' y 'reduce' funcionan."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es el tipo de 'let r = [1, 2, 3].map { String($0) }'?",
+    "options": [
+     "[Int]",
+     "String",
+     "[String]",
+     "[Character]"
+    ],
+    "correctIndex": 2,
+    "explanation": "'map' aplica el closure a cada elemento y devuelve un array con los resultados: un '[String]'."
+   },
+   {
+    "id": 5,
+    "question": "Dada 'func f(a: Int = 1, b: Int = 2) -> Int { a * 10 + b }', ¿cuánto vale 'f(b: 5)'?",
+    "options": [
+     "15",
+     "7",
+     "25",
+     "12"
+    ],
+    "correctIndex": 0,
+    "explanation": "Solo se informa 'b'; 'a' usa el valor por defecto 1: 1 * 10 + 5 = 15."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es el resultado de '[1, 2, 3, 4].filter { $0 > 2 }'?",
+    "options": [
+     "[1, 2]",
+     "[3, 4]",
+     "[2, 3, 4]",
+     "true"
+    ],
+    "correctIndex": 1,
+    "explanation": "'filter' conserva solo los elementos para los que el closure devuelve true: 3 y 4."
+   }
+  ]
+ }
+]

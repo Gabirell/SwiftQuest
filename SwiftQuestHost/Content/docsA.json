@@ -1,0 +1,664 @@
+{
+ "pillars": {
+  "1": [
+   {
+    "title": "The Basics — Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Constants-and-Variables"
+   },
+   {
+    "title": "The Basics — Type Annotations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Annotations"
+   },
+   {
+    "title": "The Basics — Naming Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Naming-Constants-and-Variables"
+   },
+   {
+    "title": "The Basics",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/"
+   }
+  ],
+  "2": [
+   {
+    "title": "The Basics — Optionals",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optionals"
+   },
+   {
+    "title": "The Basics — nil",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#nil"
+   },
+   {
+    "title": "The Basics — Force Unwrapping",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Force-Unwrapping"
+   },
+   {
+    "title": "The Basics — Implicitly Unwrapped Optionals",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Implicitly-Unwrapped-Optionals"
+   },
+   {
+    "title": "Optional | Swift",
+    "url": "https://developer.apple.com/documentation/swift/optional"
+   }
+  ],
+  "3": [
+   {
+    "title": "The Basics — Optional Binding",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optional-Binding"
+   },
+   {
+    "title": "The Basics — Force Unwrapping",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Force-Unwrapping"
+   },
+   {
+    "title": "Control Flow — Early Exit",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Early-Exit"
+   },
+   {
+    "title": "Optional | Swift",
+    "url": "https://developer.apple.com/documentation/swift/optional"
+   }
+  ],
+  "4": [
+   {
+    "title": "The Basics — Type Safety and Type Inference",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference"
+   },
+   {
+    "title": "The Basics — Type Annotations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Annotations"
+   },
+   {
+    "title": "The Basics — Type Aliases",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Aliases"
+   },
+   {
+    "title": "The Basics — Integer and Floating-Point Conversion",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Integer-and-Floating-Point-Conversion"
+   }
+  ],
+  "5": [
+   {
+    "title": "Structures and Classes — Structures and Enumerations Are Value Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Structures-and-Enumerations-Are-Value-Types"
+   },
+   {
+    "title": "Structures and Classes — Classes Are Reference Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Classes-Are-Reference-Types"
+   },
+   {
+    "title": "Structures and Classes — Choosing Between Structures and Classes",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Comparing-Structures-and-Classes"
+   },
+   {
+    "title": "Choosing Between Structures and Classes | Swift Documentation",
+    "url": "https://developer.apple.com/documentation/swift/choosing-between-structures-and-classes"
+   },
+   {
+    "title": "Swift Blog: Value and Reference Types",
+    "url": "https://developer.apple.com/swift/blog/?id=10"
+   }
+  ],
+  "6": [
+   {
+    "title": "Optional Chaining",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/optionalchaining/"
+   },
+   {
+    "title": "The Basics — Providing a Fallback Value",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Providing-a-Fallback-Value"
+   },
+   {
+    "title": "Optional Chaining — Linking Multiple Levels of Chaining",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/optionalchaining/#Linking-Multiple-Levels-of-Chaining"
+   },
+   {
+    "title": "Basic Operators — Nil-Coalescing Operator",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/#Nil-Coalescing-Operator"
+   }
+  ],
+  "7": [
+   {
+    "title": "Enumerations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/"
+   },
+   {
+    "title": "Enumerations — Associated Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/#Associated-Values"
+   },
+   {
+    "title": "Enumerations — Raw Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/#Raw-Values"
+   },
+   {
+    "title": "Enumerations — Matching Enumeration Values with a Switch Statement",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/#Matching-Enumeration-Values-with-a-Switch-Statement"
+   },
+   {
+    "title": "Enumerations — Recursive Enumerations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/#Recursive-Enumerations"
+   }
+  ],
+  "8": [
+   {
+    "title": "Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/"
+   },
+   {
+    "title": "Closures — Trailing Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/#Trailing-Closures"
+   },
+   {
+    "title": "Closures — Capturing Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/#Capturing-Values"
+   },
+   {
+    "title": "Closures — Escaping Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/#Escaping-Closures"
+   },
+   {
+    "title": "Control Flow — Deferred Actions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Deferred-Actions"
+   }
+  ],
+  "9": [
+   {
+    "title": "Managing model data in your app | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app"
+   },
+   {
+    "title": "Observable() | Observation",
+    "url": "https://developer.apple.com/documentation/observation/observable()"
+   },
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   },
+   {
+    "title": "Bindable | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/bindable"
+   },
+   {
+    "title": "Model data | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/model-data"
+   }
+  ],
+  "10": [
+   {
+    "title": "Concurrency",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/"
+   },
+   {
+    "title": "Concurrency — Defining and Calling Asynchronous Functions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Defining-and-Calling-Asynchronous-Functions"
+   },
+   {
+    "title": "Concurrency — Tasks and Task Groups",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Tasks-and-Task-Groups"
+   },
+   {
+    "title": "Concurrency — Actors",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Actors"
+   },
+   {
+    "title": "Concurrency | Swift",
+    "url": "https://developer.apple.com/documentation/swift/concurrency"
+   }
+  ],
+  "11": [
+   {
+    "title": "Automatic Reference Counting",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/"
+   },
+   {
+    "title": "ARC — How ARC Works",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/#How-ARC-Works"
+   },
+   {
+    "title": "ARC — Strong Reference Cycles Between Class Instances",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/#Strong-Reference-Cycles-Between-Class-Instances"
+   },
+   {
+    "title": "ARC — Weak and Unowned References",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/#Weak-and-Unowned-References"
+   },
+   {
+    "title": "ARC — Resolving Strong Reference Cycles for Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/#Resolving-Strong-Reference-Cycles-for-Closures"
+   }
+  ],
+  "12": [
+   {
+    "title": "Protocols",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/"
+   },
+   {
+    "title": "Protocols — Protocol Extensions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/#Protocol-Extensions"
+   },
+   {
+    "title": "Protocols — Providing Default Implementations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/#Providing-Default-Implementations"
+   },
+   {
+    "title": "Protocols — Protocols as Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/#Protocols-as-Types"
+   },
+   {
+    "title": "Protocols — Protocol Composition",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/#Protocol-Composition"
+   }
+  ],
+  "13": [
+   {
+    "title": "Generics",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/"
+   },
+   {
+    "title": "Generics — Generic Functions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/#Generic-Functions"
+   },
+   {
+    "title": "Generics — Generic Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/#Generic-Types"
+   },
+   {
+    "title": "Generics — Type Constraints",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/#Type-Constraints"
+   },
+   {
+    "title": "Generics — Associated Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/#Associated-Types"
+   },
+   {
+    "title": "Opaque and Boxed Protocol Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/opaquetypes/"
+   }
+  ],
+  "14": [
+   {
+    "title": "Managing your app's life cycle | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/managing-your-app-s-life-cycle"
+   },
+   {
+    "title": "ScenePhase | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/scenephase"
+   },
+   {
+    "title": "App | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/app"
+   },
+   {
+    "title": "UIApplicationDelegate | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uiapplicationdelegate"
+   },
+   {
+    "title": "UISceneDelegate | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uiscenedelegate"
+   }
+  ],
+  "15": [
+   {
+    "title": "UIViewRepresentable | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/uiviewrepresentable"
+   },
+   {
+    "title": "UIViewControllerRepresentable | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable"
+   },
+   {
+    "title": "UIHostingController | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/uihostingcontroller"
+   },
+   {
+    "title": "SwiftUI Tutorials: Interfacing with UIKit",
+    "url": "https://developer.apple.com/tutorials/swiftui/interfacing-with-uikit"
+   }
+  ],
+  "16": [
+   {
+    "title": "watchOS apps | Apple Developer Documentation",
+    "url": "https://developer.apple.com/documentation/watchos-apps"
+   },
+   {
+    "title": "HealthKit",
+    "url": "https://developer.apple.com/documentation/healthkit"
+   },
+   {
+    "title": "Human Interface Guidelines: Designing for watchOS",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-watchos"
+   },
+   {
+    "title": "WorkoutKit",
+    "url": "https://developer.apple.com/documentation/workoutkit"
+   }
+  ],
+  "17": [
+   {
+    "title": "Human Interface Guidelines: Designing for macOS",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-macos"
+   },
+   {
+    "title": "AppKit",
+    "url": "https://developer.apple.com/documentation/appkit"
+   },
+   {
+    "title": "NSViewRepresentable | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/nsviewrepresentable"
+   },
+   {
+    "title": "Windows | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/windows"
+   },
+   {
+    "title": "Settings | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/settings"
+   }
+  ],
+  "18": [
+   {
+    "title": "visionOS",
+    "url": "https://developer.apple.com/documentation/visionos"
+   },
+   {
+    "title": "Human Interface Guidelines: Designing for visionOS",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos"
+   },
+   {
+    "title": "RealityKit",
+    "url": "https://developer.apple.com/documentation/realitykit"
+   },
+   {
+    "title": "ImmersiveSpace | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/immersivespace"
+   }
+  ],
+  "19": [
+   {
+    "title": "Concurrency",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/"
+   },
+   {
+    "title": "Concurrency — Tasks and Task Groups",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Tasks-and-Task-Groups"
+   },
+   {
+    "title": "Concurrency — Actors",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Actors"
+   },
+   {
+    "title": "Concurrency — The Main Actor",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#The-Main-Actor"
+   },
+   {
+    "title": "Concurrency — Sendable Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/#Sendable-Types"
+   },
+   {
+    "title": "Concurrency | Swift",
+    "url": "https://developer.apple.com/documentation/swift/concurrency"
+   }
+  ],
+  "20": [
+   {
+    "title": "Swift Testing",
+    "url": "https://developer.apple.com/documentation/testing"
+   },
+   {
+    "title": "XCTest",
+    "url": "https://developer.apple.com/documentation/xctest"
+   },
+   {
+    "title": "Defining test cases and test methods | XCTest",
+    "url": "https://developer.apple.com/documentation/xctest/defining-test-cases-and-test-methods"
+   },
+   {
+    "title": "Expectations | Swift Testing",
+    "url": "https://developer.apple.com/documentation/testing/expectations"
+   },
+   {
+    "title": "Test | Swift Testing",
+    "url": "https://developer.apple.com/documentation/testing/test"
+   }
+  ],
+  "21": [
+   {
+    "title": "URLSession | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/urlsession"
+   },
+   {
+    "title": "Fetching website data into memory | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/fetching-website-data-into-memory"
+   },
+   {
+    "title": "Codable | Swift",
+    "url": "https://developer.apple.com/documentation/swift/codable"
+   },
+   {
+    "title": "JSONDecoder | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/jsondecoder"
+   },
+   {
+    "title": "URLRequest | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/urlrequest"
+   }
+  ],
+  "22": [
+   {
+    "title": "SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata"
+   },
+   {
+    "title": "Model() | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/model()"
+   },
+   {
+    "title": "ModelContext | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/modelcontext"
+   },
+   {
+    "title": "Query | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/query"
+   }
+  ],
+  "23": [
+   {
+    "title": "Error Handling",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/"
+   },
+   {
+    "title": "Error Handling — Representing and Throwing Errors",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/#Representing-and-Throwing-Errors"
+   },
+   {
+    "title": "Error Handling — Handling Errors Using Do-Catch",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/#Handling-Errors-Using-Do-Catch"
+   },
+   {
+    "title": "Error Handling — Converting Errors to Optional Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/#Converting-Errors-to-Optional-Values"
+   },
+   {
+    "title": "Result | Swift",
+    "url": "https://developer.apple.com/documentation/swift/result"
+   }
+  ],
+  "24": [
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   },
+   {
+    "title": "TextField | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/textfield"
+   },
+   {
+    "title": "Button | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/button"
+   },
+   {
+    "title": "Control Flow",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/"
+   },
+   {
+    "title": "Random number generation | Swift",
+    "url": "https://developer.apple.com/documentation/swift/systemrandomnumbergenerator"
+   }
+  ],
+  "25": [
+   {
+    "title": "List | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/list"
+   },
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   },
+   {
+    "title": "Binding | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/binding"
+   },
+   {
+    "title": "ForEach | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/foreach"
+   },
+   {
+    "title": "Managing model data in your app | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app"
+   }
+  ]
+ },
+ "lessons": {
+  "values": [
+   {
+    "title": "The Basics — Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Constants-and-Variables"
+   },
+   {
+    "title": "The Basics — Type Annotations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Annotations"
+   },
+   {
+    "title": "The Basics — Naming Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Naming-Constants-and-Variables"
+   },
+   {
+    "title": "The Basics",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/"
+   },
+   {
+    "title": "The Basics — Integers",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Integers"
+   }
+  ],
+  "optionals": [
+   {
+    "title": "The Basics — Optionals",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optionals"
+   },
+   {
+    "title": "The Basics — nil",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#nil"
+   },
+   {
+    "title": "The Basics — Force Unwrapping",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Force-Unwrapping"
+   },
+   {
+    "title": "The Basics — Implicitly Unwrapped Optionals",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Implicitly-Unwrapped-Optionals"
+   },
+   {
+    "title": "The Basics — Optional Binding",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optional-Binding"
+   }
+  ],
+  "functions": [
+   {
+    "title": "Functions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/"
+   },
+   {
+    "title": "Functions — Function Parameters and Return Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#Function-Parameters-and-Return-Values"
+   },
+   {
+    "title": "Functions — Function Argument Labels and Parameter Names",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#Function-Argument-Labels-and-Parameter-Names"
+   },
+   {
+    "title": "Functions — Default Parameter Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#Default-Parameter-Values"
+   },
+   {
+    "title": "Functions — Function Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#Function-Types"
+   }
+  ],
+  "types": [
+   {
+    "title": "Structures and Classes",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/"
+   },
+   {
+    "title": "Structures and Classes — Comparing Structures and Classes",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Comparing-Structures-and-Classes"
+   },
+   {
+    "title": "Enumerations",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/"
+   },
+   {
+    "title": "Enumerations — Associated Values",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/#Associated-Values"
+   },
+   {
+    "title": "Properties",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/"
+   }
+  ],
+  "collections": [
+   {
+    "title": "Collection Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/"
+   },
+   {
+    "title": "Collection Types — Arrays",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Arrays"
+   },
+   {
+    "title": "Collection Types — Dictionaries",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Dictionaries"
+   },
+   {
+    "title": "Collection Types — Sets",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Sets"
+   },
+   {
+    "title": "Control Flow — For-In Loops",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#For-In-Loops"
+   }
+  ],
+  "swiftui": [
+   {
+    "title": "SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui"
+   },
+   {
+    "title": "VStack | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/vstack"
+   },
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   },
+   {
+    "title": "Text | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/text"
+   },
+   {
+    "title": "Develop in Swift Tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ]
+ }
+}

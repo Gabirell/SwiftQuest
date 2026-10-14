@@ -1,0 +1,182 @@
+[
+ {
+  "id": "reverse_string",
+  "title": "Reverse a string",
+  "prompt": "Print the word swift reversed (tfiws).",
+  "hint": "Strings can be reversed with reversed(); wrap the result in String(...).",
+  "starter": "let word = \"swift\"\n// Print the word reversed\n",
+  "solution": "let word = \"swift\"\nprint(String(word.reversed()))\n",
+  "expected": "tfiws"
+ },
+ {
+  "id": "palindrome_check",
+  "title": "Palindrome check",
+  "prompt": "Complete isPalindrome so it ignores case, then print one line per word in the form word: true or word: false.",
+  "hint": "Lowercase the string, then compare it with its reversed version.",
+  "starter": "func isPalindrome(_ s: String) -> Bool {\n    // Implement: ignore case\n    return false\n}\nfor w in [\"level\", \"swift\", \"Racecar\"] {\n    // Print \"word: true/false\"\n}\n",
+  "solution": "func isPalindrome(_ s: String) -> Bool {\n    let t = s.lowercased()\n    return t == String(t.reversed())\n}\nfor w in [\"level\", \"swift\", \"Racecar\"] {\n    print(\"\\(w): \\(isPalindrome(w))\")\n}\n",
+  "expected": "level: true\nswift: false\nRacecar: true"
+ },
+ {
+  "id": "unique_sorted",
+  "title": "Remove duplicates",
+  "prompt": "Remove the duplicates from the array and print the remaining numbers sorted ascending, as an array.",
+  "hint": "Convert to a Set, then call sorted().",
+  "starter": "let numbers = [4, 2, 4, 1, 2, 3, 1]\n// Print the unique numbers sorted ascending\n",
+  "solution": "let numbers = [4, 2, 4, 1, 2, 3, 1]\nprint(Array(Set(numbers)).sorted())\n",
+  "expected": "[1, 2, 3, 4]"
+ },
+ {
+  "id": "word_count",
+  "title": "Word counter",
+  "prompt": "Count how often each word appears in the sentence and print one line per word as word: count, in alphabetical order.",
+  "hint": "Build a [String: Int] with split(separator:), then iterate over keys.sorted().",
+  "starter": "let text = \"the cat and the hat and the bat\"\nvar counts: [String: Int] = [:]\n// Fill counts, then print sorted by word\n",
+  "solution": "let text = \"the cat and the hat and the bat\"\nvar counts: [String: Int] = [:]\nfor w in text.split(separator: \" \") {\n    counts[String(w), default: 0] += 1\n}\nfor key in counts.keys.sorted() {\n    print(\"\\(key): \\(counts[key]!)\")\n}\n",
+  "expected": "and: 2\nbat: 1\ncat: 1\nhat: 1\nthe: 3"
+ },
+ {
+  "id": "switch_ranges",
+  "title": "Switch with ranges and where",
+  "prompt": "For each number print negative, zero, small (1-9), even large or odd large (10 or more) using one switch with ranges and a where clause.",
+  "hint": "Use cases like case 1...9 and case let n where n % 2 == 0.",
+  "starter": "for n in [-5, 0, 7, 12, 151] {\n    // switch n: print negative / zero / small / even large / odd large\n}\n",
+  "solution": "for n in [-5, 0, 7, 12, 151] {\n    switch n {\n    case ..<0: print(\"negative\")\n    case 0: print(\"zero\")\n    case 1...9: print(\"small\")\n    case let x where x % 2 == 0: print(\"even large\")\n    default: print(\"odd large\")\n    }\n}\n",
+  "expected": "negative\nzero\nsmall\neven large\nodd large"
+ },
+ {
+  "id": "labeled_break",
+  "title": "Labeled break",
+  "prompt": "Search a, b in 1...9 for the first pair with a + b == 10 and a * b == 21, print Found a and b like Found 3 and 7, and stop both loops.",
+  "hint": "Name the outer loop (outer: for ...) and use break outer.",
+  "starter": "// Find the first pair (a, b) with a + b == 10 and a * b == 21\n// Print \"Found a and b\" and stop both loops\n",
+  "solution": "outer: for a in 1...9 {\n    for b in 1...9 {\n        if a + b == 10 && a * b == 21 {\n            print(\"Found \\(a) and \\(b)\")\n            break outer\n        }\n    }\n}\n",
+  "expected": "Found 3 and 7"
+ },
+ {
+  "id": "star_triangle",
+  "title": "Star triangle",
+  "prompt": "Using nested loops print a right triangle of stars with 4 rows (1 star in the first row, 4 in the last).",
+  "hint": "Use String(repeating: \"*\", count: row) or an inner loop.",
+  "starter": "for row in 1...4 {\n    // Print row stars on one line\n}\n",
+  "solution": "for row in 1...4 {\n    var line = \"\"\n    for _ in 1...row { line += \"*\" }\n    print(line)\n}\n",
+  "expected": "*\n**\n***\n****"
+ },
+ {
+  "id": "recursion_math",
+  "title": "Recursion: factorial and Fibonacci",
+  "prompt": "Implement factorial and fib recursively and print 5! = 120 and fib(10) = 55 in exactly that format.",
+  "hint": "Base cases: factorial(0) = 1; fib(0) = 0 and fib(1) = 1.",
+  "starter": "func factorial(_ n: Int) -> Int {\n    // Implement recursively\n    return 0\n}\nfunc fib(_ n: Int) -> Int {\n    // Implement recursively\n    return 0\n}\n// Print \"5! = ...\" and \"fib(10) = ...\"\n",
+  "solution": "func factorial(_ n: Int) -> Int {\n    n <= 1 ? 1 : n * factorial(n - 1)\n}\nfunc fib(_ n: Int) -> Int {\n    n < 2 ? n : fib(n - 1) + fib(n - 2)\n}\nprint(\"5! = \\(factorial(5))\")\nprint(\"fib(10) = \\(fib(10))\")\n",
+  "expected": "5! = 120\nfib(10) = 55"
+ },
+ {
+  "id": "inout_variadic",
+  "title": "inout and variadic parameters",
+  "prompt": "Write addAll(_ numbers: Int..., to total: inout Int) that adds every number to total. Start with total = 10, call addAll(1, 2, 3, to: &total) and print total.",
+  "hint": "A variadic parameter is an array inside the function; inout needs & at the call site.",
+  "starter": "// Define addAll(_ numbers: Int..., to total: inout Int)\nvar total = 10\n// Call it with 1, 2, 3 and print total\n",
+  "solution": "func addAll(_ numbers: Int..., to total: inout Int) {\n    for n in numbers { total += n }\n}\nvar total = 10\naddAll(1, 2, 3, to: &total)\nprint(total)\n",
+  "expected": "16"
+ },
+ {
+  "id": "closure_counter",
+  "title": "Closure that captures a counter",
+  "prompt": "Write makeCounter() returning a closure that increments a captured variable and returns it. Call one counter three times and a second counter once; print each result on its own line.",
+  "hint": "The returned closure keeps its own copy of the captured var.",
+  "starter": "func makeCounter() -> () -> Int {\n    // Capture a var count and return a closure that increments it\n}\nlet a = makeCounter()\nlet b = makeCounter()\n// Print a() three times, then b() once\n",
+  "solution": "func makeCounter() -> () -> Int {\n    var count = 0\n    return {\n        count += 1\n        return count\n    }\n}\nlet a = makeCounter()\nlet b = makeCounter()\nprint(a())\nprint(a())\nprint(a())\nprint(b())\n",
+  "expected": "1\n2\n3\n1"
+ },
+ {
+  "id": "struct_computed",
+  "title": "Struct with computed property",
+  "prompt": "Complete the Rectangle struct with a computed property area and a mutating method scale(by:) that multiplies both sides. Scale a 2x3 rectangle by 2 and print Area: 24.",
+  "hint": "Computed properties use var name: Type { ... }; mutating methods can change self.",
+  "starter": "struct Rectangle {\n    var width: Int\n    var height: Int\n    // Add computed property area\n    // Add mutating func scale(by:)\n}\nvar r = Rectangle(width: 2, height: 3)\n// Scale by 2 and print \"Area: ...\"\n",
+  "solution": "struct Rectangle {\n    var width: Int\n    var height: Int\n    var area: Int { width * height }\n    mutating func scale(by k: Int) {\n        width *= k\n        height *= k\n    }\n}\nvar r = Rectangle(width: 2, height: 3)\nr.scale(by: 2)\nprint(\"Area: \\(r.area)\")\n",
+  "expected": "Area: 24"
+ },
+ {
+  "id": "class_override",
+  "title": "Inheritance and override",
+  "prompt": "Make Dog inherit from Animal and override sound() to return Woof. Print the sounds of an Animal and a Dog as Animal: ... and Dog: ... on two lines.",
+  "hint": "Mark the subclass method with override and call it on instances.",
+  "starter": "class Animal {\n    func sound() -> String { \"...\" }\n}\n// Create Dog: Animal overriding sound() -> \"Woof\"\n// Print \"Animal: ...\" and \"Dog: ...\"\n",
+  "solution": "class Animal {\n    func sound() -> String { \"...\" }\n}\nclass Dog: Animal {\n    override func sound() -> String { \"Woof\" }\n}\nprint(\"Animal: \\(Animal().sound())\")\nprint(\"Dog: \\(Dog().sound())\")\n",
+  "expected": "Animal: ...\nDog: Woof"
+ },
+ {
+  "id": "protocol_default",
+  "title": "Protocol default implementation",
+  "prompt": "Give the Greeter protocol a default greet() in an extension that returns Hello, NAME!. Make Person use the default and Robot override it with BEEP NAME. Print both greetings.",
+  "hint": "Declare greet() in the protocol and implement it in extension Greeter; types can still provide their own.",
+  "starter": "protocol Greeter {\n    var name: String { get }\n    func greet() -> String\n}\n// Add a default greet() in an extension\nstruct Person: Greeter { let name: String }\nstruct Robot: Greeter { let name: String /* override greet */ }\nprint(Person(name: \"Ana\").greet())\nprint(Robot(name: \"R2\").greet())\n",
+  "solution": "protocol Greeter {\n    var name: String { get }\n    func greet() -> String\n}\nextension Greeter {\n    func greet() -> String { \"Hello, \\(name)!\" }\n}\nstruct Person: Greeter { let name: String }\nstruct Robot: Greeter {\n    let name: String\n    func greet() -> String { \"BEEP \\(name)\" }\n}\nprint(Person(name: \"Ana\").greet())\nprint(Robot(name: \"R2\").greet())\n",
+  "expected": "Hello, Ana!\nBEEP R2"
+ },
+ {
+  "id": "generic_stack",
+  "title": "Generic Stack",
+  "prompt": "Build a generic Stack<T> struct with push, pop (returns an optional) and a peek property. Push 1, 2, 3, then print the peek, the popped value and the count.",
+  "hint": "Store items in a private array; pop with popLast().",
+  "starter": "struct Stack<T> {\n    // Store items, add push, pop and peek\n}\nvar s = Stack<Int>()\ns.push(1); s.push(2); s.push(3)\n// Print peek, then the popped value, then the count\n",
+  "solution": "struct Stack<T> {\n    private var items: [T] = []\n    var count: Int { items.count }\n    var peek: T? { items.last }\n    mutating func push(_ x: T) { items.append(x) }\n    mutating func pop() -> T? { items.popLast() }\n}\nvar s = Stack<Int>()\ns.push(1); s.push(2); s.push(3)\nprint(s.peek ?? -1)\nprint(s.pop() ?? -1)\nprint(s.count)\n",
+  "expected": "3\n3\n2"
+ },
+ {
+  "id": "enum_caseiterable",
+  "title": "Enum with raw values",
+  "prompt": "Make Level an Int-backed enum conforming to CaseIterable (low = 1, mid, high). Print each case as name=rawValue, one per line.",
+  "hint": "Use enum Level: Int, CaseIterable and loop over Level.allCases.",
+  "starter": "// Define enum Level: Int, CaseIterable with low = 1, mid, high\n// Print every case as name=rawValue\n",
+  "solution": "enum Level: Int, CaseIterable {\n    case low = 1, mid, high\n}\nfor level in Level.allCases {\n    print(\"\\(level)=\\(level.rawValue)\")\n}\n",
+  "expected": "low=1\nmid=2\nhigh=3"
+ },
+ {
+  "id": "result_errors",
+  "title": "Throwing functions",
+  "prompt": "Complete divide(_:_:) so it throws DivError.byZero when b is 0. Print 5 for 10 / 2 and, using do/catch, print Cannot divide by zero for 1 / 0.",
+  "hint": "Mark the function throws and call it with try inside do { } catch { }.",
+  "starter": "enum DivError: Error { case byZero }\nfunc divide(_ a: Int, _ b: Int) throws -> Int {\n    // Throw DivError.byZero when b == 0\n    return a / b\n}\n// Print divide(10, 2); catch the error for divide(1, 0)\n",
+  "solution": "enum DivError: Error { case byZero }\nfunc divide(_ a: Int, _ b: Int) throws -> Int {\n    if b == 0 { throw DivError.byZero }\n    return a / b\n}\ndo {\n    print(try divide(10, 2))\n    print(try divide(1, 0))\n} catch {\n    print(\"Cannot divide by zero\")\n}\n",
+  "expected": "5\nCannot divide by zero"
+ },
+ {
+  "id": "property_wrapper",
+  "title": "Property wrapper",
+  "prompt": "Complete the Clamped property wrapper so the stored value stays between 0 and 100. Set health to 150 and print it, then set it to -20 and print it.",
+  "hint": "Use min(max(value, 0), 100) in the setter, and mark with @propertyWrapper.",
+  "starter": "@propertyWrapper\nstruct Clamped {\n    var wrappedValue: Int // clamp to 0...100 on set\n}\nstruct Player {\n    @Clamped var health = 50\n}\nvar p = Player()\n// Set health to 150, print; set to -20, print\n",
+  "solution": "@propertyWrapper\nstruct Clamped {\n    private var value: Int\n    var wrappedValue: Int {\n        get { value }\n        set { value = min(max(newValue, 0), 100) }\n    }\n    init(wrappedValue: Int) { value = min(max(wrappedValue, 0), 100) }\n}\nstruct Player {\n    @Clamped var health = 50\n}\nvar p = Player()\np.health = 150\nprint(p.health)\np.health = -20\nprint(p.health)\n",
+  "expected": "100\n0"
+ },
+ {
+  "id": "didset_observer",
+  "title": "Property observers",
+  "prompt": "Add a didSet observer to score that prints Score changed from OLD to NEW. Then set score to 5 and to 12.",
+  "hint": "Inside didSet, oldValue is available; use the current score for the new value.",
+  "starter": "class Game {\n    var score = 0 // add a didSet observer\n}\nlet g = Game()\n// Set score to 5, then 12\n",
+  "solution": "class Game {\n    var score = 0 {\n        didSet { print(\"Score changed from \\(oldValue) to \\(score)\") }\n    }\n}\nlet g = Game()\ng.score = 5\ng.score = 12\n",
+  "expected": "Score changed from 0 to 5\nScore changed from 5 to 12"
+ },
+ {
+  "id": "codable_json",
+  "title": "Codable to JSON",
+  "prompt": "Encode the Person value to JSON using .sortedKeys, print the string, then decode it back and print the decoded name.",
+  "hint": "Set encoder.outputFormatting = .sortedKeys and decode with JSONDecoder.",
+  "starter": "import Foundation\n\nstruct Person: Codable {\n    let name: String\n    let age: Int\n}\nlet p = Person(name: \"Ana\", age: 30)\n// Encode with .sortedKeys and print the JSON string\n// Decode it back and print the name\n",
+  "solution": "import Foundation\n\nstruct Person: Codable {\n    let name: String\n    let age: Int\n}\nlet p = Person(name: \"Ana\", age: 30)\nlet encoder = JSONEncoder()\nencoder.outputFormatting = .sortedKeys\nlet data = try! encoder.encode(p)\nprint(String(data: data, encoding: .utf8)!)\nlet back = try! JSONDecoder().decode(Person.self, from: data)\nprint(back.name)\n",
+  "expected": "{\"age\":30,\"name\":\"Ana\"}\nAna"
+ },
+ {
+  "id": "async_await",
+  "title": "async/await",
+  "prompt": "Complete the async function square and use await at top level to print the sum of square(3) and square(4).",
+  "hint": "Mark the function async and call it with await.",
+  "starter": "func square(_ n: Int) -> Int {\n    // Make this function async\n    return n * n\n}\n// Await both calls and print their sum\n",
+  "solution": "func square(_ n: Int) async -> Int {\n    n * n\n}\nlet a = await square(3)\nlet b = await square(4)\nprint(a + b)\n",
+  "expected": "25"
+ }
+]

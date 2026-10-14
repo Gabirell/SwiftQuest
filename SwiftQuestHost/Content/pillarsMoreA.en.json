@@ -1,0 +1,2251 @@
+[
+ {
+  "id": 1,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which keyword lets the function modify the received argument (normal parameters are constants)?",
+    "codeSnippet": "func incrementar(_ n: ___ Int) {\n    n += 1\n}\nvar x = 5\nincrementar(&x)",
+    "correctAnswer": "inout",
+    "hint": "The call site uses '&' before x."
+   },
+   {
+    "id": 7,
+    "question": "Which modifier postpones computing the property's initial value until first access?",
+    "codeSnippet": "___ var relatorio = gerarRelatorio()",
+    "correctAnswer": "lazy",
+    "hint": "In English it means 'not eager'."
+   },
+   {
+    "id": 8,
+    "question": "A constant may be assigned after its declaration as long as it is assigned exactly once. Which keyword completes the declaration?",
+    "codeSnippet": "___ titulo: String\nif premium { titulo = \"Pro\" } else { titulo = \"Free\" }",
+    "correctAnswer": "let",
+    "hint": "Each branch assigns only once; the value never changes afterwards."
+   },
+   {
+    "id": 9,
+    "question": "Which loop constant name is used inside the body?",
+    "codeSnippet": "for ___ in 1...3 {\n    print(i * 2)\n}",
+    "correctAnswer": "i",
+    "hint": "Look at the variable used in print."
+   },
+   {
+    "id": 10,
+    "question": "Which modifier lets 'saldo' be read from outside but modified only inside the struct?",
+    "codeSnippet": "struct Conta {\n    ___(set) var saldo = 0\n}",
+    "correctAnswer": "private",
+    "hint": "Access control for the setter only."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What happens with this code?\n'let x: Int\nx = 5\nprint(x)'",
+    "options": [
+     "It compiles and prints 5: the constant was initialized exactly once",
+     "Error: let needs a value on the same line as its declaration",
+     "Error: let cannot have an explicit type",
+     "It compiles but prints 0 because x starts with a default value"
+    ],
+    "correctIndex": 0,
+    "explanation": "Swift allows deferred initialization of 'let' as long as the compiler can prove it happens exactly once before use. There is no implicit default value."
+   },
+   {
+    "id": 7,
+    "question": "What is the result?\n'let a = [1, 2]\na.append(3)'",
+    "options": [
+     "Works: the array is a reference type",
+     "Works, but produces a warning",
+     "Compile error: Array is a value type and 'let' makes it immutable (append is mutating)",
+     "Error only at runtime"
+    ],
+    "correctIndex": 2,
+    "explanation": "Arrays are structs. A constant holding a value type does not allow calling 'mutating' methods. This is checked at compile time."
+   },
+   {
+    "id": 8,
+    "question": "What is the output?\n'let n = 1\ndo {\n    let n = 2\n    print(n)\n}\nprint(n)'",
+    "options": [
+     "1 e 2",
+     "Error: n is already declared",
+     "2 e 2",
+     "2 then 1: the inner declaration shadows the outer one only inside the block"
+    ],
+    "correctIndex": 3,
+    "explanation": "In a nested scope you may declare another 'n'. It shadows the outer one only inside the block; outside, the original value remains 1."
+   },
+   {
+    "id": 9,
+    "question": "Given 'struct Point { let x: Int }' and 'var p = Point(x: 1)', what does 'p.x = 2' do?",
+    "options": [
+     "Works, since p is var",
+     "Error: the property is let and cannot be reassigned, even with the instance stored in a var",
+     "Creates a new struct automatically",
+     "Works only inside a mutating method"
+    ],
+    "correctIndex": 1,
+    "explanation": "The property's 'let' is permanent after initialization. Neither 'var' on the instance nor 'mutating' changes that; the property would have to be declared 'var'."
+   },
+   {
+    "id": 10,
+    "question": "Why must a 'lazy' property be declared with 'var' rather than 'let'?",
+    "options": [
+     "Because its value is only computed after the instance is initialized, i.e. it is mutated after init",
+     "Because lazy only works with numbers",
+     "Because let cannot be used in classes",
+     "Because lazy makes the property computed"
+    ],
+    "correctIndex": 0,
+    "explanation": "A lazy property is stored but only receives its value on first access, after init. Since it is filled in later, it cannot be a constant."
+   },
+   {
+    "id": 11,
+    "question": "Which declaration uses a valid Swift identifier?",
+    "options": [
+     "let 2nd = 1",
+     "let my-var = 1",
+     "let class = 1",
+     "let π = 3.14"
+    ],
+    "correctIndex": 3,
+    "explanation": "Swift accepts Unicode characters in names. Identifiers cannot start with a digit, contain a hyphen, or use a reserved word such as 'class' without backticks."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'var counter = 0\nfunc f() {\n    var counter = 10\n    counter += 1\n}\nf()\nprint(counter)'",
+    "options": [
+     "11",
+     "0: the local variable shadows the global one, which is never modified",
+     "10",
+     "Compile error due to redeclaration"
+    ],
+    "correctIndex": 1,
+    "explanation": "Inside f, 'counter' refers to the local variable. The global stays 0."
+   },
+   {
+    "id": 7,
+    "question": "What are the values of a and b?\n'var a = 1, b = 2\n(a, b) = (b, a)'",
+    "options": [
+     "a = 1, b = 2",
+     "Error: tuples cannot be assigned",
+     "a = 2, b = 1: tuple assignment swaps the values without a temporary variable",
+     "a = 2, b = 2"
+    ],
+    "correctIndex": 2,
+    "explanation": "The right-hand side is fully evaluated before assigning, so the swap works without a temporary."
+   },
+   {
+    "id": 8,
+    "question": "Xcode shows: 'Variable \"maxRetries\" was never mutated; consider changing to \"let\" constant'. What does it mean?",
+    "options": [
+     "It is only a warning: the value never changes, so the correct intent is to express that with let",
+     "It is a syntax error that prevents compiling",
+     "The value was changed by another thread",
+     "The variable needs a type annotation"
+    ],
+    "correctIndex": 0,
+    "explanation": "It is a compiler warning. Switching to 'let' documents immutability and enables optimizations."
+   },
+   {
+    "id": 9,
+    "question": "What is the output?\n'var n = 0\nlet inc = { n += 1 }\ninc()\ninc()\nprint(n)'",
+    "options": [
+     "0",
+     "Error: a closure cannot modify an outer variable",
+     "1",
+     "2"
+    ],
+    "correctIndex": 3,
+    "explanation": "The closure captures the variable 'n' by reference, not a copy of its value. Each call increments the same variable, giving 2."
+   },
+   {
+    "id": 10,
+    "question": "What does the compiler report here?\n'class User {\n    let id: Int\n    init(hasId: Bool) {\n        if hasId { id = 1 }\n    }\n}'",
+    "options": [
+     "Nothing: id defaults to 0",
+     "Error: let cannot be assigned inside init",
+     "Error: property 'id' is not initialized on all paths before init returns",
+     "Warning that id should be var"
+    ],
+    "correctIndex": 2,
+    "explanation": "All stored properties need a value on every path through init. Assigning a 'let' inside init is allowed, but here the 'else' path is missing."
+   },
+   {
+    "id": 11,
+    "question": "Given 'let numbers = [3, 1, 2]', which line fails to compile?",
+    "options": [
+     "numeros.sort()",
+     "let ordenados = numeros.sorted()",
+     "print(numeros.count)",
+     "let primeiro = numeros[0]"
+    ],
+    "correctIndex": 0,
+    "explanation": "'sort()' is mutating and sorts in place; it does not work on a 'let'. 'sorted()' returns a new array and works."
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Optional is an enum with two cases: 'none' and which other one, carrying the value?",
+    "codeSnippet": "let x: Int? = .___(5)",
+    "correctAnswer": "some",
+    "hint": "In English: 'a certain amount'."
+   },
+   {
+    "id": 7,
+    "question": "Which operator checks that the Optional is NOT nil, without unwrapping?",
+    "codeSnippet": "var apelido: String? = \"Zé\"\nif apelido ___ nil {\n    print(\"tem valor\")\n}",
+    "correctAnswer": "!=",
+    "hint": "Two characters, the opposite of '=='."
+   },
+   {
+    "id": 8,
+    "question": "The Int(String) initializer can fail. Which symbol completes the type of 'n'?",
+    "codeSnippet": "let n: Int___ = Int(\"42\")",
+    "correctAnswer": "?",
+    "hint": "It marks a type as Optional."
+   },
+   {
+    "id": 9,
+    "question": "Which symbol declares an Implicitly Unwrapped Optional, common in IBOutlets?",
+    "codeSnippet": "@IBOutlet var rotulo: UILabel___",
+    "correctAnswer": "!",
+    "hint": "It is the same symbol as force unwrap, but placed on the type."
+   },
+   {
+    "id": 10,
+    "question": "Which method transforms an Optional's value only if it exists, returning an Optional?",
+    "codeSnippet": "let valor: Int? = 4\nlet dobro = valor.___ { $0 * 2 }",
+    "correctAnswer": "map",
+    "hint": "The same name used on arrays to transform elements."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What does 'print(a)' display?\n'let a: Int? = 5\nprint(a)'",
+    "options": [
+     "5",
+     "Optional(5)",
+     "some",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Without unwrapping, the Optional is printed with its wrapper: Optional(5). The compiler also warns about the implicit coercion to Any."
+   },
+   {
+    "id": 7,
+    "question": "What is the value of 'Int(\"12.5\")'?",
+    "options": [
+     "12",
+     "13",
+     "0",
+     "nil: the text is not a valid integer"
+    ],
+    "correctIndex": 3,
+    "explanation": "The failable initializer Int(String) only accepts text that represents an integer. '12.5' has a decimal point and returns nil, without rounding."
+   },
+   {
+    "id": 8,
+    "question": "What is the type of 'v'?\n'let d = [\"a\": 1]\nlet v = d[\"b\"]'",
+    "options": [
+     "Int? with value nil: a Dictionary subscript always returns an Optional",
+     "Int com valor 0",
+     "Runtime error for a missing key",
+     "Any"
+    ],
+    "correctIndex": 0,
+    "explanation": "Looking up a missing key in a Dictionary does not crash: it returns nil. That is why the subscript type is Value?."
+   },
+   {
+    "id": 9,
+    "question": "What is the type of 'u'?\n'var t: String! = \"hi\"\nlet u = t'",
+    "options": [
+     "String",
+     "String!",
+     "String?: an IUO is only force-unwrapped automatically when the context requires the non-optional type",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "An IUO is an Optional with permission for implicit unwrapping. When inference does not force the unwrap, the compiler prefers String?."
+   },
+   {
+    "id": 10,
+    "question": "Given 'let a: Int? = 5', which expression does NOT compile?",
+    "options": [
+     "a == 5",
+     "a > 3",
+     "a != nil",
+     "a == nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Optional is Equatable when Wrapped is, so '==' works. But Optional is not Comparable, so '>' requires unwrapping first."
+   },
+   {
+    "id": 11,
+    "question": "When is using '!' considered acceptable?",
+    "options": [
+     "When a failure would indicate a programmer error and the invariant is guaranteed, as in URL(string: \"https://apple.com\")! with a fixed literal",
+     "Whenever it makes the code shorter",
+     "With data coming from a server, to avoid if let",
+     "With input typed by the user"
+    ],
+    "correctIndex": 0,
+    "explanation": "Force unwrap crashes the app if nil. It only makes sense for known programming invariants; external or user data requires safe unwrapping."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the output?\n'let arr: [Int?] = [1, nil, 3]\nprint(arr.compactMap { $0 })'",
+    "options": [
+     "[Optional(1), nil, Optional(3)]",
+     "[1, 0, 3]",
+     "[1, 3]",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "compactMap discards nil results and unwraps the rest, returning [Int]."
+   },
+   {
+    "id": 2,
+    "question": "In Swift 5.7+, what does 'if let name { ... }' do?",
+    "options": [
+     "Unwraps the Optional 'name' into a constant with the same name, available inside the block",
+     "Declares a new Optional called name",
+     "Force unwraps",
+     "Does not compile: the '= name' is missing"
+    ],
+    "correctIndex": 0,
+    "explanation": "The shorthand (SE-0345) is equivalent to 'if let name = name'. Inside the block, 'name' is non-optional."
+   },
+   {
+    "id": 3,
+    "question": "What is the output?\n'let a: Int?? = .some(nil)\nprint(a == nil)'",
+    "options": [
+     "true",
+     "nil",
+     "Compile error",
+     "false"
+    ],
+    "correctIndex": 3,
+    "explanation": "Int?? is an Optional containing an Optional. '.some(nil)' is a present value (the outer Optional exists) holding a nil inside. So 'a == nil' is false."
+   },
+   {
+    "id": 4,
+    "question": "What does 'd.count' print?\n'var d = [\"a\": 1]\nd[\"a\"] = nil\nprint(d.count)'",
+    "options": [
+     "1",
+     "0: assigning nil through the subscript removes the key",
+     "Error: Int does not accept nil",
+     "2"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Dictionary subscript is of type Value?. Assigning nil removes the key/value pair, so count becomes 0."
+   },
+   {
+    "id": 5,
+    "question": "The app crashes with 'Unexpectedly found nil while unwrapping an Optional value' at 'find(id: 9)!.name'. What is the best fix?",
+    "options": [
+     "Switch to try!",
+     "Wrap it in DispatchQueue.main",
+     "Use 'if let user = buscar(id: 9)' and handle the missing case",
+     "Declare the function as async"
+    ],
+    "correctIndex": 2,
+    "explanation": "The crash comes from force unwrapping nil. The fix is to unwrap safely and decide what to do when there is no user."
+   },
+   {
+    "id": 6,
+    "question": "What does the pattern 'case let v?' match in a switch over an Optional?",
+    "options": [
+     "Any non-nil value, binding it to the unwrapped constant v",
+     "Only nil",
+     "Any value, including nil",
+     "Only nested optional types"
+    ],
+    "correctIndex": 0,
+    "explanation": "'case let v?' is sugar for '.some(let v)'. To handle absence use 'case nil' or 'case .none'."
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which keyword repeats the block as long as the optional binding succeeds?",
+    "codeSnippet": "var pilha = [1, 2, 3]\n___ let topo = pilha.popLast() {\n    print(topo)\n}",
+    "correctAnswer": "while",
+    "hint": "A loop that ends when popLast() returns nil."
+   },
+   {
+    "id": 7,
+    "question": "Which word lets you use an enum pattern in an 'if' condition?",
+    "codeSnippet": "let opt: Int? = 7\nif ___ .some(let v) = opt {\n    print(v)\n}",
+    "correctAnswer": "case",
+    "hint": "It also appears in each branch of a switch."
+   },
+   {
+    "id": 8,
+    "question": "Which expression converts a thrown error into nil, returning an Optional?",
+    "codeSnippet": "let dados = ___ Data(contentsOf: url)",
+    "correctAnswer": "try?",
+    "hint": "'try' followed by the Optional symbol."
+   },
+   {
+    "id": 9,
+    "question": "Which method transforms and discards nil results, returning [Int]?",
+    "codeSnippet": "let numeros = [\"1\", \"x\", \"3\"].___ { Int($0) }",
+    "correctAnswer": "compactMap",
+    "hint": "Name: 'compact' + 'map'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What happens with this code?\n'func f(_ x: Int?) {\n    guard let a = x, a > 0 else { return }\n    print(a)\n}'",
+    "options": [
+     "'a' stays available after the guard as a non-optional Int",
+     "Error: guard does not accept multiple conditions",
+     "'a' only exists inside the else",
+     "print(a) prints an Optional"
+    ],
+    "correctIndex": 0,
+    "explanation": "Unlike 'if let', the 'guard let' binding lives in the enclosing scope. Conditions can be combined with commas."
+   },
+   {
+    "id": 7,
+    "question": "What happens here?\n'if let x = opt {\n    print(x)\n} else {\n    print(x)\n}'",
+    "options": [
+     "Prints nil in the else",
+     "Compiles with a warning",
+     "Compile error: x only exists in the true branch of the if let",
+     "Runtime error"
+    ],
+    "correctIndex": 2,
+    "explanation": "The scope of the constant bound by 'if let' is limited to the first block. In the else it was never created."
+   },
+   {
+    "id": 8,
+    "question": "What is the output?\n'var s = [1, 2, 3]\nwhile let t = s.popLast() {\n    print(t, terminator: \" \")\n}'",
+    "options": [
+     "1 2 3",
+     "Infinite loop",
+     "Optional(3) Optional(2) Optional(1)",
+     "3 2 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "popLast() removes and returns the last element as an Optional. The loop stops when it returns nil (empty array)."
+   },
+   {
+    "id": 9,
+    "question": "What is the output?\n'let a: Int? = 5\nif let a = a, a > 3, let b = Int(\"2\") {\n    print(a + b)\n}'",
+    "options": [
+     "52",
+     "7",
+     "Nothing is printed",
+     "Compile error: a redeclared"
+    ],
+    "correctIndex": 1,
+    "explanation": "All three conditions hold: a becomes 5, 5 > 3 and b becomes 2. So it prints 7. Shadowing 'a' is allowed."
+   },
+   {
+    "id": 10,
+    "question": "What does the compiler say about this code?\n'func g(_ x: Int?) {\n    guard let v = x else {\n        print(\"empty\")\n    }\n    print(v)\n}'",
+    "options": [
+     "Error: the guard body must exit the scope (return, throw, break, continue or a Never function)",
+     "No problem",
+     "Unused variable warning",
+     "Error: guard let requires an empty else"
+    ],
+    "correctIndex": 0,
+    "explanation": "The guard's else must guarantee execution does not continue. Without it, 'v' could be used while nonexistent."
+   },
+   {
+    "id": 11,
+    "question": "Why does 'if let n = n { n += 1 }' not compile, given 'var n: Int? = 1'?",
+    "options": [
+     "Because Int? does not support +=",
+     "Because if let does not accept shadowing",
+     "Because n is nil",
+     "Because the inner n is a constant; to mutate use 'if var n = n'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'if let' creates a constant. 'if var' creates a local variable, but it is a copy: the original Optional does not change."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "In Swift 5 or later, what is the type of 'x'?\n'func n() throws -> Int? { 1 }\nlet x = try? n()'",
+    "options": [
+     "Int??",
+     "Int?: try? flattens the Optional (SE-0230)",
+     "Int",
+     "Result<Int?, Error>"
+    ],
+    "correctIndex": 1,
+    "explanation": "Before Swift 5 it would give Int??. Since SE-0230, try? does not add another Optional level."
+   },
+   {
+    "id": 2,
+    "question": "Does this guard compile?\n'guard let y = x else {\n    fatalError(\"no value\")\n}'",
+    "options": [
+     "Yes: fatalError returns Never, so flow does not continue",
+     "No: guard requires return",
+     "No: fatalError only works in debug",
+     "Yes, but only in throwing functions"
+    ],
+    "correctIndex": 0,
+    "explanation": "Functions returning Never never come back to the caller, satisfying the guard requirement. Use only for unrecoverable errors."
+   },
+   {
+    "id": 3,
+    "question": "What is the output?\n'let any: Any = 5\nif let s = any as? String {\n    print(s)\n} else {\n    print(\"no\")\n}'",
+    "options": [
+     "5",
+     "Crash",
+     "no",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "'as?' performs a conditional downcast and returns an Optional. Since the value is an Int, the result is nil and it falls to the else."
+   },
+   {
+    "id": 4,
+    "question": "You process CSV rows and want to skip the invalid ones inside a 'for'. What is the idiomatic way?",
+    "options": [
+     "Use '!' and catch the crash",
+     "Nest several if let",
+     "Use try! on each row",
+     "'guard let value = Int(column) else { continue }'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'continue' satisfies guard inside loops, keeps the happy path unindented and skips only the invalid iteration."
+   },
+   {
+    "id": 5,
+    "question": "What is the output?\n'func g() -> Int? { print(\"g\"); return 1 }\nlet a: Int? = nil\nif let x = a, let y = g() { }'",
+    "options": [
+     "g",
+     "Nothing: conditions are evaluated left to right and stop at the first failure",
+     "g twice",
+     "Error: x and y unused"
+    ],
+    "correctIndex": 1,
+    "explanation": "The condition list short-circuits. Since 'a' is nil, g() is never called."
+   },
+   {
+    "id": 6,
+    "question": "After 'guard let v else { return }' (Swift 5.7+) in a function with parameter 'v: Int?', what is the type of 'v' after the guard?",
+    "options": [
+     "Int?",
+     "Any",
+     "Non-optional Int, shadowing the parameter",
+     "Error: duplicate name"
+    ],
+    "correctIndex": 2,
+    "explanation": "The shorthand binds a new non-optional constant 'v' that shadows the parameter for the rest of the scope."
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which type does Swift infer when mixing an integer literal and a decimal literal in the same expression?",
+    "codeSnippet": "let y = 3 + 0.5 // tipo inferido: ___",
+    "correctAnswer": "Double",
+    "hint": "Decimal literals default to the standard floating-point type."
+   },
+   {
+    "id": 7,
+    "question": "What is the inferred type of the collection?",
+    "codeSnippet": "let letras = [\"a\", \"b\"] // tipo inferido: ___",
+    "correctAnswer": "[String]",
+    "hint": "Use brackets around the element type."
+   },
+   {
+    "id": 8,
+    "question": "Which explicit annotation forces an 8-bit unsigned integer?",
+    "codeSnippet": "let byte: ___ = 255",
+    "correctAnswer": "UInt8",
+    "hint": "It ranges from 0 to 255."
+   },
+   {
+    "id": 9,
+    "question": "With two integer literals the division is integer division. What is the value of 'a'?",
+    "codeSnippet": "let a = 7 / 2 // a vale ___",
+    "correctAnswer": "3",
+    "hint": "The fractional part is discarded."
+   },
+   {
+    "id": 10,
+    "question": "An empty array literal cannot infer the type by itself; here the type comes from the annotation. Which literal completes the line?",
+    "codeSnippet": "let vazio: [Int] = ___",
+    "correctAnswer": "[]",
+    "hint": "Two characters: open and close brackets."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'let a = 7 / 2\nprint(a)'",
+    "options": [
+     "3.5",
+     "4",
+     "3",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Both operands are Int, so the division is integer and truncates to 3. For 3.5 one of them must be Double."
+   },
+   {
+    "id": 7,
+    "question": "What are the type and value of 'b'?\n'let b = 7 / 2.0'",
+    "options": [
+     "Double, 3.5: the literal 7 is inferred as Double",
+     "Int, 3",
+     "Error: different types",
+     "Float, 3.0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Numeric literals have no fixed type; they adapt to context. With 2.0 in the expression, 7 becomes Double."
+   },
+   {
+    "id": 8,
+    "question": "What happens here?\n'let x = 3\nlet y = 0.5\nprint(x + y)'",
+    "options": [
+     "3.5",
+     "Prints 3",
+     "Prints 3.5 with a warning",
+     "Error: operator '+' cannot be applied to Int and Double; Double(x) is required"
+    ],
+    "correctIndex": 3,
+    "explanation": "Once inferred, x is Int and y is Double. Swift performs no implicit numeric conversion between variables; only literals adapt."
+   },
+   {
+    "id": 9,
+    "question": "What does the compiler say about 'let e = []'?",
+    "options": [
+     "Infers [Int]",
+     "Error: cannot infer the type of an empty collection literal without context",
+     "Infers [Any]",
+     "Compiles as NSArray"
+    ],
+    "correctIndex": 1,
+    "explanation": "Without elements or an annotation there is no information to infer from. Write 'let e: [Int] = []' or 'let e = [Int]()'."
+   },
+   {
+    "id": 10,
+    "question": "What is the type of 't'?\n'let t = (1, \"x\", true)'",
+    "options": [
+     "(Int, String, Bool)",
+     "[Any]",
+     "(Any, Any, Any)",
+     "Tuple"
+    ],
+    "correctIndex": 0,
+    "explanation": "Each tuple component is inferred separately, keeping the concrete types."
+   },
+   {
+    "id": 11,
+    "question": "What is the type of 'n'?\n'let n = [1, 2.5]'",
+    "options": [
+     "Error: elements of different types",
+     "[Int]",
+     "[Double]: both literals adapt to the common type",
+     "[Any]"
+    ],
+    "correctIndex": 2,
+    "explanation": "The compiler looks for a single type satisfying every literal. Since 1 can be a Double, the array is [Double]."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What happens with 'let s = \"a\" + 1'?",
+    "options": [
+     "s is \"a1\"",
+     "Error: String and Int cannot be added; use interpolation or String(1)",
+     "s is \"b\"",
+     "s is nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Swift is strongly typed and does not convert Int to String implicitly. Use \"a\\(1)\"."
+   },
+   {
+    "id": 2,
+    "question": "What is the output?\n'print(type(of: 3.0))'",
+    "options": [
+     "Float",
+     "CGFloat",
+     "Int",
+     "Double"
+    ],
+    "correctIndex": 3,
+    "explanation": "The default type of a floating-point literal is Double. Float only occurs with an explicit annotation."
+   },
+   {
+    "id": 3,
+    "question": "Why does this code not compile?\n'var x = 10\nx = 10.5'",
+    "options": [
+     "x was inferred as Int and the type is fixed; 10.5 is not an Int",
+     "var does not accept decimals",
+     "A semicolon is missing",
+     "x is a constant"
+    ],
+    "correctIndex": 0,
+    "explanation": "Inference happens once, at declaration. After that Swift is statically typed. Write 'var x: Double = 10' if you need decimals."
+   },
+   {
+    "id": 4,
+    "question": "What is the type of 'r'?\n'let c = true\nlet r = c ? 1 : 2.0'",
+    "options": [
+     "Int",
+     "Error: branches of different types",
+     "Double",
+     "Any"
+    ],
+    "correctIndex": 2,
+    "explanation": "Both branches need the same type. Since both are literals, the compiler picks Double for both."
+   },
+   {
+    "id": 5,
+    "question": "A long arithmetic expression yields 'The compiler is unable to type-check this expression in reasonable time'. What is the best response?",
+    "options": [
+     "Increase the optimization level",
+     "Switch let to var",
+     "Use a force cast",
+     "Split into sub-expressions and add explicit type annotations"
+    ],
+    "correctIndex": 3,
+    "explanation": "Inference with many literals and overloaded operators is combinatorial. Sub-expressions with explicit types reduce the search space."
+   },
+   {
+    "id": 6,
+    "question": "Which declaration creates a 'Character' and not a 'String'?",
+    "options": [
+     "let a = \"A\"",
+     "let a: Character = \"A\"",
+     "let a = 'A'",
+     "let a = String(\"A\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "Double quotes produce a String by default. For Character you must annotate the type. Single quotes do not denote characters in Swift."
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which operator compares the identity of two class instances (same reference)?",
+    "codeSnippet": "if a ___ b {\n    print(\"mesma instância\")\n}",
+    "correctAnswer": "===",
+    "hint": "Three equal signs."
+   },
+   {
+    "id": 7,
+    "question": "Which modifier prevents the class from being subclassed?",
+    "codeSnippet": "___ class Servico {\n}",
+    "correctAnswer": "final",
+    "hint": "It means 'final'."
+   },
+   {
+    "id": 8,
+    "question": "Which modifier creates a type property (singleton) accessed as Config.compartilhada?",
+    "codeSnippet": "class Config {\n    ___ let compartilhada = Config()\n}",
+    "correctAnswer": "static",
+    "hint": "It belongs to the type, not the instance."
+   },
+   {
+    "id": 9,
+    "question": "Which keyword says the method replaces the superclass one?",
+    "codeSnippet": "class Filho: Pai {\n    ___ func falar() { }\n}",
+    "correctAnswer": "override",
+    "hint": "Required when redefining an inherited method."
+   },
+   {
+    "id": 10,
+    "question": "Which declaration runs automatically when the class instance is deallocated?",
+    "codeSnippet": "class Arquivo {\n    ___ {\n        print(\"liberado\")\n    }\n}",
+    "correctAnswer": "deinit",
+    "hint": "It exists only in classes and has no parentheses."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'struct P { var x = 0 }\nvar a = P()\nvar b = a\nb.x = 5\nprint(a.x)'",
+    "options": [
+     "5",
+     "0",
+     "Compile error",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Assigning a struct copies the value. Changing b does not affect a, which stays 0."
+   },
+   {
+    "id": 7,
+    "question": "What is the output?\n'class C { var x = 0 }\nlet a = C()\nlet b = a\nb.x = 5\nprint(a.x)'",
+    "options": [
+     "5",
+     "0",
+     "Error: b is let",
+     "nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "a and b point to the same object. 'let' only prevents reassigning the reference, not changing the object's var properties."
+   },
+   {
+    "id": 8,
+    "question": "Why does 'func mudar(_ s: S) { s.x = 9 }' not compile for a struct S with 'var x'?",
+    "options": [
+     "Structs have no var properties",
+     "The mutating keyword is missing",
+     "x must be lazy",
+     "Parameters are constants and the parameter is a copy; 'inout' or a local var copy is needed"
+    ],
+    "correctIndex": 3,
+    "explanation": "Function parameters are constants. With value types that means the received value cannot be mutated. With a class, 'c.x = 9' would work."
+   },
+   {
+    "id": 9,
+    "question": "What is the output?\n'var a = [1, 2, 3]\nvar b = a\nb.append(4)\nprint(a.count)'",
+    "options": [
+     "4",
+     "1",
+     "3: Array has value semantics (copy-on-write)",
+     "Compile error"
+    ],
+    "correctIndex": 2,
+    "explanation": "The logical copy happens at assignment, but the physical copy only occurs when b is modified (copy-on-write). a still has 3 elements."
+   },
+   {
+    "id": 10,
+    "question": "What happens with 'a == b' for two instances of a class that does not adopt Equatable?",
+    "options": [
+     "Compile error: '==' is not defined; use '===' for identity or adopt Equatable",
+     "Compares memory addresses",
+     "Compares all properties automatically",
+     "Always returns false"
+    ],
+    "correctIndex": 0,
+    "explanation": "Structs can get synthesized Equatable, but classes must implement '=='. '===' compares identity and needs no protocol."
+   },
+   {
+    "id": 11,
+    "question": "Which scenario justifies using a 'class' instead of a 'struct'?",
+    "options": [
+     "Representing a coordinate (x, y)",
+     "Modelling a price with currency",
+     "Describing an RGB color",
+     "A session manager whose state must be shared and mutated by several parts of the app with a single identity"
+    ],
+    "correctIndex": 3,
+    "explanation": "Classes are for identity and shared state. Simple independent data such as coordinates, prices and colors is better as structs."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the output?\n'class C { var x = 0 }\nstruct W { let ref: C }\nlet w1 = W(ref: C())\nvar w2 = w1\nw2.ref.x = 5\nprint(w1.ref.x)'",
+    "options": [
+     "0",
+     "5: the struct is copied, but the property holds the same class reference",
+     "Error: ref is let",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Copying a struct copies the reference, not the pointed object. Both W share the same C instance. That is why structs containing classes can break value semantics."
+   },
+   {
+    "id": 2,
+    "question": "Why does 'let s = S()\\ns.n = 1' not compile, even with 'var n' in struct S?",
+    "options": [
+     "Because the constant makes the whole struct immutable: with value types, mutating a property is mutating the value",
+     "Because n is private",
+     "Because init is missing",
+     "Because structs cannot have var"
+    ],
+    "correctIndex": 0,
+    "explanation": "With classes 'let' fixes only the reference. With structs the value lives inside the constant, so any mutation requires 'var'."
+   },
+   {
+    "id": 3,
+    "question": "Why are SwiftUI Views structs and not classes?",
+    "options": [
+     "Because classes cannot have properties",
+     "Because structs are slower",
+     "Because they are lightweight, cheap-to-create descriptions that are rebuilt often, with no hidden shared state",
+     "Because Apple forbids classes"
+    ],
+    "correctIndex": 2,
+    "explanation": "A View is a description of what to display. Persistent state lives in wrappers such as @State, outside the struct."
+   },
+   {
+    "id": 4,
+    "question": "What is the output?\n'func add(_ d: [String: Int]) {\n    var d = d\n    d[\"x\"] = 1\n}\nvar m: [String: Int] = [:]\nadd(m)\nprint(m.count)'",
+    "options": [
+     "1",
+     "Error: a parameter cannot be shadowed",
+     "nil",
+     "0: the function mutated a local copy"
+    ],
+    "correctIndex": 3,
+    "explanation": "Dictionary is a value type. 'var d = d' creates a mutable local copy; the original m is unchanged. Affecting m would need 'inout'."
+   },
+   {
+    "id": 5,
+    "question": "What is the output?\n'class C { }\nvar a: C? = C()\nvar b = a\na = nil\nprint(b == nil)'",
+    "options": [
+     "true",
+     "false: b still holds a strong reference, so the object stays alive",
+     "Error: C is not Equatable",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Setting 'a' to nil only removes one reference. b copied the reference (count 2 becomes 1), so the object survives. Comparing with nil does not require Equatable."
+   },
+   {
+    "id": 6,
+    "question": "You need a type that stores a user's name and supports content comparison and independent copies. What is the best choice?",
+    "options": [
+     "class inheriting from NSObject",
+     "class with a singleton",
+     "struct adopting Equatable",
+     "actor"
+    ],
+    "correctIndex": 2,
+    "explanation": "Simple data without identity is the classic struct case. Equatable is synthesized automatically when all properties are Equatable."
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which symbol assigns to the property only if 'usuario' is not nil?",
+    "codeSnippet": "var usuario: Usuario? = Usuario()\nusuario___.nome = \"Ana\"",
+    "correctAnswer": "?",
+    "hint": "It is the optional chaining symbol."
+   },
+   {
+    "id": 7,
+    "question": "Which symbol lets you safely access the subscript of an optional array?",
+    "codeSnippet": "let lista: [Int]? = [4, 5]\nlet primeiro = lista___[0]",
+    "correctAnswer": "?",
+    "hint": "It comes before the brackets."
+   },
+   {
+    "id": 8,
+    "question": "Which Optional method applies a function that also returns an Optional and flattens the result (Int? instead of Int??)?",
+    "codeSnippet": "let texto: String? = \"42\"\nlet numero = texto.___ { Int($0) }",
+    "correctAnswer": "flatMap",
+    "hint": "Unlike map, it does not nest Optionals."
+   },
+   {
+    "id": 9,
+    "question": "Which operator compares an optional chain with a String literal?",
+    "codeSnippet": "if usuario?.endereco?.cidade ___ \"Rio\" {\n    print(\"carioca\")\n}",
+    "correctAnswer": "==",
+    "hint": "Optional<String> is Equatable, so it works."
+   },
+   {
+    "id": 10,
+    "question": "Which property returns the number of characters of the String that already has a default value?",
+    "codeSnippet": "let tamanho = (texto ?? \"\").___",
+    "correctAnswer": "count",
+    "hint": "It also exists on arrays."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'let n: Int? = nil\nprint(n ?? 5 + 1)'",
+    "options": [
+     "5",
+     "Compile error",
+     "6",
+     "nil"
+    ],
+    "correctIndex": 2,
+    "explanation": "Addition has higher precedence than '??'. The expression is 'n ?? (5 + 1)', giving 6."
+   },
+   {
+    "id": 7,
+    "question": "What is the output?\n'var calls = 0\nfunc f() -> Int { calls += 1; return 1 }\nlet v: Int? = 5\n_ = v ?? f()\nprint(calls)'",
+    "options": [
+     "0",
+     "1",
+     "Compile error",
+     "5"
+    ],
+    "correctIndex": 0,
+    "explanation": "The right side of '??' is an @autoclosure and is only evaluated if the left side is nil. Since v has a value, f() never runs."
+   },
+   {
+    "id": 8,
+    "question": "What is the output?\n'var u: User? = nil\nu?.name = \"Ana\"\nprint(u == nil)'",
+    "options": [
+     "false",
+     "Crash",
+     "Compile error",
+     "true: the assignment is silently ignored"
+    ],
+    "correctIndex": 3,
+    "explanation": "If the left side of the chain is nil, the whole assignment is dropped without error. Careful: this can hide bugs."
+   },
+   {
+    "id": 9,
+    "question": "What is the type of 'r'?\n'let x: String? = \"ab\"\nlet r = x?.uppercased().count'",
+    "options": [
+     "Int??",
+     "Int?: optional chaining does not stack Optional levels",
+     "Int",
+     "String?"
+    ],
+    "correctIndex": 1,
+    "explanation": "In a chain, a single '?' makes the whole result optional. There is no Optional inside an Optional."
+   },
+   {
+    "id": 10,
+    "question": "What is the type of 'c'?\n'let a: Int? = nil\nlet b: Int? = 3\nlet c = a ?? b'",
+    "options": [
+     "Int",
+     "Compile error",
+     "Int? with value Optional(3): '??' has an overload whose right side is Optional",
+     "Int??"
+    ],
+    "correctIndex": 2,
+    "explanation": "There are two overloads of '??': one returning T and one returning T? when the default is optional. That allows chaining 'a ?? b ?? 0'."
+   },
+   {
+    "id": 11,
+    "question": "What is the type of the expression 'obj?.resetar()', where resetar() returns Void",
+    "options": [
+     "Void? (ou ()?)",
+     "Void",
+     "Bool",
+     "Int?"
+    ],
+    "correctIndex": 0,
+    "explanation": "The result becomes optional (Void?) even though the function returns Void. That allows 'if obj?.resetar() != nil' to tell whether the call actually happened."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the output?\n'let name = person?.name ?? \"Anonymous\"'\nGiven that 'person' exists but its property 'name' (String?) is nil.",
+    "options": [
+     "nil",
+     "\"Anonymous\": '??' covers both a missing person and a nil property",
+     "Crash",
+     "Compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "The chain yields String? in either case (person nil or name nil). Both are resolved by the default value."
+   },
+   {
+    "id": 2,
+    "question": "What is the output?\n'func g() -> Int { print(\"g\"); return 1 }\nlet obj: Alvo? = nil\nobj?.acao(g())'",
+    "options": [
+     "g",
+     "Compile error",
+     "nil",
+     "Nothing: optional chaining short-circuits everything, including argument evaluation"
+    ],
+    "correctIndex": 3,
+    "explanation": "When the receiver is nil, the whole call is skipped and the arguments are not evaluated."
+   },
+   {
+    "id": 3,
+    "question": "What is the output?\n'let d: [String: [Int]] = [\"a\": [1]]\nprint(d[\"b\"]?.first ?? 0)'",
+    "options": [
+     "0",
+     "1",
+     "nil",
+     "Crash from a missing key"
+    ],
+    "correctIndex": 0,
+    "explanation": "d[\"b\"] is nil, so the whole chain is nil and '??' supplies 0."
+   },
+   {
+    "id": 4,
+    "question": "What is the result?\n'let t: Int? = 4\nlet r = t.map { $0 * 2 } ?? 0'",
+    "options": [
+     "4",
+     "0",
+     "8",
+     "Optional(8)"
+    ],
+    "correctIndex": 2,
+    "explanation": "map applies the closure to the present value (8) returning Int?; '??' unwraps and r is an Int with value 8."
+   },
+   {
+    "id": 5,
+    "question": "Why is 'cache ?? calcularCaro()' efficient?",
+    "options": [
+     "Because calcularCaro runs on another thread",
+     "Because the right side is an @autoclosure evaluated only when cache is nil",
+     "Because the compiler memoizes the result",
+     "Because calcularCaro is inlined"
+    ],
+    "correctIndex": 1,
+    "explanation": "The operator is declared with @autoclosure on its second parameter, ensuring lazy evaluation. This is the standard pattern for expensive defaults."
+   },
+   {
+    "id": 6,
+    "question": "What does the compiler say about 'let n: Int? = 3\\nlet s = n ?? \"0\"'?",
+    "options": [
+     "s is \"3\"",
+     "s is Any",
+     "Only a warning",
+     "Error: the default value must have the same type as the Wrapped type (Int)"
+    ],
+    "correctIndex": 3,
+    "explanation": "'a ?? b' requires b to be of the same type (or Optional of the same type) as a's content. Convert explicitly: 'String(n ?? 0)'."
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which raw type lets 'medio' be 2 and 'alto' be 3 automatically?",
+    "codeSnippet": "enum Nivel: ___ {\n    case baixo = 1, medio, alto\n}",
+    "correctAnswer": "Int",
+    "hint": "Integers auto-increment."
+   },
+   {
+    "id": 7,
+    "question": "Which protocol automatically generates the 'allCases' collection?",
+    "codeSnippet": "enum Cor: ___ {\n    case vermelho, verde\n}\nprint(Cor.allCases.count)",
+    "correctAnswer": "CaseIterable",
+    "hint": "It means 'can iterate the cases'."
+   },
+   {
+    "id": 8,
+    "question": "Which modifier lets the enum contain itself recursively?",
+    "codeSnippet": "___ enum Expr {\n    case numero(Int)\n    case soma(Expr, Expr)\n}",
+    "correctAnswer": "indirect",
+    "hint": "It signals storage through indirection (heap)."
+   },
+   {
+    "id": 9,
+    "question": "Which initializer label creates an enum from its raw value, returning an Optional?",
+    "codeSnippet": "let d = Direcao(___: \"norte\")",
+    "correctAnswer": "rawValue",
+    "hint": "Two words joined together."
+   },
+   {
+    "id": 10,
+    "question": "Which modifier lets an enum method change its own case (self)?",
+    "codeSnippet": "enum Luz {\n    case vermelha, verde\n    ___ func alternar() {\n        self = (self == .vermelha) ? .verde : .vermelha\n    }\n}",
+    "correctAnswer": "mutating",
+    "hint": "Same word used in struct methods that change properties."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'enum E: Int { case a, b, c }\nprint(E.c.rawValue)'",
+    "options": [
+     "3",
+     "2",
+     "c",
+     "1"
+    ],
+    "correctIndex": 1,
+    "explanation": "With raw type Int, the first case is 0 and the following ones increment: a=0, b=1, c=2."
+   },
+   {
+    "id": 7,
+    "question": "What is the output?\n'enum E: String { case a, b }\nprint(E.b.rawValue)'",
+    "options": [
+     "1",
+     "Error: raw values are missing",
+     "nil",
+     "b"
+    ],
+    "correctIndex": 3,
+    "explanation": "For String raw types, the implicit value is the case name itself. Writing raw values is only mandatory when the type is neither String nor integer."
+   },
+   {
+    "id": 8,
+    "question": "What are the type and value of 'E(rawValue: 5)' for 'enum E: Int { case a, b }'?",
+    "options": [
+     "E? with value nil: init(rawValue:) is failable",
+     "E, case a",
+     "Runtime crash",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "Not every raw value matches a case, so the initializer returns an Optional. Use 'if let' or '??' to handle it."
+   },
+   {
+    "id": 9,
+    "question": "What does the compiler report here?\n'enum X { case a, b }\nswitch x {\ncase .a: print(\"a\")\n}'",
+    "options": [
+     "Nothing, prints a when applicable",
+     "Only a warning",
+     "Error: 'switch must be exhaustive' — .b or a default is missing",
+     "Error: break is missing"
+    ],
+    "correctIndex": 2,
+    "explanation": "Every switch must cover all cases. This is an advantage: when you add a new case, the compiler shows every place to update."
+   },
+   {
+    "id": 10,
+    "question": "What is the output?\n'enum F { case rect(Int, Int) }\nlet f = F.rect(2, 3)\nif case .rect(let w, let h) = f {\n    print(w * h)\n}'",
+    "options": [
+     "5",
+     "6",
+     "Error: if case does not exist",
+     "(2, 3)"
+    ],
+    "correctIndex": 1,
+    "explanation": "'if case' matches an enum pattern and extracts the associated values w=2 and h=3, giving 6."
+   },
+   {
+    "id": 11,
+    "question": "What can a Swift enum NOT have?",
+    "options": [
+     "Stored instance properties",
+     "Computed properties",
+     "Methods and initializers",
+     "Static stored properties"
+    ],
+    "correctIndex": 0,
+    "explanation": "Enums can have methods, initializers, computed properties, static properties and conform to protocols. State lives in the case and associated values, not in stored instance properties."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the output?\n'enum S: CaseIterable { case a, b, c }\nprint(S.allCases.count)'",
+    "options": [
+     "0",
+     "Error: allCases does not exist",
+     "3",
+     "1"
+    ],
+    "correctIndex": 2,
+    "explanation": "CaseIterable synthesizes 'allCases' with every case in declaration order. Useful for populating Pickers and lists."
+   },
+   {
+    "id": 2,
+    "question": "Why is 'indirect' needed in 'enum Tree { case leaf; case node(Tree, Tree) }'?",
+    "options": [
+     "To make the enum faster",
+     "Because the enum contains itself recursively and would need infinite size; 'indirect' stores the values by reference on the heap",
+     "To allow raw values",
+     "To make it a class"
+    ],
+    "correctIndex": 1,
+    "explanation": "Without indirection the compiler cannot compute the type's size. With 'indirect', the recursion uses a box allocated on the heap."
+   },
+   {
+    "id": 3,
+    "question": "What is the best way to model the possible errors of a network call (offline, timeout, HTTP status with a code)?",
+    "options": [
+     "Loose strings",
+     "A global Int",
+     "One class per error",
+     "An enum adopting Error with cases and associated values, e.g. case http(status: Int)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Enums guarantee a closed set, switch exhaustiveness and carry extra data per case through associated values."
+   },
+   {
+    "id": 4,
+    "question": "What is '@unknown default' for in a switch over a standard library or framework enum?",
+    "options": [
+     "To cover future cases that do not exist yet and receive a warning when new cases are added",
+     "To speed up the switch",
+     "To avoid using the type",
+     "To make the enum frozen"
+    ],
+    "correctIndex": 0,
+    "explanation": "Non-frozen enums may gain cases in SDK updates. '@unknown default' handles the unknown and still warns if a known case went unhandled."
+   },
+   {
+    "id": 5,
+    "question": "Why does 'A.x(1) == A.x(1)' not compile for 'enum A { case x(Int) }'?",
+    "options": [
+     "Enums can never be compared",
+     "The indirect keyword is missing",
+     "Enums with associated values only get Equatable when you declare 'enum A: Equatable' (the conformance is synthesized)",
+     "Because Int is not Equatable"
+    ],
+    "correctIndex": 2,
+    "explanation": "Enums without associated values are Equatable and Hashable automatically. With associated values you must declare the conformance, and the compiler generates the implementation."
+   },
+   {
+    "id": 6,
+    "question": "What is the output?\n'enum L {\n    case r, g\n    mutating func next() { self = (self == .r) ? .g : .r }\n}\nvar l = L.r\nl.next()\nprint(l)'",
+    "options": [
+     "r",
+     "g",
+     "Error: self is a constant",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "In a mutating method, 'self' can be reassigned to another case. Since L has no associated values it is Equatable, so '==' works."
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which attribute lets you pass the expression \"oi\" without writing the closure braces?",
+    "codeSnippet": "func registrar(_ mensagem: ___ () -> String) {\n    print(mensagem())\n}\nregistrar(\"oi\")",
+    "correctAnswer": "@autoclosure",
+    "hint": "It automatically wraps the argument in a closure."
+   },
+   {
+    "id": 7,
+    "question": "Which capture specifier is used when self is guaranteed to outlive the closure and you don't want an Optional?",
+    "codeSnippet": "lazy var fechar = { [___ self] in self.encerrar() }",
+    "correctAnswer": "unowned",
+    "hint": "It doesn't increment the count and never becomes nil."
+   },
+   {
+    "id": 8,
+    "question": "Which method returns a new sorted collection using the comparison closure/operator?",
+    "codeSnippet": "let ordenados = numeros.___(by: >)",
+    "correctAnswer": "sorted",
+    "hint": "It does not change the original array."
+   },
+   {
+    "id": 9,
+    "question": "Which symbol separates parameters from the return type in a function type?",
+    "codeSnippet": "let soma: (Int, Int) ___ Int = { $0 + $1 }",
+    "correctAnswer": "->",
+    "hint": "An arrow made of two characters."
+   },
+   {
+    "id": 10,
+    "question": "Which method combines all elements into a single value from an initial value?",
+    "codeSnippet": "let total = [1, 2, 3].___(0, +)",
+    "correctAnswer": "reduce",
+    "hint": "It reduces a collection to one value."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'func f() {\n    defer { print(\"1\") }\n    defer { print(\"2\") }\n    print(\"3\")\n}\nf()'",
+    "options": [
+     "1 2 3",
+     "3 1 2",
+     "2 1 3",
+     "3 2 1: defers run in reverse order, at the end of the scope"
+    ],
+    "correctIndex": 3,
+    "explanation": "'3' is printed first. When leaving the scope, defers run like a stack (LIFO): the last declared runs first."
+   },
+   {
+    "id": 7,
+    "question": "In 'func read() throws { let h = try open(); defer { h.close() }; guard h.valid else { return }; try process(h) }', when does h.close() run?",
+    "options": [
+     "Only if everything succeeds",
+     "On any exit from the scope: early return, normal completion or a thrown error",
+     "Only when there is an error",
+     "Immediately, on the defer line"
+    ],
+    "correctIndex": 1,
+    "explanation": "defer is ideal for cleanup (closing files, releasing locks) because it runs on every exit path. It only applies to defers already reached before exiting."
+   },
+   {
+    "id": 8,
+    "question": "What is the output?\n'func make() -> () -> Int {\n    var c = 0\n    return { c += 1; return c }\n}\nlet a = make()\n_ = a()\nprint(a())'",
+    "options": [
+     "1",
+     "0",
+     "2",
+     "Error: c no longer exists"
+    ],
+    "correctIndex": 2,
+    "explanation": "The closure captures 'c' and keeps it alive between calls. The first call returns 1 and the second 2."
+   },
+   {
+    "id": 9,
+    "question": "What is the output?\n'let nums = [3, 1, 2]\nprint(nums.sorted { $0 > $1 })'",
+    "options": [
+     "[3, 2, 1]",
+     "[1, 2, 3]",
+     "[3, 1, 2]",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "The closure says $0 goes before $1 if it is greater, sorting in descending order. It is a trailing closure without parentheses."
+   },
+   {
+    "id": 10,
+    "question": "What does the compiler say?\n'var stored: (() -> Void)?\nfunc save(_ c: () -> Void) {\n    stored = c\n}'",
+    "options": [
+     "Nothing: it compiles",
+     "Memory warning",
+     "Syntax error",
+     "Error: 'assigning non-escaping parameter 'c' to an @escaping closure' — @escaping is missing"
+    ],
+    "correctIndex": 3,
+    "explanation": "Closure parameters are non-escaping by default. If the closure outlives the function (stored, asynchronous), it must be marked '@escaping'."
+   },
+   {
+    "id": 11,
+    "question": "What is the output?\n'print([1, 2, 3].map { $0 * 2 }.filter { $0 > 2 })'",
+    "options": [
+     "[2, 4, 6]",
+     "[4, 6]",
+     "[6]",
+     "[1, 2, 3]"
+    ],
+    "correctIndex": 1,
+    "explanation": "map produces [2, 4, 6]; filter keeps only those greater than 2, giving [4, 6]."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the problem in this code?\n'class VC {\n    var handler: (() -> Void)?\n    func setup() {\n        handler = { self.refresh() }\n    }\n}'",
+    "options": [
+     "@escaping is missing",
+     "handler should be let",
+     "Retain cycle: self holds handler and the closure strongly captures self; use [weak self]",
+     "No problem"
+    ],
+    "correctIndex": 2,
+    "explanation": "The object points to the closure and the closure points back to the object: neither reaches zero references. [weak self] breaks the cycle."
+   },
+   {
+    "id": 2,
+    "question": "What value does 'f()' return?\n'func f() -> Int {\n    var x = 1\n    defer { x = 99 }\n    return x\n}'",
+    "options": [
+     "1: o valor de retorno é avaliado antes de o defer executar",
+     "99",
+     "0",
+     "Error: defer cannot be used with return"
+    ],
+    "correctIndex": 0,
+    "explanation": "The return expression is computed first. The defer runs afterward, on leaving the scope, but no longer affects the returned value."
+   },
+   {
+    "id": 3,
+    "question": "What is the output?\n'var x = 1\nlet c = { [x] in print(x) }\nx = 2\nc()'",
+    "options": [
+     "2",
+     "Compile error",
+     "nil",
+     "1"
+    ],
+    "correctIndex": 3,
+    "explanation": "The capture list [x] copies the value when the closure is created. Later changes to x do not affect the copy. Without the list it would print 2."
+   },
+   {
+    "id": 4,
+    "question": "What is the main benefit of '@autoclosure' in 'func assegurar(_ c: @autoclosure () -> Bool)'?",
+    "options": [
+     "Makes the function asynchronous",
+     "Lazy evaluation of the expression and call syntax without braces",
+     "Avoids retain cycles",
+     "Lets the argument escape"
+    ],
+    "correctIndex": 1,
+    "explanation": "The passed expression only runs if the function calls the closure. It underlies assert, ?? and &&."
+   },
+   {
+    "id": 5,
+    "question": "Which form is equivalent to 'nomes.sorted(by: { (a: String, b: String) -> Bool in return a < b })'?",
+    "options": [
+     "nomes.sorted(by: <)",
+     "nomes.sorted(<)",
+     "nomes.sorted { $0 }",
+     "nomes.sort(by: >)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Operators are functions, so '<' can be passed directly. The other options do not compile or sort differently."
+   },
+   {
+    "id": 6,
+    "question": "What is the output?\n'let a = make()\nlet b = make()\n_ = a()\n_ = a()\nprint(b())'\n(make returns a closure with its own counter)",
+    "options": [
+     "3",
+     "2",
+     "1: each call to make creates an independent capture",
+     "0"
+    ],
+    "correctIndex": 2,
+    "explanation": "Each make() invocation creates a new captured variable. b has its own counter, so the first call returns 1."
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which Observation framework macro (iOS 17+) makes the class observable without ObservableObject or @Published?",
+    "codeSnippet": "@___ class ListaViewModel {\n    var itens: [String] = []\n}",
+    "correctAnswer": "Observable",
+    "hint": "Same name as the idea: something that can be observed."
+   },
+   {
+    "id": 7,
+    "question": "With ObservableObject, which property wrapper makes the View create and own the ViewModel, preserving it across redraws?",
+    "codeSnippet": "struct ListaView: View {\n    @___ private var vm = ListaViewModel()\n}",
+    "correctAnswer": "StateObject",
+    "hint": "It combines 'State' with 'Object'."
+   },
+   {
+    "id": 8,
+    "question": "Which wrapper observes an ObservableObject received from outside, without owning it?",
+    "codeSnippet": "struct LinhaView: View {\n    @___ var vm: LinhaViewModel\n}",
+    "correctAnswer": "ObservedObject",
+    "hint": "It merely 'observes' the object."
+   },
+   {
+    "id": 9,
+    "question": "Which attribute guarantees the ViewModel's properties and methods run on the main thread?",
+    "codeSnippet": "@___ final class PerfilViewModel: ObservableObject {\n    @Published var nome = \"\"\n}",
+    "correctAnswer": "MainActor",
+    "hint": "It is a global actor."
+   },
+   {
+    "id": 10,
+    "question": "In Swift 6, which word marks the existential type of a protocol injected into the ViewModel?",
+    "codeSnippet": "init(repositorio: ___ Repositorio) {\n    self.repositorio = repositorio\n}",
+    "correctAnswer": "any",
+    "hint": "Three letters; contrasts with 'some'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Where should the logic turning a Date into text like \"October 14\" for display live?",
+    "options": [
+     "In the Model, inside the data struct",
+     "In the ViewModel, which prepares data for presentation",
+     "Inside the View's body, on every redraw",
+     "In a global variable"
+    ],
+    "correctIndex": 1,
+    "explanation": "Formatting for display is presentation logic: it belongs in the ViewModel. That keeps the View declarative and the rule testable without UI."
+   },
+   {
+    "id": 7,
+    "question": "Why inject a 'Repositorio' protocol into the ViewModel instead of creating the network service inside it?",
+    "options": [
+     "So the app compiles faster",
+     "Because protocols use less memory",
+     "Because SwiftUI requires it",
+     "To swap in a mock for unit tests and Previews, without a real network"
+    ],
+    "correctIndex": 3,
+    "explanation": "Protocol-based dependency injection decouples the ViewModel from the concrete implementation and enables fast, deterministic tests."
+   },
+   {
+    "id": 8,
+    "question": "A View declares '@ObservedObject var vm = ListaViewModel()' in its own struct body. What happens when the parent View redraws?",
+    "options": [
+     "The struct is recreated and a new ViewModel is instantiated, losing state",
+     "The ViewModel is preserved automatically",
+     "The app crashes",
+     "Nothing, ObservedObject owns the object"
+    ],
+    "correctIndex": 0,
+    "explanation": "@ObservedObject does not own the object. If the View creates the ViewModel, it is recreated when the struct is reinitialized. Use @StateObject (or @State with @Observable) for ownership."
+   },
+   {
+    "id": 9,
+    "question": "On iOS 17+, which combination is recommended for a ViewModel owned by a View?",
+    "options": [
+     "@Observable on the View and @StateObject on the ViewModel",
+     "ObservableObject with @Published, with no wrapper in the View",
+     "@Observable on the class and @State in the View to create and own it",
+     "@EnvironmentObject only"
+    ],
+    "correctIndex": 2,
+    "explanation": "With Observation, the class gets @Observable and the owning View stores it in @State. SwiftUI tracks only the properties actually read in body."
+   },
+   {
+    "id": 10,
+    "question": "A ViewModel does 'import SwiftUI' to return 'Color.red' on error. What is the best assessment?",
+    "options": [
+     "Correct: the ViewModel decides colors",
+     "Avoidable: better to expose a semantic state (e.g. enum Status) and let the View pick the color, keeping the ViewModel free of UI",
+     "Mandatory in MVVM",
+     "Forbidden by the compiler"
+    ],
+    "correctIndex": 1,
+    "explanation": "Depending on UI types in the ViewModel hurts testing and reuse (e.g. macOS or widgets). Semantic states keep responsibilities separate."
+   },
+   {
+    "id": 11,
+    "question": "What makes a ViewModel easy to unit test?",
+    "options": [
+     "Not depending on a View and receiving dependencies (repository, clock) by injection, so mocks can be used",
+     "Being a global singleton",
+     "Using only static variables",
+     "Running only in the simulator"
+    ],
+    "correctIndex": 0,
+    "explanation": "With no UI and replaceable dependencies, a test calls methods and checks published state, without a simulator. Global singletons make that harder."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Where should email-format validation for a sign-up form live?",
+    "options": [
+     "Inside the View's body",
+     "In the AppDelegate",
+     "In the ViewModel (or a domain rule it uses), exposing a state like isValid",
+     "In the Storyboard"
+    ],
+    "correctIndex": 2,
+    "explanation": "The rule becomes testable and the View only reflects the state (enabling the button). Duplicating the rule across Views causes inconsistencies."
+   },
+   {
+    "id": 2,
+    "question": "Xcode shows the purple warning 'Publishing changes from background threads is not allowed'. What is the idiomatic fix?",
+    "options": [
+     "Mark the ViewModel with @MainActor so state is updated on the main thread",
+     "Remove @Published",
+     "Switch class to struct",
+     "Ignore it: it is just a design warning"
+    ],
+    "correctIndex": 0,
+    "explanation": "Changing UI-observed state off the main thread is a bug. @MainActor ensures isolation, and the compiler checks call sites."
+   },
+   {
+    "id": 3,
+    "question": "Which problem does MVVM help reduce in UIKit apps?",
+    "options": [
+     "The lack of Auto Layout",
+     "Build time",
+     "Binary size",
+     "The 'Massive View Controller', moving presentation logic and state out of the controller"
+    ],
+    "correctIndex": 3,
+    "explanation": "In MVC, controllers accumulate formatting, validation and networking. The ViewModel absorbs that logic, leaving the controller only to bind the view to state."
+   },
+   {
+    "id": 4,
+    "question": "Which of these types belongs to the Model layer?",
+    "options": [
+     "struct PedidoRow: View",
+     "struct Pedido: Codable, Identifiable",
+     "final class PedidoListViewModel",
+     "struct Pedido_Preview: PreviewProvider"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Model represents data and business rules, without depending on UI. Views, ViewModels and Previews belong to other layers."
+   },
+   {
+    "id": 5,
+    "question": "With an @Observable class passed as a parameter to a View, what allows writing 'TextField(\"Nome\", text: $vm.nome)'?",
+    "options": [
+     "@StateObject",
+     "@Published",
+     "@Bindable var vm, which exposes bindings to the properties",
+     "@Environment"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Bindable creates bindings ($) for properties of an @Observable object the View does not need to own."
+   },
+   {
+    "id": 6,
+    "question": "What is the correct direction of dependencies in MVVM?",
+    "options": [
+     "The View knows the ViewModel, which knows the Model; the ViewModel does not know the View",
+     "The Model knows the View",
+     "The ViewModel holds a strong reference to the View",
+     "Everyone knows everyone"
+    ],
+    "correctIndex": 0,
+    "explanation": "The flow is View → ViewModel → Model. The ViewModel notifies through observation, not through a reference to the View, avoiding coupling and retain cycles."
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which word starts a concurrent child task with 'let'? (the next line shows the pattern)",
+    "codeSnippet": "___ let a = baixar(1)\nasync let b = baixar(2)\nlet (x, y) = await (a, b)",
+    "correctAnswer": "async",
+    "hint": "It is the first word of 'async let'."
+   },
+   {
+    "id": 7,
+    "question": "Which type offers the cooperative suspension method 'sleep' without blocking the thread?",
+    "codeSnippet": "try await ___.sleep(for: .seconds(1))",
+    "correctAnswer": "Task",
+    "hint": "The same type used to start asynchronous work."
+   },
+   {
+    "id": 8,
+    "question": "Which protocol marks a type as safe to cross concurrency boundaries?",
+    "codeSnippet": "struct Dados: ___ {\n    let n: Int\n}",
+    "correctAnswer": "Sendable",
+    "hint": "Something that can be 'sent'."
+   },
+   {
+    "id": 9,
+    "question": "Which method throws CancellationError if the current task has been cancelled?",
+    "codeSnippet": "func processar() async throws {\n    try Task.___()\n}",
+    "correctAnswer": "checkCancellation",
+    "hint": "Cancellation is cooperative: you must check."
+   },
+   {
+    "id": 10,
+    "question": "Which word completes the 'for await' over an asynchronous sequence that can throw?",
+    "codeSnippet": "for ___ await linha in url.lines {\n    print(linha)\n}",
+    "correctAnswer": "try",
+    "hint": "The same word that accompanies calls that throw."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What does 'task.cancel()' do?",
+    "options": [
+     "Immediately stops the task's execution",
+     "Destroys the thread",
+     "Marks the task as cancelled; the code only stops if it checks for cancellation (isCancelled, checkCancellation) or calls APIs that respect it",
+     "Throws an error on the main thread"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cancellation in Swift Concurrency is cooperative. Without checking, the task runs to completion."
+   },
+   {
+    "id": 7,
+    "question": "Two independent calls take 1 s each. What is the approximate total time?\n'async let a = f()\nasync let b = f()\nlet r = await (a, b)'\nversus\n'let a = await f()\nlet b = await f()'",
+    "options": [
+     "1 s with async let and 2 s sequentially",
+     "2 s in both cases",
+     "1 s in both cases",
+     "2 s with async let and 1 s sequentially"
+    ],
+    "correctIndex": 0,
+    "explanation": "A plain 'await' suspends until finished before continuing, so the calls run in series. 'async let' starts both and only waits at the point of use."
+   },
+   {
+    "id": 8,
+    "question": "Given 'actor Banco { var saldo = 0 }' and 'let b = Banco()', which way of reading the balance from outside the actor compiles?",
+    "options": [
+     "print(b.saldo)",
+     "print(b.saldo!)",
+     "b.saldo.sync()",
+     "print(await b.saldo)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Accessing an actor's isolated state from outside requires 'await', since it may need to wait for the actor to be free."
+   },
+   {
+    "id": 9,
+    "question": "Several tasks increment 'contador' in a plain class and the final result is lower than expected. What is the cause and best fix?",
+    "options": [
+     "Overflow; use Int64",
+     "Data race (concurrent access without synchronization); make the type an actor",
+     "Compiler bug; restart Xcode",
+     "Missing await; add await to the increment"
+    ],
+    "correctIndex": 1,
+    "explanation": "Simultaneous read-modify-write operations get lost. Actors serialize access to state. Swift 6 detects many of these cases at compile time."
+   },
+   {
+    "id": 10,
+    "question": "Inside a @MainActor function, what is the difference between 'Task { }' and 'Task.detached { }'?",
+    "options": [
+     "Task inherits the actor context, priority and task-locals; detached inherits none",
+     "Task runs in another process",
+     "They are identical",
+     "Task is synchronous and detached is asynchronous"
+    ],
+    "correctIndex": 0,
+    "explanation": "A Task created on @MainActor stays on it. detached starts outside any actor, useful for heavy work but to be used with care."
+   },
+   {
+    "id": 11,
+    "question": "Which rule applies when adapting a completion-handler API using 'withCheckedContinuation'?",
+    "options": [
+     "Call resume twice to be safe",
+     "Never call resume",
+     "Call resume exactly once on every path",
+     "Call resume only on the main thread"
+    ],
+    "correctIndex": 2,
+    "explanation": "Zero calls leave the task suspended forever; two cause a crash/warning. The 'Checked' variant helps detect the mistake at runtime."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Why can an actor's invariants be broken between two 'await's inside the same method?",
+    "options": [
+     "Because actors do not protect state",
+     "Because actors are reentrant: during suspension, other calls can run and change the state",
+     "Because await frees memory",
+     "Because actors use locks that expire"
+    ],
+    "correctIndex": 1,
+    "explanation": "Each 'await' is a suspension point. Re-check state after the await instead of assuming nothing changed."
+   },
+   {
+    "id": 2,
+    "question": "In a 'withTaskGroup', in what order do results arrive when iterating 'for await r in group'?",
+    "options": [
+     "Always in the order the tasks were added",
+     "Alphabetical order",
+     "Guaranteed random order",
+     "In completion order, which is not deterministic; if you need the original order, return an index with each result"
+    ],
+    "correctIndex": 3,
+    "explanation": "The group delivers results as each task finishes. To reorder, include an identifier in the result."
+   },
+   {
+    "id": 3,
+    "question": "What happens when calling a @MainActor function 'atualizarUI()' from a non-isolated async function?",
+    "options": [
+     "'await' is required, since it may hop to the main thread",
+     "Compiles without await",
+     "Error: @MainActor only works on classes",
+     "The call happens in the background"
+    ],
+    "correctIndex": 0,
+    "explanation": "Calling code isolated to another actor crosses the isolation boundary and is a suspension point, which is why it requires await."
+   },
+   {
+    "id": 4,
+    "question": "In Swift 6, passing a mutable non-Sendable class instance into a 'Task.detached' produces an error. Which fix is most appropriate?",
+    "options": [
+     "Use @unchecked Sendable without protecting the state",
+     "Turn off strict checking",
+     "Turn the data into an immutable Sendable struct or isolate it in an actor",
+     "Use DispatchQueue.global"
+    ],
+    "correctIndex": 2,
+    "explanation": "The error flags a possible data race. Immutable value types or actors truly solve it; @unchecked merely silences the compiler."
+   },
+   {
+    "id": 5,
+    "question": "What happens to the task started by '.task { await vm.carregar() }' when the View leaves the screen?",
+    "options": [
+     "It continues forever",
+     "It is cancelled automatically (cooperative cancellation)",
+     "It is duplicated",
+     "It freezes the app"
+    ],
+    "correctIndex": 1,
+    "explanation": "The .task modifier ties the task's lifetime to the View. When it disappears the task is cancelled; system async APIs respect it."
+   },
+   {
+    "id": 6,
+    "question": "What does the Swift 6 language mode with strict concurrency checking do?",
+    "options": [
+     "Detects potential data races at compile time, such as sharing non-Sendable mutable state",
+     "Removes the need for await",
+     "Always runs the app on a single thread",
+     "Only detects problems at runtime"
+    ],
+    "correctIndex": 0,
+    "explanation": "Swift 6 aims for compiler-verified data-race safety, which is why Sendable and isolation problems become build errors."
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "The Customer always outlives the Card. Which word declares a non-retaining, non-optional reference?",
+    "codeSnippet": "class Cartao {\n    ___ let titular: Cliente\n    init(titular: Cliente) { self.titular = titular }\n}",
+    "correctAnswer": "unowned",
+    "hint": "Unlike weak, it never becomes nil."
+   },
+   {
+    "id": 7,
+    "question": "Which constraint protocol (not the 'class' keyword) must the protocol inherit so that 'weak' can be used with it?",
+    "codeSnippet": "protocol Delegado: ___ {\n    func terminou()\n}\nweak var delegado: Delegado?",
+    "correctAnswer": "AnyObject",
+    "hint": "It limits conformance to reference types."
+   },
+   {
+    "id": 8,
+    "question": "Which function drains autoreleased objects at the end of each block, lowering peak memory in loops using Objective-C APIs?",
+    "codeSnippet": "for _ in 0..<100_000 {\n    ___ {\n        _ = UIImage(named: \"foto\")\n    }\n}",
+    "correctAnswer": "autoreleasepool",
+    "hint": "Name: 'auto' + 'release' + 'pool'."
+   },
+   {
+    "id": 9,
+    "question": "Which value removes the strong reference and, if it is the last one, deallocates the object?",
+    "codeSnippet": "var cliente: Cliente? = Cliente()\ncliente = ___",
+    "correctAnswer": "nil",
+    "hint": "It only works because the variable is Optional."
+   },
+   {
+    "id": 10,
+    "question": "Which function reports whether there is a single strong reference to the object (the basis of copy-on-write)?",
+    "codeSnippet": "if ___(&objeto) {\n    print(\"posso mutar sem afetar outros\")\n}",
+    "correctAnswer": "isKnownUniquelyReferenced",
+    "hint": "The name says it: 'is known uniquely referenced'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What is the output?\n'class P { deinit { print(\"bye\") } }\nvar a: P? = P()\nvar b = a\na = nil\nprint(\"x\")\nb = nil'",
+    "options": [
+     "x then bye",
+     "bye then x",
+     "Only x",
+     "Only bye"
+    ],
+    "correctIndex": 0,
+    "explanation": "There are two strong references (a and b). Clearing a only drops the count to 1. deinit runs when b becomes nil, after the print."
+   },
+   {
+    "id": 7,
+    "question": "Why is 'guard let self else { return }' at the start of a closure with '[weak self]' useful?",
+    "options": [
+     "It permanently removes the weak",
+     "It avoids using ARC",
+     "It creates a temporary strong reference that keeps self alive for the whole closure body",
+     "It turns the closure into @escaping"
+    ],
+    "correctIndex": 2,
+    "explanation": "Without it, each 'self?.' could see the object vanish midway. The binding pins a local strong reference until the end of scope, without creating a cycle."
+   },
+   {
+    "id": 8,
+    "question": "A Parent holds an array of Children and each Child has a strong 'var parent: Parent?'. What happens when the external reference to the Parent is cleared?",
+    "options": [
+     "Both are deallocated",
+     "Only the Child is deallocated",
+     "The app crashes",
+     "Neither is deallocated: it is a retain cycle; the Child should use 'weak var pai'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Parent retains Child and Child retains Parent, so counts never reach zero. The 'owner → subordinate' link should be strong and the back-link weak."
+   },
+   {
+    "id": 9,
+    "question": "Which Xcode tool helps find leaked objects and retain cycles at runtime?",
+    "options": [
+     "Interface Builder",
+     "Debug Memory Graph and the Leaks instrument",
+     "Asset Catalog",
+     "Location simulator"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Memory Graph shows live instances and their references; objects that should be gone appear with a warning marker. Instruments (Leaks, Allocations) complements it."
+   },
+   {
+    "id": 10,
+    "question": "How does ARC differ from a traditional garbage collector?",
+    "options": [
+     "ARC runs periodically on a separate thread",
+     "ARC detects cycles on its own",
+     "ARC only applies to structs",
+     "ARC inserts retain/release at compile time, freeing deterministically when the count hits zero, but it does not resolve cycles"
+    ],
+    "correctIndex": 3,
+    "explanation": "Being deterministic, deinit runs at the exact moment of release. In return, the developer must break cycles with weak/unowned."
+   },
+   {
+    "id": 11,
+    "question": "What does the compiler say about 'weak var n: Int?'",
+    "options": [
+     "Compiles normally",
+     "Only a warning",
+     "Error: 'weak' may only be applied to class and class-bound protocol types, not 'Int'; Int is a value type and is not part of ARC",
+     "Becomes unowned automatically"
+    ],
+    "correctIndex": 2,
+    "explanation": "weak and unowned exist for references to class instances. Value types are copied and have no shared reference count."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "The deinit below never prints. Why?\n'class A { var b: B?; deinit { print(\"A\") } }\nclass B { var a: A?; deinit { print(\"B\") } }\nvar x: A? = A()\nx?.b = B()\nx?.b?.a = x\nx = nil'",
+    "options": [
+     "Because x = nil is ignored",
+     "A and B reference each other strongly: the cycle keeps both alive even without external references",
+     "Because deinit only runs on structs",
+     "Because @escaping is missing"
+    ],
+    "correctIndex": 1,
+    "explanation": "Each object has a count of 1 coming from the other. Making one property 'weak' breaks the cycle and both deinits then run."
+   },
+   {
+    "id": 2,
+    "question": "In 'task = { [weak self] in self?.value = 1 }', what happens if the object was already deallocated when the closure runs?",
+    "options": [
+     "self is nil, the assignment is silently skipped and there is no crash",
+     "Crash",
+     "The object is recreated",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "weak automatically becomes nil when the object disappears. That is the difference from unowned, which would crash."
+   },
+   {
+    "id": 3,
+    "question": "A UIViewController uses 'Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in self.tick() }' and the controller is never deallocated after closing the screen. What is the fix?",
+    "options": [
+     "Just set repeats to false",
+     "Use var instead of let",
+     "Move it to viewDidLoad",
+     "Capture [weak self] in the closure and call invalidate() when the screen disappears"
+    ],
+    "correctIndex": 3,
+    "explanation": "The run loop retains the repeating timer, and the timer retains the closure that strongly captures self. [weak self] breaks the link and invalidate() releases the timer."
+   },
+   {
+    "id": 4,
+    "question": "In 'class Card { let holder: Customer }' the Customer always exists while the Card exists. Which reference is most appropriate in Customer → Card and Card → Customer?",
+    "options": [
+     "Both strong",
+     "Both weak",
+     "Customer → Card strong (optional) and Card → Customer 'unowned let', since the cycle is avoided and lifetime is guaranteed",
+     "Both unowned"
+    ],
+    "correctIndex": 2,
+    "explanation": "This is the classic example from the Swift guide: in a relationship where one side is never nil while the other exists, unowned avoids the cost of an Optional."
+   },
+   {
+    "id": 5,
+    "question": "What is the result?\n'var a: C? = C()\nvar b = a\nvar c = a\na = nil\nb = nil'\nWhen does C's deinit run?",
+    "options": [
+     "At the end of the 'a = nil' line",
+     "Only when c is also nil (or goes out of scope), since a strong reference remains",
+     "Right after b = nil",
+     "Never"
+    ],
+    "correctIndex": 1,
+    "explanation": "Three strong references existed. Two were removed; the third (c) keeps the object alive."
+   },
+   {
+    "id": 6,
+    "question": "In the Debug Memory Graph, what does the purple exclamation marker next to an instance usually indicate?",
+    "options": [
+     "A memory leak: the object is allocated but not reachable from any root",
+     "A syntax error",
+     "An active breakpoint",
+     "That the object is Sendable"
+    ],
+    "correctIndex": 0,
+    "explanation": "Retain cycles end up isolated: they keep each other alive, but nothing external reaches them. Xcode flags them for investigation."
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Which symbol combines two protocols into a protocol composition?",
+    "codeSnippet": "func apresentar(_ x: Nomeavel ___ Idadeavel) { }",
+    "correctAnswer": "&",
+    "hint": "It is the ampersand character."
+   },
+   {
+    "id": 7,
+    "question": "Which word declares a property as read-only in a protocol?",
+    "codeSnippet": "protocol Forma {\n    var area: Double { ___ }\n}",
+    "correctAnswer": "get",
+    "hint": "The opposite would be '{ get set }'."
+   },
+   {
+    "id": 8,
+    "question": "Which modifier lets structs and enums modify self when implementing this requirement?",
+    "codeSnippet": "protocol Contador {\n    ___ func incrementar()\n}",
+    "correctAnswer": "mutating",
+    "hint": "Classes adopting the protocol do not need it."
+   },
+   {
+    "id": 9,
+    "question": "Which property does the CustomStringConvertible protocol require?",
+    "codeSnippet": "struct Ponto: CustomStringConvertible {\n    var ___: String { \"(0, 0)\" }\n}",
+    "correctAnswer": "description",
+    "hint": "It is used by print() to display the instance."
+   },
+   {
+    "id": 10,
+    "question": "Which standard library protocol guarantees the <, >, <= and >= operators?",
+    "codeSnippet": "func maior<T: ___>(_ a: T, _ b: T) -> T {\n    a > b ? a : b\n}",
+    "correctAnswer": "Comparable",
+    "hint": "It extends Equatable with ordering."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "What does 'func f(_ x: Nomeavel & Idadeavel)' mean?",
+    "options": [
+     "x can be of a type adopting either of the two protocols",
+     "x must adopt both protocols at once",
+     "x is a new protocol called Nomeavel & Idadeavel",
+     "Error: '&' does not exist in types"
+    ],
+    "correctIndex": 1,
+    "explanation": "The composition requires conformance to every listed protocol. It avoids creating an intermediate protocol just to combine requirements."
+   },
+   {
+    "id": 7,
+    "question": "What is an advantage of 'func f<T: Forma>(_ x: T)' over 'func f(_ x: any Forma)'?",
+    "options": [
+     "Accepts arrays of mixed types",
+     "Allows storing different types in the same variable",
+     "Uses fewer lines",
+     "The compiler knows the concrete type, enabling specialization and static dispatch without the existential box"
+    ],
+    "correctIndex": 3,
+    "explanation": "Generics resolve to one concrete type per call at compile time. 'any' adds indirection and dynamic dispatch in exchange for heterogeneous flexibility."
+   },
+   {
+    "id": 8,
+    "question": "A protocol declares 'mutating func reset()'. How must a class adopting it implement the requirement?",
+    "options": [
+     "As 'func reset()', without 'mutating', since classes can already change their properties",
+     "As 'mutating func reset()'",
+     "It cannot adopt it",
+     "As 'static func reset()'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'mutating' only exists for value types. Classes implement the requirement with an ordinary method."
+   },
+   {
+    "id": 9,
+    "question": "What is 'Codable' in the standard library?",
+    "options": [
+     "A base class",
+     "A macro",
+     "A typealias for the composition Encodable & Decodable",
+     "A networking framework"
+    ],
+    "correctIndex": 2,
+    "explanation": "Declaring 'Codable' is equivalent to adopting Encodable and Decodable. If all properties are Codable, the compiler synthesizes the implementation."
+   },
+   {
+    "id": 10,
+    "question": "Which capability does POP offer that class inheritance does NOT?",
+    "options": [
+     "Overriding methods",
+     "Letting structs and enums adopt the behavior, and a type adopt several protocols (including via extension on existing types)",
+     "Using super",
+     "Having inherited stored properties"
+    ],
+    "correctIndex": 1,
+    "explanation": "Class inheritance is single and only for classes. Protocols allow multiple conformances on any type, even retroactively."
+   },
+   {
+    "id": 11,
+    "question": "Which declaration makes 'Int' adopt the protocol 'Dobravel' after the type already exists?",
+    "options": [
+     "struct Int: Dobravel { }",
+     "class Int: Dobravel { }",
+     "Int.conform(to: Dobravel)",
+     "extension Int: Dobravel { func dobrar() -> Int { self * 2 } }"
+    ],
+    "correctIndex": 3,
+    "explanation": "Retroactive conformance via extension is one of POP's strengths. You only need to implement the requirements; ideally you own either the protocol or the type, to avoid clashes with other modules."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What does the compiler say about this code?\n'func criar(_ b: Bool) -> some Forma {\n    if b { return Circulo() }\n    return Quadrado()\n}'",
+    "options": [
+     "It compiles: some accepts any conforming type",
+     "It compiles with a warning",
+     "Error: an opaque 'some' type must always return the same concrete type; use 'any Forma' or unify",
+     "Error: Circulo does not exist"
+    ],
+    "correctIndex": 2,
+    "explanation": "'some' hides the type, but the compiler still knows it, and it is unique. For different types per path, use the existential 'any' (or @ViewBuilder in SwiftUI)."
+   },
+   {
+    "id": 2,
+    "question": "What does 'let lista: any Collection<Int>' (Swift 5.7+) do?",
+    "options": [
+     "Accepts any collection whose Element is Int, using primary associated types",
+     "Accepts only Array<Int>",
+     "Does not compile: protocols with associatedtype cannot be used",
+     "Creates a new empty collection"
+    ],
+    "correctIndex": 0,
+    "explanation": "Primary associated types let you constrain the associatedtype with angle-bracket syntax, in 'any' or 'some'."
+   },
+   {
+    "id": 3,
+    "question": "A type adopts two protocols A and B, both with an extension providing a different default implementation of 'nome()'. What happens when calling 'x.nome()'?",
+    "options": [
+     "Uses the one from the protocol declared first",
+     "Uses the one from the last protocol",
+     "Runs both",
+     "Ambiguity error: the type must provide its own implementation"
+    ],
+    "correctIndex": 3,
+    "explanation": "The compiler does not choose between conflicting default implementations. Implement 'nome()' on the type itself to resolve it."
+   },
+   {
+    "id": 4,
+    "question": "What does 'ForEach(itens)' in SwiftUI require of the elements, without using the 'id:' parameter?",
+    "options": [
+     "Conform to Equatable",
+     "Conform to Identifiable, i.e. have a stable 'id' property",
+     "Be classes",
+     "Conform to Codable"
+    ],
+    "correctIndex": 1,
+    "explanation": "Identifiable is a simple protocol with 'var id'. SwiftUI uses it to distinguish rows and animate insertions/removals correctly."
+   },
+   {
+    "id": 5,
+    "question": "Why does 'struct Evento: Equatable { var nome: String; var acao: () -> Void }' not compile?",
+    "options": [
+     "Closures are not Equatable, so the compiler cannot synthesize '=='; you must implement it manually",
+     "Because Equatable only works with classes",
+     "Because String is not Equatable",
+     "The mutating keyword is missing"
+    ],
+    "correctIndex": 0,
+    "explanation": "Automatic synthesis requires every stored property to be Equatable. Implement '==' comparing only the relevant fields."
+   },
+   {
+    "id": 6,
+    "question": "In which situation is it still correct to prefer class inheritance over protocols?",
+    "options": [
+     "For modeling simple, independent data",
+     "To give behavior to enums",
+     "When the framework requires a superclass (e.g. UIViewController) or the type needs identity and shared state",
+     "For testing with mocks"
+    ],
+    "correctIndex": 2,
+    "explanation": "POP is the default recommendation, but APIs such as UIKit are subclass-based and there are legitimate shared-identity cases where classes are the right tool."
+   }
+  ]
+ }
+]

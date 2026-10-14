@@ -1,0 +1,1058 @@
+[
+ {
+  "id": "exam-9",
+  "title": "Certification Mock Exam: Debugging",
+  "description": "Interface Builder connections, error types, console messages, breakpoints, LLDB, logging, Instruments and ARC memory issues in certification style.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "In a storyboard, which Xcode pane shows the IBOutlets, IBActions and segues connected to the selected object?",
+    "options": [
+     "Attributes inspector",
+     "Connections inspector",
+     "Size inspector",
+     "Identity inspector"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Connections inspector lists the outlets, actions, segues and delegates wired to the object and lets you remove stale connections. The Attributes inspector edits appearance, the Size inspector edits frame/constraints and the Identity inspector sets the custom class."
+   },
+   {
+    "id": 2,
+    "question": "The app crashes when opening the screen with: 'this class is not key value coding-compliant for the key nameLabel'. You just renamed the @IBOutlet property nameLabel in code. What is the most likely cause and fix?",
+    "options": [
+     "A missing import UIKit in the controller file",
+     "The deployment target is too low; raise the minimum iOS version",
+     "The storyboard still holds a connection to the old outlet; remove it in the Connections inspector and reconnect to the new name",
+     "The property should be declared as weak var instead of @IBOutlet"
+    ],
+    "correctIndex": 2,
+    "explanation": "The storyboard file stores the key name 'nameLabel'. If the property no longer exists under that name, the runtime fails when applying KVC. Removing the stale connection and recreating it fixes it. Imports, deployment target and weak are unrelated to this error."
+   },
+   {
+    "id": 3,
+    "question": "The code compiles and runs without crashing, but the average computed with 'let average = sum / count' (both Int) shows 2 instead of 2.5. What kind of error is this?",
+    "options": [
+     "Syntax error",
+     "Runtime error (crash)",
+     "Linker error",
+     "Logic error"
+    ],
+    "correctIndex": 3,
+    "explanation": "No language rule was violated: integer division truncates, so the program does what was written but not what was intended. That is a logic error. A syntax error would be rejected by the compiler and a runtime error would crash the app."
+   },
+   {
+    "id": 4,
+    "question": "An IBOutlet declared as 'var titleLabel: UILabel!' was never connected in the storyboard. The app crashes when running 'titleLabel.text = \"Hi\"' in viewDidLoad. Which console message appears?",
+    "options": [
+     "Fatal error: Index out of range",
+     "Fatal error: Unexpectedly found nil while implicitly unwrapping an Optional value",
+     "unrecognized selector sent to instance",
+     "Fatal error: Double value cannot be converted to Int"
+    ],
+    "correctIndex": 1,
+    "explanation": "An unconnected outlet stays nil and, being an Implicitly Unwrapped Optional, accessing it traps with 'Unexpectedly found nil while implicitly unwrapping...'. The fix is to connect the outlet in the Connections inspector. The other messages relate to an invalid index, a missing method and a numeric conversion."
+   },
+   {
+    "id": 5,
+    "question": "Consider:\nlet names = [\"Ana\", \"Bia\", \"Caio\"]\nprint(names[3])\nWhat happens?",
+    "options": [
+     "It prints nil",
+     "It prints \"Caio\"",
+     "Runtime crash: Fatal error: Index out of range",
+     "Compile error, because the array only has 3 items"
+    ],
+    "correctIndex": 2,
+    "explanation": "Arrays are zero-indexed, so valid indices are 0, 1 and 2. Accessing index 3 traps at runtime with 'Index out of range'. Swift does not return nil for subscripting (only APIs like first do) and the compiler does not validate the index."
+   },
+   {
+    "id": 6,
+    "question": "When tapping a button, the app crashes with 'unrecognized selector sent to instance'. The button is wired to an @IBAction in the storyboard, but you deleted that method from the controller. What should you do?",
+    "options": [
+     "Add a line breakpoint in viewDidLoad",
+     "Replace the button with a UILabel",
+     "Open the button's Connections inspector and remove the connection to the method that no longer exists (or recreate the method)",
+     "Declare the controller as a final class"
+    ],
+    "correctIndex": 2,
+    "explanation": "The storyboard tries to send the message (selector) to the controller, which no longer implements the method, hence 'unrecognized selector'. Remove the stale connection or recreate the method with the same name. Breakpoints help diagnose but do not fix it; changing the control or using final does not help."
+   },
+   {
+    "id": 7,
+    "question": "You want the debugger to pause at the exact point where any exception is thrown, without knowing the line beforehand. Which breakpoint should you use?",
+    "options": [
+     "Exception breakpoint",
+     "Line breakpoint (clicking the gutter)",
+     "Symbolic breakpoint on viewDidLoad",
+     "Breakpoint with a sound action"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Exception Breakpoint (created in the Breakpoint navigator with the + button) pauses as soon as an exception is thrown, showing the call stack at the cause. A line breakpoint requires knowing where to stop, and a symbolic one pauses when a specific function is called."
+   },
+   {
+    "id": 8,
+    "question": "How can you log a variable's value to the console every time a line runs, without stopping the app?",
+    "options": [
+     "Set a breakpoint and press Continue manually at every stop",
+     "Disable all breakpoints (Cmd+Y) and use only Instruments",
+     "Switch the scheme to Release",
+     "Edit the breakpoint, add a Log Message action and tick 'Automatically continue after evaluating actions'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Breakpoints support actions such as Log Message; with 'Automatically continue' ticked, the app does not pause and the message (which can include @expr@) appears in the console. Stopping and continuing by hand is slow, and disabling breakpoints or switching to Release logs nothing."
+   },
+   {
+    "id": 9,
+    "question": "Execution is paused at 'let total = calculateTotal(items)'. You want to run that entire line, including the call, and stop at the next line of the SAME method. Which command should you use?",
+    "options": [
+     "Step Into",
+     "Step Out",
+     "Continue",
+     "Step Over"
+    ],
+    "correctIndex": 3,
+    "explanation": "Step Over (F6) runs the whole current line, including function calls, and stops at the next line. Step Into (F7) would enter calculateTotal, Step Out would finish the current function returning to its caller, and Continue only stops at the next breakpoint."
+   },
+   {
+    "id": 10,
+    "question": "You stepped into a long function and realized it is not the culprit. What does the Step Out command do?",
+    "options": [
+     "Ends the debugging session",
+     "Runs the rest of the current function and pauses back in the caller",
+     "Jumps to the next breakpoint, ignoring the caller",
+     "Restarts the app from the beginning"
+    ],
+    "correctIndex": 1,
+    "explanation": "Step Out (F8) finishes the running function and pauses right after it returns, in the code that called it. Ending the session is the Stop button, going to the next breakpoint is Continue, and restarting requires running the app again."
+   },
+   {
+    "id": 11,
+    "question": "In a 1000-iteration loop, the bug only appears when i == 500. How can you pause only on that iteration without editing the code?",
+    "options": [
+     "Place 500 breakpoints",
+     "Use an Exception breakpoint",
+     "Add a Condition to the breakpoint with the expression i == 500",
+     "Reduce the loop to 500 iterations"
+    ],
+    "correctIndex": 2,
+    "explanation": "Every breakpoint has a Condition field: the debugger pauses only when the expression is true, avoiding 1000 stops. Exception breakpoints do not filter by values, and changing the loop would alter the behavior you want to investigate."
+   },
+   {
+    "id": 12,
+    "question": "With the app paused, in the LLDB console, which command changes the variable 'counter' to 10 without recompiling?",
+    "options": [
+     "po counter",
+     "expression counter = 10",
+     "bt counter 10",
+     "continue counter"
+    ],
+    "correctIndex": 1,
+    "explanation": "The 'expression' command (or 'e') evaluates code in the paused context, including assignments, letting you test hypotheses without recompiling. 'po counter' only displays the value (no assignment), 'bt' shows the call stack and 'continue' resumes execution."
+   },
+   {
+    "id": 13,
+    "question": "Which LLDB command shows the call stack (backtrace) of the current thread?",
+    "options": [
+     "bt",
+     "po",
+     "frame variable",
+     "step"
+    ],
+    "correctIndex": 0,
+    "explanation": "'bt' (backtrace) lists the functions called up to the current point, useful after a crash. 'po' prints an object's description, 'frame variable' lists the frame's local variables and 'step' advances one line."
+   },
+   {
+    "id": 14,
+    "question": "Given 'struct Point { var x = 1; var y = 2 }' and 'let p = Point()', what is the difference between print(p) and dump(p)?",
+    "options": [
+     "dump(p) uses reflection and prints the hierarchical structure with each property on its own line",
+     "dump(p) only works with classes",
+     "print(p) shows the memory address, dump(p) does not",
+     "There is no difference; they are aliases"
+    ],
+    "correctIndex": 0,
+    "explanation": "print shows a compact description (Point(x: 1, y: 2)), while dump(p) uses Mirror to list the type and properties on indented lines, useful for nested values. Both work with structs and neither prints an address by default."
+   },
+   {
+    "id": 15,
+    "question": "In a production app, why is Logger (os framework) better than print?",
+    "options": [
+     "print is automatically stripped from code by the compiler",
+     "Logger encrypts network traffic",
+     "Logger only works in the Simulator",
+     "It has levels (debug, info, error), integrates with the unified log/Console.app and can redact data with privacy: .private"
+    ],
+    "correctIndex": 3,
+    "explanation": "Logger sends messages to the unified logging system: they are filterable by subsystem/category and level, cheap, and support privacy, as in '\\(email, privacy: .private)'. print only writes to stdout, is not stripped by the compiler, and Logger has nothing to do with networking nor is it limited to the Simulator."
+   },
+   {
+    "id": 16,
+    "question": "The app's UI stutters while scrolling a list. Which Instruments tool/template shows which functions consume the most CPU time?",
+    "options": [
+     "Time Profiler",
+     "Leaks",
+     "Network",
+     "Core Data"
+    ],
+    "correctIndex": 0,
+    "explanation": "Time Profiler samples the call stack periodically and reveals the methods that occupy the CPU the most, ideal for UI hangs. Leaks looks for leaked memory, Network analyzes traffic and Core Data measures persistence operations, not CPU per function."
+   },
+   {
+    "id": 17,
+    "question": "Consider:\nclass Owner { var pet: Pet? ; deinit { print(\"Owner freed\") } }\nclass Pet { var owner: Owner? ; deinit { print(\"Pet freed\") } }\nvar o: Owner? = Owner()\nvar p: Pet? = Pet()\no?.pet = p\np?.owner = o\no = nil\np = nil\nWhat is printed?",
+    "options": [
+     "Owner freed and then Pet freed",
+     "Pet freed and then Owner freed",
+     "Nothing: there is a retain cycle and no deinit is called",
+     "A compile error due to a circular reference"
+    ],
+    "correctIndex": 2,
+    "explanation": "Owner and Pet reference each other strongly, so each reference count never reaches zero even with o and p set to nil: a memory leak (visible in the Debug Memory Graph as leaked objects). The fix is to make one reference weak, for example 'weak var owner: Owner?'. The compiler does not detect cycles."
+   },
+   {
+    "id": 18,
+    "question": "A view controller stores a closure in a property (var onTap: (() -> Void)?) and uses self.title inside it. The controller's deinit is never called. What is the proper fix?",
+    "options": [
+     "Mark the closure as @escaping",
+     "Use a [weak self] capture list in the closure",
+     "Assign self = nil inside the closure",
+     "Declare the property as lazy"
+    ],
+    "correctIndex": 1,
+    "explanation": "The controller retains the closure and the closure retains self: a retain cycle. [weak self] (or [unowned self] when lifetime is guaranteed) breaks the cycle. @escaping only says the closure outlives the call; self cannot be assigned and lazy does not change capturing."
+   },
+   {
+    "id": 19,
+    "question": "Which line causes a runtime crash?\nlet values = [10, 20, 30]\nlet a = values.first!           // line 1\nlet text: String? = nil\nprint(text ?? \"empty\")          // line 2\nlet n = Int(\"abc\")!              // line 3",
+    "options": [
+     "Line 3",
+     "Line 1",
+     "Line 2",
+     "None of them"
+    ],
+    "correctIndex": 0,
+    "explanation": "Int(\"abc\") returns nil, and force unwrapping (!) nil raises 'Unexpectedly found nil while unwrapping an Optional value'. On line 1, first is 10 because the array is not empty; on line 2, ?? supplies the default 'empty'."
+   },
+   {
+    "id": 20,
+    "question": "Which item below is a syntax/compile-time error (caught BEFORE running), not a runtime error?",
+    "options": [
+     "Accessing a nonexistent array index",
+     "Dividing an Int by zero",
+     "Force unwrapping an Optional that is nil",
+     "Forgetting to close a function's brace }"
+    ],
+    "correctIndex": 3,
+    "explanation": "Syntax and type errors are rejected by the compiler and the app never runs; Xcode shows them in red. An invalid index, integer division by zero and force unwrapping nil only show up while the app executes, causing a crash."
+   }
+  ]
+ },
+ {
+  "id": "exam-10",
+  "title": "Mock Exam: SwiftUI Essentials",
+  "description": "Views and modifiers, stacks, state management, navigation, lists, forms, animation, sheets, previews and accessibility in SwiftUI.",
+  "category": "SwiftUI",
+  "timeLimitMinutes": 30,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Which code produces text with a blue background that also covers the padding around the text?",
+    "options": [
+     "Text(\"Hi\").padding().background(.blue)",
+     "Text(\"Hi\").background(.blue).padding()",
+     "Text(\"Hi\").background(.blue).frame(width: 0)",
+     "Text(\"Hi\").foregroundStyle(.blue)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Modifier order matters: each one wraps the view produced by the previous one. padding() first enlarges the area and background then fills it, padding included. With background first, the blue covers only the text and the padding stays transparent. foregroundStyle changes the text color, not the background."
+   },
+   {
+    "id": 2,
+    "question": "What does the return type 'some View' on the body property mean?",
+    "options": [
+     "Any View, different on each run",
+     "An opaque type: body returns a single concrete View type, chosen by the compiler, without exposing it",
+     "An Optional View",
+     "A base class named View that all views inherit from"
+    ],
+    "correctIndex": 1,
+    "explanation": "'some' declares an opaque return type: the concrete type is fixed and known to the compiler but hidden from callers, enabling optimizations. That is why a body cannot return different types in if branches without @ViewBuilder. View is a protocol, not a class, and some View is not an Optional."
+   },
+   {
+    "id": 3,
+    "question": "In 'VStack(alignment: .leading, spacing: 8) { ... }', what does each argument control?",
+    "options": [
+     "alignment centers vertically; spacing sets the width",
+     "alignment sets the font size; spacing the color",
+     "alignment aligns children horizontally to the leading edge; spacing is the 8-point vertical distance between them",
+     "Both affect only the first view"
+    ],
+    "correctIndex": 2,
+    "explanation": "In a VStack, alignment takes a HorizontalAlignment (leading, center, trailing) and spacing is the gap between consecutive children along the vertical axis. They do not control font, color or width, and they apply to all children."
+   },
+   {
+    "id": 4,
+    "question": "In 'HStack { Text(\"A\"); Spacer(); Text(\"B\") }', where do A and B end up?",
+    "options": [
+     "Both centered and together",
+     "B at the leading edge and A at the trailing edge",
+     "A at the leading edge and B at the trailing edge, since Spacer takes all the remaining space",
+     "A compile error, since Spacer only works in a VStack"
+    ],
+    "correctIndex": 2,
+    "explanation": "Spacer is a flexible view that expands to consume the available space along the stack's axis, pushing A and B to the ends. It works in HStack and VStack; order is as declared, so A stays at the start."
+   },
+   {
+    "id": 5,
+    "question": "Which property wrapper fits a simple value (such as a 'showing details' Bool) that belongs to a view and, when it changes, redraws its body?",
+    "options": [
+     "@State",
+     "@Binding",
+     "@Environment",
+     "@AppStorage only for cloud data"
+    ],
+    "correctIndex": 0,
+    "explanation": "@State makes the view own the storage of a local value and invalidates the body when it changes; it is usually private. @Binding merely references another view's value, @Environment reads system/ancestor values and @AppStorage persists to UserDefaults (not the cloud)."
+   },
+   {
+    "id": 6,
+    "question": "A parent view has '@State private var isOn = false'. How do you pass it to a Toggle so the Toggle can change it? Toggle(\"Wi-Fi\", isOn: ___)",
+    "options": [
+     "isOn",
+     "&isOn",
+     "$isOn",
+     "@isOn"
+    ],
+    "correctIndex": 2,
+    "explanation": "The $ prefix accesses @State's projectedValue, which is a read-write Binding<Bool>. Passing 'isOn' hands over a plain Bool, not a Binding, and & and @ are not valid syntax here."
+   },
+   {
+    "id": 7,
+    "question": "With Observation (Swift 5.9+), what is the recommended way for a view to create and own a model?\n@Observable class Cart { var items: [String] = [] }",
+    "options": [
+     "@ObservedObject var cart = Cart()",
+     "@Published var cart = Cart()",
+     "@State private var cart = Cart()",
+     "var cart = Cart() with no wrapper, since @Observable creates the storage"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Observable classes do not need ObservableObject/@Published; a view that creates the model should keep it in @State so the instance survives view rebuilds. Without a wrapper, the model would be recreated whenever body is re-evaluated, and @Published/@ObservedObject belong to the older model."
+   },
+   {
+    "id": 8,
+    "question": "A view receives an @Observable model as a parameter and needs bindings to its properties (e.g. TextField(\"Name\", text: $model.name)). What should you add?",
+    "options": [
+     "Declare it with @Binding",
+     "Declare 'var model: Profile' with @Bindable",
+     "Declare it with @StateObject",
+     "Nothing: $model.name already works on any let"
+    ],
+    "correctIndex": 1,
+    "explanation": "@Bindable enables the $ syntax and bindings to properties of an @Observable object the view does not own. @Binding expects a value coming from a parent's @State, @StateObject is the older API and a plain property does not project bindings."
+   },
+   {
+    "id": 9,
+    "question": "Inside a screen presented with .sheet, how can you close it from a 'Done' button using the environment?",
+    "options": [
+     "@Environment(\\.dismiss) private var dismiss and call dismiss()",
+     "@Environment(\\.close) var close",
+     "@State var isPresented and call isPresented.toggle() in the child",
+     "self.removeFromSuperview()"
+    ],
+    "correctIndex": 0,
+    "explanation": "The \\.dismiss environment key returns an action (DismissAction) that closes the current presentation: sheet, pushed view in a NavigationStack, etc. \\.close does not exist, a new @State in the child does not control the parent, and removeFromSuperview belongs to UIKit."
+   },
+   {
+    "id": 10,
+    "question": "What is required to use 'ForEach(tasks) { task in ... }' without the id parameter?",
+    "options": [
+     "Elements must be Strings",
+     "The element type must conform to Identifiable",
+     "The array must have at most 10 items",
+     "Elements must be classes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Without an explicit id, ForEach uses Identifiable's id property to tell elements apart across updates. If the type is not Identifiable, pass a stable key path such as 'id: \\.self' (for unique Hashable values). There is no item limit and no String or class requirement."
+   },
+   {
+    "id": 11,
+    "question": "Which pair of APIs implements value-based navigation in a NavigationStack?",
+    "options": [
+     "NavigationLink(destination:) and .sheet",
+     "Button and .present(_:)",
+     "TabView and .tabItem",
+     "NavigationLink(value:) and .navigationDestination(for:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "NavigationLink(value:) pushes a Hashable value and .navigationDestination(for: Type.self) defines the destination view for that type, decoupling link and destination. The other combinations belong to other mechanisms (sheet, UIKit, tabs)."
+   },
+   {
+    "id": 12,
+    "question": "You use 'NavigationStack(path: $path)' with '@State private var path = NavigationPath()'. How do you return to the root screen from code?",
+    "options": [
+     "path = NavigationPath()  (or path.removeLast(path.count))",
+     "path.append(nil)",
+     "dismiss(animated: true)",
+     "navigationController.popToRootViewController()"
+    ],
+    "correctIndex": 0,
+    "explanation": "The path represents the stack of destinations; emptying it makes the NavigationStack remove all pushed screens and show the root. append adds screens, and dismiss(animated:) and navigationController are UIKit concepts."
+   },
+   {
+    "id": 13,
+    "question": "Using TabView's classic API, which modifier defines each tab's icon and title on a child view?",
+    "options": [
+     ".navigationTitle(\"Home\")",
+     ".badge(\"Home\")",
+     ".toolbar { Text(\"Home\") }",
+     ".tabItem { Label(\"Home\", systemImage: \"house\") }"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the classic form, each TabView child gets .tabItem with the tab's content (usually a Label). Recent versions also offer the Tab(\"Home\", systemImage:) { ... } initializer. navigationTitle titles the navigation bar, badge shows a counter and toolbar does not create tabs."
+   },
+   {
+    "id": 14,
+    "question": "The code below does not compile. What is the problem?\n@State private var volume = 5\nSlider(value: $volume, in: 0...10)",
+    "options": [
+     "@State cannot be private",
+     "The range 0...10 is invalid",
+     "Slider only works inside a Form",
+     "Slider requires a Binding to a floating-point type; volume is an Int, so it should be 5.0 or Double"
+    ],
+    "correctIndex": 3,
+    "explanation": "Slider requires a Binding<V> where V is BinaryFloatingPoint (Double, Float, CGFloat). With the literal 5, volume is inferred as Int. Declare 'var volume: Double = 5'. Using private on @State is good practice, the range is valid and Slider works outside Form."
+   },
+   {
+    "id": 15,
+    "question": "What is the Form container with Section best suited for?",
+    "options": [
+     "Drawing real-time graphics",
+     "Settings or data-entry screens with grouped rows and controls",
+     "Stacking views in layers on top of each other",
+     "Displaying millions of items with lazy loading and no styling"
+    ],
+    "correctIndex": 1,
+    "explanation": "Form arranges controls (Toggle, Picker, TextField) in grouped rows in the platform's standard style, with Section for headers and footers. Layering is ZStack's job, and graphics call for Canvas or Swift Charts."
+   },
+   {
+    "id": 16,
+    "question": "Which Picker declaration is correct for choosing among the colors of an enum 'Hue: String, CaseIterable, Identifiable' with @State var choice: Hue",
+    "options": [
+     "Picker(\"Hue\", selection: $choice) { ForEach(Hue.allCases) { Text($0.rawValue).tag($0) } }",
+     "Picker(\"Hue\", selection: choice) { ... } without $",
+     "Picker(\"Hue\") { ... }.onSelect(choice)",
+     "Picker(Hue.allCases, selection: $choice)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Picker needs a Binding for the selection ($choice) and options with .tag whose values match the selection's type (here, Hue). The version without $ passes a value, not a binding; onSelect does not exist and Picker does not take an array directly."
+   },
+   {
+    "id": 17,
+    "question": "Why does the '.animation(.easeInOut, value: expanded)' modifier require the value parameter?",
+    "options": [
+     "To choose the animation duration",
+     "To disable the animation",
+     "The animation only runs when the watched value changes, avoiding animating unrelated changes",
+     "Because value defines the final color"
+    ],
+    "correctIndex": 2,
+    "explanation": "The value parameter ties the animation to a specific change; the older version without value (implicit and broad) was deprecated for animating unexpected effects. Duration comes from the curve/animation itself, and value neither disables anything nor sets a color. Explicit alternative: withAnimation { ... }."
+   },
+   {
+    "id": 18,
+    "question": "Which code makes a Text appear with a slide transition when 'show' becomes true?",
+    "options": [
+     "Text(\"Hi\").transition(.slide) with no if or animation",
+     "Text(\"Hi\").opacity(show)",
+     "withAnimation { show.toggle() } with if show { Text(\"Hi\").transition(.slide) }",
+     "Text(\"Hi\").onChange(of: show) { .slide }"
+    ],
+    "correctIndex": 2,
+    "explanation": ".transition defines how a view is inserted/removed, which requires it to enter or leave the hierarchy (e.g. via if) inside an animation (withAnimation or .animation). Without the if and animation nothing happens; opacity takes a Double, not a Bool, and onChange does not define transitions."
+   },
+   {
+    "id": 19,
+    "question": "What is the difference between .sheet(isPresented:) and .sheet(item:)?",
+    "options": [
+     "item: only works on iPad",
+     "isPresented: requires an Identifiable",
+     "None: they are aliases",
+     "item: presents when the Identifiable Optional becomes non-nil and hands the value to the content"
+    ],
+    "correctIndex": 3,
+    "explanation": ".sheet(item: $selected) presents the sheet when the binding gets a value (an Identifiable type) and passes it to the closure, ideal for an element's details. isPresented uses a Bool and carries no data. Both work on iPhone and iPad."
+   },
+   {
+    "id": 20,
+    "question": "In a delete-confirmation alert, what does 'Button(\"Delete\", role: .destructive) { ... }' do?",
+    "options": [
+     "Prevents the button from being tapped",
+     "Marks the action as destructive, and the system highlights it (in red)",
+     "Closes all alerts in the app",
+     "Turns the button into a navigation link"
+    ],
+    "correctIndex": 1,
+    "explanation": "Roles give semantic meaning: .destructive is highlighted by the system (red), .cancel gets cancel placement. The button stays tappable, only dismisses its own alert when triggered and does not become a NavigationLink."
+   },
+   {
+    "id": 21,
+    "question": "What is the #Preview { ContentView() } macro for?",
+    "options": [
+     "It publishes the view to the App Store",
+     "It creates an automated UI test",
+     "It swaps ContentView for another view in production",
+     "It renders the view in Xcode's canvas without having to run the app in the simulator"
+    ],
+    "correctIndex": 3,
+    "explanation": "#Preview defines a preview shown in the canvas, allowing quick iteration (also with variations such as .preferredColorScheme(.dark)). It is development code: it publishes nothing, is not a test and does not change the production app."
+   },
+   {
+    "id": 22,
+    "question": "A button has only an icon: Button { add() } label: { Image(systemName: \"plus\") }. Which modifier improves the VoiceOver experience?",
+    "options": [
+     ".accessibilityLabel(\"Add item\")",
+     ".accessibilityHidden(true)",
+     ".opacity(0)",
+     ".font(.largeTitle)"
+    ],
+    "correctIndex": 0,
+    "explanation": "accessibilityLabel provides the text VoiceOver reads; without it the reader may announce just 'plus'. accessibilityHidden would hide the button from VoiceOver users, opacity(0) would make it invisible and font does not affect how an image is read."
+   },
+   {
+    "id": 23,
+    "question": "For text to respect the user's preferred font size (Dynamic Type), which approach is correct?",
+    "options": [
+     "Use .font(.system(size: 14)) with a fixed size on all text",
+     "Use semantic styles such as .font(.body) or .title",
+     "Turn off system accessibility",
+     "Use Image instead of Text"
+    ],
+    "correctIndex": 1,
+    "explanation": "Semantic text styles (.body, .headline, .title) scale automatically with Dynamic Type. Fixed sizes do not follow the user's preference (unless they use relative scaling), and replacing Text with Image hurts accessibility."
+   },
+   {
+    "id": 24,
+    "question": "A list row has an icon, a title and a subtitle in separate Texts. How do you make VoiceOver treat them as a single element?",
+    "options": [
+     ".accessibilityElement(children: .combine)",
+     ".accessibilityHidden(true) on each one",
+     ".accessibilityElement(children: .ignore) with no label",
+     ".disabled(true)"
+    ],
+    "correctIndex": 0,
+    "explanation": ".combine merges the child elements into one accessibility element, reading the content in sequence. Hiding them all would make the row vanish for VoiceOver, .ignore without a label would leave an element without a description and disabled only turns off interaction."
+   },
+   {
+    "id": 25,
+    "question": "Which error does the compiler report here?\nstruct Counter: View {\n    var total = 0\n    var body: some View {\n        Button(\"+1\") { total += 1 }\n    }\n}",
+    "options": [
+     "Missing return in body",
+     "Button does not accept closures",
+     "total should be let",
+     "Left side of mutating operator isn't mutable: 'self' is immutable; the fix is to declare total with @State"
+    ],
+    "correctIndex": 3,
+    "explanation": "body is a non-mutating property of a struct, so it cannot change 'total' directly. @State moves the storage outside the immutable struct, allowing mutation and redraw. 'return' is optional in a single-expression body, Button accepts an action closure and let would prevent any change."
+   }
+  ]
+ },
+ {
+  "id": "exam-11",
+  "title": "Mock Exam: Data, Networking and Security",
+  "description": "Persistence with UserDefaults, files, Codable, SwiftData and Core Data, networking with URLSession, CloudKit, Keychain, ATS and privacy.",
+  "category": "Dados e Rede",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Which piece of data is a good candidate for UserDefaults?",
+    "options": [
+     "The account password",
+     "A database of 50,000 records",
+     "The theme preference (light/dark) chosen by the user",
+     "A 200 MB video recorded in the app"
+    ],
+    "correctIndex": 2,
+    "explanation": "UserDefaults is meant for small preferences and settings. Passwords belong in the Keychain, large data sets in SwiftData/Core Data/files, and videos in the file system."
+   },
+   {
+    "id": 2,
+    "question": "What does '@AppStorage(\"name\") private var name = \"\"' do in a SwiftUI view?",
+    "options": [
+     "Reads and writes the \"name\" key in UserDefaults and updates the view when the value changes",
+     "Stores the value in the Keychain, encrypted",
+     "Syncs automatically with iCloud",
+     "Creates a table in SwiftData"
+    ],
+    "correctIndex": 0,
+    "explanation": "@AppStorage is a wrapper over UserDefaults: the value persists across launches and triggers a view update. It does not use the Keychain, does not sync with iCloud by itself and does not use SwiftData."
+   },
+   {
+    "id": 3,
+    "question": "Which of these declarations is NOT directly supported by @AppStorage?\n(Profile is a Codable struct with several fields)",
+    "options": [
+     "@AppStorage(\"profile\") var profile = Profile()",
+     "@AppStorage(\"points\") var points = 0",
+     "@AppStorage(\"loggedIn\") var loggedIn = false",
+     "@AppStorage(\"lastSite\") var url = URL(string: \"https://apple.com\")!"
+    ],
+    "correctIndex": 0,
+    "explanation": "@AppStorage supports Bool, Int, Double, String, URL, Data and RawRepresentable enums (Int/String). A custom struct is not supported: you must encode it to Data (with JSONEncoder) or use another persistence layer."
+   },
+   {
+    "id": 4,
+    "question": "You need to store temporary cache files that the system may delete when storage runs low. Which directory should you use with FileManager?",
+    "options": [
+     "The Documents directory (.documentDirectory)",
+     "The Caches directory (.cachesDirectory)",
+     "The app bundle (Bundle.main)",
+     "The device's root / directory"
+    ],
+    "correctIndex": 1,
+    "explanation": "Caches is for re-creatable data that the system may remove. Documents is for user data that must persist, the bundle is read-only and the app cannot access the root directory because of the sandbox."
+   },
+   {
+    "id": 5,
+    "question": "The API's JSON has the key \"first_name\", but your struct has 'let firstName: String'. What should you do to decode it correctly?",
+    "options": [
+     "Renaming the property to first_name is mandatory",
+     "Define CodingKeys mapping firstName to \"first_name\" or use keyDecodingStrategy = .convertFromSnakeCase",
+     "Use try! to ignore the error",
+     "Convert the JSON to a String before decoding"
+    ],
+    "correctIndex": 1,
+    "explanation": "By default the property name must match the key. A CodingKeys enum (case firstName = \"first_name\") or JSONDecoder's convertFromSnakeCase strategy solves it. Renaming is not mandatory, try! would merely crash the app, and converting to String does not help."
+   },
+   {
+    "id": 6,
+    "question": "What happens?\nstruct User: Codable { let name: String; let age: Int }\nlet json = #\"{\"name\":\"Ana\"}\"#\nlet u = try JSONDecoder().decode(User.self, from: Data(json.utf8))",
+    "options": [
+     "It decodes with age equal to 0",
+     "It throws DecodingError.keyNotFound because the key \"age\" is missing from the JSON; making it Int? fixes it",
+     "It decodes with age equal to nil",
+     "Compile error because of Data(json.utf8)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Non-optional properties require the key in the JSON; its absence throws keyNotFound. There is no automatic default value. Declaring 'let age: Int?' turns the absence into nil. Data(json.utf8) is a valid way to get Data from a String."
+   },
+   {
+    "id": 7,
+    "question": "Which privacy practice is the most appropriate when requesting access to the user's location?",
+    "options": [
+     "Request the permission at the moment the feature is needed, explain why in the usage description, and collect only what is necessary",
+     "Ask for all permissions on first launch",
+     "Collect background location 'just in case'",
+     "Omit the explanation so as not to scare the user"
+    ],
+    "correctIndex": 0,
+    "explanation": "Best practice and Apple's guidelines call for data minimization, permission in context and a clear justification (such as NSLocationWhenInUseUsageDescription). Asking for everything upfront or collecting without need reduces trust and may cause App Review rejection."
+   },
+   {
+    "id": 8,
+    "question": "What is the correct way to download data with async/await using URLSession?",
+    "options": [
+     "let data = URLSession.shared.data(from: url)",
+     "let (data, response) = await URLSession.shared.data(from: url)  // no try",
+     "let data = try URLSession.shared.dataTask(url)",
+     "let (data, response) = try await URLSession.shared.data(from: url)"
+    ],
+    "correctIndex": 3,
+    "explanation": "data(from:) is an async function that can also throw, so it needs try await and returns a (Data, URLResponse) tuple. Without await or without try the code does not compile, and dataTask is the closure-based API and does not return Data directly."
+   },
+   {
+    "id": 9,
+    "question": "The server responds with 404 and you called 'try await URLSession.shared.data(from: url)'. What happens?",
+    "options": [
+     "The call automatically throws URLError",
+     "The app crashes with a Fatal error",
+     "The call is retried until it returns 200",
+     "No error is thrown: you receive the response and must check response.statusCode"
+    ],
+    "correctIndex": 3,
+    "explanation": "URLSession only throws on transport failures (no network, timeout, DNS). A 404 is a valid HTTP response, so you must validate (response as? HTTPURLResponse)?.statusCode, for instance in 200...299. There is also no automatic retry or crash."
+   },
+   {
+    "id": 10,
+    "question": "Which set of HTTP codes indicates a SERVER-side error (and it is usually worth retrying later)?",
+    "options": [
+     "500 to 599, such as 500 and 503",
+     "400 to 499, such as 401 and 404",
+     "200 to 299, such as 200 and 201",
+     "300 to 399, such as 301"
+    ],
+    "correctIndex": 0,
+    "explanation": "The 5xx range indicates server failure (500 Internal Server Error, 503 Service Unavailable). 4xx are client errors (401 unauthenticated, 404 not found), 2xx success and 3xx redirections."
+   },
+   {
+    "id": 11,
+    "question": "You created '@Model class Book { var title: String }' but the app crashes when inserting data, complaining there is no container. What is missing?",
+    "options": [
+     "Importing CoreData",
+     "Making Book a struct",
+     "Applying .modelContainer(for: Book.self) on the scene or root view",
+     "Adding @Query to the Book class"
+    ],
+    "correctIndex": 2,
+    "explanation": "The ModelContainer sets up SwiftData's storage and makes the ModelContext available in the environment; it is created with the .modelContainer(for:) modifier on WindowGroup/App. @Model requires a class (not a struct), CoreData is not needed and @Query is used in views, not in the model."
+   },
+   {
+    "id": 12,
+    "question": "What is '@Query(sort: \\Book.title) var books: [Book]' for in a view?",
+    "options": [
+     "It makes a network request to the server",
+     "It sets the rendering order of views",
+     "It fetches Books from SwiftData, sorted by title, and automatically updates the view when data changes",
+     "It runs a manual SQL query just once"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Query reads the ModelContext from the environment, applies sorting/filters and keeps the result current, redrawing the view on inserts, changes or deletions. It makes no network requests, needs no SQL and has nothing to do with rendering order."
+   },
+   {
+    "id": 13,
+    "question": "How do you insert and delete an object in SwiftData inside a view?",
+    "options": [
+     "Book.save() and Book.remove()",
+     "@Environment(\\.modelContext) var context; context.insert(book); context.delete(book)",
+     "array.append(book) on a @State",
+     "UserDefaults.standard.set(book)"
+    ],
+    "correctIndex": 1,
+    "explanation": "The ModelContext is the 'scratchpad' that tracks objects: insert and delete register the changes, which are saved automatically (or with try context.save()). Book has no save/remove by default, an array in @State does not persist and UserDefaults is not meant for models."
+   },
+   {
+    "id": 14,
+    "question": "Given:\n@Model class Author { @Relationship(deleteRule: .cascade, inverse: \\Book.author) var books: [Book] = [] }\nWhat happens when an Author is deleted?",
+    "options": [
+     "The Books keep a nil author and remain",
+     "All of its Books are deleted too",
+     "Deletion is blocked while books exist",
+     "Nothing: the rule only applies to reads"
+    ],
+    "correctIndex": 1,
+    "explanation": "deleteRule .cascade propagates the deletion to related objects. Keeping books with a nil author would use .nullify (the default), and .deny would block the deletion. The rule applies to deletions, not to reads."
+   },
+   {
+    "id": 15,
+    "question": "In Core Data, you changed properties of an NSManagedObject. What is needed to persist the changes?",
+    "options": [
+     "Nothing: it is written immediately on each assignment",
+     "Call NSPersistentContainer.delete()",
+     "Call try context.save() on the NSManagedObjectContext",
+     "Restart the app"
+    ],
+    "correctIndex": 2,
+    "explanation": "The NSManagedObjectContext is a scratchpad: changes stay in memory until save() is called, which writes them to the persistent store through the coordinator. It is not immediate, delete() is not a container API and restarting the app would lose unsaved changes."
+   },
+   {
+    "id": 16,
+    "question": "To sync SwiftData data across the same user's devices via iCloud, what is needed in the project?",
+    "options": [
+     "Only an internet connection",
+     "Your own server account",
+     "The Keychain Sharing capability",
+     "The iCloud capability with CloudKit (with a container) and Background Modes with Remote notifications"
+    ],
+    "correctIndex": 3,
+    "explanation": "Syncing uses CloudKit: add the iCloud capability with CloudKit, choose a container and enable Remote notifications in Background Modes. The model must also be compatible (optional or defaulted properties, no unique constraints). Keychain Sharing does not sync models and no own server is needed."
+   },
+   {
+    "id": 17,
+    "question": "In CloudKit, which database stores a user's personal data, counts against their iCloud quota and is invisible to other users?",
+    "options": [
+     "Private database",
+     "Public database",
+     "Shared database without authentication",
+     "Apple's server-side local database"
+    ],
+    "correctIndex": 0,
+    "explanation": "The private database stores user data in their iCloud account and uses their quota. The public database is visible to all app users and counts against the developer's quota. The shared database holds records shared by other users; the last name does not exist in CloudKit."
+   },
+   {
+    "id": 18,
+    "question": "Your app needs to store the user's authentication token. Where should it be stored?",
+    "options": [
+     "In UserDefaults, as plain text",
+     "In a .txt file in Documents",
+     "In a constant in the source code",
+     "In the Keychain (Keychain Services), which is encrypted and protected by the system"
+    ],
+    "correctIndex": 3,
+    "explanation": "The Keychain is designed for secrets such as passwords and tokens: items are encrypted, system-protected and can require the device to be unlocked. UserDefaults and ordinary files are readable in backups or with device access, and constants in code can be extracted from the binary."
+   },
+   {
+    "id": 19,
+    "question": "Your app calls 'http://api.example.com/data' and the request fails with an App Transport Security error. What is the best solution?",
+    "options": [
+     "Disable ATS globally with NSAllowsArbitraryLoads",
+     "Swap URLSession for another library",
+     "Serve the API over HTTPS (https://) with valid TLS",
+     "Add try! to the call"
+    ],
+    "correctIndex": 2,
+    "explanation": "ATS requires secure connections (HTTPS/TLS) by default. The right fix is to use HTTPS; Info.plist exceptions should be minimal and justified (and may be questioned in App Review). Switching libraries does not bypass ATS and try! would just crash the app."
+   },
+   {
+    "id": 20,
+    "question": "Your app opens the camera, but the Info.plist lacks the NSCameraUsageDescription key. What happens when accessing the camera?",
+    "options": [
+     "iOS shows the permission prompt with generic text",
+     "The camera works normally",
+     "Xcode adds the key automatically at runtime",
+     "The app is terminated by the system, with an error pointing to the missing privacy key"
+    ],
+    "correctIndex": 3,
+    "explanation": "For protected resources (camera, photos, location, microphone...), the Info.plist must contain a usage description; without it, the app is terminated when it tries to access the resource and App Review may also reject it. The system does not make up text, and Xcode does not edit the plist at runtime."
+   }
+  ]
+ },
+ {
+  "id": "exam-13",
+  "title": "Mock Exam: Distribution and the App Store",
+  "description": "Signing, certificates and provisioning, capabilities, archive, TestFlight, App Store Connect, review guidelines, privacy, versioning and in-app purchases.",
+  "category": "Distribuição",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "What is the main purpose of code signing for iOS apps?",
+    "options": [
+     "To compress the binary to reduce its size",
+     "To identify the developer and ensure the app was not altered after being signed",
+     "To translate the app into other languages",
+     "To speed up compilation in Xcode"
+    ],
+    "correctIndex": 1,
+    "explanation": "Signing uses a certificate to prove who built the app and lets the system detect any change to the code after signing. It does not compress, localize or speed up builds."
+   },
+   {
+    "id": 2,
+    "question": "Which certificate is used to sign an app that will be sent to the App Store?",
+    "options": [
+     "Apple Development",
+     "An SSL certificate from your website",
+     "Developer ID Installer",
+     "Apple Distribution"
+    ],
+    "correctIndex": 3,
+    "explanation": "Builds for the App Store and TestFlight are signed with the Apple Distribution certificate. Apple Development is for running on devices during development, SSL is for web servers and Developer ID is for distributing macOS apps outside the Mac App Store."
+   },
+   {
+    "id": 3,
+    "question": "What does a provisioning profile tie together?",
+    "options": [
+     "Only the app name and icon",
+     "The App ID, signing certificates, entitlements and (in development/Ad Hoc profiles) authorized devices",
+     "The source code and the Git repository",
+     "The build number and marketing version"
+    ],
+    "correctIndex": 1,
+    "explanation": "The provisioning profile is the document that binds the App ID, certificates, entitlements and, where applicable, the list of device UDIDs, authorizing the app to run or be distributed. Name, icon, version and Git are not part of it."
+   },
+   {
+    "id": 4,
+    "question": "When building for a physical iPhone, Xcode shows 'Signing for \"MyApp\" requires a development team'. What is the fix?",
+    "options": [
+     "Reinstall macOS",
+     "Change the project name",
+     "Select a Team in the target's Signing & Capabilities (and keep 'Automatically manage signing')",
+     "Disable the iPhone and use only the Simulator forever"
+    ],
+    "correctIndex": 2,
+    "explanation": "To sign, the target must be associated with a Team (a developer account, including a free Personal Team) in Signing & Capabilities; with the automatic option, Xcode creates certificates and profiles. The other actions do not address the missing team (the Simulator needs no signing, but that is not the fix)."
+   },
+   {
+    "id": 5,
+    "question": "You want to add push notifications to the app. What is the correct flow in Xcode?",
+    "options": [
+     "Manually edit the binary after compiling",
+     "In Signing & Capabilities, click + Capability and add Push Notifications",
+     "Add the UserNotifications library to the Podfile",
+     "Create a new SSL certificate"
+    ],
+    "correctIndex": 1,
+    "explanation": "Adding the capability in Signing & Capabilities includes the matching entitlement and updates the App ID and provisioning profile (with automatic signing). Editing the binary would break the signature, and the UserNotifications framework ships with the SDK and does not replace the capability."
+   },
+   {
+    "id": 6,
+    "question": "Which statement about an app's Bundle Identifier is correct?",
+    "options": [
+     "It can be freely changed after release while keeping the same app",
+     "It uses reverse-domain format (com.company.app), must be unique and is the basis of the App ID and the App Store Connect record",
+     "It must equal the name displayed on the Home Screen",
+     "It is chosen by Apple and cannot be set by the developer"
+    ],
+    "correctIndex": 1,
+    "explanation": "The bundle ID, such as com.company.MyApp, uniquely identifies the app, must match the App ID and the app's record in App Store Connect, and cannot change after release without creating a new app. The displayed name is a different field (Display Name)."
+   },
+   {
+    "id": 7,
+    "question": "The Product > Archive command is disabled (grayed out) in Xcode. What is the most common cause?",
+    "options": [
+     "The project has more than one Swift file",
+     "The app has no icon",
+     "Xcode is in dark mode",
+     "The selected destination is a Simulator instead of 'Any iOS Device' or a real device"
+    ],
+    "correctIndex": 3,
+    "explanation": "Archive produces a distribution build for devices, so it requires 'Any iOS Device (arm64)' or a connected device as the destination; with a Simulator selected, the option is unavailable. Number of files, icon or Xcode theme do not block the command."
+   },
+   {
+    "id": 8,
+    "question": "After Product > Archive, where do you validate and upload the build to App Store Connect?",
+    "options": [
+     "In Instruments",
+     "In the Xcode Organizer (Window > Organizer), with the Distribute App button",
+     "In the Simulator",
+     "In Interface Builder"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Organizer lists archives and offers Validate App and Distribute App (App Store Connect/TestFlight, Ad Hoc, Development). Instruments is for profiling, the Simulator for running the app and Interface Builder for editing interfaces."
+   },
+   {
+    "id": 9,
+    "question": "What is the difference between internal and external testers in TestFlight?",
+    "options": [
+     "Internal can be up to 10,000 and external only 100",
+     "External testers get builds with no review and internal ones go through full review",
+     "There is no difference: both require Beta App Review",
+     "Internal testers are members of your team in App Store Connect and get builds without Beta App Review; external testers can be invited by email or link and the first build requires Beta App Review"
+    ],
+    "correctIndex": 3,
+    "explanation": "Internal testers (up to 100) must have a role in App Store Connect and can test right after the build is processed. External testers (up to 10,000) are invited by email or public link and the first build of each version goes through Beta App Review. The other options invert or ignore these rules."
+   },
+   {
+    "id": 10,
+    "question": "For how long is a TestFlight build available to testers after upload?",
+    "options": [
+     "7 days",
+     "1 year",
+     "Forever",
+     "90 days"
+    ],
+    "correctIndex": 3,
+    "explanation": "TestFlight builds expire 90 days after upload; after that you must upload a new build. There is no 7-day window or indefinite validity."
+   },
+   {
+    "id": 11,
+    "question": "In App Store Connect, which of the following is required to submit a version for review?",
+    "options": [
+     "A 5-minute video about the team",
+     "The app's full source code",
+     "Screenshots, description, support URL and privacy information (including the privacy policy URL)",
+     "A recommendation letter from Apple"
+    ],
+    "correctIndex": 2,
+    "explanation": "Required metadata includes screenshots, description, keywords, support URL, category, age rating and the privacy policy URL (plus App Privacy answers). A team video, source code or letters are not requirements."
+   },
+   {
+    "id": 12,
+    "question": "Your app was rejected under Guideline 2.1 (App Completeness). Which of these is a typical reason?",
+    "options": [
+     "The app crashes, has obvious bugs, broken links or placeholder content during review",
+     "The icon uses the color blue",
+     "The app has more than 3 screens",
+     "The app name has 12 letters"
+    ],
+    "correctIndex": 0,
+    "explanation": "Guideline 2.1 requires the submitted app to be final and functional: crashes, bugs, placeholders, broken links or missing demo credentials lead to rejection. Icon color, number of screens and name length are not the criterion."
+   },
+   {
+    "id": 13,
+    "question": "Your app lets users create an account within the app. According to the App Review Guidelines (5.1.1), what else is required?",
+    "options": [
+     "Charge a fee to delete the account",
+     "Allow deletion only by emailing support",
+     "Offer a way to initiate account deletion within the app itself",
+     "Nothing: accounts may be kept forever"
+    ],
+    "correctIndex": 2,
+    "explanation": "Apps that allow account creation must let users initiate deletion of the account and data within the app, without requiring outside contact or fees. This is in addition to the privacy policy and data-collection consent."
+   },
+   {
+    "id": 14,
+    "question": "You want to sell the unlocking of premium features inside the app to App Store users. What approach do the guidelines (3.1.1) expect?",
+    "options": [
+     "Use In-App Purchase with StoreKit",
+     "Ask for a credit card number in your own form",
+     "Redirect to a payment website with no exceptions at all",
+     "Sell the unlock via a free key in the code"
+    ],
+    "correctIndex": 0,
+    "explanation": "In general, digital content and features unlocked inside the app must use In-App Purchase. Custom card forms or redirects to pay for digital features violate the guideline, except for specific regional exceptions provided by Apple."
+   },
+   {
+    "id": 15,
+    "question": "What are the 'Privacy Nutrition Labels' (App Privacy) shown on the app's page?",
+    "options": [
+     "A summary, filled in by the developer in App Store Connect, of the data the app (and its third-party SDKs) collects, whether it is linked to the user and whether it is used for tracking",
+     "A grade Apple gives to the app's code",
+     "A list of permissions the user has already granted",
+     "An automatic badge generated by Xcode without intervention"
+    ],
+    "correctIndex": 0,
+    "explanation": "The labels are declared by you and must reflect actual collection, including that of third-party SDKs. They are not an Apple grade, do not list permissions each user has granted and are not generated automatically by Xcode."
+   },
+   {
+    "id": 16,
+    "question": "You uploaded build 1.2.0 (5) and want to upload a fix for the same version. App Store Connect rejects the upload with 'build already exists'. What should you do?",
+    "options": [
+     "Increment the build number (CFBundleVersion), for example to 6, keeping version 1.2.0",
+     "Change the Bundle ID",
+     "Lower the marketing version to 1.1.0",
+     "Delete the app and create it again"
+    ],
+    "correctIndex": 0,
+    "explanation": "For each marketing version (CFBundleShortVersionString, such as 1.2.0), every uploaded build needs a unique, increasing CFBundleVersion. Changing the bundle ID creates a different app, and lowering the version is not allowed after higher versions were uploaded."
+   },
+   {
+    "id": 17,
+    "question": "You sell a lifetime 'Pro' unlock, bought once and which must be restorable on other devices. Which In-App Purchase product type should you use?",
+    "options": [
+     "Consumable",
+     "Auto-renewable subscription",
+     "Non-consumable",
+     "Non-renewing subscription"
+    ],
+    "correctIndex": 2,
+    "explanation": "Non-consumable items are purchased once and remain available, including through restore. Consumables (coins, lives) can be bought repeatedly, and subscriptions charge recurrently or for a limited period."
+   },
+   {
+    "id": 18,
+    "question": "With StoreKit 2, 'let result = try await product.purchase()' returns .success(let verification). What should you do next?",
+    "options": [
+     "Unlock the content without verifying, since .success guarantees everything",
+     "Call product.purchase() again",
+     "Verify the result (VerificationResult), unlock the content and call await transaction.finish()",
+     "Ignore the transaction"
+    ],
+    "correctIndex": 2,
+    "explanation": ".success carries a VerificationResult: check it (case .verified) to confirm the transaction is authentic, unlock the content and complete the transaction with finish(). Unlocking without verifying invites fraud, and repeating the purchase would charge again, while ignoring the transaction leaves the flow pending."
+   },
+   {
+    "id": 19,
+    "question": "How can you test purchases in the simulator during development, without depending on products already approved in App Store Connect?",
+    "options": [
+     "Create a StoreKit Configuration file in Xcode and select it in the scheme",
+     "Publish the app to the App Store first",
+     "Use real credit cards",
+     "Change the code to fake the purchase without using StoreKit"
+    ],
+    "correctIndex": 0,
+    "explanation": "The StoreKit configuration file lets you define products locally and test purchases, subscriptions and restores with Xcode, without real charges. Publishing first is unnecessary, real cards would be unsafe and faking in code does not test the real flow."
+   },
+   {
+    "id": 20,
+    "question": "Your app has non-consumable purchases. A user switches iPhones and wants to recover what they bought. What should the app offer?",
+    "options": [
+     "Ask the user to buy again",
+     "Send the unlock by email",
+     "Nothing: this is not the app's responsibility",
+     "A 'Restore Purchases' button that uses AppStore.sync() and/or reads Transaction.currentEntitlements"
+    ],
+    "correctIndex": 3,
+    "explanation": "Apps with non-consumable purchases or subscriptions must allow restoring them. In StoreKit 2, current entitlements are in Transaction.currentEntitlements and AppStore.sync() forces synchronization with the App Store. Charging again or sending emails does not meet the guidelines."
+   }
+  ]
+ }
+]

@@ -17,7 +17,7 @@ struct SwiftQuestHostApp: App {
     var body: some Scene {
         // A single window: URLs sent from Xcode must reuse it instead of opening new ones.
         Window("SwiftQuest", id: "main") {
-            SwiftQuestHome()
+            RootView()
                 .frame(minWidth: 900, minHeight: 580)
                 .environmentObject(route)
                 .environmentObject(progress)
@@ -52,17 +52,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 enum SidebarItem: String, Hashable {
-    case path, learn, practice, explain, course, exams, dashboard, glossary, badges
+    case path, focus, certification, learn, practice, explain, course, exams, dashboard, glossary, badges
     case review, flashcards, playground, mindmap, placement
 }
 
 /// Completion state of the built-in introductory lessons.
 @MainActor
 final class ProgressStore: ObservableObject {
-    private let key = "completedLessons"
-    @Published private(set) var completed: Set<String>
+    private var key: String { Storage.key("completedLessons") }
+    @Published private(set) var completed: Set<String> = []
+    private var observer: NSObjectProtocol?
 
     init() {
+        reload()
+        observer = NotificationCenter.default.addObserver(forName: .profileDidChange, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.reload() }
+        }
+    }
+
+    func reload() {
         completed = Set(UserDefaults.standard.stringArray(forKey: key) ?? [])
     }
 
@@ -115,17 +123,32 @@ final class SwiftQuestRoute: ObservableObject {
     }
 }
 
+/// Shows the sign-in screen until a profile is chosen.
+struct RootView: View {
+    @ObservedObject var profiles = ProfileStore.shared
+
+    var body: some View {
+        if let profile = profiles.current {
+            SwiftQuestHome().id(profile.id)
+        } else {
+            SignInView()
+        }
+    }
+}
+
 struct SwiftQuestHome: View {
     @EnvironmentObject var route: SwiftQuestRoute
     @EnvironmentObject var course: CourseProgress
     @EnvironmentObject var loc: Localizer
-    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: "onboardingDone")
+    @ObservedObject var profiles = ProfileStore.shared
+    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: Storage.key("onboardingDone"))
 
     var body: some View {
         NavigationSplitView {
             List(selection: $route.selection) {
                 Section(loc.t("sidebar.today")) {
                     Label(loc.t("nav.path"), systemImage: "map.fill").tag(SidebarItem.path)
+                    Label(loc.t("nav.focus"), systemImage: "target").tag(SidebarItem.focus)
                     Label("\(loc.t("nav.review")) (\(course.reviewQueue.count))", systemImage: "arrow.triangle.2.circlepath").tag(SidebarItem.review)
                     Label(loc.t("nav.flashcards"), systemImage: "rectangle.on.rectangle.angled").tag(SidebarItem.flashcards)
                 }
@@ -136,6 +159,7 @@ struct SwiftQuestHome: View {
                     Label(loc.t("nav.explain"), systemImage: "text.magnifyingglass").tag(SidebarItem.explain)
                 }
                 Section(loc.t("sidebar.course")) {
+                    Label(loc.t("nav.cert"), systemImage: "checkmark.seal.fill").tag(SidebarItem.certification)
                     Label(loc.t("nav.course"), systemImage: "graduationcap.fill").tag(SidebarItem.course)
                     Label(loc.t("nav.mindmap"), systemImage: "point.3.connected.trianglepath.dotted").tag(SidebarItem.mindmap)
                     Label(loc.t("nav.exams"), systemImage: "timer").tag(SidebarItem.exams)
@@ -148,6 +172,16 @@ struct SwiftQuestHome: View {
             .navigationSplitViewColumnWidth(min: 220, ideal: 250, max: 320)
             .safeAreaInset(edge: .bottom) {
                 VStack(alignment: .leading, spacing: 6) {
+                    if let me = profiles.current {
+                        Menu {
+                            Button(loc.t("login.switch")) { profiles.signOut() }
+                            Button(loc.t("login.signout")) { profiles.signOut() }
+                        } label: {
+                            HStack(spacing: 6) { Text(me.emoji); Text(me.name).font(.headline); Spacer() }
+                        }
+                        .menuStyle(.borderlessButton)
+                        .accessibilityLabel("\(me.name). \(loc.t("login.signout"))")
+                    }
                     let stats = course.stats
                     Text("\(loc.t("level")) \(stats.level.level) · \(stats.points) XP · 🔥 \(HabitStore.shared.streak)").font(.caption.bold())
                     ProgressView(value: stats.level.progressPercent)
@@ -162,6 +196,8 @@ struct SwiftQuestHome: View {
         } detail: {
             switch route.selection ?? .path {
             case .path: PathView()
+            case .focus: FocusView()
+            case .certification: CertificationView()
             case .review: ReviewView()
             case .flashcards: FlashcardsView()
             case .playground: PlaygroundView()
@@ -182,7 +218,7 @@ struct SwiftQuestHome: View {
         }
         .sheet(isPresented: $showOnboarding) {
             OnboardingView {
-                UserDefaults.standard.set(true, forKey: "onboardingDone")
+                UserDefaults.standard.set(true, forKey: Storage.key("onboardingDone"))
                 showOnboarding = false
             }
             .environmentObject(route).environmentObject(loc)
@@ -265,8 +301,9 @@ struct LessonDetail: View {
                     Text(lesson.exercise).frame(maxWidth: .infinity, alignment: .leading).padding(4)
                 }
                 Text(loc.t("check.yourself")).font(.title3.bold())
+                DocLinksSection(links: DocsData.links(lesson: lesson.id))
                 ForEach(lesson.quiz) { q in
-                    IntroQuizCard(question: q)
+                    IntroQuizCard(question: q, lessonID: lesson.id)
                 }
                 Button {
                     progress.toggle(lesson.id)
@@ -284,6 +321,7 @@ struct LessonDetail: View {
 
 struct IntroQuizCard: View {
     let question: QuizQuestion
+    let lessonID: String
     @EnvironmentObject var course: CourseProgress
     @State private var picked: Int?
 
@@ -292,7 +330,10 @@ struct IntroQuizCard: View {
                                               correctIndex: question.answer, explanation: question.explanation),
                      picked: Binding(get: { picked }, set: { value in
                          picked = value
-                         if let value { course.markQuestion("i:\(question.id)", correct: value == question.answer) }
+                         if let value {
+                             course.markQuestion("i:\(question.id)", correct: value == question.answer)
+                             course.recordAttempt(topic: "l:\(lessonID)", correct: value == question.answer)
+                         }
                      }))
     }
 }

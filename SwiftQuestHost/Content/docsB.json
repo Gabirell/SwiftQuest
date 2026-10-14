@@ -1,0 +1,592 @@
+{
+ "pillars": {
+  "26": [
+   {
+    "title": "Develop in Swift: Explore the app design cycle",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/explore-the-app-design-cycle"
+   },
+   {
+    "title": "Human Interface Guidelines: Designing for iOS",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-ios"
+   },
+   {
+    "title": "Develop in Swift: Meet Xcode",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/meet-xcode"
+   }
+  ],
+  "27": [
+   {
+    "title": "Human Interface Guidelines: Designing for iOS",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/designing-for-ios"
+   },
+   {
+    "title": "Human Interface Guidelines: Layout",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/layout"
+   },
+   {
+    "title": "Human Interface Guidelines: Typography",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/typography"
+   },
+   {
+    "title": "Human Interface Guidelines: Color",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+   },
+   {
+    "title": "Human Interface Guidelines: Dark Mode",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/dark-mode"
+   }
+  ],
+  "28": [
+   {
+    "title": "Human Interface Guidelines: Accessibility",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/accessibility"
+   },
+   {
+    "title": "Accessibility | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/view-accessibility"
+   },
+   {
+    "title": "Human Interface Guidelines: Typography",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/typography"
+   },
+   {
+    "title": "Human Interface Guidelines: Color",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+   }
+  ],
+  "29": [
+   {
+    "title": "Human Interface Guidelines: Privacy",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/privacy"
+   },
+   {
+    "title": "Protecting the user's privacy",
+    "url": "https://developer.apple.com/documentation/uikit/protecting-the-user-s-privacy"
+   },
+   {
+    "title": "Keychain services",
+    "url": "https://developer.apple.com/documentation/security/keychain-services"
+   },
+   {
+    "title": "App Store Review Guidelines",
+    "url": "https://developer.apple.com/app-store/review/guidelines/"
+   }
+  ],
+  "30": [
+   {
+    "title": "Develop in Swift: Meet Xcode",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/meet-xcode"
+   },
+   {
+    "title": "Xcode",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift: Explore the app design cycle",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/explore-the-app-design-cycle"
+   }
+  ],
+  "31": [
+   {
+    "title": "Managing assets with asset catalogs",
+    "url": "https://developer.apple.com/documentation/xcode/managing-assets-with-asset-catalogs"
+   },
+   {
+    "title": "Asset management",
+    "url": "https://developer.apple.com/documentation/xcode/asset-management"
+   },
+   {
+    "title": "Configuring your app icon",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-your-app-icon"
+   },
+   {
+    "title": "Human Interface Guidelines: App icons",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/app-icons"
+   }
+  ],
+  "32": [
+   {
+    "title": "Adding package dependencies to your app",
+    "url": "https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app"
+   },
+   {
+    "title": "Swift Package Manager | Swift Packages",
+    "url": "https://developer.apple.com/documentation/xcode/swift-packages"
+   },
+   {
+    "title": "Creating a standalone Swift package with Xcode",
+    "url": "https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode"
+   },
+   {
+    "title": "Managing files and folders in your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/managing-files-and-folders-in-your-xcode-project"
+   }
+  ],
+  "33": [
+   {
+    "title": "Setting breakpoints to pause your running app",
+    "url": "https://developer.apple.com/documentation/xcode/setting-breakpoints-to-pause-your-running-app"
+   },
+   {
+    "title": "Diagnosing issues using crash reports and device logs",
+    "url": "https://developer.apple.com/documentation/xcode/diagnosing-issues-using-crash-reports-and-device-logs"
+   },
+   {
+    "title": "Error Handling",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/"
+   },
+   {
+    "title": "The Basics: Assertions and Preconditions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Assertions-and-Preconditions"
+   }
+  ],
+  "34": [
+   {
+    "title": "Basic Operators",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/"
+   },
+   {
+    "title": "Basic Operators: Arithmetic Operators",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/#Arithmetic-Operators"
+   },
+   {
+    "title": "Basic Operators: Comparison Operators",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/#Comparison-Operators"
+   },
+   {
+    "title": "Basic Operators: Ternary Conditional Operator",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators/#Ternary-Conditional-Operator"
+   },
+   {
+    "title": "The Basics: Type Safety and Type Inference",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference"
+   },
+   {
+    "title": "The Basics: Integer and Floating-Point Conversion",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Integer-and-Floating-Point-Conversion"
+   }
+  ],
+  "35": [
+   {
+    "title": "The Basics: Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Constants-and-Variables"
+   },
+   {
+    "title": "The Basics: Naming Constants and Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Naming-Constants-and-Variables"
+   },
+   {
+    "title": "The Basics: Type Safety and Type Inference",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference"
+   },
+   {
+    "title": "Properties: Global and Local Variables",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Global-and-Local-Variables"
+   },
+   {
+    "title": "Optional Binding",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optional-Binding"
+   }
+  ],
+  "36": [
+   {
+    "title": "Control Flow",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/"
+   },
+   {
+    "title": "Control Flow: For-In Loops",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#For-In-Loops"
+   },
+   {
+    "title": "Control Flow: Switch",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Switch"
+   },
+   {
+    "title": "Control Flow: Early Exit",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Early-Exit"
+   },
+   {
+    "title": "Control Flow: Labeled Statements",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/controlflow/#Labeled-Statements"
+   }
+  ],
+  "37": [
+   {
+    "title": "Collection Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/"
+   },
+   {
+    "title": "Collection Types: Arrays",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Arrays"
+   },
+   {
+    "title": "Collection Types: Sets",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Sets"
+   },
+   {
+    "title": "Collection Types: Dictionaries",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/collectiontypes/#Dictionaries"
+   },
+   {
+    "title": "Array | Swift",
+    "url": "https://developer.apple.com/documentation/swift/array"
+   }
+  ],
+  "38": [
+   {
+    "title": "Functions",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/"
+   },
+   {
+    "title": "Functions: Function Argument Labels and Parameter Names",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#Function-Argument-Labels-and-Parameter-Names"
+   },
+   {
+    "title": "Functions: In-Out Parameters",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/functions/#In-Out-Parameters"
+   },
+   {
+    "title": "Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/"
+   },
+   {
+    "title": "Closures: Trailing Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/#Trailing-Closures"
+   },
+   {
+    "title": "Closures: Escaping Closures",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/#Escaping-Closures"
+   }
+  ],
+  "39": [
+   {
+    "title": "Structures and Classes",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/"
+   },
+   {
+    "title": "Structures and Classes: Memberwise Initializers",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Memberwise-Initializers-for-Structure-Types"
+   },
+   {
+    "title": "Initialization",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/initialization/"
+   },
+   {
+    "title": "Methods",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/methods/"
+   },
+   {
+    "title": "Properties",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/"
+   }
+  ],
+  "40": [
+   {
+    "title": "Inheritance",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/inheritance/"
+   },
+   {
+    "title": "Structures and Classes: Classes Are Reference Types",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/#Classes-Are-Reference-Types"
+   },
+   {
+    "title": "Inheritance: Overriding",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/inheritance/#Overriding"
+   },
+   {
+    "title": "Access Control",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/"
+   },
+   {
+    "title": "Access Control: Access Levels",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/#Access-Levels"
+   },
+   {
+    "title": "Automatic Reference Counting",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/"
+   }
+  ],
+  "41": [
+   {
+    "title": "Properties: Property Wrappers",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Property-Wrappers"
+   },
+   {
+    "title": "Properties: Computed Properties",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Computed-Properties"
+   },
+   {
+    "title": "Properties: Property Observers",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Property-Observers"
+   },
+   {
+    "title": "Properties: Lazy Stored Properties",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Lazy-Stored-Properties"
+   },
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   }
+  ],
+  "42": [
+   {
+    "title": "Strings and Characters",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/"
+   },
+   {
+    "title": "Strings and Characters: String Interpolation",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/#String-Interpolation"
+   },
+   {
+    "title": "Strings and Characters: String Indices",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/#String-Indices"
+   },
+   {
+    "title": "Strings and Characters: Substrings",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/stringsandcharacters/#Substrings"
+   },
+   {
+    "title": "String | Swift",
+    "url": "https://developer.apple.com/documentation/swift/string"
+   }
+  ],
+  "43": [
+   {
+    "title": "View | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/view"
+   },
+   {
+    "title": "View fundamentals",
+    "url": "https://developer.apple.com/documentation/swiftui/view-fundamentals"
+   },
+   {
+    "title": "Text | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/text"
+   },
+   {
+    "title": "Image | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/image"
+   }
+  ],
+  "44": [
+   {
+    "title": "VStack | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/vstack"
+   },
+   {
+    "title": "HStack | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/hstack"
+   },
+   {
+    "title": "ZStack | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/zstack"
+   },
+   {
+    "title": "LazyVGrid | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/lazyvgrid"
+   },
+   {
+    "title": "Layout fundamentals",
+    "url": "https://developer.apple.com/documentation/swiftui/layout-fundamentals"
+   },
+   {
+    "title": "Human Interface Guidelines: Layout",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/layout"
+   }
+  ],
+  "45": [
+   {
+    "title": "Managing model data in your app",
+    "url": "https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app"
+   },
+   {
+    "title": "State | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/state"
+   },
+   {
+    "title": "Binding | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/binding"
+   },
+   {
+    "title": "Observable | Observation",
+    "url": "https://developer.apple.com/documentation/observation/observable()"
+   },
+   {
+    "title": "Model data",
+    "url": "https://developer.apple.com/documentation/swiftui/model-data"
+   }
+  ],
+  "46": [
+   {
+    "title": "NavigationStack | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/navigationstack"
+   },
+   {
+    "title": "List | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/list"
+   },
+   {
+    "title": "TabView | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/tabview"
+   },
+   {
+    "title": "Navigation | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/navigation"
+   },
+   {
+    "title": "Human Interface Guidelines: Tab bars",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/tab-bars"
+   }
+  ],
+  "47": [
+   {
+    "title": "Form | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/form"
+   },
+   {
+    "title": "TextField | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/textfield"
+   },
+   {
+    "title": "Toggle | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/toggle"
+   },
+   {
+    "title": "Picker | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/picker"
+   },
+   {
+    "title": "Controls and indicators",
+    "url": "https://developer.apple.com/documentation/swiftui/controls-and-indicators"
+   }
+  ],
+  "48": [
+   {
+    "title": "withAnimation(_:_:) | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/withanimation(_:_:)"
+   },
+   {
+    "title": "Animations | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/animations"
+   },
+   {
+    "title": "Gestures | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/gestures"
+   },
+   {
+    "title": "Presenting sheets: sheet(isPresented:)",
+    "url": "https://developer.apple.com/documentation/swiftui/view/sheet(ispresented:ondismiss:content:)"
+   },
+   {
+    "title": "Human Interface Guidelines: Motion",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/motion"
+   }
+  ],
+  "54": [
+   {
+    "title": "UserDefaults | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/userdefaults"
+   },
+   {
+    "title": "AppStorage | SwiftUI",
+    "url": "https://developer.apple.com/documentation/swiftui/appstorage"
+   },
+   {
+    "title": "FileManager | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/filemanager"
+   },
+   {
+    "title": "Codable | Swift",
+    "url": "https://developer.apple.com/documentation/swift/codable"
+   },
+   {
+    "title": "JSONEncoder | Foundation",
+    "url": "https://developer.apple.com/documentation/foundation/jsonencoder"
+   }
+  ],
+  "55": [
+   {
+    "title": "SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata"
+   },
+   {
+    "title": "Query | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/query"
+   },
+   {
+    "title": "Relationship() | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/relationship(_:deleterule:minimumModelCount:maximumModelCount:originalname:inverse:hashmodifier:)"
+   },
+   {
+    "title": "ModelContext | SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata/modelcontext"
+   }
+  ],
+  "56": [
+   {
+    "title": "NSPersistentContainer | Core Data",
+    "url": "https://developer.apple.com/documentation/coredata/nspersistentcontainer"
+   },
+   {
+    "title": "Core Data",
+    "url": "https://developer.apple.com/documentation/coredata"
+   },
+   {
+    "title": "NSManagedObjectContext | Core Data",
+    "url": "https://developer.apple.com/documentation/coredata/nsmanagedobjectcontext"
+   },
+   {
+    "title": "Setting up a Core Data stack",
+    "url": "https://developer.apple.com/documentation/coredata/setting-up-a-core-data-stack"
+   },
+   {
+    "title": "SwiftData",
+    "url": "https://developer.apple.com/documentation/swiftdata"
+   }
+  ],
+  "57": [
+   {
+    "title": "CloudKit",
+    "url": "https://developer.apple.com/documentation/cloudkit"
+   },
+   {
+    "title": "CKContainer | CloudKit",
+    "url": "https://developer.apple.com/documentation/cloudkit/ckcontainer"
+   },
+   {
+    "title": "CKRecord | CloudKit",
+    "url": "https://developer.apple.com/documentation/cloudkit/ckrecord"
+   },
+   {
+    "title": "Syncing model data across a person's devices",
+    "url": "https://developer.apple.com/documentation/swiftdata/syncing-model-data-across-a-persons-devices"
+   },
+   {
+    "title": "Enabling CloudKit in your app",
+    "url": "https://developer.apple.com/documentation/cloudkit/enabling-cloudkit-in-your-app"
+   }
+  ],
+  "58": [
+   {
+    "title": "Keychain services",
+    "url": "https://developer.apple.com/documentation/security/keychain-services"
+   },
+   {
+    "title": "Storing keys in the keychain",
+    "url": "https://developer.apple.com/documentation/security/storing-keys-in-the-keychain"
+   },
+   {
+    "title": "Adding a password to the keychain",
+    "url": "https://developer.apple.com/documentation/security/adding-a-password-to-the-keychain"
+   },
+   {
+    "title": "Using the keychain to manage user secrets",
+    "url": "https://developer.apple.com/documentation/security/using-the-keychain-to-manage-user-secrets"
+   },
+   {
+    "title": "LocalAuthentication",
+    "url": "https://developer.apple.com/documentation/localauthentication"
+   }
+  ]
+ }
+}

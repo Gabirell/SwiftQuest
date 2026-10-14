@@ -1,0 +1,902 @@
+[
+ {
+  "id": 76,
+  "title": "visionOS: Windows, Volumes and Ornaments",
+  "theory": "visionOS is the operating system of Apple Vision Pro and brings spatial computing: your app lives alongside the user's real surroundings. By default an app runs in the 'Shared Space', where windows and volumes from several apps coexist side by side; when it needs more, it opens a 'Full Space' with 'ImmersiveSpace', and then only your app is visible (in 'mixed', 'progressive' or 'full' styles). A regular window is a SwiftUI 'WindowGroup', just like on iOS, floating in space; for bounded 3D content you use a volumetric window with '.windowStyle(.volumetric)' and 'defaultSize(width:height:depth:in:)'. Ornaments (the '.ornament' modifier) are controls attached to the edge of a window, such as toolbars, that do not take space from the content. 3D content is built with 'RealityView' (which hosts RealityKit entities: 'Entity' + 'Component', such as 'ModelComponent' and 'CollisionComponent') or, more simply, with 'Model3D' to display a USDZ model. Input is by eyes and hands: the user looks at an element and pinches, which is equivalent to a tap; so targets must be large (at least about 60 pt) and 3D entities need 'InputTargetComponent' and 'CollisionComponent' to receive gestures such as '.gesture(TapGesture().targetedToAnyEntity())'. Think about comfort: do not lock content to the head, avoid abrupt motion and place windows at eye level. You test in the Apple Vision Pro simulator in Xcode, which simulates gaze and hands with the mouse, and you can reuse a lot of SwiftUI code from iOS and iPadOS. Common mistake: forgetting to declare the 'ImmersiveSpace' in the 'App' before calling 'openImmersiveSpace'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/visionos",
+  "category": "visionOS",
+  "corporateCase": "A furniture decoration app for a retailer shows the catalog in a regular window and the chosen sofa in a volumetric window with 'Model3D', which the customer rotates by hand. The color and purchase buttons sit in an ornament under the window, without covering the product.",
+  "gameCase": "A board game uses a volumetric window for the 3D board over the player's real table, with pieces as RealityKit entities that respond to gaze and pinch. For the special level, the game opens an 'ImmersiveSpace' that transports the player to a fantasy city.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare a volumetric window to display bounded 3D content",
+    "codeSnippet": "WindowGroup { Globo() }\n    .windowStyle(.___)",
+    "correctAnswer": "volumetric",
+    "hint": "The style that gives the window depth, turning it into a volume."
+   },
+   {
+    "id": 2,
+    "question": "Declare the space that occupies the user's entire surroundings",
+    "codeSnippet": "___(id: \"cena\") { CenaView() }",
+    "correctAnswer": "ImmersiveSpace",
+    "hint": "It is the SwiftUI scene used for immersive experiences (Full Space)."
+   },
+   {
+    "id": 3,
+    "question": "Attach a controls bar to the bottom edge of the window",
+    "codeSnippet": "Conteudo()\n    .___(attachmentAnchor: .scene(.bottom)) { Controles() }",
+    "correctAnswer": "ornament",
+    "hint": "The modifier has the same name as the 'decorations' attached to the window."
+   },
+   {
+    "id": 4,
+    "question": "Host RealityKit entities inside a SwiftUI view",
+    "codeSnippet": "___ { content in\n    content.add(entidade)\n}",
+    "correctAnswer": "RealityView",
+    "hint": "It is the view that receives a 'content' to add 3D entities to."
+   },
+   {
+    "id": 5,
+    "question": "Display a USDZ 3D model from the bundle with the simplest view",
+    "codeSnippet": "___(named: \"Robo\")",
+    "correctAnswer": "Model3D",
+    "hint": "The SwiftUI view that loads a 3D model asynchronously."
+   },
+   {
+    "id": 6,
+    "question": "Get the environment action that opens an immersive space",
+    "codeSnippet": "@Environment(\\.___) var abrirEspaco",
+    "correctAnswer": "openImmersiveSpace",
+    "hint": "The Environment key starts with 'open' and ends with the scene name."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the difference between Shared Space and Full Space in visionOS?",
+    "options": [
+     "In the Shared Space the app takes over the whole environment; in a Full Space it shares the screen",
+     "Shared Space is only for games and Full Space only for productivity apps",
+     "In the Shared Space several apps coexist; in a Full Space only your app is shown",
+     "There is no difference; they are alternative names for the same mode"
+    ],
+    "correctIndex": 2,
+    "explanation": "Every app starts in the Shared Space, coexisting with others. When it opens an 'ImmersiveSpace' it enters a Full Space, where only your content appears and the app gains access to more capabilities."
+   },
+   {
+    "id": 2,
+    "question": "How does the user 'tap' a button in visionOS?",
+    "options": [
+     "By looking at it and making a pinch gesture with the fingers",
+     "By physically touching a touch-sensitive screen with the hand",
+     "By pointing a controller with physical buttons",
+     "By saying 'tap' out loud"
+    ],
+    "correctIndex": 0,
+    "explanation": "In visionOS selection is look + pinch, equivalent to the iOS tap. That is why 'Button' and 'TapGesture' work without changes."
+   },
+   {
+    "id": 3,
+    "question": "What does the code '.windowStyle(.volumetric)' do?",
+    "options": [
+     "It makes the window transparent and borderless",
+     "It opens a full-screen immersive space",
+     "It locks the window to the user's head",
+     "It creates a window with depth that shows bounded 3D content"
+    ],
+    "correctIndex": 3,
+    "explanation": "A volumetric window is a 3D volume in the Shared Space. It is not immersive: other apps remain visible around it."
+   },
+   {
+    "id": 4,
+    "question": "What are ornaments for?",
+    "options": [
+     "To decorate the real environment with virtual objects",
+     "To attach controls to the edge of a window without using the content area",
+     "To animate RealityKit entities",
+     "To open secondary windows of the app"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ornaments stay attached to the window (for example, below it) and are ideal for toolbars and buttons, keeping the main content free."
+   },
+   {
+    "id": 5,
+    "question": "Which combination lets a RealityKit entity receive a tap gesture?",
+    "options": [
+     "Only a 'ModelComponent'",
+     "'InputTargetComponent' and 'CollisionComponent' on the entity",
+     "Only an overlaid SwiftUI 'Button'",
+     "An 'ImmersiveSpace' with the 'full' style"
+    ],
+    "correctIndex": 1,
+    "explanation": "RealityKit uses the Entity-Component model. For the system to detect gaze/pinch, the entity must be an input target and have a collision shape. Without that the gesture never fires."
+   },
+   {
+    "id": 6,
+    "question": "Which practice improves comfort in visionOS?",
+    "options": [
+     "Putting small text very close to the eyes to save space",
+     "Moving the whole environment quickly for impact",
+     "Locking windows to the user's face so they follow it",
+     "Placing content at eye level and avoiding abrupt motion or head-locked items"
+    ],
+    "correctIndex": 3,
+    "explanation": "Head-locked content and large, fast movements cause discomfort. Large targets, a comfortable distance and few sudden changes make use pleasant."
+   },
+   {
+    "id": 7,
+    "question": "How do you test a visionOS app without a physical Apple Vision Pro?",
+    "options": [
+     "By running in the Apple Vision Pro simulator in Xcode",
+     "By running the app directly on a connected iPhone",
+     "It is impossible to test without the device",
+     "By using only SwiftUI Previews on macOS"
+    ],
+    "correctIndex": 0,
+    "explanation": "Xcode includes an Apple Vision Pro simulator in which mouse and keyboard simulate gaze and hands. For real sensors and performance, testing on the device is still recommended."
+   },
+   {
+    "id": 8,
+    "question": "You have a SwiftUI iPad app and want to bring it to visionOS. What is the best approach?",
+    "options": [
+     "Rewrite everything in UIKit",
+     "Rewrite everything in RealityKit",
+     "Reuse the SwiftUI views and adapt windows, target sizes and, if it makes sense, add volumes and ornaments",
+     "It is impossible to reuse code between the platforms"
+    ],
+    "correctIndex": 2,
+    "explanation": "SwiftUI is shared across Apple platforms. You add the visionOS destination and then enrich it with spatial features instead of starting from scratch."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is a 'Model3D'?",
+    "options": [
+     "A component that applies physics to an entity",
+     "A complete immersive scene",
+     "A type of rotation gesture",
+     "A SwiftUI view that displays a 3D model (such as a USDZ) simply"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Model3D' loads the model asynchronously and shows it like a regular view. For more complex interaction use 'RealityView' and entities."
+   },
+   {
+    "id": 2,
+    "question": "You called 'openImmersiveSpace(id: \"cena\")' and nothing opened. What is the most likely cause?",
+    "options": [
+     "The simulator does not support SwiftUI",
+     "The 'ImmersiveSpace(id: \"cena\")' was not declared in the 'App'",
+     "The main window must be volumetric",
+     "The 'id' must be an integer"
+    ],
+    "correctIndex": 1,
+    "explanation": "The immersive space is a scene and must be declared in the 'body' of the 'App' with the same 'id'. Only then can the environment action open it."
+   },
+   {
+    "id": 3,
+    "question": "What are 'Component's in RealityKit?",
+    "options": [
+     "Pieces of data and behavior attached to an 'Entity'",
+     "Subclasses of SwiftUI 'View'",
+     "Texture files of the project",
+     "Secondary visionOS windows"
+    ],
+    "correctIndex": 0,
+    "explanation": "RealityKit follows the Entity-Component pattern: the entity is a container, and components such as 'ModelComponent' or 'CollisionComponent' define what it is and does."
+   },
+   {
+    "id": 4,
+    "question": "What is an appropriate interactive target size for look + pinch?",
+    "options": [
+     "Small, 10 pt, to save space",
+     "Always 1 pt tall",
+     "Large, about 60 pt or more",
+     "Size does not matter"
+    ],
+    "correctIndex": 2,
+    "explanation": "Since gaze is less precise than a finger on a screen, targets must be generous. Small, tightly packed controls make selection hard."
+   },
+   {
+    "id": 5,
+    "question": "Which immersion style lets the user see the real world mixed with the app's content?",
+    "options": [
+     "None: visionOS never shows the real world",
+     "Only 'full'",
+     "'mixed'",
+     "'volumetric'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'mixed' blends virtual content with the real environment; 'full' replaces everything with a virtual environment and 'progressive' lets the user adjust the amount with the Digital Crown."
+   },
+   {
+    "id": 6,
+    "question": "What is the main difference between a regular window and a volumetric one?",
+    "options": [
+     "The volumetric one has depth and holds 3D content, while the regular one is a 2D surface",
+     "The regular one is immersive and the volumetric one is not",
+     "The volumetric one only works in a Full Space",
+     "There is no visual difference"
+    ],
+    "correctIndex": 0,
+    "explanation": "Both live in the Shared Space. The regular one shows 2D interface (with merely decorative depth); the volumetric one defines a volume for 3D objects the user can walk around."
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "title": "watchOS: Interface, Complications and Workouts",
+  "theory": "Apple Watch is used in glances of a few seconds, so design must prioritize essential information, short text, large controls and flows with few taps. On watchOS, SwiftUI is the foundation: 'NavigationStack' organizes stack navigation, 'TabView' with '.tabViewStyle(.page)' creates swipeable pages and the '.digitalCrownRotation($value)' modifier binds the Digital Crown to a value. Complications and Smart Stack widgets are built with WidgetKit, using families such as 'accessoryCircular', 'accessoryRectangular', 'accessoryInline' and 'accessoryCorner' and a timeline of entries that the system displays without opening the app. Workouts use HealthKit: you set up an 'HKWorkoutConfiguration', create an 'HKWorkoutSession' with the 'HKHealthStore' and an 'HKLiveWorkoutBuilder' to collect heart rate and calories; during an active session the app keeps running in the background, which requires the HealthKit capability and the workout background mode. Outside workouts, background execution is limited: the system grants refresh tasks with a tight budget, so the app should update data sparingly and reload timelines only when needed. An app can be independent (works without the iPhone, with its own networking) or a companion; when both sides talk, you use the WatchConnectivity 'WCSession' ('updateApplicationContext', 'transferUserInfo' and 'sendMessage', the latter only when the other side is reachable). Haptics via 'WKInterfaceDevice.current().play(_:)' give discreet feedback but should not be overused. Battery is a scarce resource: avoid continuous animations, polling and unnecessary work.",
+  "appleDocUrl": "https://developer.apple.com/documentation/watchos-apps",
+  "category": "watchOS",
+  "corporateCase": "A gym chain's app offers the day's workouts on the watch in a 'NavigationStack' and a complication showing the next scheduled class. The app is independent, so members can log a workout even when they leave the iPhone in the locker.",
+  "gameCase": "A pocket racing game uses the Digital Crown to control the character's speed and haptics to signal a completed lap. A complication on the watch face shows the player's current record, updated by a WidgetKit timeline.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Use the SwiftUI view that organizes stack navigation",
+    "codeSnippet": "___ {\n    List(treinos) { Text($0.nome) }\n}",
+    "correctAnswer": "NavigationStack",
+    "hint": "It is the view that manages the stack of screens, replacing the old NavigationView."
+   },
+   {
+    "id": 2,
+    "question": "Create horizontal swipeable pages in a TabView",
+    "codeSnippet": "TabView { Resumo(); Detalhes() }\n    .tabViewStyle(.___)",
+    "correctAnswer": "page",
+    "hint": "The style is named after what you swipe: the pages."
+   },
+   {
+    "id": 3,
+    "question": "Connect the Digital Crown to a variable",
+    "codeSnippet": "Text(\"\\(valor)\")\n    .___($valor, from: 0, through: 10)",
+    "correctAnswer": "digitalCrownRotation",
+    "hint": "The modifier name combines 'Digital Crown' with 'rotation'."
+   },
+   {
+    "id": 4,
+    "question": "Create the HealthKit workout session",
+    "codeSnippet": "let sessao = try ___(healthStore: store, configuration: config)",
+    "correctAnswer": "HKWorkoutSession",
+    "hint": "HealthKit type that represents an active workout."
+   },
+   {
+    "id": 5,
+    "question": "Play the haptic that indicates success",
+    "codeSnippet": "WKInterfaceDevice.current().play(.___)",
+    "correctAnswer": "success",
+    "hint": "It is the haptic enum case that communicates an action completed successfully."
+   },
+   {
+    "id": 6,
+    "question": "Access the shared WatchConnectivity session",
+    "codeSnippet": "let sessao = WCSession.___",
+    "correctAnswer": "default",
+    "hint": "It is the static property that returns the single instance, written with the English word for 'standard'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which design principle is most important on Apple Watch?",
+    "options": [
+     "Put as much information as possible on the screen",
+     "Replicate the entire interface of the iPhone app",
+     "Show the essential information quickly, with few interactions",
+     "Require long sequences of taps to finish a task"
+    ],
+    "correctIndex": 2,
+    "explanation": "The watch is checked in glances. Lean screens, short text and large targets work better than dense interfaces."
+   },
+   {
+    "id": 2,
+    "question": "What does '.tabViewStyle(.page)' do on watchOS?",
+    "options": [
+     "It turns the TabView into pages the user swipes through",
+     "It creates a fixed bottom tab bar",
+     "It opens a new window",
+     "It disables navigation"
+    ],
+    "correctIndex": 0,
+    "explanation": "With the '.page' style, each child of the TabView becomes a page and the user switches between them by swiping, with page indicators."
+   },
+   {
+    "id": 3,
+    "question": "How are complications/widgets built on current watchOS?",
+    "options": [
+     "With UIKit and storyboards",
+     "With a loop that updates the watch every second",
+     "With WatchConnectivity only",
+     "With WidgetKit, describing a timeline of entries"
+    ],
+    "correctIndex": 3,
+    "explanation": "WidgetKit lets the system display timeline entries without opening the app. You choose families such as 'accessoryCircular' and 'accessoryRectangular' for each kind of space."
+   },
+   {
+    "id": 4,
+    "question": "What is needed to collect data during a workout on the watch?",
+    "options": [
+     "Just a background 'Timer'",
+     "An 'HKWorkoutSession' with HealthKit authorized and the matching capability",
+     "An active 'WCSession'",
+     "A Smart Stack widget"
+    ],
+    "correctIndex": 1,
+    "explanation": "The HealthKit workout session keeps the app active and collecting data, such as heart rate, even with the wrist lowered. The user must authorize reading the data types."
+   },
+   {
+    "id": 5,
+    "question": "Which statement about background execution on watchOS is true?",
+    "options": [
+     "Any app can run in the background indefinitely",
+     "Outside a workout session, background run time is limited and controlled by the system",
+     "The app never receives refresh tasks",
+     "Background time is unlimited if the watch is charging"
+    ],
+    "correctIndex": 1,
+    "explanation": "The system grants background tasks with a tight budget to preserve battery. Active workout sessions are the exception, since the user is actively exercising."
+   },
+   {
+    "id": 6,
+    "question": "When does WCSession's 'sendMessage' work?",
+    "options": [
+     "Always, even with the other app closed and the device off",
+     "Only when the iPhone is unlocked and on Wi-Fi",
+     "Never, it was removed",
+     "When the other side is reachable at that moment"
+    ],
+    "correctIndex": 3,
+    "explanation": "'sendMessage' is for immediate communication and requires 'isReachable'. For data that can wait, 'updateApplicationContext' and 'transferUserInfo' deliver later."
+   },
+   {
+    "id": 7,
+    "question": "What characterizes an independent watchOS app?",
+    "options": [
+     "It works without requiring a companion app installed on the iPhone",
+     "It only runs with the iPhone nearby",
+     "It cannot use the network",
+     "It cannot have complications"
+    ],
+    "correctIndex": 0,
+    "explanation": "An independent app is installed and used directly on the watch, using the Apple Watch's own networking, and can still sync with the iPhone when that adds value."
+   },
+   {
+    "id": 8,
+    "question": "Which practice helps save battery on watchOS?",
+    "options": [
+     "Updating the interface 60 times per second",
+     "Keeping a network connection open all the time",
+     "Avoiding continuous animations and polling, updating data only when needed",
+     "Reloading all timelines every minute"
+    ],
+    "correctIndex": 2,
+    "explanation": "Every update consumes energy, and calls to reload timelines have a limited budget. Updating on demand and using notifications or background tasks is the way."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which widget family is circular for the watch face?",
+    "options": [
+     "'systemLarge'",
+     "'accessoryInline'",
+     "'systemExtraLarge'",
+     "'accessoryCircular'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'accessoryCircular' is a round complication; 'accessoryInline' is a line of text and 'accessoryRectangular' is a rectangle. The 'system' families are for iPhone and iPad."
+   },
+   {
+    "id": 2,
+    "question": "What is 'HKLiveWorkoutBuilder' for?",
+    "options": [
+     "Drawing charts on screen",
+     "Collecting and organizing data in real time during a workout",
+     "Sending messages to the iPhone",
+     "Creating complications"
+    ],
+    "correctIndex": 1,
+    "explanation": "The builder, associated with an 'HKWorkoutSession', receives samples such as heart rate and active energy and, at the end, saves the workout to HealthKit."
+   },
+   {
+    "id": 3,
+    "question": "Which WatchConnectivity method suits syncing the latest settings state without requiring immediate delivery?",
+    "options": [
+     "'updateApplicationContext'",
+     "'sendMessage' with an immediate reply",
+     "'WKInterfaceDevice.play'",
+     "'HKWorkoutSession.start'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'updateApplicationContext' sends the most recent context; if there are several sends, only the last one matters. It is ideal for settings and current state."
+   },
+   {
+    "id": 4,
+    "question": "What can the Digital Crown do in a SwiftUI app?",
+    "options": [
+     "Replace the need for any touch",
+     "Trigger push notifications",
+     "Provide precise rotation input bound to a value",
+     "Activate workout mode"
+    ],
+    "correctIndex": 2,
+    "explanation": "With '.digitalCrownRotation', rotation updates a variable, useful for scrolling lists or adjusting values precisely."
+   },
+   {
+    "id": 5,
+    "question": "What is a good use of haptics?",
+    "options": [
+     "Vibrating continuously while the app is open",
+     "Vibrating every second like a clock",
+     "Discreetly confirming an important action, such as the end of an exercise set",
+     "Replacing all interface text"
+    ],
+    "correctIndex": 2,
+    "explanation": "Haptics should be occasional and meaningful. Excessive use annoys the user and drains the battery."
+   },
+   {
+    "id": 6,
+    "question": "In a WidgetKit timeline, what does each entry represent?",
+    "options": [
+     "The content the complication will show at a point in time",
+     "A mandatory network call",
+     "A completed workout",
+     "A WatchConnectivity session"
+    ],
+    "correctIndex": 0,
+    "explanation": "The timeline is a list of dated entries. The system presents them at the right time, without needing to run the whole app all the time."
+   }
+  ]
+ },
+ {
+  "id": 78,
+  "title": "macOS: Windows, Menus and Document-Based Apps",
+  "theory": "Mac apps have their own conventions: several windows, a menu bar, keyboard shortcuts, a sidebar and files. In SwiftUI, an 'App' declares scenes: 'WindowGroup' creates windows that can have multiple instances, 'Window' represents a single window with an identifier, and 'Settings' defines the preferences window opened automatically by Cmd+,. Menus are customized with the '.commands { }' modifier, where 'CommandMenu(\"Title\")' adds a whole menu and '.keyboardShortcut(\"n\", modifiers: .command)' binds shortcuts to buttons. The toolbar uses '.toolbar' with 'ToolbarItem', and typical three-column navigation uses 'NavigationSplitView' with sidebar, list and detail. Document-based apps use 'DocumentGroup' with a type that adopts 'FileDocument' (or 'ReferenceFileDocument'): you implement 'readableContentTypes', 'init(configuration:)' and 'fileWrapper(configuration:)', and the system provides open, save, undo and version history. The App Sandbox isolates the app and each access (user-selected files, network, camera) requires an entitlement, such as 'com.apple.security.files.user-selected.read-write' and 'com.apple.security.network.client'. 'MenuBarExtra' creates an item in the menu bar, useful for utilities, and 'NSViewRepresentable' (with 'makeNSView' and 'updateNSView') lets you embed AppKit views in SwiftUI. For distribution, the Mac App Store requires the sandbox; outside it you use Developer ID with Apple notarization and the hardened runtime, so that Gatekeeper accepts the app.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/documentgroup",
+  "category": "macOS",
+  "corporateCase": "An accounting firm builds a Mac app to edit reports in its own format, with 'DocumentGroup', keyboard shortcuts and a sidebar listing the sections. Because the app is distributed outside the Mac App Store, it is signed with Developer ID and notarized before being delivered to clients.",
+  "gameCase": "An indie studio makes a level editor for its Mac game, where each level is a document saved to disk, with a custom 'Ferramentas' menu and shortcuts for each brush. A 'MenuBarExtra' shows the level build status while the editor is in the background.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare the scene that creates the preferences window (Cmd+,)",
+    "codeSnippet": "___ {\n    PreferenciasView()\n}",
+    "correctAnswer": "Settings",
+    "hint": "It is SwiftUI's special scene for app settings on macOS."
+   },
+   {
+    "id": 2,
+    "question": "Add a whole menu named 'Ferramentas' to the menu bar",
+    "codeSnippet": ".commands {\n    ___(\"Ferramentas\") {\n        Button(\"Limpar\") { }\n    }\n}",
+    "correctAnswer": "CommandMenu",
+    "hint": "The type that creates a new command menu with a title."
+   },
+   {
+    "id": 3,
+    "question": "Bind the Cmd+N shortcut to a button",
+    "codeSnippet": "Button(\"Novo\") { novo() }\n    .___(\"n\", modifiers: .command)",
+    "correctAnswer": "keyboardShortcut",
+    "hint": "The modifier whose name is 'keyboard shortcut'."
+   },
+   {
+    "id": 4,
+    "question": "Create the sidebar and detail layout",
+    "codeSnippet": "___ {\n    Sidebar()\n} detail: {\n    Detalhe()\n}",
+    "correctAnswer": "NavigationSplitView",
+    "hint": "It is the column-based navigation view, different from NavigationStack."
+   },
+   {
+    "id": 5,
+    "question": "Declare the scene for a document-based app",
+    "codeSnippet": "___(newDocument: TextoDoc()) { arquivo in\n    Editor(doc: arquivo.$document)\n}",
+    "correctAnswer": "DocumentGroup",
+    "hint": "The scene that manages opening, saving and creating documents."
+   },
+   {
+    "id": 6,
+    "question": "Create an item in the macOS menu bar",
+    "codeSnippet": "___(\"Status\", systemImage: \"bolt\") {\n    Text(\"Online\")\n}",
+    "correctAnswer": "MenuBarExtra",
+    "hint": "The type that adds an 'extra' to the menu bar."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the difference between 'WindowGroup' and 'Window' on macOS?",
+    "options": [
+     "'Window' allows multiple instances and 'WindowGroup' only one",
+     "Both always create exactly one window",
+     "'WindowGroup' allows multiple window instances; 'Window' is a single window",
+     "'Window' only works on iOS"
+    ],
+    "correctIndex": 2,
+    "explanation": "'WindowGroup' is the default choice (Cmd+N opens new windows). 'Window' is useful for a single window, such as a log panel or a utility window."
+   },
+   {
+    "id": 2,
+    "question": "How do you add a complete menu to the app's menu bar?",
+    "options": [
+     "With '.commands { CommandMenu(\"Name\") { ... } }' on the scene",
+     "With a 'NavigationStack' inside the window",
+     "By creating a menu .xib file",
+     "With 'Settings { }'"
+    ],
+    "correctIndex": 0,
+    "explanation": "The '.commands' modifier customizes the menu bar. 'CommandMenu' creates a new menu, and 'CommandGroup' lets you change existing menus."
+   },
+   {
+    "id": 3,
+    "question": "What must a type do to be used in a 'DocumentGroup'?",
+    "options": [
+     "Inherit from 'NSObject'",
+     "Be a 'class' with 'ObservableObject'",
+     "Use only 'UserDefaults'",
+     "Adopt 'FileDocument' (or 'ReferenceFileDocument') and declare the supported content types"
+    ],
+    "correctIndex": 3,
+    "explanation": "The system calls 'init(configuration:)' to read and 'fileWrapper(configuration:)' to write. 'readableContentTypes' says which files the app opens."
+   },
+   {
+    "id": 4,
+    "question": "In the App Sandbox, what is needed for the app to read a file the user chose in an open panel?",
+    "options": [
+     "No entitlement, the sandbox allows everything",
+     "The user-selected files access entitlement",
+     "Disabling the sandbox forever",
+     "A camera entitlement"
+    ],
+    "correctIndex": 1,
+    "explanation": "The sandbox blocks by default. With 'com.apple.security.files.user-selected.read-only' (or read-write) the app accesses exactly the files the user chose."
+   },
+   {
+    "id": 5,
+    "question": "Your sandboxed Mac app makes HTTPS calls to an API, but they all fail. What is the likely cause?",
+    "options": [
+     "'MenuBarExtra' is missing",
+     "The outgoing network client entitlement is missing",
+     "The app needs to be notarized",
+     "'NSViewRepresentable' is missing"
+    ],
+    "correctIndex": 1,
+    "explanation": "With the sandbox enabled, outgoing connections require 'com.apple.security.network.client'. Without it the system blocks the network, even if the code is correct."
+   },
+   {
+    "id": 6,
+    "question": "What is 'NSViewRepresentable' for?",
+    "options": [
+     "To use a SwiftUI view in UIKit",
+     "To create a menu bar item",
+     "To define keyboard shortcuts",
+     "To use an AppKit view inside a SwiftUI hierarchy"
+    ],
+    "correctIndex": 3,
+    "explanation": "You implement 'makeNSView(context:)' to create the view and 'updateNSView(_:context:)' to sync it with SwiftUI state, useful when AppKit has features SwiftUI does not yet have."
+   },
+   {
+    "id": 7,
+    "question": "What is the distribution difference between the Mac App Store and Developer ID?",
+    "options": [
+     "On the Mac App Store the sandbox is mandatory; with Developer ID it is not, but the app must be signed and notarized",
+     "Developer ID requires the sandbox and the Mac App Store does not",
+     "Neither needs signing",
+     "Notarization only applies to the Mac App Store"
+    ],
+    "correctIndex": 0,
+    "explanation": "Outside the store you distribute the app yourself (from a website, for example), but Apple's notarization and the hardened runtime make Gatekeeper accept it without scary warnings."
+   },
+   {
+    "id": 8,
+    "question": "Which SwiftUI modifier adds buttons to the window's toolbar?",
+    "options": [
+     "'.commands { }'",
+     "'.ornament { }'",
+     "'.toolbar { ToolbarItem { ... } }'",
+     "'.sheet { }'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'.toolbar' declares the window's toolbar items. Each 'ToolbarItem' can have placement, such as primary or navigation."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which scene should you use to show an icon in the menu bar?",
+    "options": [
+     "'DocumentGroup'",
+     "'Settings'",
+     "'ImmersiveSpace'",
+     "'MenuBarExtra'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'MenuBarExtra' creates a menu item with an icon and content. With the '.window' style it shows a full SwiftUI view instead of a simple menu."
+   },
+   {
+    "id": 2,
+    "question": "What does 'Settings' do automatically?",
+    "options": [
+     "It creates a context menu",
+     "It connects the preferences window to the app menu's 'Settings' item and to the Cmd+, shortcut",
+     "It opens the app in full screen",
+     "It applies the sandbox"
+    ],
+    "correctIndex": 1,
+    "explanation": "SwiftUI integrates the 'Settings' scene with the app menu, so you only describe the content."
+   },
+   {
+    "id": 3,
+    "question": "What is the role of the 'hardened runtime' in distribution outside the store?",
+    "options": [
+     "It is a security requirement for notarization",
+     "It replaces the sandbox for the Mac App Store",
+     "It is only used in iOS apps",
+     "It encrypts the user's documents"
+    ],
+    "correctIndex": 0,
+    "explanation": "Notarization requires Developer ID signing and the hardened runtime enabled. Apple scans the app and returns a ticket that Gatekeeper recognizes."
+   },
+   {
+    "id": 4,
+    "question": "Which view is the basis for a three-column interface with a sidebar?",
+    "options": [
+     "'TabView' with the 'page' style",
+     "'Form'",
+     "'NavigationSplitView'",
+     "'ZStack'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'NavigationSplitView' manages sidebar, content column and detail, adapting to the window size."
+   },
+   {
+    "id": 5,
+    "question": "What does 'keyboardShortcut(\"s\", modifiers: .command)' do?",
+    "options": [
+     "It automatically saves the file in every case",
+     "It creates a new window",
+     "It binds Cmd+S to the button or menu item",
+     "It enables the sandbox"
+    ],
+    "correctIndex": 2,
+    "explanation": "The shortcut only triggers the action of the control it was applied to. Actually saving depends on the action's implementation."
+   },
+   {
+    "id": 6,
+    "question": "Your menu bar app should not appear in the Dock. Which approach exists?",
+    "options": [
+     "Configure the app as an agent (LSUIElement) in Info.plist",
+     "Use 'DocumentGroup'",
+     "Use 'NSViewRepresentable'",
+     "Disable the sandbox"
+    ],
+    "correctIndex": 0,
+    "explanation": "The 'LSUIElement' key (Application is agent) makes the app show no Dock icon or main menu, which is common in menu bar utilities."
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "title": "Games with SpriteKit and GameKit",
+  "theory": "SpriteKit is Apple's 2D framework for games and animations. An 'SKView' presents an 'SKScene', which is the root of a tree of 'SKNode's; visible nodes include 'SKSpriteNode' (images), 'SKLabelNode' (text) and 'SKShapeNode'. The scene's origin is at the bottom-left corner and the y axis grows upward. Animations use 'SKAction' ('move(by:duration:)', 'fadeOut', 'sequence', 'repeatForever') run with 'node.run(_:)'. The game loop runs every frame: the system calls 'update(_:)' on the scene, evaluates the actions and simulates physics, and you put the continuous logic there, using the received time to compute deltas. Physics bodies ('SKPhysicsBody') have 'categoryBitMask', 'collisionBitMask' and 'contactTestBitMask'; to be notified of a contact, 'physicsWorld.contactDelegate' must be set and 'didBegin(_:)' receives an 'SKPhysicsContact'. In SwiftUI, 'SpriteView(scene:)' hosts a scene, which must be created once (for example, in a property) and not inside 'body'. Touches arrive through 'touchesBegan' on the scene or on nodes with 'isUserInteractionEnabled'. GameKit adds Game Center: you authenticate the player with 'GKLocalPlayer.local.authenticateHandler', submit scores to leaderboards and report achievements, all configured in App Store Connect. For performance, reduce the node count, remove nodes that left the screen with 'removeFromParent()', use texture atlases ('SKTextureAtlas') and watch 'showsNodeCount' and 'showsFPS' during development.",
+  "appleDocUrl": "https://developer.apple.com/documentation/spritekit",
+  "category": "Recursos do Sistema",
+  "corporateCase": "An education company builds a math game for children with SpriteKit hosted in a 'SpriteView' inside a SwiftUI app. Game Center leaderboards motivate classes to compete in a healthy way, and the game keeps 60 frames per second by reusing textures from an atlas.",
+  "gameCase": "In a spaceship game, 'update(_:)' moves the background and spawns enemies; ships and bullets have different bit mask categories, and 'didBegin(_:)' detects the collision to remove the enemy and add points. At the end of the match the score is submitted to the Game Center leaderboard and an achievement unlocks after defeating 100 enemies.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Host a SpriteKit scene inside a SwiftUI view",
+    "codeSnippet": "SpriteView(___: cena)",
+    "correctAnswer": "scene",
+    "hint": "It is the label of the parameter that receives the 'SKScene' (in English)."
+   },
+   {
+    "id": 2,
+    "question": "Create the class that represents the game scene",
+    "codeSnippet": "class Jogo: ___ {\n    override func didMove(to view: SKView) { }\n}",
+    "correctAnswer": "SKScene",
+    "hint": "All SpriteKit scenes inherit from this class."
+   },
+   {
+    "id": 3,
+    "question": "Create a node that displays the ship image",
+    "codeSnippet": "let nave = ___(imageNamed: \"nave\")",
+    "correctAnswer": "SKSpriteNode",
+    "hint": "The SpriteKit node for displaying an image or texture."
+   },
+   {
+    "id": 4,
+    "question": "Move the node 100 points to the right, relatively, in 1 second",
+    "codeSnippet": "nave.run(SKAction.___(by: CGVector(dx: 100, dy: 0), duration: 1))",
+    "correctAnswer": "move",
+    "hint": "The Swift name of the action is a one-word verb ('move(by:duration:)', as opposed to 'move(to:duration:)')."
+   },
+   {
+    "id": 5,
+    "question": "Implement the method called on every frame of the game",
+    "codeSnippet": "override func ___(_ currentTime: TimeInterval) {\n    // lógica do jogo\n}",
+    "correctAnswer": "update",
+    "hint": "The name of the scene's game loop method."
+   },
+   {
+    "id": 6,
+    "question": "Receive the notification that two physics bodies began touching",
+    "codeSnippet": "func ___(_ contact: SKPhysicsContact) {\n    // colisão\n}",
+    "correctAnswer": "didBegin",
+    "hint": "The 'SKPhysicsContactDelegate' method whose name indicates the start of contact."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the origin of an SKScene's default coordinate system?",
+    "options": [
+     "Top-left corner, with the y axis growing downward",
+     "Always the center of the screen, without exception",
+     "Bottom-left corner, with the y axis growing upward",
+     "Top-right corner"
+    ],
+    "correctIndex": 2,
+    "explanation": "Unlike UIKit, SpriteKit has y pointing up, with the scene's default 'anchorPoint' at (0, 0). Forgetting this produces upside-down or off-screen nodes."
+   },
+   {
+    "id": 2,
+    "question": "When is the 'update(_:)' method called?",
+    "options": [
+     "Every frame, before actions and physics are evaluated",
+     "Only once, when the scene is presented",
+     "Only when the user touches the screen",
+     "Exactly every second"
+    ],
+    "correctIndex": 0,
+    "explanation": "It is the heart of the game loop. 'currentTime' lets you compute the time between frames for frame-rate-independent movement."
+   },
+   {
+    "id": 3,
+    "question": "What is the role of 'contactTestBitMask'?",
+    "options": [
+     "It defines which bodies collide physically",
+     "It defines the body's color",
+     "It defines the body's mass",
+     "It defines which categories the body generates contact notifications for"
+    ],
+    "correctIndex": 3,
+    "explanation": "'collisionBitMask' controls physical collision; 'contactTestBitMask' controls notifications sent to the 'contactDelegate'. By default, 'contactTestBitMask' is zero and no contact is reported."
+   },
+   {
+    "id": 4,
+    "question": "What must you configure for 'didBegin(_:)' to be called?",
+    "options": [
+     "Just creating physics bodies",
+     "'physicsWorld.contactDelegate = self' and suitable 'contactTestBitMask' values",
+     "Calling 'removeFromParent()' on every node",
+     "Using 'SpriteView' with 'options: []'"
+    ],
+    "correctIndex": 1,
+    "explanation": "The physics world's delegate receives the contact, and the body must declare which categories it wants to be told about. Without both, the method never fires."
+   },
+   {
+    "id": 5,
+    "question": "Which approach is correct for creating the scene in SwiftUI?",
+    "options": [
+     "Create a new scene on every evaluation of 'body'",
+     "Create the 'SKScene' once, in a property, and pass it to the 'SpriteView'",
+     "Create the scene inside 'update(_:)'",
+     "SwiftUI cannot use SpriteKit"
+    ],
+    "correctIndex": 1,
+    "explanation": "'body' can be re-evaluated many times. Creating the scene in it may restart the game. Keep it in a stable property ('@State' or a constant)."
+   },
+   {
+    "id": 6,
+    "question": "How does GameKit identify the player in Game Center?",
+    "options": [
+     "By asking for the player's email in a text field",
+     "By mandatorily creating an account of your own",
+     "By reading the device UUID",
+     "By assigning 'GKLocalPlayer.local.authenticateHandler' to authenticate"
+    ],
+    "correctIndex": 3,
+    "explanation": "The 'authenticateHandler' is called by the system, which shows the Game Center login screen if needed. Only after authentication can scores be submitted."
+   },
+   {
+    "id": 7,
+    "question": "The game is slow and 'showsNodeCount' shows thousands of nodes. What is the best action?",
+    "options": [
+     "Remove off-screen nodes and reuse textures with an atlas",
+     "Add more 'SKAction's to each node",
+     "Increase the window size",
+     "Disable 'update(_:)'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Each node costs drawing and simulation time. Removing nodes that left the screen and grouping textures into atlases reduces draw calls."
+   },
+   {
+    "id": 8,
+    "question": "What are achievements for in Game Center?",
+    "options": [
+     "To create login screens",
+     "To store game progress in the cloud",
+     "To recognize player milestones, reported via 'GKAchievement'",
+     "To draw sprites"
+    ],
+    "correctIndex": 2,
+    "explanation": "Achievements are configured in App Store Connect and reported by the app when the player reaches the milestone. Leaderboards are for comparing scores."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which node displays text in SpriteKit?",
+    "options": [
+     "'SKTextNode'",
+     "'SKSpriteNode' only",
+     "'SKEffectNode'",
+     "'SKLabelNode'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'SKLabelNode' draws a string with configurable font and size. 'SKSpriteNode' is for images and solid colors."
+   },
+   {
+    "id": 2,
+    "question": "What does 'SKAction.sequence([a, b])' do?",
+    "options": [
+     "It runs a and b at the same time",
+     "It runs actions a and b one after the other",
+     "It repeats a and b forever",
+     "It removes the node"
+    ],
+    "correctIndex": 1,
+    "explanation": "'sequence' runs in order and 'group' in parallel. To repeat forever, wrap it in 'repeatForever'."
+   },
+   {
+    "id": 3,
+    "question": "Which property enables showing the frame rate during development?",
+    "options": [
+     "'showsFPS' on the SKView",
+     "'fps = true' on the scene",
+     "'debugMode' on each node",
+     "There is no such option"
+    ],
+    "correctIndex": 0,
+    "explanation": "'showsFPS' and 'showsNodeCount' help diagnose performance. They should be turned off in the release build."
+   },
+   {
+    "id": 4,
+    "question": "What does 'didMove(to:)' indicate?",
+    "options": [
+     "The player moved the node",
+     "The game is over",
+     "The scene was presented in a view and is a good place to set up nodes",
+     "Physics was paused"
+    ],
+    "correctIndex": 2,
+    "explanation": "It is called when the scene enters an 'SKView'. Many games create the scenery, the player and the 'contactDelegate' there."
+   },
+   {
+    "id": 5,
+    "question": "Why use 'SKTextureAtlas'?",
+    "options": [
+     "To make the game work without images",
+     "To enable Game Center",
+     "To group textures and reduce loading and drawing costs",
+     "To create physics bodies"
+    ],
+    "correctIndex": 2,
+    "explanation": "Textures in an atlas can be loaded and drawn more efficiently, which improves performance and loading time."
+   },
+   {
+    "id": 6,
+    "question": "How do you submit a score to a Game Center leaderboard?",
+    "options": [
+     "Authenticate the player and submit via 'GKLeaderboard' to the leaderboard ID",
+     "Save it in 'UserDefaults', which syncs automatically with Game Center",
+     "Use 'SKScene.submitScore'",
+     "Write it in the Info.plist"
+    ],
+    "correctIndex": 0,
+    "explanation": "The leaderboard is created in App Store Connect with an ID. The app submits the value through GameKit, after the player is authenticated."
+   }
+  ]
+ }
+]

@@ -1,0 +1,680 @@
+[
+ {
+  "id": "exam-12",
+  "title": "Simulado Geral: App Development with Swift (Associate)",
+  "description": "Simulado completo no formato da certificação, com 40 questões em 50 minutos cobrindo os cinco domínios: planejamento, navegação no projeto, Interface Builder/UIKit, linguagem Swift e depuração.",
+  "category": "Certificação",
+  "timeLimitMinutes": 50,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Sua equipe criou um protótipo clicável do app e já mostrou a alguns usuários reais, que anotaram o que foi confuso. Qual é a próxima etapa do ciclo de design?",
+    "options": [
+     "Voltar ao brainstorm e descartar todo o trabalho feito até agora.",
+     "Avaliar os resultados do teste e iterar, voltando ao planejamento ou ao protótipo conforme o feedback.",
+     "Publicar imediatamente na App Store, pois o protótipo já foi validado.",
+     "Escrever a documentação final e encerrar o projeto."
+    ],
+    "correctIndex": 1,
+    "explanation": "O ciclo de design (brainstorm, planejar, prototipar, avaliar) é iterativo: depois de testar o protótipo, avalia-se o feedback e refina-se. Descartar tudo desperdiça o aprendizado; publicar ou encerrar ignora os problemas encontrados."
+   },
+   {
+    "id": 2,
+    "question": "Um app de entregas só precisa da localização do usuário enquanto ele está escolhendo restaurantes próximos. Qual abordagem protege melhor a privacidade?",
+    "options": [
+     "Pedir permissão de localização sempre ativa, para o caso de funcionalidades futuras.",
+     "Coletar a localização em segundo plano e guardá-la indefinidamente no servidor.",
+     "Pedir permissão de localização apenas durante o uso, com uma justificativa clara, e coletar só o necessário.",
+     "Não explicar o motivo, para que o usuário não recuse a permissão."
+    ],
+    "correctIndex": 2,
+    "explanation": "O princípio da minimização de dados diz para coletar só o que é necessário e explicar o motivo (a mensagem de uso no Info.plist). Permissão 'sempre', retenção indefinida e falta de transparência aumentam o risco e o impacto ético e legal."
+   },
+   {
+    "id": 3,
+    "question": "Qual das práticas abaixo coloca mais em risco os dados sensíveis dos usuários de um app?",
+    "options": [
+     "Guardar o token de sessão no Keychain.",
+     "Enviar dados ao servidor por HTTPS.",
+     "Guardar a senha do usuário em texto simples no UserDefaults.",
+     "Pedir autenticação biométrica antes de mostrar dados pessoais."
+    ],
+    "correctIndex": 2,
+    "explanation": "UserDefaults não é criptografado e pode ser lido com acesso ao backup ou ao dispositivo, então nunca deve guardar senhas. Keychain, HTTPS e biometria são justamente as práticas recomendadas para proteger credenciais e dados."
+   },
+   {
+    "id": 4,
+    "question": "Um app educacional só funciona bem em aparelhos recentes e com internet rápida. Qual é o principal impacto socioeconômico dessa decisão?",
+    "options": [
+     "Nenhum, pois todos os usuários possuem a mesma infraestrutura.",
+     "Reduz o tamanho do código-fonte, o que beneficia todos os usuários.",
+     "Aumenta a segurança dos dados, pois menos pessoas poderão usar o app.",
+     "Exclui estudantes com aparelhos antigos ou conexão limitada, ampliando a desigualdade digital."
+    ],
+    "correctIndex": 3,
+    "explanation": "Decisões de design têm impacto social: exigir hardware e conexão caros deixa de fora quem tem menos recursos (desigualdade digital). As outras opções confundem requisitos técnicos com benefícios que não existem."
+   },
+   {
+    "id": 5,
+    "question": "Um usuário pede que sua conta e todos os dados pessoais sejam apagados do serviço do seu app. Qual postura está alinhada com leis de privacidade como LGPD e GDPR?",
+    "options": [
+     "Ignorar o pedido, pois os dados pertencem ao app depois de coletados.",
+     "Apagar só o nome de usuário e manter os demais dados para estatísticas.",
+     "Atender ao pedido e oferecer um caminho claro para exclusão dos dados pessoais.",
+     "Exigir que o usuário envie um documento impresso pelo correio."
+    ],
+    "correctIndex": 2,
+    "explanation": "Leis como LGPD e GDPR garantem direitos ao titular, incluindo a exclusão de dados. Reter os dados, apagar parcialmente ou criar barreiras abusivas descumpre o espírito da lei e prejudica a confiança no app."
+   },
+   {
+    "id": 6,
+    "question": "A equipe está listando ideias de funcionalidades, descrevendo o problema do público-alvo e agrupando as sugestões em post-its, sem desenhar telas ainda. Em qual etapa do ciclo de design ela está?",
+    "options": [
+     "Protótipo.",
+     "Avaliação.",
+     "Lançamento.",
+     "Brainstorm."
+    ],
+    "correctIndex": 3,
+    "explanation": "Listar ideias e entender o problema do público é o brainstorm, o início do ciclo. O protótipo exige uma representação das telas ou do fluxo, a avaliação testa algo já construído e o lançamento vem muito depois."
+   },
+   {
+    "id": 7,
+    "question": "Você arrasta uma imagem 'logo.png' para o projeto e quer carregá-la com UIImage(named: \"logo\"). Qual é o lugar recomendado para colocá-la?",
+    "options": [
+     "Dentro do arquivo Info.plist.",
+     "No arquivo .xcodeproj, editando o texto manualmente.",
+     "Dentro de um arquivo .swift, como comentário.",
+     "No catálogo de assets (Assets.xcassets), como um Image Set chamado logo."
+    ],
+    "correctIndex": 3,
+    "explanation": "O Assets.xcassets é o catálogo feito para imagens, cores e ícones, e UIImage(named:) busca nele pelo nome do Image Set. O Info.plist guarda configurações, o .xcodeproj é gerenciado pelo Xcode e comentários não carregam imagens."
+   },
+   {
+    "id": 8,
+    "question": "Qual atalho do Xcode mostra ou oculta a área de depuração (debug area) com o console?",
+    "options": [
+     "Command + 0.",
+     "Option + Command + 0.",
+     "Shift + Command + O.",
+     "Shift + Command + Y."
+    ],
+    "correctIndex": 3,
+    "explanation": "Shift+Command+Y alterna a área de depuração. Command+0 alterna o Navigator, Option+Command+0 alterna os Inspectors e Shift+Command+O abre o Open Quickly para buscar arquivos e símbolos."
+   },
+   {
+    "id": 9,
+    "question": "Qual arquivo guarda as referências de arquivos e as configurações de build do projeto e tem a extensão .xcodeproj?",
+    "options": [
+     "O Assets.xcassets, que contém imagens e cores.",
+     "O arquivo de projeto do Xcode, que descreve alvos, arquivos e build settings.",
+     "O Main.storyboard, que descreve o layout das telas.",
+     "O Info.plist, que lista somente imagens do app."
+    ],
+    "correctIndex": 1,
+    "explanation": "O pacote .xcodeproj descreve targets, arquivos e configurações de build. O catálogo de assets guarda mídia, o storyboard guarda a interface em XML e o Info.plist guarda metadados do app, não uma lista de imagens."
+   },
+   {
+    "id": 10,
+    "question": "Você arrasta uma foto da área de trabalho para o Navigator do projeto e quer que o Xcode crie uma cópia dentro da pasta do projeto, vinculada ao app. O que deve marcar na janela de importação?",
+    "options": [
+     "Apenas 'Create folder references', sem escolher target.",
+     "'Copy items if needed' e o target do app em 'Add to targets'.",
+     "Nada: o Xcode sempre copia o arquivo automaticamente.",
+     "'Add to targets' desmarcado, para o arquivo ficar fora do app."
+    ],
+    "correctIndex": 1,
+    "explanation": "'Copy items if needed' copia o arquivo para a pasta do projeto e 'Add to targets' o inclui no bundle do app. Sem o target, o recurso não vai junto no build e UIImage(named:) não o encontra."
+   },
+   {
+    "id": 11,
+    "question": "Você quer alterar o texto de um UILabel via código depois que a tela carrega. Qual declaração precisa ser conectada ao storyboard?",
+    "options": [
+     "@IBAction func titleLabel(_ sender: UILabel)",
+     "@IBDesignable var titleLabel: UILabel",
+     "@IBOutlet weak var titleLabel: UILabel!",
+     "@objc static let titleLabel = UILabel()"
+    ],
+    "correctIndex": 2,
+    "explanation": "Um IBOutlet é uma referência do código a um objeto do storyboard, permitindo ler e mudar suas propriedades. IBAction é para responder a eventos, IBDesignable serve a renderização em tempo de design e um static novo não ficaria ligado à interface."
+   },
+   {
+    "id": 12,
+    "question": "Você precisa de três rótulos em coluna, com espaçamento igual, que se ajustem sozinhos a diferentes tamanhos de tela. Qual é a melhor solução no Interface Builder?",
+    "options": [
+     "Posicionar cada rótulo com frames fixos em pontos.",
+     "Embutir os rótulos em um UIStackView vertical e definir o spacing.",
+     "Usar um UIStackView horizontal, que empilha verticalmente.",
+     "Desativar o Auto Layout e usar autoresizing manual."
+    ],
+    "correctIndex": 1,
+    "explanation": "O UIStackView com axis vertical organiza os subviews em coluna e gerencia o espaçamento via spacing, além de se adaptar com Auto Layout. Frames fixos não se adaptam e a pilha horizontal alinha os itens em linha."
+   },
+   {
+    "id": 13,
+    "question": "Em um app com UINavigationController, você cria uma segue 'Show' do botão para outro view controller. O que acontece ao tocar no botão?",
+    "options": [
+     "O novo view controller substitui o controller raiz, sem possibilidade de voltar.",
+     "O app encerra, pois toda segue Show exige código adicional.",
+     "O novo view controller é empilhado na navegação e a barra mostra automaticamente um botão de voltar.",
+     "O novo view controller aparece como pop-up e o atual é destruído."
+    ],
+    "correctIndex": 2,
+    "explanation": "A segue Show em um navigation controller faz push na pilha, e a barra de navegação adiciona o botão de voltar. Ela não substitui a raiz nem destrói o controller anterior, que continua na pilha."
+   },
+   {
+    "id": 14,
+    "question": "Em qual método do ciclo de vida de um UIViewController você costuma fazer a configuração inicial das views via código, uma única vez, quando os outlets já estão conectados?",
+    "options": [
+     "viewDidLoad()",
+     "init()",
+     "viewDidDisappear(_:)",
+     "deinit"
+    ],
+    "correctIndex": 0,
+    "explanation": "viewDidLoad é chamado uma vez após a view ser carregada, com os outlets já conectados, sendo ideal para a configuração inicial. No init os outlets ainda são nil, viewDidDisappear ocorre ao sair da tela e deinit é a liberação do objeto."
+   },
+   {
+    "id": 15,
+    "question": "Qual linha deixa um botão visível, mas impede que ele responda a toques?",
+    "options": [
+     "button.isHidden = true",
+     "button.alpha = 1",
+     "button.removeFromSuperview()",
+     "button.isEnabled = false"
+    ],
+    "correctIndex": 3,
+    "explanation": "isEnabled = false mantém o botão na tela, mas desabilita a interação e o deixa esmaecido. isHidden e removeFromSuperview o fazem sumir e alpha = 1 só o deixa totalmente opaco, sem afetar toques."
+   },
+   {
+    "id": 16,
+    "question": "No Interface Builder, uma view tem constraints de leading, trailing e altura, mas o Xcode mostra erro em vermelho dizendo que a posição vertical é ambígua. O que está faltando?",
+    "options": [
+     "Mais uma constraint de largura.",
+     "Uma constraint para a posição vertical, como top ou center Y.",
+     "Trocar a view por um UIStackView horizontal.",
+     "Marcar a opção 'Translates Autoresizing Mask'."
+    ],
+    "correctIndex": 1,
+    "explanation": "O Auto Layout precisa definir posição e tamanho em cada eixo. Horizontal e altura estão definidos, mas faltou o eixo vertical, então a posição Y é ambígua. Mais largura já estaria sobrando e as demais opções não resolvem a ambiguidade."
+   },
+   {
+    "id": 17,
+    "question": "Qual é o valor impresso?\n\nvar a = 5\nlet b = 2\na += b * 3\nprint(a)",
+    "options": [
+     "11",
+     "21",
+     "10",
+     "Erro de compilação"
+    ],
+    "correctIndex": 0,
+    "explanation": "A multiplicação tem precedência: b * 3 = 6, depois a += 6 resulta em 11. Seria 21 se somasse antes de multiplicar e não há erro, pois a é var e b é let apenas lida."
+   },
+   {
+    "id": 18,
+    "question": "Qual é a saída?\n\nlet r = 7 / 2\nlet s = 7 % 2\nprint(r, s)",
+    "options": [
+     "3.5 1",
+     "4 1",
+     "3 0",
+     "3 1"
+    ],
+    "correctIndex": 3,
+    "explanation": "Com dois Int, a divisão é inteira (7 / 2 = 3, sem casas decimais) e % devolve o resto (1). 3.5 exigiria Double e 4 seria arredondamento, que o Swift não faz."
+   },
+   {
+    "id": 19,
+    "question": "O que acontece com este código?\n\nlet price = 9.5\nlet count = 3\nlet total = price * count",
+    "options": [
+     "Erro de compilação: não é possível multiplicar Double por Int sem converter.",
+     "total vale 28.5 como Double.",
+     "total vale 27 como Int.",
+     "Erro de execução ao rodar o app."
+    ],
+    "correctIndex": 0,
+    "explanation": "Swift é fortemente tipado e não converte tipos numéricos implicitamente: price é Double e count é Int. A correção é Double(count). Como é detectado pelo compilador, não chega a ser erro de execução."
+   },
+   {
+    "id": 20,
+    "question": "Dada a função abaixo, qual chamada é válida?\n\nfunc greet(_ name: String, from city: String) -> String {\n    \"Oi \\(name) de \\(city)\"\n}",
+    "options": [
+     "greet(name: \"Ana\", city: \"Rio\")",
+     "greet(\"Ana\", from: \"Rio\")",
+     "greet(\"Ana\", \"Rio\")",
+     "greet(name: \"Ana\", from: \"Rio\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "O _ remove o label do primeiro parâmetro e 'from' é o label externo do segundo, então a chamada é greet(\"Ana\", from: \"Rio\"). As demais usam labels que não existem ou omitem o label exigido."
+   },
+   {
+    "id": 21,
+    "question": "Qual é o valor impresso?\n\nenum Planet: Int {\n    case mercury = 1, venus, earth\n}\nprint(Planet.earth.rawValue)",
+    "options": [
+     "3",
+     "2",
+     "0",
+     "earth"
+    ],
+    "correctIndex": 0,
+    "explanation": "Em um enum com raw value Int, os casos seguintes incrementam o valor anterior: mercury = 1, venus = 2, earth = 3. rawValue devolve o número, e não o nome, e a contagem não começa em 0 porque mercury recebeu 1."
+   },
+   {
+    "id": 22,
+    "question": "Você remove o caso default de um switch sobre um enum com três casos, mas trata só dois deles. O que ocorre?",
+    "options": [
+     "Erro de compilação: o switch precisa ser exaustivo.",
+     "O código compila e o caso não tratado é ignorado.",
+     "O app compila, mas trava ao encontrar o caso faltante.",
+     "O compilador adiciona um default automaticamente."
+    ],
+    "correctIndex": 0,
+    "explanation": "O switch do Swift deve cobrir todos os casos possíveis, por um case para cada valor ou por um default. Faltando um, o compilador acusa 'Switch must be exhaustive', o que evita bugs em tempo de execução."
+   },
+   {
+    "id": 23,
+    "question": "O que acontece com este código?\n\nstruct Counter {\n    var n = 0\n    mutating func inc() { n += 1 }\n}\nlet c = Counter()\nc.inc()",
+    "options": [
+     "Funciona e n passa a valer 1.",
+     "Erro de compilação: não se pode chamar um método mutating em uma constante.",
+     "Funciona, mas c.n continua 0.",
+     "Erro de execução ao chamar inc()."
+    ],
+    "correctIndex": 1,
+    "explanation": "Uma struct declarada com let é imutável por completo, então métodos mutating não podem ser chamados. Troque para var c. O erro é detectado na compilação, não na execução."
+   },
+   {
+    "id": 24,
+    "question": "Qual é a saída?\n\nstruct Counter {\n    var n = 0\n    mutating func inc() { n += 1 }\n}\nvar a = Counter()\nvar b = a\nb.inc()\nprint(a.n, b.n)",
+    "options": [
+     "0 1",
+     "1 1",
+     "0 0",
+     "1 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Structs são tipos de valor, e 'var b = a' cria uma cópia independente. Incrementar b não afeta a, resultando em 0 1. Seria 1 1 se Counter fosse uma class (tipo de referência)."
+   },
+   {
+    "id": 25,
+    "question": "Qual é a saída?\n\nvar nums = [1, 2, 3, 4, 5, 6]\nnums.removeFirst()\nnums.append(7)\nprint(nums.filter { $0 % 2 == 0 }.map { $0 * 10 })",
+    "options": [
+     "[10, 30, 50]",
+     "[20, 40, 60]",
+     "[20, 40, 60, 70]",
+     "[2, 4, 6]"
+    ],
+    "correctIndex": 1,
+    "explanation": "Após removeFirst e append, nums é [2, 3, 4, 5, 6, 7]. O filter mantém os pares (2, 4, 6) e o map multiplica por 10, resultando em [20, 40, 60]. O 1 foi removido, e 7 é ímpar."
+   },
+   {
+    "id": 26,
+    "question": "Qual é o valor impresso?\n\nvar sum = 0\nfor i in 0..<5 {\n    if i == 2 { continue }\n    sum += i\n}\nprint(sum)",
+    "options": [
+     "10",
+     "6",
+     "4",
+     "8"
+    ],
+    "correctIndex": 3,
+    "explanation": "O intervalo 0..<5 vai de 0 a 4. O continue pula a soma quando i vale 2, então sum = 0 + 1 + 3 + 4 = 8. Sem o continue o resultado seria 10; as outras opções vêm de pular valores errados."
+   },
+   {
+    "id": 27,
+    "question": "Quantas vezes o corpo deste loop executa?\n\nfor i in stride(from: 10, to: 0, by: -3) {\n    print(i)\n}",
+    "options": [
+     "3 vezes (10, 7, 4).",
+     "5 vezes (10, 7, 4, 1, 0).",
+     "4 vezes (10, 7, 4, 1).",
+     "Nenhuma, pois o passo é negativo."
+    ],
+    "correctIndex": 2,
+    "explanation": "stride(from:to:by:) exclui o valor final e aceita passo negativo: 10, 7, 4, 1 (o próximo, -2, passa de 0). O 0 não aparece porque a sequência 10, 7, 4, 1 pula por cima dele, e passos negativos são permitidos."
+   },
+   {
+    "id": 28,
+    "question": "Qual é a saída?\n\nlet value = 10\nif true {\n    let value = 20\n    print(value)\n}\nprint(value)",
+    "options": [
+     "20 e depois 20",
+     "10 e depois 10",
+     "20 e depois 10",
+     "Erro de compilação por redeclaração."
+    ],
+    "correctIndex": 2,
+    "explanation": "Dentro do bloco if, a nova constante value sombreia (shadowing) a externa, então imprime 20. Fora do bloco, o escopo externo continua com 10. Não há erro, pois cada escopo tem suas próprias declarações."
+   },
+   {
+    "id": 29,
+    "question": "Qual é a saída?\n\nlet age: Int? = Int(\"12a\")\nprint(age ?? -1)",
+    "options": [
+     "12",
+     "nil",
+     "Erro de execução",
+     "-1"
+    ],
+    "correctIndex": 3,
+    "explanation": "Int(\"12a\") falha na conversão e devolve nil. O operador ?? usa o valor padrão quando o Optional é nil, imprimindo -1. Não trava, pois nada foi desembrulhado à força."
+   },
+   {
+    "id": 30,
+    "question": "Qual identificador é válido em Swift e segue a convenção para variáveis?",
+    "options": [
+     "2ndPlace",
+     "userAge",
+     "user-age",
+     "UserAge"
+    ],
+    "correctIndex": 1,
+    "explanation": "A convenção é lowerCamelCase para variáveis e funções. 2ndPlace é inválido por começar com dígito e user-age tem hífen, que é operador. UserAge é válido, mas UpperCamelCase é reservado a tipos."
+   },
+   {
+    "id": 31,
+    "question": "Qual é a saída?\n\nfunc check(_ n: Int?) -> String {\n    guard let n = n, n > 0 else { return \"invalid\" }\n    return \"ok \\(n)\"\n}\nprint(check(0), check(nil), check(4))",
+    "options": [
+     "invalid invalid ok 4",
+     "ok 0 invalid ok 4",
+     "invalid nil ok 4",
+     "Erro de compilação"
+    ],
+    "correctIndex": 0,
+    "explanation": "O guard exige que n não seja nil e seja maior que zero. 0 falha na segunda condição e nil na primeira, ambos devolvendo invalid. Só 4 passa, resultando em 'ok 4'. O n desembrulhado fica disponível após o guard."
+   },
+   {
+    "id": 32,
+    "question": "Qual é a saída?\n\nlet a = \"5\"\nlet b = \"3\"\nprint(a + b)",
+    "options": [
+     "8",
+     "Erro de compilação",
+     "53",
+     "5 3"
+    ],
+    "correctIndex": 2,
+    "explanation": "O operador + entre dois String concatena o texto, produzindo \"53\". Para somar números seria preciso converter com Int(a) e Int(b). O resultado não tem espaço, pois nenhum foi inserido."
+   },
+   {
+    "id": 33,
+    "question": "O código abaixo roda em um app. Como esse problema é classificado?\n\nlet arr = [1, 2, 3]\nprint(arr[5])",
+    "options": [
+     "Erro de execução (runtime): o app trava com 'Index out of range'.",
+     "Erro de sintaxe, detectado antes de compilar.",
+     "Aviso do compilador, sem efeito na execução.",
+     "Não é erro: o Swift devolve nil para índices inválidos."
+    ],
+    "correctIndex": 0,
+    "explanation": "O código é sintaticamente correto e compila, mas acessar um índice inexistente de um Array causa um crash em tempo de execução. Arrays não devolvem nil (isso é característica de Dictionary) e erros de sintaxe impedem a compilação."
+   },
+   {
+    "id": 34,
+    "question": "O app trava ao abrir uma tela com 'this class is not key value coding-compliant for the key nameLabel'. Você renomeou o outlet no código. Qual é a causa e a solução provável?",
+    "options": [
+     "O storyboard ainda tem a conexão antiga; remova-a no Connections Inspector e reconecte.",
+     "O Info.plist está sem a chave nameLabel.",
+     "A propriedade deveria ser static.",
+     "O simulador está desatualizado e precisa ser reinstalado."
+    ],
+    "correctIndex": 0,
+    "explanation": "Renomear ou remover um outlet no código não atualiza a conexão gravada no storyboard, que ainda procura a chave antiga e falha. Limpe a conexão no Connections Inspector e conecte de novo; o Info.plist e o simulador não têm relação."
+   },
+   {
+    "id": 35,
+    "question": "No console aparece: 'Fatal error: Unexpectedly found nil while implicitly unwrapping an Optional value' ao acessar um IBOutlet em viewDidLoad. Qual é a causa mais provável?",
+    "options": [
+     "O texto atribuído ao label é grande demais.",
+     "O Xcode não tem permissão de internet.",
+     "O outlet não está conectado no storyboard, então vale nil.",
+     "O método viewDidLoad não pode acessar outlets."
+    ],
+    "correctIndex": 2,
+    "explanation": "Outlets são declarados com ! (implicitly unwrapped) e valem nil se a conexão não existir ou se você acessá-los cedo demais. viewDidLoad pode usá-los normalmente, e tamanho de texto e rede não causam esse erro."
+   },
+   {
+    "id": 36,
+    "question": "Considere o código e escolha o resultado.\n\nlet names = [\"Ana\", \"Bia\", \"Caio\"]\nfor i in 0...names.count {\n    print(names[i])\n}",
+    "options": [
+     "Imprime os três nomes e termina normalmente.",
+     "Erro de compilação.",
+     "Imprime só 'Ana' e trava.",
+     "Imprime os três nomes e depois trava com 'Index out of range'."
+    ],
+    "correctIndex": 3,
+    "explanation": "O intervalo fechado 0...3 inclui o índice 3, que não existe (os válidos são 0 a 2). Os três primeiros prints funcionam e o quarto acesso causa crash. O correto seria 0..<names.count ou names.indices."
+   },
+   {
+    "id": 37,
+    "question": "Um botão chama a função @IBAction tapSave, mas nada acontece ao tocar, embora o código esteja correto. Qual é a primeira verificação mais eficiente?",
+    "options": [
+     "Abrir o Connections Inspector do botão e confirmar que Touch Up Inside está ligado a tapSave.",
+     "Reinstalar o Xcode.",
+     "Trocar o tipo da função para private.",
+     "Remover o botão do storyboard e recriá-lo sempre em código."
+    ],
+    "correctIndex": 0,
+    "explanation": "Uma IBAction só é executada se o evento do controle (como Touch Up Inside) estiver conectado a ela. O Connections Inspector mostra essas conexões. Reinstalar o Xcode ou recriar tudo não é o diagnóstico adequado."
+   },
+   {
+    "id": 38,
+    "question": "Você coloca um breakpoint na linha 'total += price' e o app pausa nela. O que se pode afirmar sobre essa linha?",
+    "options": [
+     "Ela já foi executada e total já foi atualizado.",
+     "Ela será ignorada pelo depurador.",
+     "Ela ainda não foi executada; o app pausa antes de executá-la.",
+     "O breakpoint apaga o valor de price."
+    ],
+    "correctIndex": 2,
+    "explanation": "Um breakpoint interrompe a execução antes da linha marcada ser executada. Por isso, ao inspecionar total na pausa, você vê o valor anterior. Use Step Over para executá-la, e o breakpoint não altera variáveis."
+   },
+   {
+    "id": 39,
+    "question": "Pausado em uma linha que chama calculateTotal(), você quer executá-la inteira e parar na próxima linha do mesmo método, sem entrar na função. Qual comando usar?",
+    "options": [
+     "Step Into.",
+     "Step Over.",
+     "Step Out.",
+     "Continue program execution."
+    ],
+    "correctIndex": 1,
+    "explanation": "Step Over executa a linha atual (incluindo chamadas) e para na seguinte. Step Into entraria em calculateTotal, Step Out sai da função atual e Continue segue até o próximo breakpoint."
+   },
+   {
+    "id": 40,
+    "question": "O compilador mostra: \"Value of optional type 'String?' must be unwrapped to a value of type 'String'\". Qual é a correção segura?",
+    "options": [
+     "Trocar String? por Int.",
+     "Apagar a linha e ignorar o erro.",
+     "Adicionar ! em todos os usos, sem checar nada.",
+     "Usar if let ou guard let (ou ??) para desembrulhar o Optional."
+    ],
+    "correctIndex": 3,
+    "explanation": "É um erro de sintaxe/tipo, em tempo de compilação, por usar um Optional como se fosse um valor. Desembrulhe com if let, guard let ou ?? com valor padrão. O ! força o desembrulho e trava se for nil, então não é seguro."
+   }
+  ]
+ },
+ {
+  "id": "exam-14",
+  "title": "Simulado: IA, Machine Learning e Computação Espacial",
+  "description": "15 questões sobre Core ML e Create ML, Natural Language, Vision, Foundation Models, uso responsável de IA, visionOS e RealityKit.",
+  "category": "IA e Machine Learning",
+  "timeLimitMinutes": 20,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Qual afirmação descreve corretamente a diferença entre treinamento e inferência?",
+    "options": [
+     "Treinamento é usar o modelo em dados novos; inferência é ajustá-lo com dados rotulados.",
+     "Os dois termos significam a mesma coisa, mudando só a velocidade.",
+     "Treinar é ajustar o modelo com dados de exemplo (por exemplo com o Create ML); inferência é usar o modelo pronto para prever em dados novos (Core ML no dispositivo).",
+     "O Core ML é usado para treinar modelos do zero no iPhone, e o Create ML só executa modelos."
+    ],
+    "correctIndex": 2,
+    "explanation": "No treinamento o algoritmo aprende padrões a partir de exemplos, no Mac com o Create ML. Na inferência o modelo já treinado faz previsões, no dispositivo com o Core ML. As outras opções invertem os papéis das ferramentas."
+   },
+   {
+    "id": 2,
+    "question": "Um modelo acerta 99% nos dados de treino, mas só 62% nos dados de validação. Qual é o diagnóstico mais provável?",
+    "options": [
+     "Underfitting: o modelo é simples demais e aprendeu pouco do treino.",
+     "O modelo está perfeito, pois a nota de treino é alta.",
+     "Os dados de validação deveriam ser iguais aos de treino.",
+     "Overfitting: o modelo memorizou o treino e generaliza mal."
+    ],
+    "correctIndex": 3,
+    "explanation": "Grande diferença entre treino e validação indica overfitting. Underfitting daria resultado ruim também no treino. A validação deve conter dados não vistos justamente para medir generalização, e nunca ser igual ao treino."
+   },
+   {
+    "id": 3,
+    "question": "Um modelo de reconhecimento facial foi treinado quase só com fotos de um grupo demográfico e erra muito com os demais. Qual é o problema e a melhor correção?",
+    "options": [
+     "Viés do algoritmo; trocar a cor da interface do app.",
+     "Viés nos dados; ampliar e balancear o conjunto de dados para representar todos os grupos e avaliar por grupo.",
+     "Falta de hardware; usar um iPhone mais rápido resolve.",
+     "Não há problema, pois a acurácia média é o único que importa."
+    ],
+    "correctIndex": 1,
+    "explanation": "Dados de treino pouco representativos geram viés, e o modelo se comporta pior nos grupos sub-representados. A solução envolve dados diversos e balanceados e métricas por grupo. Hardware ou interface não mudam o que o modelo aprendeu."
+   },
+   {
+    "id": 4,
+    "question": "No Create ML, como organizar os dados para treinar um classificador de imagens com as categorias gato e cachorro?",
+    "options": [
+     "Em pastas separadas, uma por categoria, com o nome da pasta sendo o rótulo, contendo as imagens correspondentes.",
+     "Todas as imagens numa única pasta, com o rótulo no nome do app.",
+     "Em um arquivo Swift com as imagens codificadas em texto.",
+     "Sem rótulos, pois o Create ML sempre descobre as categorias sozinho."
+    ],
+    "correctIndex": 0,
+    "explanation": "O template Image Classifier usa pastas nomeadas pela classe (por exemplo gato e cachorro), e o nome da pasta vira o rótulo supervisionado. Sem rótulos o aprendizado supervisionado não sabe o que prever."
+   },
+   {
+    "id": 5,
+    "question": "Qual tipo do framework Natural Language é usado para descobrir o idioma dominante de um texto?",
+    "options": [
+     "VNRecognizeTextRequest",
+     "MLModelConfiguration",
+     "NLLanguageRecognizer",
+     "NLEmbeddingView"
+    ],
+    "correctIndex": 2,
+    "explanation": "NLLanguageRecognizer, do Natural Language, identifica o idioma de um texto. VNRecognizeTextRequest é do Vision e lê texto em imagens (OCR), MLModelConfiguration é do Core ML e NLEmbeddingView não existe."
+   },
+   {
+    "id": 6,
+    "question": "Você quer extrair o texto impresso de uma foto de recibo no iPhone. Qual recurso do Vision é o adequado?",
+    "options": [
+     "NLTagger, que lê o texto direto de pixels.",
+     "VNRecognizeTextRequest, que faz o reconhecimento de texto (OCR) em imagens.",
+     "VNClassifyImageRequest, que devolve o texto escrito na imagem.",
+     "SystemLanguageModel, que converte imagens em texto sem outra etapa."
+    ],
+    "correctIndex": 1,
+    "explanation": "O Vision oferece o reconhecimento de texto em imagens via VNRecognizeTextRequest. O NLTagger analisa texto que já é String, a classificação de imagem devolve rótulos de categoria e não o texto presente na imagem."
+   },
+   {
+    "id": 7,
+    "question": "O que o Xcode faz quando você adiciona um arquivo .mlmodel ao projeto?",
+    "options": [
+     "Converte o modelo em storyboard.",
+     "Envia o modelo para a nuvem da Apple para executá-lo remotamente.",
+     "Compila o modelo para o formato otimizado (.mlmodelc) e gera uma classe Swift para usá-lo.",
+     "Apenas copia o arquivo, sem nenhuma geração de código."
+    ],
+    "correctIndex": 2,
+    "explanation": "Ao incluir um .mlmodel no target, o Xcode o compila para .mlmodelc no bundle e gera uma interface Swift tipada. Não há envio para a nuvem: a inferência com Core ML acontece no dispositivo."
+   },
+   {
+    "id": 8,
+    "question": "Qual é uma vantagem de privacidade do framework Foundation Models em relação a usar uma API de LLM em servidor externo?",
+    "options": [
+     "Os dados são sempre enviados a um servidor próprio do desenvolvedor.",
+     "O modelo roda em qualquer iPhone, de qualquer geração, sem condições.",
+     "Dispensa qualquer cuidado do desenvolvedor com dados pessoais.",
+     "O modelo roda no dispositivo, então o texto do usuário não precisa ser enviado a um servidor, e funciona offline."
+    ],
+    "correctIndex": 3,
+    "explanation": "O modelo do Foundation Models é executado no aparelho, o que mantém os dados locais e permite uso offline. Exige dispositivo compatível com Apple Intelligence, e o desenvolvedor continua responsável por tratar dados pessoais com cuidado."
+   },
+   {
+    "id": 9,
+    "question": "Qual tipo do Foundation Models representa uma conversa com o modelo, na qual você envia prompts e recebe respostas?",
+    "options": [
+     "LanguageModelSession",
+     "VNImageRequestHandler",
+     "NLTokenizer",
+     "MLUpdateTask"
+    ],
+    "correctIndex": 0,
+    "explanation": "A LanguageModelSession mantém o contexto da conversa e é usada com respond(to:). VNImageRequestHandler é do Vision, NLTokenizer separa texto em palavras ou frases e MLUpdateTask é do Core ML."
+   },
+   {
+    "id": 10,
+    "question": "O que a geração guiada (guided generation) com @Generable permite no Foundation Models?",
+    "options": [
+     "Receber a resposta do modelo diretamente como um tipo Swift estruturado, em vez de interpretar texto livre.",
+     "Treinar o modelo novamente durante a execução do app.",
+     "Desativar as verificações de segurança do modelo.",
+     "Garantir que o modelo sempre acerte os fatos que afirma."
+    ],
+    "correctIndex": 0,
+    "explanation": "A macro @Generable descreve um tipo Swift que o modelo deve preencher, e a resposta chega estruturada, sem parsing frágil de texto. Isso não treina o modelo, não desliga a segurança e não garante veracidade, então ainda é preciso validar."
+   },
+   {
+    "id": 11,
+    "question": "Antes de oferecer uma função com o modelo de linguagem do sistema, qual cuidado é mais adequado?",
+    "options": [
+     "Assumir que ele está sempre disponível em qualquer dispositivo.",
+     "Esconder o erro e deixar o app travar se o modelo faltar.",
+     "Verificar a disponibilidade do modelo (SystemLanguageModel.default.availability) e prever uma alternativa quando ele não estiver disponível.",
+     "Enviar sempre o texto a um servidor, ignorando o modelo local."
+    ],
+    "correctIndex": 2,
+    "explanation": "O modelo depende de dispositivo compatível, de Apple Intelligence ativada e do download concluído, então pode estar indisponível. Consulte a availability e ofereça uma alternativa ou explique ao usuário, em vez de assumir ou travar."
+   },
+   {
+    "id": 12,
+    "question": "Ao usar a sugestão de código gerada por IA no Xcode (coding intelligence), qual prática é a mais responsável?",
+    "options": [
+     "Aceitar sem ler, pois a IA nunca erra.",
+     "Revisar, entender e testar o código sugerido antes de aceitar, e não incluir segredos nem dados pessoais nos prompts.",
+     "Colar chaves de API e senhas no prompt para o resultado ser melhor.",
+     "Remover todos os testes, pois o código gerado já é garantidamente correto."
+    ],
+    "correctIndex": 1,
+    "explanation": "Modelos de IA podem produzir código incorreto, inseguro ou com APIs inexistentes, e o desenvolvedor segue responsável pelo resultado, por isso revisar e testar é essencial. Segredos e dados pessoais não devem ir em prompts."
+   },
+   {
+    "id": 13,
+    "question": "No visionOS, o que é um ornament?",
+    "options": [
+     "Um objeto 3D decorativo que preenche o ambiente inteiro.",
+     "Uma notificação do sistema que aparece só no Mac.",
+     "Um tipo de arquivo de modelo do Core ML.",
+     "Uma interface complementar, como uma barra de controles, que fica presa à borda de uma janela, fora do seu conteúdo principal."
+    ],
+    "correctIndex": 3,
+    "explanation": "Ornaments são visões ancoradas às bordas de uma janela (por exemplo, controles de mídia) para manter o conteúdo limpo, e se aplicam com o modificador .ornament. Não são o ambiente, nem notificações, nem arquivos de ML."
+   },
+   {
+    "id": 14,
+    "question": "Qual é a diferença principal entre um volume e um immersive space no visionOS?",
+    "options": [
+     "O volume é uma janela 3D limitada que convive com outros apps; o immersive space pode preencher o ambiente do usuário e é aberto com a ação openImmersiveSpace.",
+     "O volume sempre oculta o mundo real; o immersive space nunca o faz.",
+     "Os dois são idênticos, mudando apenas o nome na documentação.",
+     "O immersive space só existe no iPhone, e o volume, só no iPad."
+    ],
+    "correctIndex": 0,
+    "explanation": "Um volume é um conteúdo 3D delimitado (WindowGroup com estilo volumétrico) no Shared Space. O ImmersiveSpace pode ocupar todo o entorno, em estilos mistos ou totais, e é aberto pela ação openImmersiveSpace. Ambos existem no visionOS."
+   },
+   {
+    "id": 15,
+    "question": "No RealityKit, como o comportamento e a aparência de uma entidade são definidos?",
+    "options": [
+     "Por herança de uma subclasse de UIViewController.",
+     "Por componentes anexados à entidade, no modelo Entity-Component, como ModelComponent para a malha e os materiais.",
+     "Por arquivos .storyboard com constraints 3D.",
+     "Por um único método global render() sem objetos."
+    ],
+    "correctIndex": 1,
+    "explanation": "O RealityKit usa o padrão Entity-Component: a Entity é um contêiner e os Components definem aparência, física e outros comportamentos, como ModelComponent. Na SwiftUI, usa-se RealityView para exibir a cena. UIViewController e storyboards não fazem parte desse modelo."
+   }
+  ]
+ }
+]

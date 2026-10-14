@@ -230,6 +230,7 @@ struct PlaygroundView: View {
             let ok = r.exitCode == 0 &&
                 r.output.trimmingCharacters(in: .whitespacesAndNewlines) == c.expected.trimmingCharacters(in: .whitespacesAndNewlines)
             verdict = ok
+            progress.recordAttempt(topic: "c:\(c.id)", correct: ok)
             if ok { progress.markSolved(c.id) }
         }
     }

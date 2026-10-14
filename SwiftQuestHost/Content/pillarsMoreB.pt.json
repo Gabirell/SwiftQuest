@@ -1,0 +1,2355 @@
+[
+ {
+  "id": 13,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Declare o placeholder de tipo na função genérica que troca dois valores.",
+    "codeSnippet": "func trocar___(_ a: inout T, _ b: inout T) { swap(&a, &b) }",
+    "correctAnswer": "<T>",
+    "hint": "O placeholder fica entre ângulos logo após o nome da função."
+   },
+   {
+    "id": 7,
+    "question": "Exija que a chave do cache possa ser usada como chave de Dictionary.",
+    "codeSnippet": "struct Cache<Key: ___, Value> { var dados: [Key: Value] = [:] }",
+    "correctAnswer": "Hashable",
+    "hint": "Chaves de Dictionary precisam ser hasheáveis."
+   },
+   {
+    "id": 8,
+    "question": "Complete o método da extensão condicional que verifica se o elemento existe na pilha.",
+    "codeSnippet": "extension Stack where Element: Equatable { func tem(_ x: Element) -> Bool { itens.___(x) } }",
+    "correctAnswer": "contains",
+    "hint": "Sequence tem um método que testa se um elemento Equatable está presente."
+   },
+   {
+    "id": 9,
+    "question": "Que palavra-chave indica um tipo opaco: a função devolve algum tipo concreto que adota View?",
+    "codeSnippet": "func criarBotao() -> ___ View { Button(\"OK\") { } }",
+    "correctAnswer": "some",
+    "hint": "É a mesma palavra usada em 'var body: ___ View'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "O que imprime 'func dobro<T: Numeric>(_ x: T) -> T { x * 2 }; print(dobro(2.5))'?",
+    "options": [
+     "Um erro de compilação, pois Numeric só aceita Int",
+     "2.5",
+     "5",
+     "5.0"
+    ],
+    "correctIndex": 3,
+    "explanation": "2.5 é inferido como Double, que adota Numeric; Double * 2 resulta 5.0. O resultado mantém o tipo Double, não vira Int."
+   },
+   {
+    "id": 7,
+    "question": "Para que serve um 'associatedtype' em um protocolo?",
+    "options": [
+     "Para impedir que o protocolo seja adotado por structs",
+     "Para criar um apelido global de tipo",
+     "Para declarar um tipo placeholder que cada tipo conformante define, tornando o protocolo genérico",
+     "Para forçar o tipo a ser uma classe"
+    ],
+    "correctIndex": 2,
+    "explanation": "Em 'protocol Container { associatedtype Item }' cada tipo define seu Item (por exemplo Int). Protocolos não usam '<T>'; usam associatedtype."
+   },
+   {
+    "id": 8,
+    "question": "O que acontece ao executar 'primeiro([Int]())' com 'func primeiro<T>(_ a: [T]) -> T { a[0] }'?",
+    "options": [
+     "Crash em tempo de execução por índice fora do limite",
+     "O compilador não consegue inferir 'T'",
+     "'T' não adota Equatable",
+     "Nenhum; retorna nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "O array está vazio, então 'a[0]' viola o limite e o programa encerra com 'Index out of range'. A inferência não é problema (T = Int) e o acesso por índice nunca devolve nil."
+   },
+   {
+    "id": 9,
+    "question": "O que faz 'extension Array where Element == String { ... }'?",
+    "options": [
+     "Adiciona os membros apenas aos arrays cujo Element é String",
+     "Converte todo Array em Array de String",
+     "Cria um novo tipo chamado String",
+     "Só compila se Array for uma classe"
+    ],
+    "correctIndex": 0,
+    "explanation": "A cláusula 'where' com '==' restringe a extensão a um tipo concreto. Em '[Int]' esses métodos nem existem."
+   },
+   {
+    "id": 10,
+    "question": "'let a: [Int] = [1]; let b: [String] = a' compila?",
+    "options": [
+     "Sim, Swift converte automaticamente os elementos",
+     "Sim, mas só em Swift 6",
+     "Sim, se b for var",
+     "Não: Array<Int> e Array<String> são tipos diferentes"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cada especialização de um tipo genérico é um tipo distinto. Para converter é preciso um 'map' explícito, como 'a.map(String.init)'."
+   },
+   {
+    "id": 11,
+    "question": "Qual diferença entre 'some Collection' e 'any Collection' como tipo de retorno?",
+    "options": [
+     "Nenhuma, são sinônimos",
+     "'any' é mais rápido, pois não usa existencial",
+     "'some' esconde um único tipo concreto fixo; 'any' é uma caixa existencial que pode guardar tipos diferentes",
+     "'some' só vale para structs"
+    ],
+    "correctIndex": 2,
+    "explanation": "Com 'some' o compilador conhece o tipo exato e pode otimizar; 'any' permite valores heterogêneos com custo de indireção dinâmica."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que é 'Optional' internamente na biblioteca padrão?",
+    "options": [
+     "Um enum genérico 'Optional<Wrapped>' com os casos none e some",
+     "Uma classe especial do compilador",
+     "Um typealias para Any",
+     "Um protocolo com associatedtype"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Int?' é açúcar sintático para 'Optional<Int>', um enum genérico: .none (nil) ou .some(valor)."
+   },
+   {
+    "id": 2,
+    "question": "Quantos parâmetros de tipo tem 'Result<Success, Failure>'?",
+    "options": [
+     "1",
+     "0, pois é um protocolo",
+     "3",
+     "2, e Failure precisa adotar Error"
+    ],
+    "correctIndex": 3,
+    "explanation": "Result é um enum genérico com dois placeholders; 'Failure: Error' é uma constraint da própria declaração."
+   },
+   {
+    "id": 3,
+    "question": "Em 'func f<T: Numeric>(_ a: T, _ b: T)', o que acontece com 'f(i, d)' sendo 'i: Int' e 'd: Double' variáveis?",
+    "options": [
+     "Compila e T vira Int",
+     "Compila e T vira Double",
+     "Erro: ambos os parâmetros devem ter o mesmo T, e não há conversão implícita",
+     "Compila e T vira Any"
+    ],
+    "correctIndex": 2,
+    "explanation": "Um mesmo T não pode ser Int e Double ao mesmo tempo. (Com literais como f(1, 2.5) o literal 1 pode ser Double e compila.)"
+   },
+   {
+    "id": 4,
+    "question": "Como se escreve mais de uma constraint em um genérico?",
+    "options": [
+     "<T: Comparable, Hashable>",
+     "<T: Comparable & Hashable> ou uma cláusula where",
+     "<T: Comparable || Hashable>",
+     "<T = Comparable + Hashable>"
+    ],
+    "correctIndex": 1,
+    "explanation": "Constraints se combinam com '&' (composição de protocolos) ou com 'where T: Comparable, T: Hashable'. '||' e '+' não existem para isso."
+   },
+   {
+    "id": 5,
+    "question": "Generics em Swift têm custo de desempenho em tempo de execução?",
+    "options": [
+     "Frequentemente não: o compilador pode especializar o código para cada tipo concreto",
+     "Sempre, equivalente a usar Any",
+     "Nunca, sob nenhuma circunstância",
+     "Sempre, pois usam reflexão"
+    ],
+    "correctIndex": 0,
+    "explanation": "A especialização gera código otimizado por tipo, o que o aproxima do código escrito à mão; sem ela, o genérico usa tabelas de testemunho em tempo de execução. Afirmar 'nunca' ou 'sempre' é incorreto."
+   },
+   {
+    "id": 6,
+    "question": "O que significa passar 'Int.self' para 'func criar<T: Decodable>(_ tipo: T.Type)'?",
+    "options": [
+     "Cria uma instância de Int com valor zero",
+     "Declara uma constante estática",
+     "Converte um valor para Int",
+     "Passa o próprio tipo (metatype), permitindo ao compilador inferir T = Int"
+    ],
+    "correctIndex": 3,
+    "explanation": "'X.self' é o metatype de X. É o padrão usado por 'decode(User.self, from:)' para informar T sem precisar de um valor."
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Detecte que a cena está ativa e interativa (primeiro plano).",
+    "codeSnippet": "if novaFase == .___ { atualizarDados() }",
+    "correctAnswer": "active",
+    "hint": "É o valor de ScenePhase entre inactive e background."
+   },
+   {
+    "id": 7,
+    "question": "Conecte um AppDelegate clássico a um app SwiftUI.",
+    "codeSnippet": "@___(AppDelegate.self) var appDelegate",
+    "correctAnswer": "UIApplicationDelegateAdaptor",
+    "hint": "O property wrapper é declarado na struct App e termina em 'Adaptor'."
+   },
+   {
+    "id": 8,
+    "question": "Chame a implementação da superclasse no ciclo de vida do UIKit.",
+    "codeSnippet": "override func viewDidLoad() { ___.viewDidLoad(); configurarTela() }",
+    "correctAnswer": "super",
+    "hint": "Palavra-chave que acessa a classe pai."
+   },
+   {
+    "id": 9,
+    "question": "Qual protocolo descreve o corpo de uma cena como WindowGroup?",
+    "codeSnippet": "var body: some ___ { WindowGroup { ContentView() } }",
+    "correctAnswer": "Scene",
+    "hint": "O body de App devolve cenas, não views."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Qual é a função do SceneDelegate no UIKit moderno?",
+    "options": [
+     "Gerenciar o ciclo de vida de uma cena (janela) individual, enquanto o AppDelegate cuida do processo",
+     "Substitui o main.swift",
+     "Armazenar dados em disco",
+     "Executar código somente no Mac"
+    ],
+    "correctIndex": 0,
+    "explanation": "Com múltiplas janelas no iPadOS, cada UIScene tem seu próprio delegate; o AppDelegate trata eventos do app como um todo (por exemplo, registro de push)."
+   },
+   {
+    "id": 7,
+    "question": "Em qual ordem o UIKit chama os métodos na primeira exibição de uma tela?",
+    "options": [
+     "viewDidAppear, viewWillAppear, viewDidLoad",
+     "viewWillAppear, viewDidLoad, viewDidAppear",
+     "viewDidLoad, viewDidAppear, viewWillAppear",
+     "viewDidLoad, viewWillAppear, viewDidAppear"
+    ],
+    "correctIndex": 3,
+    "explanation": "viewDidLoad roda uma vez ao carregar a view; viewWillAppear e viewDidAppear rodam a cada exibição, antes e depois de a tela ficar visível."
+   },
+   {
+    "id": 8,
+    "question": "Por que evitar trabalho pesado no 'init' de uma View do SwiftUI?",
+    "options": [
+     "Porque o init nunca é chamado",
+     "Porque structs não aceitam init",
+     "Porque Views são structs leves recriadas com frequência a cada atualização da hierarquia",
+     "Porque init só roda no background"
+    ],
+    "correctIndex": 2,
+    "explanation": "O init pode rodar várias vezes. Use '.task' ou '@State' com valor inicial barato; o estado persistente fica fora da struct."
+   },
+   {
+    "id": 9,
+    "question": "Onde fazer ajustes que dependem do tamanho final das subviews no UIKit?",
+    "options": [
+     "viewDidLoad",
+     "viewDidLayoutSubviews",
+     "init(coder:)",
+     "didReceiveMemoryWarning"
+    ],
+    "correctIndex": 1,
+    "explanation": "Em viewDidLoad os frames ainda não foram calculados pelo Auto Layout; viewDidLayoutSubviews roda depois de cada passagem de layout."
+   },
+   {
+    "id": 10,
+    "question": "Onde um app UIKit tradicionalmente faz a configuração inicial global de bibliotecas?",
+    "options": [
+     "application(_:didFinishLaunchingWithOptions:)",
+     "viewWillDisappear",
+     "deinit de qualquer ViewController",
+     "applicationWillTerminate"
+    ],
+    "correctIndex": 0,
+    "explanation": "Esse método do AppDelegate roda uma vez ao terminar de lançar o processo. Em SwiftUI puro usa-se o 'init' da struct App."
+   },
+   {
+    "id": 11,
+    "question": "Ao ler '@Environment(\\.scenePhase)' dentro da struct App (e não de uma View), o que ele reflete?",
+    "options": [
+     "Apenas a cena em primeiro plano",
+     "Apenas a primeira cena criada",
+     "Sempre .active",
+     "A fase agregada de todas as cenas do app"
+    ],
+    "correctIndex": 3,
+    "explanation": "Dentro de uma View, scenePhase vale para aquela cena; na App ele resume o estado de todas as cenas (ativo se alguma estiver ativa)."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que faz '.task(id: userID) { ... }'?",
+    "options": [
+     "Executa só uma vez, ignorando o id",
+     "Cancela e reinicia a tarefa sempre que o valor de id mudar",
+     "Cria uma tarefa em background do sistema",
+     "Substitui o init"
+    ],
+    "correctIndex": 1,
+    "explanation": "Além de iniciar ao aparecer e cancelar ao sumir, o id faz o SwiftUI reexecutar o trabalho para o novo valor."
+   },
+   {
+    "id": 2,
+    "question": "Como pedir ao sistema alguns segundos extras para terminar um upload após o app ir para segundo plano no UIKit?",
+    "options": [
+     "UIApplication.shared.beginBackgroundTask(expirationHandler:), finalizando com endBackgroundTask",
+     "Usando um timer infinito",
+     "Ignorando o ciclo de vida",
+     "Chamando sleep(60) no didEnterBackground"
+    ],
+    "correctIndex": 0,
+    "explanation": "O tempo concedido é limitado e você deve chamar endBackgroundTask ao terminar. Bloquear a thread principal com sleep pode fazer o sistema encerrar o app."
+   },
+   {
+    "id": 3,
+    "question": "Quando o 'deinit' de uma UIViewController é chamado?",
+    "options": [
+     "Quando a tela some, sempre",
+     "Quando o app vai para background",
+     "Logo após viewDidLoad",
+     "Quando a última referência forte ao controller é liberada"
+    ],
+    "correctIndex": 3,
+    "explanation": "Se o deinit nunca roda ao fechar uma tela, é sinal de retain cycle (por exemplo, closure capturando self sem [weak self])."
+   },
+   {
+    "id": 4,
+    "question": "Qual a equivalência aproximada de 'viewWillDisappear' no SwiftUI?",
+    "options": [
+     "init",
+     "body",
+     "onDisappear",
+     "@main"
+    ],
+    "correctIndex": 2,
+    "explanation": "'.onDisappear' roda quando a view sai da hierarquia, mas não é idêntico ao UIKit; para trabalho assíncrono, '.task' já cancela sozinho."
+   },
+   {
+    "id": 5,
+    "question": "Para que serve '@SceneStorage'?",
+    "options": [
+     "Guardar senhas com segurança",
+     "Restaurar pequenos estados de UI (aba, rascunho) por cena, entre lançamentos",
+     "Compartilhar dados entre todos os usuários",
+     "Substituir o SwiftData"
+    ],
+    "correctIndex": 1,
+    "explanation": "É voltado à restauração de estado de interface por cena; dados do usuário devem ir para SwiftData, arquivos ou Keychain."
+   },
+   {
+    "id": 6,
+    "question": "Em que situação a ScenePhase passa por '.inactive'?",
+    "options": [
+     "Em transições, como o seletor de apps ou uma chamada recebida, quando a cena está visível mas não interativa",
+     "Só ao desligar o iPhone",
+     "Somente no Mac",
+     "Nunca ocorre no iOS"
+    ],
+    "correctIndex": 0,
+    "explanation": "Inactive indica que a cena está visível sem receber eventos; background significa que não está mais visível. Salvar dados importantes em background é mais seguro que esperar o término do app."
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Qual o tipo do parâmetro que dá acesso ao Coordinator e ao Environment em makeUIView?",
+    "codeSnippet": "func makeUIView(context: ___) -> UITextField { UITextField() }",
+    "correctAnswer": "Context",
+    "hint": "É um tipo aninhado do próprio UIViewRepresentable."
+   },
+   {
+    "id": 7,
+    "question": "Hospede uma view SwiftUI como conteúdo de uma célula do UIKit (iOS 16+).",
+    "codeSnippet": "cell.contentConfiguration = ___ { Text(\"Olá\") }",
+    "correctAnswer": "UIHostingConfiguration",
+    "hint": "Nome do tipo que começa com UIHosting e termina em Configuration."
+   },
+   {
+    "id": 8,
+    "question": "Informe a view raiz ao criar o hosting controller.",
+    "codeSnippet": "let vc = UIHostingController(___: MinhaView())",
+    "correctAnswer": "rootView",
+    "hint": "O argumento rotulado é a view SwiftUI hospedada."
+   },
+   {
+    "id": 9,
+    "question": "Qual protocolo embrulha um UIViewController inteiro, como UIImagePickerController?",
+    "codeSnippet": "struct Camera: ___ { func makeUIViewController(context: Context) -> UIImagePickerController { UIImagePickerController() } }",
+    "correctAnswer": "UIViewControllerRepresentable",
+    "hint": "Variante do UIViewRepresentable para controllers."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Uma struct UIViewRepresentable é recriada a cada atualização do SwiftUI. Onde guardar estado que precisa sobreviver entre atualizações?",
+    "options": [
+     "Em uma var da struct",
+     "No Coordinator, que é uma classe criada uma vez",
+     "Em uma variável global",
+     "Em updateUIView"
+    ],
+    "correctIndex": 1,
+    "explanation": "A struct é valor e efêmera; o Coordinator (criado por makeCoordinator) vive enquanto a view UIKit existir e é o lugar natural para estado e delegates."
+   },
+   {
+    "id": 7,
+    "question": "Como propagar o texto digitado em um UITextField para um @State do SwiftUI?",
+    "options": [
+     "O Coordinator, como delegate, atualiza o @Binding quando o texto muda",
+     "Não é possível",
+     "Lendo o texto a cada segundo com um Timer",
+     "Reiniciando o app"
+    ],
+    "correctIndex": 0,
+    "explanation": "A struct recebe '@Binding var text'; o Coordinator implementa o callback do UIKit e escreve em 'parent.text'."
+   },
+   {
+    "id": 8,
+    "question": "Quando o SwiftUI chama 'updateUIView'?",
+    "options": [
+     "Apenas uma vez, ao criar",
+     "Nunca; só em UIKit",
+     "Somente quando a tela é rotacionada",
+     "Logo após makeUIView e sempre que um estado de que a view depende mudar"
+    ],
+    "correctIndex": 3,
+    "explanation": "É onde se sincroniza a view UIKit com o estado atual do SwiftUI. Evite criar uma nova UIView ali; atualize a existente."
+   },
+   {
+    "id": 9,
+    "question": "Qual a sequência correta para incorporar um UIHostingController dentro de outro UIViewController?",
+    "options": [
+     "view.addSubview(host) apenas",
+     "host.didMove(toParent: self) antes de addChild",
+     "addChild(host); view.addSubview(host.view); host.didMove(toParent: self)",
+     "present(host) sempre"
+    ],
+    "correctIndex": 2,
+    "explanation": "É o padrão de containment de view controllers: addChild, adicionar a view e chamar didMove(toParent:). Sem isso, eventos de ciclo de vida não chegam ao filho."
+   },
+   {
+    "id": 10,
+    "question": "Para que serve 'static func dismantleUIView(_:coordinator:)'?",
+    "options": [
+     "Para criar a view",
+     "Para limpar recursos (observadores, timers) quando a view UIKit é removida",
+     "Para animar a transição",
+     "Para ligar o delegate"
+    ],
+    "correctIndex": 1,
+    "explanation": "É o gancho de desmontagem, oposto a makeUIView. Útil para remover observers ou parar sessões (por exemplo câmera)."
+   },
+   {
+    "id": 11,
+    "question": "Você esqueceu 'textField.delegate = context.coordinator' em makeUIView. O que acontece?",
+    "options": [
+     "O Coordinator nunca recebe os callbacks, então o Binding não é atualizado",
+     "Crash ao iniciar",
+     "Erro de compilação",
+     "O SwiftUI atribui o delegate sozinho"
+    ],
+    "correctIndex": 0,
+    "explanation": "O SwiftUI não liga delegates por você: a atribuição explícita é responsabilidade de makeUIView. Sem ela, o app compila e roda, mas a sincronização silenciosamente falha."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Você precisa exibir um PDF com recursos que o SwiftUI não oferece nativamente. Qual a melhor abordagem?",
+    "options": [
+     "Reescrever o PDFKit do zero",
+     "Abandonar o SwiftUI",
+     "Embrulhar o PDFView do PDFKit com UIViewRepresentable",
+     "Converter o PDF em Text"
+    ],
+    "correctIndex": 2,
+    "explanation": "Interop existe justamente para reutilizar componentes UIKit maduros dentro de telas SwiftUI sem reescrevê-los."
+   },
+   {
+    "id": 2,
+    "question": "Como empurrar uma tela SwiftUI em uma pilha UINavigationController?",
+    "options": [
+     "navigationController?.push(Tela())",
+     "navigationController?.pushViewController(UIHostingController(rootView: Tela()), animated: true)",
+     "Tela().present()",
+     "Não é possível misturar"
+    ],
+    "correctIndex": 1,
+    "explanation": "O hosting controller é um UIViewController comum, aceito por qualquer API de navegação do UIKit."
+   },
+   {
+    "id": 3,
+    "question": "Como ler valores do Environment (como colorScheme) dentro de um UIViewRepresentable?",
+    "options": [
+     "Com context.environment",
+     "Não é possível",
+     "Com UserDefaults",
+     "Com NotificationCenter"
+    ],
+    "correctIndex": 0,
+    "explanation": "O Context expõe 'environment', 'coordinator' e 'transaction'; ou declare '@Environment' na própria struct."
+   },
+   {
+    "id": 4,
+    "question": "Qual é o equivalente de 'updateUIView' em um UIViewControllerRepresentable?",
+    "options": [
+     "updateViewController(_:)",
+     "reloadData()",
+     "refreshController()",
+     "updateUIViewController(_:context:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "As variantes de controller seguem a mesma forma: makeUIViewController, updateUIViewController e makeCoordinator."
+   },
+   {
+    "id": 5,
+    "question": "Um app mostra uma view SwiftUI hospedada em UIKit e o '.environment(...)' do app SwiftUI não chega nela. Por quê?",
+    "options": [
+     "Bug do Xcode",
+     "Porque UIKit bloqueia objetos",
+     "O Environment só desce pela hierarquia SwiftUI; é preciso injetá-lo na rootView do hosting controller",
+     "Porque a view é struct"
+    ],
+    "correctIndex": 2,
+    "explanation": "O hosting controller é uma nova raiz SwiftUI. Aplique '.environment(...)' ou '.modelContainer(...)' à rootView ao criá-lo."
+   },
+   {
+    "id": 6,
+    "question": "Qual é o equivalente do UIViewRepresentable no macOS?",
+    "options": [
+     "MacViewRepresentable",
+     "NSViewRepresentable",
+     "AppKitView",
+     "NSHostingView apenas"
+    ],
+    "correctIndex": 1,
+    "explanation": "NSViewRepresentable embrulha uma NSView; NSHostingView faz o caminho inverso (SwiftUI dentro de AppKit)."
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Crie o objeto central de acesso ao HealthKit.",
+    "codeSnippet": "let store = ___()",
+    "correctAnswer": "HKHealthStore",
+    "hint": "Começa com HK e termina em Store."
+   },
+   {
+    "id": 7,
+    "question": "Defina o tipo de dado de passos.",
+    "codeSnippet": "let tipo = HKQuantityType(.___)",
+    "correctAnswer": "stepCount",
+    "hint": "Identificador de quantidade que conta passos."
+   },
+   {
+    "id": 8,
+    "question": "Complete o parâmetro de leitura ao pedir autorização.",
+    "codeSnippet": "try await store.requestAuthorization(toShare: [], ___: [tipo])",
+    "correctAnswer": "read",
+    "hint": "O rótulo oposto a toShare."
+   },
+   {
+    "id": 9,
+    "question": "Complete a unidade de batimentos por minuto.",
+    "codeSnippet": "let bpm = HKUnit.count().unitDivided(by: .___())",
+    "correctAnswer": "minute",
+    "hint": "Contagem dividida por uma unidade de tempo."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "O que 'authorizationStatus(for:)' informa em um tipo de dado?",
+    "options": [
+     "Se o usuário permitiu leitura",
+     "O valor mais recente",
+     "Apenas o status de compartilhamento (escrita); para leitura o HealthKit não revela a decisão",
+     "Se o Apple Watch está pareado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Por privacidade, um app não deve inferir problemas de saúde pela negação de acesso. Para leitura, consulta-se os dados e, se não houver permissão, eles simplesmente parecem vazios."
+   },
+   {
+    "id": 7,
+    "question": "Por que ler uma HKQuantitySample exige informar um HKUnit?",
+    "options": [
+     "Porque a unidade é opcional e ignorada",
+     "Porque a quantidade pode ser expressa em várias unidades compatíveis; você escolhe em qual lê o valor",
+     "Porque o relógio muda a unidade",
+     "Porque HKUnit é um tipo de erro"
+    ],
+    "correctIndex": 1,
+    "explanation": "'quantity.doubleValue(for: .meter())' e '.mile()' dão números diferentes do mesmo dado; a unidade errada produz resultados incorretos."
+   },
+   {
+    "id": 8,
+    "question": "Qual query avisa o app quando novos dados de saúde são gravados?",
+    "options": [
+     "HKObserverQuery (com delivery em segundo plano opcional)",
+     "HKSampleQuery",
+     "HKSourceQuery",
+     "HKStatisticsQuery"
+    ],
+    "correctIndex": 0,
+    "explanation": "HKObserverQuery dispara quando há mudanças; normalmente se combina com HKAnchoredObjectQuery para buscar só o que é novo."
+   },
+   {
+    "id": 9,
+    "question": "No watchOS, como girar a Digital Crown para controlar um valor em SwiftUI?",
+    "options": [
+     "Com .onTapGesture",
+     "Não há API",
+     "Com HKCrown",
+     "Com .digitalCrownRotation($valor)"
+    ],
+    "correctIndex": 3,
+    "explanation": "O modifier digitalCrownRotation liga a rotação da coroa a um valor, com faixa e passo configuráveis; a view deve ser focável."
+   },
+   {
+    "id": 10,
+    "question": "O que indica '@Environment(\\.isLuminanceReduced)' no watchOS?",
+    "options": [
+     "Que a bateria está baixa",
+     "Que o app foi encerrado",
+     "Que o relógio está no modo Always-On com tela reduzida, e a UI deve simplificar",
+     "Que há pouca luz ambiente apenas"
+    ],
+    "correctIndex": 2,
+    "explanation": "No Always-On Display, mostre menos informações e cores menos brilhantes, evitando exibir dados sensíveis ou animações."
+   },
+   {
+    "id": 11,
+    "question": "Como manter um app de meditação rodando com a tela apagada no Apple Watch?",
+    "options": [
+     "Timer a cada segundo",
+     "WKExtendedRuntimeSession com o tipo adequado (por exemplo mindfulness)",
+     "Loop infinito na main thread",
+     "Desativar o ciclo de vida"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sessões de runtime estendido são o mecanismo oficial para casos como meditação, alarmes e smart alarm; o sistema encerra loops não autorizados."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual query é ideal para gerar o gráfico de passos por dia nos últimos 7 dias?",
+    "options": [
+     "HKObserverQuery",
+     "HKSourceQuery",
+     "HKCorrelationQuery",
+     "HKStatisticsCollectionQuery com intervalo de 1 dia"
+    ],
+    "correctIndex": 3,
+    "explanation": "A collection query agrega estatísticas (soma) por intervalos regulares, evitando somar amostras manualmente."
+   },
+   {
+    "id": 2,
+    "question": "Qual chave do Info.plist explica por que o app ESCREVE dados no HealthKit?",
+    "options": [
+     "NSHealthShareUsageDescription",
+     "NSHealthWriteDescription",
+     "NSHealthUpdateUsageDescription",
+     "NSHealthKitUsage"
+    ],
+    "correctIndex": 2,
+    "explanation": "Share é leitura; Update é escrita. Sem a descrição correta o app trava ao pedir autorização."
+   },
+   {
+    "id": 3,
+    "question": "O que é necessário no Xcode antes de usar o HealthKit?",
+    "options": [
+     "Nada, vem habilitado",
+     "Adicionar a capability HealthKit em Signing & Capabilities",
+     "Criar um arquivo .healthkit",
+     "Instalar um pacote Swift"
+    ],
+    "correctIndex": 1,
+    "explanation": "A capability gera o entitlement correspondente; sem ela a autorização falha mesmo com o Info.plist correto."
+   },
+   {
+    "id": 4,
+    "question": "Qual boa prática de privacidade ao pedir permissões do HealthKit?",
+    "options": [
+     "Pedir apenas os tipos necessários e explicar o motivo, no momento adequado",
+     "Pedir todos os tipos disponíveis, por precaução",
+     "Esconder o motivo para não assustar",
+     "Armazenar os dados em texto aberto no servidor"
+    ],
+    "correctIndex": 0,
+    "explanation": "Minimizar dados coletados e ser transparente são princípios de privacidade; dados de saúde são especialmente sensíveis."
+   },
+   {
+    "id": 5,
+    "question": "Para que serve 'HKLiveWorkoutBuilder' em um treino?",
+    "options": [
+     "Para desenhar a interface",
+     "Para criar o ícone do app",
+     "Para enviar notificações",
+     "Para coletar dados em tempo real durante a sessão e salvar o HKWorkout ao final"
+    ],
+    "correctIndex": 3,
+    "explanation": "Junto com HKWorkoutSession, o builder recebe amostras (batimentos, calorias) e finaliza o treino no HealthKit."
+   },
+   {
+    "id": 6,
+    "question": "Qual framework transfere dados entre o app do iPhone e o do Apple Watch?",
+    "options": [
+     "MapKit",
+     "UIKit",
+     "WatchConnectivity (WCSession)",
+     "StoreKit"
+    ],
+    "correctIndex": 2,
+    "explanation": "WCSession oferece sendMessage, updateApplicationContext e transferUserInfo para casos diferentes de entrega."
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Declare uma cena de janela única (apenas uma instância) no macOS.",
+    "codeSnippet": "___(\"Informações\", id: \"info\") { InfoView() }",
+    "correctAnswer": "Window",
+    "hint": "Diferente de WindowGroup, que permite várias janelas."
+   },
+   {
+    "id": 7,
+    "question": "Adicione um menu personalizado à barra de menus do app.",
+    "codeSnippet": "WindowGroup { ContentView() }.___ { CommandMenu(\"Ferramentas\") { Button(\"Limpar\") { } } }",
+    "correctAnswer": "commands",
+    "hint": "Modifier da cena que recebe Commands."
+   },
+   {
+    "id": 8,
+    "question": "Crie o layout com barra lateral e área de detalhe típico de apps de Mac.",
+    "codeSnippet": "___ { List { Text(\"Entrada\") } } detail: { Text(\"Detalhe\") }",
+    "correctAnswer": "NavigationSplitView",
+    "hint": "Container com sidebar e detail."
+   },
+   {
+    "id": 9,
+    "question": "Conecte um delegate do AppKit a um app SwiftUI no macOS.",
+    "codeSnippet": "@___(AppDelegate.self) var appDelegate",
+    "correctAnswer": "NSApplicationDelegateAdaptor",
+    "hint": "Versão do UIApplicationDelegateAdaptor para o Mac."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Qual a diferença entre 'Window' e 'WindowGroup' no macOS?",
+    "options": [
+     "Nenhuma",
+     "'WindowGroup' não aceita views",
+     "'Window' só existe no iOS",
+     "'Window' é uma janela única; 'WindowGroup' permite abrir várias instâncias"
+    ],
+    "correctIndex": 3,
+    "explanation": "Use Window para painéis únicos (por exemplo, uma janela de informações); WindowGroup é o padrão para documentos e janelas repetíveis."
+   },
+   {
+    "id": 7,
+    "question": "Como abrir uma janela declarada com id pelo código SwiftUI?",
+    "options": [
+     "UIApplication.open",
+     "NSWindow().open()",
+     "@Environment(\\.openWindow) e openWindow(id: \"info\")",
+     "present(window:)"
+    ],
+    "correctIndex": 2,
+    "explanation": "openWindow é uma ação do Environment que recebe o id (ou um valor, no caso de WindowGroup com dados)."
+   },
+   {
+    "id": 8,
+    "question": "Qual entitlement do App Sandbox permite ler um arquivo escolhido pelo usuário em um NSOpenPanel?",
+    "options": [
+     "Network Outgoing Connections",
+     "File Access: User Selected File (Read Only)",
+     "Camera",
+     "Hardened Runtime"
+    ],
+    "correctIndex": 1,
+    "explanation": "O sandbox bloqueia o disco por padrão; o acesso a arquivos selecionados pelo usuário é liberado por esse entitlement."
+   },
+   {
+    "id": 9,
+    "question": "Para distribuir um app Mac fora da Mac App Store sem alertas do Gatekeeper, o que é necessário?",
+    "options": [
+     "Hardened Runtime, assinatura com Developer ID e notarização pela Apple",
+     "Apenas arrastar o .app",
+     "Um arquivo .exe",
+     "Desativar o Gatekeeper no usuário"
+    ],
+    "correctIndex": 0,
+    "explanation": "A notarização é uma verificação automática da Apple para software assinado com Developer ID; o Hardened Runtime é pré-requisito."
+   },
+   {
+    "id": 10,
+    "question": "Como oferecer um menu de contexto (clique direito) em uma view SwiftUI no Mac?",
+    "options": [
+     "Não é possível",
+     "Com .rightClick",
+     "Com NSMenu apenas",
+     "Com .contextMenu { ... }"
+    ],
+    "correctIndex": 3,
+    "explanation": "O modifier contextMenu aparece no clique direito, Control-clique ou toque longo, conforme a plataforma."
+   },
+   {
+    "id": 11,
+    "question": "Qual protocolo dá ao SwiftUI acesso a uma NSView personalizada e qual método a cria?",
+    "options": [
+     "NSHosting e init()",
+     "UIViewRepresentable e makeUIView",
+     "NSViewRepresentable e makeNSView(context:)",
+     "NSViewController e loadView"
+    ],
+    "correctIndex": 2,
+    "explanation": "O padrão é igual ao do iOS: make, update e Coordinator, com nomes NSView em vez de UIView."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que 'CommandGroup(replacing: .newItem)' faz?",
+    "options": [
+     "Substitui os itens padrão de 'Novo' no menu Arquivo pelos seus",
+     "Cria um novo arquivo no disco",
+     "Fecha o app",
+     "Troca o ícone"
+    ],
+    "correctIndex": 0,
+    "explanation": "CommandGroup permite acrescentar, substituir ou remover grupos de menu do sistema, mantendo o app integrado às convenções do Mac."
+   },
+   {
+    "id": 2,
+    "question": "Quais estilos tem 'MenuBarExtra'?",
+    "options": [
+     "Apenas .menu",
+     "Apenas .window",
+     "Nenhum",
+     ".menu (lista de itens) e .window (popover com view livre)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Use .menuBarExtraStyle(.window) para conteúdo SwiftUI rico, como gráficos; .menu é o padrão com botões simples."
+   },
+   {
+    "id": 3,
+    "question": "Qual view do SwiftUI exibe dados em várias colunas ordenáveis no Mac?",
+    "options": [
+     "LazyVStack",
+     "Grid apenas",
+     "Table",
+     "Form"
+    ],
+    "correctIndex": 2,
+    "explanation": "Table com TableColumn e sortOrder entrega colunas redimensionáveis e ordenáveis, comuns em apps de produtividade."
+   },
+   {
+    "id": 4,
+    "question": "Como estruturar a cena 'Settings' com várias abas de preferências?",
+    "options": [
+     "Com vários WindowGroup",
+     "Com uma TabView dentro da cena, usando .tabItem",
+     "Com NavigationStack obrigatoriamente",
+     "Com UITabBarController"
+    ],
+    "correctIndex": 1,
+    "explanation": "A cena Settings abre com Cmd+, e costuma conter uma TabView com painéis General, Advanced etc."
+   },
+   {
+    "id": 5,
+    "question": "Onde um app com sandbox deve gravar seus próprios dados no macOS?",
+    "options": [
+     "No contêiner do app, por exemplo Application Support",
+     "Na raiz do disco",
+     "Em qualquer pasta",
+     "Na pasta de outro app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada app em sandbox tem um contêiner próprio; FileManager retorna URLs dentro dele para Documents e Application Support."
+   },
+   {
+    "id": 6,
+    "question": "Qual a melhor prática de HIG para apps de Mac?",
+    "options": [
+     "Ocultar a barra de menus",
+     "Usar janela de tamanho fixo sempre",
+     "Usar somente toque",
+     "Oferecer atalhos de teclado e itens de menu para as ações principais"
+    ],
+    "correctIndex": 3,
+    "explanation": "Usuários de Mac esperam acessar tudo por menus e atalhos; isso também ajuda acessibilidade e produtividade."
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Exiba um modelo 3D USDZ do bundle em uma view SwiftUI.",
+    "codeSnippet": "___(named: \"Robo\")",
+    "correctAnswer": "Model3D",
+    "hint": "View do RealityKit para exibir um modelo simples."
+   },
+   {
+    "id": 7,
+    "question": "Hospede entidades RealityKit dentro de SwiftUI.",
+    "codeSnippet": "___ { content in content.add(entidade) }",
+    "correctAnswer": "RealityView",
+    "hint": "A view de conteúdo que recebe um closure com 'content'."
+   },
+   {
+    "id": 8,
+    "question": "Escolha o estilo de imersão que cobre todo o campo de visão.",
+    "codeSnippet": ".immersionStyle(selection: $estilo, in: .___)",
+    "correctAnswer": "full",
+    "hint": "As opções são mixed, progressive e full."
+   },
+   {
+    "id": 9,
+    "question": "Permita que uma entidade receba gestos do usuário.",
+    "codeSnippet": "entidade.components.set(___())",
+    "correctAnswer": "InputTargetComponent",
+    "hint": "Componente que marca a entidade como alvo de entrada (junto com colisão)."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Qual a unidade das coordenadas de posição em RealityKit?",
+    "options": [
+     "Metros",
+     "Pontos",
+     "Pixels",
+     "Centímetros"
+    ],
+    "correctIndex": 0,
+    "explanation": "Uma posição [0, 1, -2] está 1 metro acima e 2 metros à frente da origem. O eixo -Z aponta para a frente."
+   },
+   {
+    "id": 7,
+    "question": "Quantos ImmersiveSpace um app pode ter abertos ao mesmo tempo?",
+    "options": [
+     "Quantos quiser",
+     "Nenhum",
+     "Dois",
+     "Apenas um por vez no sistema"
+    ],
+    "correctIndex": 3,
+    "explanation": "Para abrir outro espaço, o atual deve ser fechado com dismissImmersiveSpace; janelas, porém, podem coexistir."
+   },
+   {
+    "id": 8,
+    "question": "O que o estilo '.mixed' de imersão faz?",
+    "options": [
+     "Oculta totalmente o mundo real",
+     "Desliga os sensores",
+     "Mistura o conteúdo virtual com o mundo real visível pelo passthrough",
+     "Só funciona no iPad"
+    ],
+    "correctIndex": 2,
+    "explanation": "Em mixed o usuário ainda vê o ambiente; em full, o conteúdo substitui o ambiente; em progressive o grau de imersão é ajustável."
+   },
+   {
+    "id": 9,
+    "question": "Para que serve '.ornament' em uma janela visionOS?",
+    "options": [
+     "Alterar o ícone",
+     "Anexar controles flutuantes à borda da janela, fora do seu conteúdo",
+     "Criar um volume",
+     "Carregar USDZ"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ornaments mantêm barras de ferramentas e controles acessíveis sem ocupar o espaço de conteúdo principal."
+   },
+   {
+    "id": 10,
+    "question": "Você quer posicionar um objeto virtual sobre uma mesa real. O que usar?",
+    "options": [
+     "AnchorEntity com alvo de plano horizontal classificado como mesa",
+     "Um Text",
+     "Um Picker",
+     "Um ScrollView"
+    ],
+    "correctIndex": 0,
+    "explanation": "AnchorEntity(.plane(...)) ancora entidades a superfícies detectadas; requer espaço imersivo e permissão de sensoriamento do ambiente."
+   },
+   {
+    "id": 11,
+    "question": "Qual a aparência padrão das janelas no visionOS?",
+    "options": [
+     "Fundo preto opaco",
+     "Sem fundo",
+     "Fundo branco opaco",
+     "Material de vidro (glass) que deixa o ambiente transparecer"
+    ],
+    "correctIndex": 3,
+    "explanation": "O vidro ajusta-se à iluminação do ambiente para manter legibilidade; use .glassBackgroundEffect() em seus próprios contêineres."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Como o usuário seleciona normalmente um botão no Vision Pro?",
+    "options": [
+     "Digitando o nome",
+     "Olhando para ele e fazendo o gesto de pinça",
+     "Com um mouse apenas",
+     "Gritando"
+    ],
+    "correctIndex": 1,
+    "explanation": "O olhar define o alvo e a pinça confirma (gesto indireto); também há interação direta ao tocar objetos próximos."
+   },
+   {
+    "id": 2,
+    "question": "Qual cuidado de conforto a HIG recomenda para conteúdo espacial?",
+    "options": [
+     "Evitar movimentos bruscos e grandes elementos que causem desconforto, mantendo o conteúdo principal em posição confortável",
+     "Mover grandes elementos rapidamente pela periferia",
+     "Colocar tudo colado ao rosto",
+     "Usar piscadas rápidas de luz"
+    ],
+    "correctIndex": 0,
+    "explanation": "Movimento intenso na periferia pode causar enjoo; conteúdo na altura dos olhos e a uma distância confortável reduz fadiga."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece ao rodar um app de iPad sem alterações no Vision Pro?",
+    "options": [
+     "Não abre",
+     "Roda só no simulador",
+     "Vira automaticamente imersivo",
+     "Roda em modo compatível, como uma janela 2D"
+    ],
+    "correctIndex": 3,
+    "explanation": "Para recursos nativos (volumes, espaços imersivos), adicione o destino visionOS ao projeto."
+   },
+   {
+    "id": 4,
+    "question": "Qual ferramenta do Xcode ajuda a montar cenas 3D para RealityKit?",
+    "options": [
+     "Instruments",
+     "Simulator Control",
+     "Reality Composer Pro",
+     "Asset Catalog apenas"
+    ],
+    "correctIndex": 2,
+    "explanation": "Reality Composer Pro monta cenas, materiais e componentes, e exporta um pacote carregável por RealityView."
+   },
+   {
+    "id": 5,
+    "question": "Como a transformação de uma entidade filha se relaciona com a do pai?",
+    "options": [
+     "É independente",
+     "É relativa à do pai; mover o pai move os filhos",
+     "Sempre global",
+     "Ignora a escala"
+    ],
+    "correctIndex": 1,
+    "explanation": "A hierarquia propaga posição, rotação e escala. Use 'position(relativeTo: nil)' para obter coordenadas do mundo."
+   },
+   {
+    "id": 6,
+    "question": "Qual chave do Info.plist explica o uso de sensoriamento do ambiente (planos, malha de cena)?",
+    "options": [
+     "NSWorldSensingUsageDescription",
+     "NSCameraUsageDescription apenas",
+     "NSLocationUsageDescription",
+     "NSAppleMusicUsageDescription"
+    ],
+    "correctIndex": 0,
+    "explanation": "Dados do ambiente real são sensíveis; o sistema exibe sua justificativa ao pedir permissão."
+   }
+  ]
+ },
+ {
+  "id": 19,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Adicione uma tarefa filha ao grupo.",
+    "codeSnippet": "await withTaskGroup(of: Int.self) { grupo in grupo.___ { 1 } }",
+    "correctAnswer": "addTask",
+    "hint": "Método do grupo que inicia um trabalho filho."
+   },
+   {
+    "id": 7,
+    "question": "Suspenda a tarefa por um segundo sem bloquear a thread.",
+    "codeSnippet": "try await Task.___(for: .seconds(1))",
+    "correctAnswer": "sleep",
+    "hint": "Versão assíncrona de espera; não use Thread.sleep."
+   },
+   {
+    "id": 8,
+    "question": "Lance CancellationError se a tarefa atual foi cancelada.",
+    "codeSnippet": "func carregar() async throws { try Task.___(); await baixar() }",
+    "correctAnswer": "checkCancellation",
+    "hint": "Começa com check e termina com Cancellation."
+   },
+   {
+    "id": 9,
+    "question": "Permita ler a propriedade calculada do actor sem 'await'.",
+    "codeSnippet": "actor Conta { ___ var banco: String { \"SwiftBank\" } }",
+    "correctAnswer": "nonisolated",
+    "hint": "Modificador que tira o membro do isolamento do actor."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "O que é 'reentrância' em um actor?",
+    "options": [
+     "O actor roda duas threads ao mesmo tempo no mesmo método",
+     "Durante um 'await' dentro do actor, outras chamadas podem entrar e alterar o estado, então revalide suposições após o await",
+     "O actor se reinicia sozinho",
+     "O actor ignora chamadas repetidas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actors garantem exclusão mútua entre trechos síncronos, mas não através de pontos de suspensão. Verificar saldo antes e debitar depois de um await pode usar estado desatualizado."
+   },
+   {
+    "id": 7,
+    "question": "Uma Task criada dentro de um método @MainActor, com 'Task { }', onde executa?",
+    "options": [
+     "No main actor, pois herda o isolamento do contexto",
+     "Em uma fila global aleatória",
+     "Em thread de background sempre",
+     "Em um actor novo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Task { } herda ator, prioridade e valores de task-local. Para sair do main actor use Task.detached ou chame funções 'nonisolated async'."
+   },
+   {
+    "id": 8,
+    "question": "Em Swift 6, qual é o problema de 'var n = 0; Task { n += 1 }; print(n)'?",
+    "options": [
+     "Nenhum",
+     "'n' deveria ser Double",
+     "'Task' não existe",
+     "Capturar e mutar uma var local em código concorrente é uma possível data race e gera erro de compilação"
+    ],
+    "correctIndex": 3,
+    "explanation": "O closure da Task é @Sendable; mutar estado local compartilhado exige isolamento (actor, @MainActor) ou uma cópia imutável."
+   },
+   {
+    "id": 9,
+    "question": "Para que serve 'AsyncStream'?",
+    "options": [
+     "Para substituir o Codable",
+     "Para criar threads",
+     "Para criar uma sequência assíncrona de valores ao longo do tempo, consumida com 'for await'",
+     "Para fazer download apenas"
+    ],
+    "correctIndex": 2,
+    "explanation": "É útil para adaptar eventos de delegates e callbacks (localização, sensores) em um fluxo consumível com 'for await'."
+   },
+   {
+    "id": 10,
+    "question": "Como atualizar a UI a partir de uma função assíncrona que não está no main actor?",
+    "options": [
+     "Chamando DispatchQueue.sync na main",
+     "Com 'await MainActor.run { ... }' ou marcando o método como @MainActor",
+     "Mutando a view diretamente",
+     "Com Thread.sleep"
+    ],
+    "correctIndex": 1,
+    "explanation": "MainActor.run executa o bloco na thread principal. Marcar o tipo ou o método com @MainActor torna isso garantido pelo compilador."
+   },
+   {
+    "id": 11,
+    "question": "O que 'Task.sleep(for:)' faz de diferente de 'Thread.sleep'?",
+    "options": [
+     "Suspende a tarefa liberando a thread para outros trabalhos e respeita o cancelamento",
+     "Nada",
+     "Bloqueia a thread inteira",
+     "É mais lento sempre"
+    ],
+    "correctIndex": 0,
+    "explanation": "Thread.sleep bloqueia a thread (prejudicando a pool cooperativa); Task.sleep suspende apenas a tarefa e lança erro se for cancelada."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Quantas vezes é obrigatório chamar 'resume' em uma 'withCheckedContinuation'?",
+    "options": [
+     "Zero ou mais",
+     "Exatamente uma",
+     "Duas",
+     "Ilimitado"
+    ],
+    "correctIndex": 1,
+    "explanation": "Não resumir deixa a tarefa suspensa para sempre; resumir duas vezes é um erro (o 'checked' detecta e avisa)."
+   },
+   {
+    "id": 7,
+    "question": "O que acontece com um 'async let' que nunca recebe 'await' antes de sair do escopo?",
+    "options": [
+     "O compilador o cancela e aguarda implicitamente o término ao sair do escopo",
+     "Vaza memória",
+     "Continua em background para sempre",
+     "Dá crash"
+    ],
+    "correctIndex": 0,
+    "explanation": "A concorrência estruturada garante que tarefas filhas não sobrevivam ao escopo pai."
+   },
+   {
+    "id": 8,
+    "question": "O que significa '@unchecked Sendable'?",
+    "options": [
+     "O compilador verifica com rigor extra",
+     "O tipo vira imutável",
+     "O tipo vira actor",
+     "Você promete que o tipo é seguro entre threads (por exemplo com lock), e o compilador não verifica"
+    ],
+    "correctIndex": 3,
+    "explanation": "É uma válvula de escape: se a promessa for falsa, as data races voltam. Prefira actors ou tipos de valor."
+   },
+   {
+    "id": 9,
+    "question": "Em um 'withThrowingTaskGroup', o que acontece quando uma filha lança erro que escapa do grupo?",
+    "options": [
+     "As demais continuam intactas",
+     "O app encerra",
+     "As demais filhas são canceladas e o erro é propagado",
+     "O erro é ignorado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Ao sair do corpo do grupo com erro, as filhas restantes são canceladas implicitamente."
+   },
+   {
+    "id": 10,
+    "question": "O que significa um membro de actor ser 'nonisolated'?",
+    "options": [
+     "Fica privado",
+     "Pode ser chamado sem 'await', mas não pode acessar estado mutável isolado do actor",
+     "Roda em outra máquina",
+     "Vira global"
+    ],
+    "correctIndex": 1,
+    "explanation": "É útil para propriedades imutáveis e computadas que só usam dados Sendable."
+   },
+   {
+    "id": 11,
+    "question": "Qual a diferença de prioridade herdada entre 'Task' e 'Task.detached'?",
+    "options": [
+     "Task herda a prioridade e o contexto; detached não herda e começa com valores padrão",
+     "Nenhuma",
+     "detached herda mais",
+     "Task nunca tem prioridade"
+    ],
+    "correctIndex": 0,
+    "explanation": "Detached não herda ator, prioridade nem task-locals; use com parcimônia, pois perde a ligação com o contexto."
+   }
+  ]
+ },
+ {
+  "id": 20,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Verifique que o resultado é nil usando XCTest.",
+    "codeSnippet": "XCTAssert___(resultado)",
+    "correctAnswer": "Nil",
+    "hint": "O par de XCTAssertNotNil."
+   },
+   {
+    "id": 7,
+    "question": "Complete o método que roda antes de cada teste para criar o objeto sob teste.",
+    "codeSnippet": "override func ___() { sut = Calculadora() }",
+    "correctAnswer": "setUp",
+    "hint": "Nome tradicional do método de preparação do XCTestCase (a versão sem 'throws')."
+   },
+   {
+    "id": 8,
+    "question": "Execute o mesmo teste com vários valores no Swift Testing.",
+    "codeSnippet": "@Test(___: [2, 4, 6]) func ePar(n: Int) { #expect(n % 2 == 0) }",
+    "correctAnswer": "arguments",
+    "hint": "Rótulo que recebe a coleção de entradas."
+   },
+   {
+    "id": 9,
+    "question": "Verifique que o código lança o erro esperado no Swift Testing.",
+    "codeSnippet": "#expect(___: ErroIdade.self) { try validar(-1) }",
+    "correctAnswer": "throws",
+    "hint": "O mesmo nome da palavra usada para funções que lançam erros."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Quando roda o 'setUp()' de uma XCTestCase?",
+    "options": [
+     "Uma vez antes de todos os testes da classe",
+     "Somente no final",
+     "Antes de cada método de teste",
+     "Apenas em testes de UI"
+    ],
+    "correctIndex": 2,
+    "explanation": "Para preparar uma vez a classe toda existe 'class func setUp()'. O 'setUp()' de instância garante isolamento entre testes."
+   },
+   {
+    "id": 7,
+    "question": "Por que os testes não devem depender da ordem de execução?",
+    "options": [
+     "Porque o Xcode proíbe",
+     "Porque a ordem pode variar e testes interdependentes geram falhas intermitentes",
+     "Porque testes não compartilham código",
+     "Porque são sempre paralelos em threads"
+    ],
+    "correctIndex": 1,
+    "explanation": "Cada teste deve montar seu próprio estado (princípio de independência). O Swift Testing executa testes em paralelo por padrão."
+   },
+   {
+    "id": 8,
+    "question": "Como testar código baseado em completion handler no XCTest clássico?",
+    "options": [
+     "Com XCTestExpectation e esperando com 'await fulfillment(of:)' ou 'wait(for:)'",
+     "Com sleep(10)",
+     "Não é possível",
+     "Com um loop infinito"
+    ],
+    "correctIndex": 0,
+    "explanation": "A expectation é cumprida no callback e o teste espera por ela com timeout, sem dormir de forma fixa."
+   },
+   {
+    "id": 9,
+    "question": "Para que servem as 'tags' no Swift Testing?",
+    "options": [
+     "Para colorir o código",
+     "Para publicar na App Store",
+     "Para criar o ícone",
+     "Para agrupar e filtrar testes transversalmente (por exemplo, .rede, .lento)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Tags são traits declaradas com '@Tag' e usadas em '@Test(.tags(.rede))', permitindo rodar subconjuntos nos relatórios e planos de teste."
+   },
+   {
+    "id": 10,
+    "question": "O que a cobertura de código (code coverage) mede?",
+    "options": [
+     "A velocidade do app",
+     "A ausência de bugs",
+     "A porcentagem de linhas executadas durante os testes, não a qualidade das asserções",
+     "O tamanho do binário"
+    ],
+    "correctIndex": 2,
+    "explanation": "100% de cobertura não prova correção: uma linha executada sem asserção não verifica nada. Habilite em Edit Scheme > Test."
+   },
+   {
+    "id": 11,
+    "question": "Qual classe usa-se para controlar o app em testes de UI?",
+    "options": [
+     "UIApplication",
+     "XCUIApplication",
+     "XCTestApp",
+     "SwiftUIRunner"
+    ],
+    "correctIndex": 1,
+    "explanation": "Em um UI Testing Bundle, 'XCUIApplication().launch()' abre o app e 'app.buttons[\"Entrar\"].tap()' simula toques."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Para que serve 'XCTAssertThrowsError'?",
+    "options": [
+     "Para criar um erro",
+     "Para ignorar erros",
+     "Para verificar que uma expressão lança erro",
+     "Para parar o teste sem falha"
+    ],
+    "correctIndex": 2,
+    "explanation": "O closure é avaliado e o teste falha se nenhum erro for lançado; você pode inspecionar o erro recebido."
+   },
+   {
+    "id": 7,
+    "question": "Como comparar Doubles com segurança em XCTest?",
+    "options": [
+     "XCTAssertEqual(a, b) sempre",
+     "XCTAssertEqual(a, b, accuracy: 0.0001)",
+     "XCTAssertTrue(a == b) sempre",
+     "XCTAssertNil(a)"
+    ],
+    "correctIndex": 1,
+    "explanation": "0.1 + 0.2 não é exatamente 0.3 em ponto flutuante; a tolerância evita falhas falsas."
+   },
+   {
+    "id": 8,
+    "question": "Um método 'func soma() { ... }' em uma XCTestCase nunca aparece nos resultados. Por quê?",
+    "options": [
+     "O nome não começa com 'test', então o XCTest não o reconhece como teste",
+     "Falta 'async'",
+     "A classe é final",
+     "O Xcode está desatualizado"
+    ],
+    "correctIndex": 0,
+    "explanation": "Em XCTest, métodos de instância sem parâmetros e que começam com 'test' são descobertos. Em Swift Testing, o atributo @Test faz esse papel."
+   },
+   {
+    "id": 9,
+    "question": "Qual vantagem de testes parametrizados no Swift Testing?",
+    "options": [
+     "Só funcionam com String",
+     "Rodam mais lento por design",
+     "Dispensam asserções",
+     "Cada argumento é executado e reportado individualmente, sem duplicar código"
+    ],
+    "correctIndex": 3,
+    "explanation": "Uma falha mostra exatamente qual entrada falhou, e os casos podem rodar em paralelo."
+   },
+   {
+    "id": 10,
+    "question": "O que significa a sigla F.I.R.S.T. para bons testes?",
+    "options": [
+     "First, Instant, Real, Short, Tested",
+     "Fixed, Isolated, Random, Slow, Typed",
+     "Fast, Independent, Repeatable, Self-validating, Timely",
+     "Free, Integrated, Rapid, Simple, Tidy"
+    ],
+    "correctIndex": 2,
+    "explanation": "Testes rápidos, independentes, repetíveis (mesmo resultado sempre), autovalidantes (passa/falha sem inspeção manual) e escritos no momento certo."
+   },
+   {
+    "id": 11,
+    "question": "Para que serve o bloco 'measure { }' do XCTest?",
+    "options": [
+     "Para medir a tela",
+     "Para medir o desempenho do código, rodando várias iterações e comparando com uma baseline",
+     "Para contar linhas",
+     "Para calcular a cobertura"
+    ],
+    "correctIndex": 1,
+    "explanation": "Testes de desempenho ajudam a detectar regressões de velocidade, mas dependem do hardware e devem ser usados com critério."
+   }
+  ]
+ },
+ {
+  "id": 21,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Configure o método HTTP para enviar dados.",
+    "codeSnippet": "var req = URLRequest(url: url); req.httpMethod = \"___\"",
+    "correctAnswer": "POST",
+    "hint": "Método usado para criar recursos no servidor."
+   },
+   {
+    "id": 7,
+    "question": "Informe que o corpo da requisição é JSON.",
+    "codeSnippet": "req.setValue(\"application/json\", forHTTPHeaderField: \"___\")",
+    "correctAnswer": "Content-Type",
+    "hint": "Cabeçalho que descreve o tipo de mídia do corpo."
+   },
+   {
+    "id": 8,
+    "question": "Converta o usuário em Data JSON.",
+    "codeSnippet": "let corpo = try JSONEncoder().___(usuario)",
+    "correctAnswer": "encode",
+    "hint": "Verbo oposto a decode."
+   },
+   {
+    "id": 9,
+    "question": "Converta chaves snake_case do JSON para camelCase automaticamente.",
+    "codeSnippet": "decoder.keyDecodingStrategy = .___",
+    "correctAnswer": "convertFromSnakeCase",
+    "hint": "Estratégia que começa com convertFrom."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Qual erro ocorre ao decodificar '{\"id\":\"5\"}' para uma struct com 'let id: Int'?",
+    "options": [
+     "Nenhum, converte sozinho",
+     "fatalError",
+     "URLError.badURL",
+     "DecodingError.typeMismatch"
+    ],
+    "correctIndex": 3,
+    "explanation": "O JSONDecoder não converte String em Int automaticamente. Corrija o modelo (String) ou escreva um init(from:) customizado."
+   },
+   {
+    "id": 7,
+    "question": "Por que verificar 'statusCode' em 200...299 antes de decodificar?",
+    "options": [
+     "Porque o decode é mais rápido",
+     "Porque 200 é o único código válido",
+     "Porque respostas 4xx/5xx não lançam erro na URLSession e o corpo pode ser uma mensagem de erro, não o JSON esperado",
+     "Porque a URLSession exige"
+    ],
+    "correctIndex": 2,
+    "explanation": "Decodificar o corpo de um erro 500 como o modelo esperado falharia com um DecodingError confuso e esconderia a causa real."
+   },
+   {
+    "id": 8,
+    "question": "O que é App Transport Security (ATS)?",
+    "options": [
+     "Um serviço de pagamento",
+     "Uma regra que exige conexões HTTPS seguras por padrão; HTTP puro precisa de exceção no Info.plist",
+     "Um tipo de cache",
+     "Um framework de UI"
+    ],
+    "correctIndex": 1,
+    "explanation": "Prefira sempre HTTPS. Exceções amplas (NSAllowsArbitraryLoads) podem ser questionadas na revisão da App Store."
+   },
+   {
+    "id": 9,
+    "question": "Quando escrever um 'init(from decoder:)' manual?",
+    "options": [
+     "Quando o JSON tem formato diferente do modelo (aninhamento, valores alternativos, conversões)",
+     "Sempre",
+     "Nunca",
+     "Apenas para enums"
+    ],
+    "correctIndex": 0,
+    "explanation": "A síntese automática cobre o caso comum. Para estruturas irregulares use container(keyedBy:) e decode manual."
+   },
+   {
+    "id": 10,
+    "question": "Qual configuração de URLSession não guarda cache, cookies nem credenciais em disco?",
+    "options": [
+     "URLSessionConfiguration.default",
+     "URLSessionConfiguration.shared",
+     "URLSessionConfiguration.background",
+     "URLSessionConfiguration.ephemeral"
+    ],
+    "correctIndex": 3,
+    "explanation": "Ephemeral é como uma sessão privada: tudo fica na memória e é descartado ao encerrar a sessão."
+   },
+   {
+    "id": 11,
+    "question": "Qual o timeout padrão de uma URLRequest?",
+    "options": [
+     "5 segundos",
+     "10 minutos",
+     "60 segundos",
+     "Sem timeout"
+    ],
+    "correctIndex": 2,
+    "explanation": "O padrão de 'timeoutInterval' é 60 s; ajuste conforme o caso de uso e trate URLError.timedOut."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Qual caso de DecodingError ocorre quando o JSON está malformado (por exemplo, chave sem aspas)?",
+    "options": [
+     "keyNotFound",
+     "typeMismatch",
+     "valueNotFound",
+     "dataCorrupted"
+    ],
+    "correctIndex": 3,
+    "explanation": "keyNotFound = chave ausente; typeMismatch = tipo diferente; valueNotFound = null onde se esperava valor; dataCorrupted = dados inválidos."
+   },
+   {
+    "id": 7,
+    "question": "Para baixar um arquivo grande, qual a melhor abordagem?",
+    "options": [
+     "data(from:), carregando tudo na memória",
+     "Chamar várias vezes",
+     "download(from:), que grava em um arquivo temporário",
+     "Usar UserDefaults"
+    ],
+    "correctIndex": 2,
+    "explanation": "Downloads grandes em arquivo evitam picos de memória; para continuidade em segundo plano use uma sessão background."
+   },
+   {
+    "id": 8,
+    "question": "O que acontece quando a Task que chama 'URLSession.data' é cancelada?",
+    "options": [
+     "A requisição continua",
+     "A requisição é cancelada e é lançado URLError com código .cancelled",
+     "O app encerra",
+     "Retorna dados vazios"
+    ],
+    "correctIndex": 1,
+    "explanation": "É bom tratar esse caso silenciosamente, sem mostrar alerta de erro ao usuário."
+   },
+   {
+    "id": 9,
+    "question": "Como testar código de rede sem chamar o servidor real?",
+    "options": [
+     "Injetar um protocolo/serviço falso ou usar um URLProtocol customizado que devolve respostas fixas",
+     "Chamar o servidor de produção",
+     "Desativar o Wi-Fi",
+     "Não testar"
+    ],
+    "correctIndex": 0,
+    "explanation": "Testes devem ser rápidos e determinísticos; dependências externas causam falhas intermitentes."
+   },
+   {
+    "id": 10,
+    "question": "O que é necessário para uma struct ser Codable?",
+    "options": [
+     "Ter apenas Strings",
+     "Ser uma classe",
+     "Usar @objc",
+     "Todas as propriedades armazenadas também serem Codable"
+    ],
+    "correctIndex": 3,
+    "explanation": "Tipos básicos, arrays, dicionários e Optionals de Codable já são Codable; tipos aninhados precisam adotar o protocolo."
+   },
+   {
+    "id": 11,
+    "question": "Onde guardar um token de autenticação do usuário com segurança?",
+    "options": [
+     "No código-fonte",
+     "Em UserDefaults",
+     "No Keychain",
+     "Em um arquivo de texto no Documents"
+    ],
+    "correctIndex": 2,
+    "explanation": "O Keychain é criptografado e protegido pelo sistema. Segredos embutidos no app ou em UserDefaults podem ser extraídos."
+   }
+  ]
+ },
+ {
+  "id": 22,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Obtenha o ModelContext pelo Environment.",
+    "codeSnippet": "@Environment(\\.___) private var contexto",
+    "correctAnswer": "modelContext",
+    "hint": "A chave do Environment tem o mesmo nome do tipo, com inicial minúscula."
+   },
+   {
+    "id": 7,
+    "question": "Impeça dois usuários com o mesmo e-mail.",
+    "codeSnippet": "@Attribute(.___) var email: String",
+    "correctAnswer": "unique",
+    "hint": "Garante um valor único por registro."
+   },
+   {
+    "id": 8,
+    "question": "Ordene a consulta do mais novo para o mais antigo (descendente).",
+    "codeSnippet": "@Query(sort: \\Tarefa.criada, order: .___) var tarefas: [Tarefa]",
+    "correctAnswer": "reverse",
+    "hint": "SortOrder tem forward e este valor."
+   },
+   {
+    "id": 9,
+    "question": "Use um armazenamento só em memória, ideal para previews e testes.",
+    "codeSnippet": ".modelContainer(for: Tarefa.self, ___: true)",
+    "correctAnswer": "inMemory",
+    "hint": "Parâmetro booleano que evita gravar em disco."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Como limitar a 20 resultados um fetch manual?",
+    "options": [
+     "descriptor.fetchLimit = 20 em um FetchDescriptor",
+     "context.limit(20)",
+     "@Limit(20)",
+     "Não é possível"
+    ],
+    "correctIndex": 0,
+    "explanation": "FetchDescriptor aceita predicate, sortBy e fetchLimit; execute com 'try context.fetch(descriptor)'."
+   },
+   {
+    "id": 7,
+    "question": "Como lidar com mudanças no esquema (por exemplo, renomear uma propriedade) entre versões do app?",
+    "options": [
+     "Apagar o app do usuário",
+     "Com UserDefaults",
+     "Ignorar",
+     "Com VersionedSchema e SchemaMigrationPlan"
+    ],
+    "correctIndex": 3,
+    "explanation": "A migração descreve etapas leves ou personalizadas para transformar os dados existentes sem perda."
+   },
+   {
+    "id": 8,
+    "question": "O que faz '@Transient' em uma propriedade de um @Model?",
+    "options": [
+     "Criptografa o valor",
+     "Marca como única",
+     "Exclui a propriedade da persistência",
+     "Torna opcional"
+    ],
+    "correctIndex": 2,
+    "explanation": "Útil para valores calculados ou temporários, como estado de UI, que não devem ser gravados no armazenamento."
+   },
+   {
+    "id": 9,
+    "question": "Preciso chamar 'context.save()' após cada insert?",
+    "options": [
+     "Sim, senão nada é gravado nunca",
+     "Normalmente não: o contexto principal tem autosave, mas é possível salvar manualmente quando necessário",
+     "Nunca é permitido",
+     "Apenas em previews"
+    ],
+    "correctIndex": 1,
+    "explanation": "O contexto do container em SwiftUI faz autosave em momentos apropriados; o save manual é útil, por exemplo, antes de operações críticas."
+   },
+   {
+    "id": 10,
+    "question": "Por que usar '@Query' em vez de buscar com 'fetch' em 'onAppear' guardando em '@State'?",
+    "options": [
+     "O @Query atualiza a View automaticamente quando os dados mudam; o fetch manual vira uma cópia obsoleta",
+     "Não há diferença",
+     "@Query é mais lento sempre",
+     "@State não funciona com arrays"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ao inserir ou apagar dados, a lista do @Query se refaz sozinha; no fetch manual é preciso rebuscar."
+   },
+   {
+    "id": 11,
+    "question": "Qual cuidado ao sincronizar um modelo SwiftData com iCloud (CloudKit)?",
+    "options": [
+     "Nenhum",
+     "Usar apenas structs",
+     "Usar apenas Int",
+     "O modelo deve respeitar restrições: sem unique, propriedades opcionais ou com valor padrão, e relacionamentos opcionais"
+    ],
+    "correctIndex": 3,
+    "explanation": "O CloudKit não suporta constraints de unicidade e exige valores padrão para permitir sincronização parcial."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "O que filtra '@Query(filter: #Predicate<Tarefa> { !$0.feita })'?",
+    "options": [
+     "Tarefas ainda não concluídas",
+     "Tarefas concluídas",
+     "Todas as tarefas",
+     "Tarefas apagadas"
+    ],
+    "correctIndex": 0,
+    "explanation": "'!$0.feita' é verdadeiro quando feita é false."
+   },
+   {
+    "id": 7,
+    "question": "Ao apagar um Projeto com a regra de exclusão padrão (.nullify), o que acontece com suas Tarefas?",
+    "options": [
+     "São apagadas",
+     "São duplicadas",
+     "O app trava",
+     "Permanecem, com a referência ao projeto definida como nil"
+    ],
+    "correctIndex": 3,
+    "explanation": "Para apagar também os filhos use '.cascade'; '.deny' impede apagar o pai com filhos."
+   },
+   {
+    "id": 8,
+    "question": "Como criar um contêiner somente em memória manualmente?",
+    "options": [
+     "ModelContext(.none)",
+     "ModelConfiguration(.disk)",
+     "ModelConfiguration(isStoredInMemoryOnly: true)",
+     "@Query(inMemory:)"
+    ],
+    "correctIndex": 2,
+    "explanation": "Passe a configuração a ModelContainer(for:configurations:); ótimo para testes e previews."
+   },
+   {
+    "id": 9,
+    "question": "Qual property wrapper permite criar Bindings para propriedades de um @Model em um formulário?",
+    "options": [
+     "@Binding",
+     "@Bindable",
+     "@Published",
+     "@Transient"
+    ],
+    "correctIndex": 1,
+    "explanation": "Com '@Bindable var tarefa: Tarefa', você usa '$tarefa.titulo' em TextField; edições são persistidas automaticamente."
+   },
+   {
+    "id": 10,
+    "question": "Por que mudar uma propriedade de um objeto @Model atualiza a View sem @Published?",
+    "options": [
+     "Porque @Model gera conformidade com Observable",
+     "Por mágica de UIKit",
+     "Porque a View é recriada a cada segundo",
+     "Porque o Xcode refaz o build"
+    ],
+    "correctIndex": 0,
+    "explanation": "A macro @Model inclui observação (Observation framework), então leituras na View são rastreadas."
+   },
+   {
+    "id": 11,
+    "question": "Como apagar em lote todas as tarefas concluídas?",
+    "options": [
+     "context.clear()",
+     "Tarefa.deleteAll()",
+     "@Delete",
+     "try context.delete(model: Tarefa.self, where: #Predicate { $0.feita })"
+    ],
+    "correctIndex": 3,
+    "explanation": "Esse método apaga os registros que satisfazem o predicate, sem precisar de um laço de buscas."
+   }
+  ]
+ },
+ {
+  "id": 23,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Garanta que o arquivo seja fechado ao sair da função, mesmo com erro.",
+    "codeSnippet": "func ler() throws { abrir(); ___ { fechar() }; try processar() }",
+    "correctAnswer": "defer",
+    "hint": "Bloco executado ao sair do escopo."
+   },
+   {
+    "id": 7,
+    "question": "Complete o tipo que encapsula sucesso ou falha.",
+    "codeSnippet": "let r: ___<Int, ErroRede> = .success(3)",
+    "correctAnswer": "Result",
+    "hint": "Enum genérico com success e failure."
+   },
+   {
+    "id": 8,
+    "question": "Converta o erro em nil em vez de propagar.",
+    "codeSnippet": "let dados = ___? lerArquivo()",
+    "correctAnswer": "try",
+    "hint": "Variante com '?' do que marca chamadas que podem lançar."
+   },
+   {
+    "id": 9,
+    "question": "Marque a função que só lança se o closure recebido lançar.",
+    "codeSnippet": "func aplicar(_ f: () throws -> Void) ___ { try f() }",
+    "correctAnswer": "rethrows",
+    "hint": "Combina 're' com a palavra throws."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "O que imprime 'do { try f() } catch Erro.a { print(\"a\") } catch { print(\"outro\") }' se f lança Erro.b?",
+    "options": [
+     "a",
+     "outro",
+     "Nada",
+     "Erro de compilação"
+    ],
+    "correctIndex": 1,
+    "explanation": "Os catch são testados em ordem; Erro.b não casa com Erro.a, então cai no catch genérico final."
+   },
+   {
+    "id": 7,
+    "question": "O que acontece se uma função NÃO marcada com throws chamar 'try f()' sem do/catch?",
+    "options": [
+     "Erro de compilação: erros lançados aqui não são tratados",
+     "Compila normalmente",
+     "Vira try? automaticamente",
+     "Crash silencioso"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ou a função é marcada com throws, ou o erro é tratado com do/catch, ou use try? / try! conscientemente."
+   },
+   {
+    "id": 8,
+    "question": "Como fazer um erro exibir uma mensagem amigável em 'error.localizedDescription'?",
+    "options": [
+     "Usar defer",
+     "Usar print",
+     "Usar try!",
+     "Adotar LocalizedError e implementar errorDescription"
+    ],
+    "correctIndex": 3,
+    "explanation": "LocalizedError fornece errorDescription, failureReason e recoverySuggestion usados por alertas e logs."
+   },
+   {
+    "id": 9,
+    "question": "O que imprime 'defer { print(1) }; defer { print(2) }' ao sair do escopo?",
+    "options": [
+     "1 e depois 2",
+     "Só 2",
+     "2 e depois 1",
+     "Só 1"
+    ],
+    "correctIndex": 2,
+    "explanation": "Os blocos defer rodam em ordem inversa (LIFO), como uma pilha, o que permite desfazer ações na ordem correta."
+   },
+   {
+    "id": 10,
+    "question": "Como transformar uma chamada que lança em um Result?",
+    "options": [
+     "Result.try(f)",
+     "Result { try f() }",
+     "f.result()",
+     "try Result(f)"
+    ],
+    "correctIndex": 1,
+    "explanation": "O inicializador com closure captura o valor retornado como .success ou o erro lançado como .failure."
+   },
+   {
+    "id": 11,
+    "question": "Quando usar 'precondition' ou 'fatalError' em vez de throws?",
+    "options": [
+     "Para violações de contrato do programador que nunca deveriam ocorrer",
+     "Para erros esperados do usuário, como senha errada",
+     "Sempre",
+     "Nunca"
+    ],
+    "correctIndex": 0,
+    "explanation": "Erros recuperáveis (rede, validação) usam throws; estados impossíveis indicam bug e justificam parar o programa."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Como capturar apenas erros de decodificação?",
+    "options": [
+     "catch DecodingOnly",
+     "catch let e as DecodingError { ... }",
+     "catch .decode",
+     "Não é possível"
+    ],
+    "correctIndex": 1,
+    "explanation": "O padrão 'as' em um catch filtra pelo tipo do erro; um catch genérico final cobre o resto."
+   },
+   {
+    "id": 7,
+    "question": "Como capturar o valor associado em 'catch Erro.semSaldo(let faltam)'?",
+    "options": [
+     "Liga a constante 'faltam' ao valor associado do caso",
+     "Não captura",
+     "Cria um enum",
+     "Gera um try!"
+    ],
+    "correctIndex": 0,
+    "explanation": "Enums de erro com valores associados carregam contexto, como quanto falta de saldo, e o catch o extrai por pattern matching."
+   },
+   {
+    "id": 8,
+    "question": "Como combinar throws com async?",
+    "options": [
+     "Só com Result",
+     "func f() throws async",
+     "Não pode combinar",
+     "func f() async throws e chamar com 'try await f()'"
+    ],
+    "correctIndex": 3,
+    "explanation": "A ordem na declaração é 'async throws', e na chamada 'try await'."
+   },
+   {
+    "id": 9,
+    "question": "Como dar um valor padrão quando 'try?' retorna nil?",
+    "options": [
+     "let n = try! f()",
+     "let n = try f() ?? 0 sempre",
+     "let n = (try? f()) ?? 0",
+     "let n = f()?"
+    ],
+    "correctIndex": 2,
+    "explanation": "O operador '??' substitui o nil pelo valor padrão; use com cuidado, pois try? descarta a causa do erro."
+   },
+   {
+    "id": 10,
+    "question": "Qual a diferença entre 'assert' e 'precondition'?",
+    "options": [
+     "São idênticos",
+     "'assert' só é verificado em builds de debug; 'precondition' também em release",
+     "'assert' funciona só em testes",
+     "'precondition' é removido em debug"
+    ],
+    "correctIndex": 1,
+    "explanation": "Use assert para checagens de desenvolvimento e precondition para invariantes que não podem ser violadas nem em produção."
+   },
+   {
+    "id": 11,
+    "question": "Qual a diferença entre um 'init?' e um 'init() throws'?",
+    "options": [
+     "'init?' devolve nil sem explicar o motivo; 'init() throws' lança um erro com a causa",
+     "São idênticos",
+     "'init?' sempre trava",
+     "'throws' retorna nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "Prefira init throws quando o chamador precisa saber por que a criação falhou."
+   }
+  ]
+ },
+ {
+  "id": 24,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Some 1 ao contador de tentativas.",
+    "codeSnippet": "tentativas ___ 1",
+    "correctAnswer": "+=",
+    "hint": "Operador de atribuição composta de soma."
+   },
+   {
+    "id": 7,
+    "question": "No botão 'Novo jogo', sorteie outro número secreto.",
+    "codeSnippet": "Button(\"Novo jogo\") { ___ = Int.random(in: 1...100) }",
+    "correctAnswer": "alvo",
+    "hint": "Variável de estado que guarda o número a adivinhar."
+   },
+   {
+    "id": 8,
+    "question": "Desative o botão enquanto o texto não for um número válido.",
+    "codeSnippet": "Button(\"Chutar\") { verificar() }.___(Int(palpite) == nil)",
+    "correctAnswer": "disabled",
+    "hint": "Modifier que impede toques em um controle."
+   },
+   {
+    "id": 9,
+    "question": "Defina o espaçamento entre os itens do VStack.",
+    "codeSnippet": "VStack(___: 16) { Text(mensagem); TextField(\"Seu palpite\", text: $palpite) }",
+    "correctAnswer": "spacing",
+    "hint": "Parâmetro do VStack para a distância entre filhos."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Com alvo = 30 e palpite 50, qual mensagem o código do passo 5 define?",
+    "options": [
+     "Maior!",
+     "Acertou!",
+     "Menor!",
+     "Digite um número"
+    ],
+    "correctIndex": 2,
+    "explanation": "n = 50 não é menor que alvo, mas é maior (n > alvo), então a dica correta é 'Menor!': o segredo é menor que o palpite."
+   },
+   {
+    "id": 7,
+    "question": "O que retorna 'Int(\" 42\")' (com espaço antes)?",
+    "options": [
+     "42",
+     "nil",
+     "0",
+     "Erro de compilação"
+    ],
+    "correctIndex": 1,
+    "explanation": "Int(String) exige uma string que seja só um número; espaços fazem retornar nil. Use trimmingCharacters(in: .whitespaces) antes de converter."
+   },
+   {
+    "id": 8,
+    "question": "Com busca binária ideal, qual o número máximo de tentativas para acertar entre 1 e 100?",
+    "options": [
+     "7",
+     "10",
+     "50",
+     "100"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada palpite no meio elimina metade das opções: 2^7 = 128 ≥ 100, então 7 tentativas bastam. Útil para definir o limite de tentativas do desafio."
+   },
+   {
+    "id": 9,
+    "question": "Por que 'verificar()' pode alterar '@State' mesmo sendo um método de struct sem 'mutating'?",
+    "options": [
+     "Porque o Xcode permite",
+     "Porque a View é uma classe",
+     "Porque @State ignora a thread",
+     "Porque o valor guardado fica em armazenamento gerenciado pelo SwiftUI, fora da struct, e o setter do wrapper não é mutating"
+    ],
+    "correctIndex": 3,
+    "explanation": "A struct View só guarda um wrapper apontando para o armazenamento do SwiftUI; alterar o valor não muda a struct em si."
+   },
+   {
+    "id": 10,
+    "question": "Qual a diferença entre 'Int.random(in: 1...100)' e 'Int.random(in: 1..<100)'?",
+    "options": [
+     "O segundo inclui 100",
+     "Nenhuma",
+     "O primeiro pode sortear 100; o segundo vai só até 99",
+     "O primeiro não inclui 1"
+    ],
+    "correctIndex": 2,
+    "explanation": "'...' é um intervalo fechado (inclui o limite superior); '..<' é semiaberto. Com '..<100', o jogador nunca teria o número 100 como segredo."
+   },
+   {
+    "id": 11,
+    "question": "No TextField, qual é o tipo de '$palpite' e o de 'palpite'?",
+    "options": [
+     "Ambos String",
+     "'$palpite' é Binding<String> e 'palpite' é String",
+     "'$palpite' é Int",
+     "'palpite' é Binding<String>"
+    ],
+    "correctIndex": 1,
+    "explanation": "O prefixo $ acessa o projectedValue do @State, que é um Binding com leitura e escrita; sem $ você lê apenas o valor."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Onde implementar o limite de 7 tentativas?",
+    "options": [
+     "No init de Int",
+     "Dentro do Text",
+     "Dentro de verificar(), checando 'tentativas' e atualizando 'mensagem' (ou um estado de fim de jogo)",
+     "Em Info.plist"
+    ],
+    "correctIndex": 2,
+    "explanation": "A regra de negócio fica na função de lógica; a interface apenas reflete o estado, por exemplo desabilitando o botão quando o jogo acabou."
+   },
+   {
+    "id": 7,
+    "question": "O que mostra 'Text(\"Acertou em \\(tentativas)!\")' com tentativas = 3?",
+    "options": [
+     "Acertou em tentativas!",
+     "Acertou em 3!",
+     "Acertou em \\(3)!",
+     "Erro de compilação"
+    ],
+    "correctIndex": 1,
+    "explanation": "A interpolação '\\( )' insere o valor da expressão na string."
+   },
+   {
+    "id": 8,
+    "question": "Qual controle evita por construção a entrada de texto não numérico?",
+    "options": [
+     "Um Stepper(value: $n, in: 1...100)",
+     "Um Text",
+     "Um TextField sem tipo",
+     "Um Label"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ao usar controles que já limitam o tipo e o intervalo, elimina-se a necessidade de validar o texto."
+   },
+   {
+    "id": 9,
+    "question": "Para fechar o teclado ao tocar em 'Chutar', o que usar?",
+    "options": [
+     "print()",
+     "UIKit obrigatoriamente",
+     "Um Timer",
+     "@FocusState com um campo focado, atribuindo false"
+    ],
+    "correctIndex": 3,
+    "explanation": "'@FocusState private var focado: Bool' ligado ao TextField com '.focused($focado)' permite controlar o foco por código."
+   },
+   {
+    "id": 10,
+    "question": "Como guardar o recorde (menor número de tentativas) entre execuções do app?",
+    "options": [
+     "let recorde",
+     "@State var recorde",
+     "@AppStorage(\"recorde\") var recorde = 0",
+     "Em um comentário"
+    ],
+    "correctIndex": 2,
+    "explanation": "@State vive só enquanto a view existe; @AppStorage grava em UserDefaults e sobrevive a reinícios."
+   },
+   {
+    "id": 11,
+    "question": "Como exibir um alerta ao acertar?",
+    "options": [
+     "Com print",
+     "Com .alert(\"Parabéns\", isPresented: $venceu) e um @State Bool 'venceu'",
+     "Com Text escondido",
+     "Com Info.plist"
+    ],
+    "correctIndex": 1,
+    "explanation": "Defina 'venceu = true' no ramo de acerto; o SwiftUI apresenta o alerta e zera o Bool ao dispensar."
+   }
+  ]
+ },
+ {
+  "id": 25,
+  "exercises": [
+   {
+    "id": 6,
+    "question": "Crie uma ligação para cada elemento do array ao editar a tarefa dentro do ForEach.",
+    "codeSnippet": "ForEach($tarefas) { ___ in Toggle(t.titulo, isOn: $t.feita) }",
+    "correctAnswer": "$t",
+    "hint": "O parâmetro do closure recebe o prefixo $ para ser um Binding."
+   },
+   {
+    "id": 7,
+    "question": "Impeça adicionar quando o título estiver vazio.",
+    "codeSnippet": "guard !novoTitulo.___ else { return }",
+    "correctAnswer": "isEmpty",
+    "hint": "Propriedade booleana de String que indica ausência de caracteres."
+   },
+   {
+    "id": 8,
+    "question": "Remova todas as tarefas concluídas do array.",
+    "codeSnippet": "tarefas.___(where: { $0.feita })",
+    "correctAnswer": "removeAll",
+    "hint": "Método de Array que remove elementos que satisfazem uma condição."
+   },
+   {
+    "id": 9,
+    "question": "Envolva a lista em um contêiner de navegação com título.",
+    "codeSnippet": "___ { List { ForEach(tarefas) { Text($0.titulo) } }.navigationTitle(\"Tarefas\") }",
+    "correctAnswer": "NavigationStack",
+    "hint": "Substitui o antigo NavigationView."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 6,
+    "question": "Por que 'ForEach(tarefas)' funciona sem informar 'id:'?",
+    "options": [
+     "Porque id é opcional",
+     "Porque o ForEach adivinha",
+     "Porque o array é global",
+     "Porque Tarefa adota Identifiable, e o ForEach usa seu 'id'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sem Identifiable, seria necessário 'ForEach(tarefas, id: \\.titulo)', mas títulos repetidos causariam confusão de identidade."
+   },
+   {
+    "id": 7,
+    "question": "O que acontece ao decodificar JSON em 'struct Tarefa: Codable { let id = UUID(); var titulo: String }'?",
+    "options": [
+     "O id do JSON é lido normalmente",
+     "Erro em tempo de execução",
+     "O id não é decodificado (let com valor inicial); um novo UUID é gerado e o compilador avisa",
+     "O título é ignorado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Propriedades 'let' já inicializadas não participam da decodificação. Declare 'var id = UUID()' ou 'let id: UUID' para que o id seja persistido."
+   },
+   {
+    "id": 8,
+    "question": "Uma lista filtrada mostra só pendentes e usa 'onDelete' com os offsets. Qual é o risco?",
+    "options": [
+     "Nenhum",
+     "Os offsets referem-se à lista filtrada; aplicá-los ao array completo apaga as tarefas erradas",
+     "O app fecha",
+     "O ForEach duplica linhas"
+    ],
+    "correctIndex": 1,
+    "explanation": "Mapeie os offsets para os ids dos itens filtrados e remova por id no array original."
+   },
+   {
+    "id": 9,
+    "question": "Qual a diferença entre '.onDelete' e '.swipeActions'?",
+    "options": [
+     "onDelete é para deslizar apenas apagar; swipeActions permite ações personalizadas (arquivar, marcar) nas bordas",
+     "São idênticos",
+     "swipeActions só existe no Mac",
+     "onDelete aceita botões personalizados"
+    ],
+    "correctIndex": 0,
+    "explanation": "swipeActions(edge:) aceita vários botões com rótulos e cores; onDelete é a forma curta do gesto padrão de remoção."
+   },
+   {
+    "id": 10,
+    "question": "Para reordenar tarefas arrastando linhas, o que usar?",
+    "options": [
+     "'.task'",
+     "'.onDelete'",
+     "'.onAppear'",
+     "'.onMove(perform:)' no ForEach, com um EditButton ou modo de edição"
+    ],
+    "correctIndex": 3,
+    "explanation": "O closure recebe os offsets de origem e o destino; chame 'tarefas.move(fromOffsets:toOffset:)'."
+   },
+   {
+    "id": 11,
+    "question": "Posso guardar o array '[Tarefa]' diretamente com '@AppStorage'?",
+    "options": [
+     "Sim, qualquer tipo",
+     "Sim, se for struct",
+     "Não diretamente: ele suporta tipos simples; é preciso codificar para Data/String ou usar SwiftData",
+     "Somente em previews"
+    ],
+    "correctIndex": 2,
+    "explanation": "@AppStorage é para pequenas preferências (Bool, Int, String, Data...). Coleções estruturadas pedem Codable com arquivo ou SwiftData."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 6,
+    "question": "Por que o id de cada Tarefa deve ser estável entre atualizações da tela?",
+    "options": [
+     "Não precisa ser estável",
+     "Para economizar memória",
+     "Para ordenar alfabeticamente",
+     "Para o SwiftUI reconhecer cada linha, preservando estado e animações; ids novos a cada render recriam as linhas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Criar 'Tarefa(...)' no corpo da view a cada atualização geraria novos UUIDs, e o SwiftUI trataria tudo como itens novos."
+   },
+   {
+    "id": 7,
+    "question": "Como adicionar a tarefa quando o usuário pressiona Return no teclado?",
+    "options": [
+     "'.onReturn'",
+     "'.onTap'",
+     "'.onSubmit { adicionar() }' no TextField",
+     "'.keyboardAdd'"
+    ],
+    "correctIndex": 2,
+    "explanation": "onSubmit é chamado quando o usuário envia o campo; combine com '.submitLabel(.done)' para ajustar a tecla."
+   },
+   {
+    "id": 8,
+    "question": "Qual o valor de 'tarefas.filter { !$0.feita }.count' com 3 tarefas, 2 concluídas?",
+    "options": [
+     "2",
+     "1",
+     "3",
+     "0"
+    ],
+    "correctIndex": 1,
+    "explanation": "O filtro mantém só as não concluídas (3 - 2 = 1). Esse valor pode virar uma propriedade computada 'pendentes' para o contador da tela."
+   },
+   {
+    "id": 9,
+    "question": "Para compartilhar a lista entre várias telas, qual é a opção moderna (iOS 17+)?",
+    "options": [
+     "Uma classe com @Observable guardada em @State na raiz e passada adiante",
+     "Variável global mutável",
+     "UserDefaults",
+     "Notificações por e-mail"
+    ],
+    "correctIndex": 0,
+    "explanation": "O macro @Observable faz as views que leem as propriedades se atualizarem; a classe mantém a lógica separada da interface."
+   },
+   {
+    "id": 10,
+    "question": "Como mostrar uma mensagem quando a lista estiver vazia (iOS 17+)?",
+    "options": [
+     "Divider()",
+     "EmptyView()",
+     "Spacer()",
+     "ContentUnavailableView(\"Sem tarefas\", systemImage: \"checklist\")"
+    ],
+    "correctIndex": 3,
+    "explanation": "Exiba-a condicionalmente quando 'tarefas.isEmpty'; é a view padrão do sistema para estados vazios."
+   },
+   {
+    "id": 11,
+    "question": "Por que '.navigationTitle' precisa estar dentro de um NavigationStack?",
+    "options": [
+     "Porque muda o tema",
+     "Porque é obrigatório por lei",
+     "Porque o título é exibido pela barra de navegação do contêiner; fora dele não há onde apresentá-lo",
+     "Porque cria arrays"
+    ],
+    "correctIndex": 2,
+    "explanation": "O modifier só informa o título ao contêiner de navegação; sem NavigationStack nenhuma barra o exibe."
+   }
+  ]
+ }
+]

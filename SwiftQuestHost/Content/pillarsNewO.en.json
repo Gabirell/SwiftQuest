@@ -1,0 +1,1127 @@
+[
+  {
+    "id": 71,
+    "title": "AI in Development: Coding Intelligence in Xcode",
+    "theory": "Xcode includes 'coding intelligence' features: a chat-based coding assistant, suggestions that complete code as you type, and actions to explain, fix, document or generate tests from the selected code. Models can run on your Mac or on external providers that you connect in Xcode settings, and that changes the privacy question: code snippets sent to an external service leave your machine, so never put passwords, tokens, API keys or customers' personal data in a prompt, and follow your company policy. A good prompt is specific: state the goal, the context (Swift version, SwiftUI or UIKit), the constraints and the expected answer format, and ask the AI to explain its reasoning. A model's output is a proposal, not a truth: models can 'hallucinate', that is, invent APIs, parameters or behaviors that do not exist, or use outdated APIs. So review every line, build, run, write tests and read the official documentation before accepting. Use AI as a learning tool (ask for an explanation, a smaller example, a comparison), but try to solve the problem first so you do not lose the understanding that certification exams measure. Remember the ethical and legal side too: you remain responsible for the code you ship, you must respect licenses and privacy (a theme of the planning and data-protection objective) and you cannot blame the tool for a security flaw.",
+    "appleDocUrl": "https://developer.apple.com/documentation/xcode/writing-code-with-intelligence-in-xcode",
+    "category": "IA e Machine Learning",
+    "corporateCase": "A developer on a banking app uses the Xcode assistant to explain a legacy function and generate first tests with Swift Testing, but she configures her workflow so that code containing credentials or customer data is never sent. Every suggestion goes through code review and the test pipeline before merging.",
+    "gameCase": "In an indie game, the developer asks the AI for a sketch of the inventory system and gets code that uses a nonexistent API. The build error reveals the hallucination; he checks the documentation, fixes it and uses the answer only as a starting point to learn.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Complete the safe unwrapping of an Optional that the AI suggested using without a check",
+        "codeSnippet": "if ___ nome = apelido { print(nome) }",
+        "correctAnswer": "let",
+        "hint": "The word that creates a temporary constant only if the Optional has a value."
+      },
+      {
+        "id": 2,
+        "question": "The AI generated an incomplete 'guard'. Complete the early exit when the URL is invalid",
+        "codeSnippet": "guard let url = URL(string: texto) ___ { return }",
+        "correctAnswer": "else",
+        "hint": "Every 'guard' needs this word before the exit block."
+      },
+      {
+        "id": 3,
+        "question": "Mark the function as a Swift Testing test, as the AI would generate it",
+        "codeSnippet": "___ func somaFunciona() { #expect(soma(2, 3) == 5) }",
+        "correctAnswer": "@Test",
+        "hint": "It is an attribute (with @) that identifies test functions in Swift Testing."
+      },
+      {
+        "id": 4,
+        "question": "Complete the generated documentation markup for the parameter",
+        "codeSnippet": "/// Retorna o dobro do número.\n/// - ___ n: o valor de entrada\nfunc dobro(_ n: Int) -> Int { n * 2 }",
+        "correctAnswer": "Parameter",
+        "hint": "In documentation comments, '- ___ name:' describes an argument (singular)."
+      },
+      {
+        "id": 5,
+        "question": "The AI forgot to mark the property that changes the screen. Complete the right wrapper",
+        "codeSnippet": "struct Contador: View {\n    ___ private var total = 0\n    var body: some View { Button(\"\\(total)\") { total += 1 } }\n}",
+        "correctAnswer": "@State",
+        "hint": "Local state wrapper of a SwiftUI View."
+      },
+      {
+        "id": 6,
+        "question": "When a model invents an API or fact that does not exist, the phenomenon is called a ___ (one word)",
+        "codeSnippet": "Language models can suffer from ___ and invent nonexistent methods.",
+        "correctAnswer": "hallucination",
+        "hint": "Think of 'seeing things that are not there'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "What is the most important privacy risk when using an external AI assistant with your code?",
+        "options": [
+          "Xcode stops building the project",
+          "Code snippets, keys and customer data may be sent to a service outside your machine",
+          "The code becomes slower at runtime",
+          "Your Apple Developer Program membership is canceled"
+        ],
+        "correctIndex": 1,
+        "explanation": "With an external provider, the prompt content travels outside your Mac. So secrets and personal data must not be pasted and you must follow company policy."
+      },
+      {
+        "id": 2,
+        "question": "Which prompt tends to produce the best answer?",
+        "options": [
+          "'Make a validator'",
+          "'Email code'",
+          "'Help me with my app'",
+          "'Write a Swift 6 function that validates emails, without third-party libraries, with 3 tests and a brief explanation'"
+        ],
+        "correctIndex": 3,
+        "explanation": "Specific prompts with goal, context, constraints and expected format reduce ambiguity and give more useful, verifiable outputs."
+      },
+      {
+        "id": 3,
+        "question": "The AI suggested 'array.sortedByDescending()', but the code does not compile. What most likely happened?",
+        "options": [
+          "Hallucination: the method does not exist on Array (the correct form would be 'sorted(by: >)')",
+          "Xcode is outdated and must restart",
+          "All AI code needs an extra import",
+          "Swift does not allow sorting arrays"
+        ],
+        "correctIndex": 0,
+        "explanation": "Models can mix APIs from other languages. The compile error revealed the problem; checking the documentation solves it."
+      },
+      {
+        "id": 4,
+        "question": "What is the most appropriate attitude toward AI-generated code?",
+        "options": [
+          "Accept without reading if it compiles",
+          "Always accept, since AI is more accurate than humans",
+          "Review, build, test and understand every part before accepting",
+          "Always reject, since AI never helps"
+        ],
+        "correctIndex": 2,
+        "explanation": "Compiling does not guarantee correct behavior or security. Final responsibility lies with the developer, who must understand and verify the result."
+      },
+      {
+        "id": 5,
+        "question": "Which use of AI helps you learn without replacing understanding?",
+        "options": [
+          "Copy the ready solution and submit it",
+          "Try to solve it yourself, then ask the AI to explain differences and point out errors in your code",
+          "Ask the AI to do all the exercises",
+          "Avoid reading the answer"
+        ],
+        "correctIndex": 1,
+        "explanation": "AI is useful as a tutor when you try first and then compare your solution. Copying without understanding does not prepare you for exams or real work."
+      },
+      {
+        "id": 6,
+        "question": "Which of these is an appropriate use of the assistant to 'generate tests'?",
+        "options": [
+          "Select a function, ask for initial tests, then review whether the cases cover limits and errors",
+          "Trust that generated tests cover everything",
+          "Delete failing tests so CI turns green",
+          "Generate tests from code you never read"
+        ],
+        "correctIndex": 0,
+        "explanation": "Generated tests are a draft. You must check edge cases and make sure they test the correct behavior, not just what the code already does."
+      },
+      {
+        "id": 7,
+        "question": "Who is responsible for a security flaw in code accepted from an AI?",
+        "options": [
+          "Only the model vendor",
+          "Nobody, since it was generated automatically",
+          "Apple, as the owner of Xcode",
+          "The developer or team that accepted and shipped the code"
+        ],
+        "correctIndex": 3,
+        "explanation": "Shipped code is the responsibility of whoever publishes it. That includes licenses, privacy and security, ethical and legal topics covered in app planning."
+      },
+      {
+        "id": 8,
+        "question": "Why can asking the AI to 'explain step by step' be useful?",
+        "options": [
+          "It guarantees the answer is always correct",
+          "It makes the model run locally",
+          "It exposes the reasoning and makes it easier to find wrong assumptions before using the code",
+          "It removes the need for tests"
+        ],
+        "correctIndex": 2,
+        "explanation": "The explanation helps review and learning, but it is still text generated by a model: it is no guarantee of correctness and must be verified."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Which information should NOT be included in a prompt sent to an external provider?",
+        "options": [
+          "The name of a generic function",
+          "A production API key",
+          "A question about the syntax of 'guard'",
+          "A compile error with no sensitive data"
+        ],
+        "correctIndex": 1,
+        "explanation": "Keys and credentials may be leaked or logged. Remove them or replace them with fake values before asking for help."
+      },
+      {
+        "id": 2,
+        "question": "What does it mean to say a model 'hallucinates'?",
+        "options": [
+          "It stops responding",
+          "It uses a lot of memory",
+          "It only answers in English",
+          "It generates plausible but incorrect or nonexistent content, with apparent confidence"
+        ],
+        "correctIndex": 3,
+        "explanation": "Hallucination is producing false information in a convincing tone, which is why verification is mandatory."
+      },
+      {
+        "id": 3,
+        "question": "You asked 'fix my code' and the AI rewrote the whole file. What is the best practice?",
+        "options": [
+          "Compare the diff, accept only what you understand and run the tests",
+          "Replace the file without looking",
+          "Discard the project",
+          "Ask the AI to approve its own code too"
+        ],
+        "correctIndex": 0,
+        "explanation": "Reviewing changes in the diff keeps you in control and avoids regressions. Only the developer can validate the intent of the code."
+      },
+      {
+        "id": 4,
+        "question": "What is the difference between using AI to explain and using it to replace learning?",
+        "options": [
+          "There is no difference",
+          "Explaining is banned in certifications",
+          "Explaining helps you understand; replacing means handing in a solution without understanding the concepts",
+          "Replacing is faster and equally safe"
+        ],
+        "correctIndex": 2,
+        "explanation": "For certification and real work you must master the concepts, since exams and new problems demand your own understanding."
+      },
+      {
+        "id": 5,
+        "question": "Which limit is inherent to AI coding models?",
+        "options": [
+          "They never get syntax wrong",
+          "They may use old APIs or not know recent Swift and SDK versions",
+          "They always know your entire project",
+          "They guarantee compatibility with iOS 26"
+        ],
+        "correctIndex": 1,
+        "explanation": "Models have a cutoff date and limited context. Confirm versions and symbols in the official documentation."
+      },
+      {
+        "id": 6,
+        "question": "Why is it important to give context (for example, 'SwiftUI, iOS 26, no Combine') in the prompt?",
+        "options": [
+          "It reduces generic answers or ones incompatible with your version and architecture",
+          "It makes Xcode build faster",
+          "It is required by the App Store",
+          "It prevents any hallucination"
+        ],
+        "correctIndex": 0,
+        "explanation": "Context bounds the problem. That improves relevance, but it does not remove the need to verify the result."
+      }
+    ]
+  },
+  {
+    "id": 72,
+    "title": "Core ML and Create ML",
+    "theory": "Machine learning (ML) is the technique of making a program learn patterns from examples instead of hand-coding rules. In training, an algorithm fits a model with data; in inference, the trained model receives a new input and returns a prediction. In supervised learning, each example has a label (for example, the photo and the flower's name), and the model learns to predict labels. The Create ML app (and the CreateML framework on macOS, with types such as 'MLImageClassifier', 'MLTextClassifier' and 'MLDataTable') trains image classifiers, text classifiers and tabular models without writing algorithms. Data is split into training, validation and test sets: the model learns on training, is tuned with validation, and the final accuracy is measured on the test set, which it has never seen; high accuracy on training and low on test indicates overfitting. The result is a '.mlmodel' or '.mlpackage' file that you drag into the Xcode project, and Xcode automatically generates a Swift class named after the model. In code, you create the model with 'MLModelConfiguration' and call the prediction (or use Vision with 'VNCoreMLModel' for images). Core ML runs everything on the device, using CPU, GPU and Neural Engine, which provides privacy, offline operation and low latency. Remember that a model reflects its data: imbalanced or non-diverse data produces bias and unfair errors, so evaluate with real and diverse cases.",
+    "appleDocUrl": "https://developer.apple.com/documentation/coreml",
+    "category": "IA e Machine Learning",
+    "corporateCase": "A retailer builds, with Create ML, an image classifier that recognizes product categories for its returns app. The model runs on the iPhone, without sending customers' photos to a server, and the team evaluates accuracy with test photos of varied lighting and environments.",
+    "gameCase": "A card game uses a tabular model trained on past matches to suggest the best move. The developers split the matches into training and test sets and notice that the model fails on play styles that are poorly represented in the data.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Complete the extension of the model package you drag into the Xcode project",
+        "codeSnippet": "Create ML exports the model as a .___ file (newer package format).",
+        "correctAnswer": "mlpackage",
+        "hint": "It is the Core ML package extension (ml + package)."
+      },
+      {
+        "id": 2,
+        "question": "Create the configuration used when instantiating the generated model",
+        "codeSnippet": "let config = ___()\nlet modelo = try FlorClassificador(configuration: config)",
+        "correctAnswer": "MLModelConfiguration",
+        "hint": "Core ML type that holds options such as the processing units."
+      },
+      {
+        "id": 3,
+        "question": "Ask Core ML to use all available units (CPU, GPU, Neural Engine)",
+        "codeSnippet": "config.computeUnits = .___",
+        "correctAnswer": "all",
+        "hint": "The value that does not restrict any hardware."
+      },
+      {
+        "id": 4,
+        "question": "Wrap the Core ML model for use with Vision",
+        "codeSnippet": "let vnModelo = try ___(for: modelo.model)",
+        "correctAnswer": "VNCoreMLModel",
+        "hint": "The Vision type that takes the MLModel (VN + CoreML + Model)."
+      },
+      {
+        "id": 5,
+        "question": "Randomly split 80% of the data for training and the rest for testing",
+        "codeSnippet": "let (treino, teste) = tabela.___(by: 0.8, seed: 5)",
+        "correctAnswer": "randomSplit",
+        "hint": "MLDataTable method that splits randomly by proportion."
+      },
+      {
+        "id": 6,
+        "question": "The phase in which the trained model receives a new input and returns a prediction is called ___",
+        "codeSnippet": "Training fits the model; using the model to predict is ___.",
+        "correctAnswer": "inference",
+        "hint": "The counterpart of 'training'; it starts with 'i'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "What is the difference between training and inference?",
+        "options": [
+          "Training happens on the user's iPhone and inference in Xcode",
+          "Training fits the model with data; inference uses the finished model to predict new inputs",
+          "They are synonyms",
+          "Inference creates the labeled data"
+        ],
+        "correctIndex": 1,
+        "explanation": "Training learns parameters from examples. Inference applies the trained model, and that is what the app does at runtime."
+      },
+      {
+        "id": 2,
+        "question": "In supervised learning, what does each training example contain?",
+        "options": [
+          "Only the input, with no answer",
+          "Only Swift code",
+          "An if/else rule",
+          "The input and the label (expected answer)"
+        ],
+        "correctIndex": 3,
+        "explanation": "Supervised means learning from labeled examples, such as images with the category name."
+      },
+      {
+        "id": 3,
+        "question": "What is the test set for?",
+        "options": [
+          "Measuring accuracy on data the model never saw during training",
+          "Making training faster",
+          "Replacing the training set",
+          "Storing the model in the App Store"
+        ],
+        "correctIndex": 0,
+        "explanation": "If we measured on training data, the result would be optimistic. The test set estimates performance on new data."
+      },
+      {
+        "id": 4,
+        "question": "What does 95% accuracy on training and 60% on test indicate?",
+        "options": [
+          "The model is perfect",
+          "Lack of memory on the Mac",
+          "Overfitting: the model memorized the training data and generalizes poorly",
+          "Core ML is disabled"
+        ],
+        "correctIndex": 2,
+        "explanation": "A large gap between training and test shows that the model does not generalize. More data, more variety or regularization can help."
+      },
+      {
+        "id": 5,
+        "question": "What does Xcode do when you add an .mlmodel to the project?",
+        "options": [
+          "Converts the model into a storyboard",
+          "It automatically generates a Swift class named after the model for use in code",
+          "Sends the model to the cloud",
+          "Requires rewriting the model in Swift"
+        ],
+        "correctIndex": 1,
+        "explanation": "The generated class provides initializers and the prediction method, and the model page in Xcode shows inputs, outputs and metadata."
+      },
+      {
+        "id": 6,
+        "question": "What is an advantage of Core ML running on the device?",
+        "options": [
+          "Privacy, offline operation and low latency",
+          "It requires a constant internet connection",
+          "It sends all photos to an Apple server",
+          "It does not use the Neural Engine"
+        ],
+        "correctIndex": 0,
+        "explanation": "With local inference, user data does not need to leave the device, and the response is fast."
+      },
+      {
+        "id": 7,
+        "question": "Your face classifier has great overall accuracy but fails often for a group barely present in the data. What is the most likely cause?",
+        "options": [
+          "Swift is unsuitable for ML",
+          "Create ML only works with text",
+          "The device is slow",
+          "Bias in the training data: that group is not represented enough"
+        ],
+        "correctIndex": 3,
+        "explanation": "A model reflects its data. If a group is under-represented, the model tends to fail more on it; you must evaluate by subgroups and diversify the data."
+      },
+      {
+        "id": 8,
+        "question": "Which Apple tool lets you train an image classifier without writing the algorithm?",
+        "options": [
+          "Interface Builder",
+          "Instruments",
+          "Create ML",
+          "TestFlight"
+        ],
+        "correctIndex": 2,
+        "explanation": "Create ML (app and framework) trains models from folders of labeled images and exports a model for Core ML."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "In a Create ML image classifier, how are images normally labeled?",
+        "options": [
+          "With an Info.plist per image",
+          "In folders named after the class",
+          "In a storyboard",
+          "With code comments"
+        ],
+        "correctIndex": 1,
+        "explanation": "The most common format is one folder per category containing its images; the folder name becomes the label."
+      },
+      {
+        "id": 2,
+        "question": "What is the role of the validation set?",
+        "options": [
+          "Being the only set used",
+          "Storing the model",
+          "Replacing the final test",
+          "Tuning and comparing choices during training before the final evaluation"
+        ],
+        "correctIndex": 3,
+        "explanation": "Validation guides adjustments without contaminating the final test, which must remain untouched."
+      },
+      {
+        "id": 3,
+        "question": "Which framework runs a model's inference inside an iOS app?",
+        "options": [
+          "Core ML",
+          "CreateML",
+          "Interface Builder",
+          "XCTest"
+        ],
+        "correctIndex": 0,
+        "explanation": "CreateML (macOS) trains; Core ML runs the model on devices."
+      },
+      {
+        "id": 4,
+        "question": "A classification model says 'cat' with 0.52 confidence. What should a responsible app do?",
+        "options": [
+          "Show it as absolute fact",
+          "Ignore all predictions",
+          "Treat it as uncertain, for example by asking the user to confirm",
+          "Retrain on the phone"
+        ],
+        "correctIndex": 2,
+        "explanation": "Low confidence values indicate uncertainty. Designing the interface for that avoids serious mistakes."
+      },
+      {
+        "id": 5,
+        "question": "Why can a model trained only on daytime photos fail at night?",
+        "options": [
+          "Core ML does not work at night",
+          "The training data does not represent the real variety of use",
+          "The iPhone turns off the Neural Engine",
+          "The model is too large"
+        ],
+        "correctIndex": 1,
+        "explanation": "Training data must reflect real conditions; lack of variety causes failures and bias."
+      },
+      {
+        "id": 6,
+        "question": "What is correct about privacy with Core ML?",
+        "options": [
+          "Predictions can be made locally without sending user data",
+          "Every model needs a server",
+          "Apple reads all inputs",
+          "It only works online"
+        ],
+        "correctIndex": 0,
+        "explanation": "On-device inference is one of Core ML's big privacy advantages."
+      }
+    ]
+  },
+  {
+    "id": 73,
+    "title": "Natural Language and Computer Vision",
+    "theory": "The NaturalLanguage framework processes text: 'NLTokenizer' splits it into words or sentences, 'NLLanguageRecognizer' identifies the dominant language (for example, 'NLLanguageRecognizer.dominantLanguage(for: texto)'), and 'NLTagger' assigns tags such as part of speech, named entities and sentiment score with the '.sentimentScore' scheme, which returns a value from -1.0 (negative) to 1.0 (positive) as a string. There are also embeddings ('NLEmbedding'), which represent words as vectors to measure similarity of meaning. The Vision framework analyzes images with the request/handler pattern: you create a request (for example, 'VNRecognizeTextRequest' to recognize text, 'VNDetectBarcodesRequest' for barcodes or 'VNDetectFaceRectanglesRequest' for faces), create a 'VNImageRequestHandler' with the image and call 'try handler.perform([request])'. Results arrive in 'request.results' as observations; for text, 'topCandidates(1)' returns candidates with 'string' and 'confidence', a value from 0 to 1 showing how sure the recognition is. The '.accurate' recognition level is more precise and slower, while '.fast' is quicker and less precise; language correction can be turned on with 'usesLanguageCorrection'. VisionKit offers 'DataScannerViewController' and Live Text to scan text and codes with the camera out of the box. If the app uses the camera, you must declare 'NSCameraUsageDescription' in Info.plist, explaining the reason to the user; the system photo picker (PhotosPicker) does not require library permission. All this processing is local, and the result must be treated with its confidence in mind, never as absolute truth.",
+    "appleDocUrl": "https://developer.apple.com/documentation/vision",
+    "category": "IA e Machine Learning",
+    "corporateCase": "An expenses app lets users photograph receipts; 'VNRecognizeTextRequest' extracts the text, and 'NLTagger' helps identify the language and store names. Values with low 'confidence' are highlighted so the user can confirm them before saving.",
+    "gameCase": "A treasure-hunt game asks the player to scan a cereal box barcode with the camera to unlock a level. A diary app uses the 'NLTagger' sentiment score to change the character's background color according to the mood of the text.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Create a tagger that measures the sentiment of the text",
+        "codeSnippet": "let tagger = NLTagger(tagSchemes: [.___])",
+        "correctAnswer": "sentimentScore",
+        "hint": "Sentiment scoring scheme (camelCase)."
+      },
+      {
+        "id": 2,
+        "question": "Set the text the tagger will analyze",
+        "codeSnippet": "tagger.___ = texto",
+        "correctAnswer": "string",
+        "hint": "NLTagger String property that holds the content."
+      },
+      {
+        "id": 3,
+        "question": "Identify the dominant language of a text",
+        "codeSnippet": "let idioma = NLLanguageRecognizer.___(for: texto)",
+        "correctAnswer": "dominantLanguage",
+        "hint": "Static method that returns the main language."
+      },
+      {
+        "id": 4,
+        "question": "Create the Vision request that recognizes text in images",
+        "codeSnippet": "let request = ___()",
+        "correctAnswer": "VNRecognizeTextRequest",
+        "hint": "Starts with VN and ends with Request; recognizes text."
+      },
+      {
+        "id": 5,
+        "question": "Choose the most precise (and slowest) recognition level",
+        "codeSnippet": "request.recognitionLevel = .___",
+        "correctAnswer": "accurate",
+        "hint": "The opposite of .fast."
+      },
+      {
+        "id": 6,
+        "question": "Run the request on the image using the handler",
+        "codeSnippet": "let handler = VNImageRequestHandler(cgImage: imagem)\ntry handler.___([request])",
+        "correctAnswer": "perform",
+        "hint": "Verb that means 'run'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "What does the '.sentimentScore' scheme of NLTagger do?",
+        "options": [
+          "Translates the text",
+          "Returns a value from -1.0 to 1.0 indicating the sentiment of the text",
+          "Detects the language",
+          "Counts the words"
+        ],
+        "correctIndex": 1,
+        "explanation": "The result is a string such as '0.8' that can be converted to Double: negative values mean negative sentiment, positive values mean positive."
+      },
+      {
+        "id": 2,
+        "question": "What is the general pattern for using Vision?",
+        "options": [
+          "Create a storyboard and connect an IBOutlet",
+          "Train a model in Xcode",
+          "Open Instruments",
+          "Create a request, an image request handler and call 'perform' to read 'results'"
+        ],
+        "correctIndex": 3,
+        "explanation": "The handler receives the image, runs the requests and the resulting observations are in 'results'."
+      },
+      {
+        "id": 3,
+        "question": "What does 'confidence' mean in recognized text?",
+        "options": [
+          "The degree of certainty of the recognition, from 0 to 1",
+          "The speed of recognition",
+          "The font size",
+          "The language of the text"
+        ],
+        "correctIndex": 0,
+        "explanation": "Low values indicate uncertain results that the app can ask the user to check."
+      },
+      {
+        "id": 4,
+        "question": "When should you prefer 'recognitionLevel = .fast'?",
+        "options": [
+          "When the text is very blurry",
+          "To get the highest possible accuracy",
+          "When real-time speed matters more than maximum precision",
+          "When there is no camera"
+        ],
+        "correctIndex": 2,
+        "explanation": ".fast prioritizes latency (ideal for live video), while .accurate gives better results on still images."
+      },
+      {
+        "id": 5,
+        "question": "Which Info.plist key is required to use the camera?",
+        "options": [
+          "NSVisionEnabled",
+          "NSCameraUsageDescription",
+          "NSCameraEnabled",
+          "UIRequiredDeviceCapabilities"
+        ],
+        "correctIndex": 1,
+        "explanation": "The system requires a message explaining why the app accesses the camera; without it, the app is terminated when it asks for access."
+      },
+      {
+        "id": 6,
+        "question": "Which NaturalLanguage class splits text into words or sentences?",
+        "options": [
+          "NLTokenizer",
+          "NLEmbedding",
+          "NLTagger for sentiment only",
+          "VNImageRequestHandler"
+        ],
+        "correctIndex": 0,
+        "explanation": "NLTokenizer segments text into the chosen unit, such as .word or .sentence."
+      },
+      {
+        "id": 7,
+        "question": "What does the VisionKit 'DataScannerViewController' offer?",
+        "options": [
+          "Training tabular models",
+          "Generating images from text",
+          "Detecting the device language",
+          "A ready-made interface to scan text and codes with the camera"
+        ],
+        "correctIndex": 3,
+        "explanation": "It is a high-level alternative for live scanning, alongside Live Text, without assembling requests manually."
+      },
+      {
+        "id": 8,
+        "question": "A text request returned 'confidence' 0.3 for a line. What should you do?",
+        "options": [
+          "Accept without checking",
+          "Delete the app",
+          "Treat it as uncertain and ask for confirmation or another photo",
+          "Increase screen brightness"
+        ],
+        "correctIndex": 2,
+        "explanation": "Low-confidence results may contain errors; a responsible design accounts for that uncertainty."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "What are NaturalLanguage embeddings?",
+        "options": [
+          "Embedded images",
+          "Numeric representations (vectors) of words that let you measure similarity of meaning",
+          "A type of storyboard",
+          "API keys"
+        ],
+        "correctIndex": 1,
+        "explanation": "Words with close meanings end up close together in vector space, enabling similarity search."
+      },
+      {
+        "id": 2,
+        "question": "Which Vision request is used to locate faces?",
+        "options": [
+          "VNRecognizeTextRequest",
+          "VNDetectBarcodesRequest",
+          "NLTagger",
+          "VNDetectFaceRectanglesRequest"
+        ],
+        "correctIndex": 3,
+        "explanation": "It returns the rectangles of the faces found; recognizing text and codes uses different requests."
+      },
+      {
+        "id": 3,
+        "question": "Why can 'usesLanguageCorrection' help text recognition?",
+        "options": [
+          "It uses language correction to improve recognized words, at the cost of time",
+          "It translates the text to English",
+          "It makes the code asynchronous",
+          "It disables confidence"
+        ],
+        "correctIndex": 0,
+        "explanation": "Correction improves ordinary text but can hurt codes, license plates or proper names."
+      },
+      {
+        "id": 4,
+        "question": "Does the PhotosPicker require permission to access the whole library?",
+        "options": [
+          "Yes, always",
+          "Only on iPad",
+          "No, since the user picks the photos and the app only receives the selected ones",
+          "Only with Vision"
+        ],
+        "correctIndex": 2,
+        "explanation": "The system picker runs outside the app's process and delivers only what the user chooses, protecting privacy."
+      },
+      {
+        "id": 5,
+        "question": "Where is the result of 'perform' stored after a 'VNRecognizeTextRequest'?",
+        "options": [
+          "In a .plist file",
+          "In 'request.results' as text observations",
+          "In the Xcode console automatically",
+          "In iCloud"
+        ],
+        "correctIndex": 1,
+        "explanation": "Each observation has 'topCandidates(_:)' with 'string' and 'confidence'."
+      },
+      {
+        "id": 6,
+        "question": "For a Portuguese text, which value does NLLanguageRecognizer normally return?",
+        "options": [
+          "NLLanguage.portuguese",
+          "NLLanguage.english",
+          "Always nil",
+          "An image"
+        ],
+        "correctIndex": 0,
+        "explanation": "The result is an NLLanguage, whose raw value is the language code, such as 'pt'."
+      }
+    ]
+  },
+  {
+    "id": 74,
+    "title": "Foundation Models and Apple Intelligence",
+    "theory": "The Foundation Models framework (imported with 'import FoundationModels') gives access to the on-device language model of Apple Intelligence, with no per-request cost and without sending user data to a server. Before using it, check availability with 'SystemLanguageModel.default.availability': the model may be '.available' or '.unavailable' for reasons such as an incompatible device, Apple Intelligence turned off or the model not yet downloaded, and the app needs a fallback plan. A conversation is managed by 'LanguageModelSession'; you optionally create it with 'instructions' (the role and rules of the model, set by the developer and prioritized by the model) and send 'prompts' (the user's request) with 'try await session.respond(to:)', reading the answer in 'response.content'. With 'guided generation', you mark a struct with '@Generable' and describe fields with '@Guide', and the model returns a typed Swift value instead of free text, using 'respond(to:generating:)'. The model can also use 'tools' (tool calling): you define tools in Swift that the model may call to fetch data or perform actions, and responses can be shown gradually with streaming. There are safety guardrails that may refuse content, and the call can throw errors, for example when exceeding the context window, which must be handled with 'do/catch'. The on-device model is small: it works well for summarizing, extracting, classifying and generating short text, but it is not an encyclopedia and can be wrong, so validate the output.",
+    "appleDocUrl": "https://developer.apple.com/documentation/foundationmodels/languagemodelsession",
+    "category": "IA e Machine Learning",
+    "corporateCase": "A notes app offers 'summarize this note' using the on-device model: the text never leaves the iPhone and the button is hidden when 'availability' indicates the feature is unavailable. A '@Generable' struct returns a title and a task list already typed, ready for the interface.",
+    "gameCase": "An RPG uses Foundation Models to generate short NPC lines with 'instructions' that define the character's personality. If the model is not available, the game falls back to a fixed set of hand-written lines.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Import the on-device language model framework",
+        "codeSnippet": "import ___",
+        "correctAnswer": "FoundationModels",
+        "hint": "It is the framework name, without spaces."
+      },
+      {
+        "id": 2,
+        "question": "Create a session with instructions to define the model's role",
+        "codeSnippet": "let sessao = ___(instructions: \"Você é um assistente de receitas.\")",
+        "correctAnswer": "LanguageModelSession",
+        "hint": "Type that manages the conversation with the model."
+      },
+      {
+        "id": 3,
+        "question": "Send the prompt and wait for the response",
+        "codeSnippet": "let resposta = try ___ sessao.respond(to: \"Resuma o texto\")",
+        "correctAnswer": "await",
+        "hint": "The call is asynchronous."
+      },
+      {
+        "id": 4,
+        "question": "Mark the struct so the model generates a typed value (guided generation)",
+        "codeSnippet": "___ struct Receita { var nome: String }",
+        "correctAnswer": "@Generable",
+        "hint": "Attribute that makes the type generable by the model."
+      },
+      {
+        "id": 5,
+        "question": "Describe the field to guide the model",
+        "codeSnippet": "@___(description: \"Título curto\") var titulo: String",
+        "correctAnswer": "Guide",
+        "hint": "Attribute that guides the generation of a property."
+      },
+      {
+        "id": 6,
+        "question": "Check whether the model is ready before using it",
+        "codeSnippet": "if case .available = SystemLanguageModel.default.___ { /* usar */ }",
+        "correctAnswer": "availability",
+        "hint": "Property that reports whether the model is available or not."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "What is the main privacy advantage of Foundation Models?",
+        "options": [
+          "All prompts are sent to the cloud",
+          "The model runs on the device, so data does not need to go to a server",
+          "It requires a developer account for each user",
+          "It stores conversations in iCloud automatically"
+        ],
+        "correctIndex": 1,
+        "explanation": "Local processing keeps sensitive text on the device, in addition to working offline and with no per-request cost."
+      },
+      {
+        "id": 2,
+        "question": "Why check 'SystemLanguageModel.default.availability'?",
+        "options": [
+          "To update Xcode",
+          "To request camera permission",
+          "To choose the app language",
+          "The model may be unavailable (incompatible device, feature turned off or not yet downloaded)"
+        ],
+        "correctIndex": 3,
+        "explanation": "Not every device or configuration offers the model. The app should hide the feature or use an alternative."
+      },
+      {
+        "id": 3,
+        "question": "What is the difference between instructions and a prompt?",
+        "options": [
+          "Instructions define the role and rules (from the developer); the prompt is the request in each interaction",
+          "They are identical",
+          "Prompts only accept images",
+          "Instructions only apply to errors"
+        ],
+        "correctIndex": 0,
+        "explanation": "Instructions guide the session's general behavior; prompts are the specific requests, including the user's."
+      },
+      {
+        "id": 4,
+        "question": "What does guided generation with @Generable allow?",
+        "options": [
+          "Training the model on the iPhone",
+          "Ignoring the guardrails",
+          "Receiving a typed Swift struct instead of free text",
+          "Generating images"
+        ],
+        "correctIndex": 2,
+        "explanation": "The model fills in the type's fields and, with '@Guide', you describe each field, which avoids parsing text manually."
+      },
+      {
+        "id": 5,
+        "question": "What is 'tool calling'?",
+        "options": [
+          "An Xcode toolbar",
+          "The model can call Swift tools you define to get data or perform actions",
+          "A way to build faster",
+          "A way to disable the session"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tools extend the model with current information, such as the weather or the app's database, under the control of your code."
+      },
+      {
+        "id": 6,
+        "question": "What care should be taken when displaying a model response?",
+        "options": [
+          "Treat it as a suggestion, validate it and handle errors and guardrails",
+          "Always assume it is correct",
+          "Hide errors from the user",
+          "Run it as code without review"
+        ],
+        "correctIndex": 0,
+        "explanation": "The model can be wrong, refuse a request or throw errors; the app should use do/catch handling and a fallback plan."
+      },
+      {
+        "id": 7,
+        "question": "What is response streaming for?",
+        "options": [
+          "Downloading the model",
+          "Increasing the context window",
+          "Avoiding the use of async",
+          "Showing the text gradually as it is generated, improving the feeling of speed"
+        ],
+        "correctIndex": 3,
+        "explanation": "With streaming, the interface shows partial results without waiting for generation to finish."
+      },
+      {
+        "id": 8,
+        "question": "Which task best fits the on-device model?",
+        "options": [
+          "Replacing a facts database",
+          "Answering questions that require precise current knowledge",
+          "Summarizing, classifying or extracting information from short text",
+          "Compiling Swift code"
+        ],
+        "correctIndex": 2,
+        "explanation": "The model is compact and suited to well-bounded text tasks, but it is not a reliable source of facts."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "What generally happens if the prompt violates the safety guardrails?",
+        "options": [
+          "Xcode deletes the project",
+          "The request may be refused and the app must handle that error",
+          "The iPhone restarts",
+          "The model ignores the filter"
+        ],
+        "correctIndex": 1,
+        "explanation": "Guardrails are part of system safety; handle the error with an appropriate message."
+      },
+      {
+        "id": 2,
+        "question": "Where do you read the text of a simple 'respond(to:)' answer?",
+        "options": [
+          "In 'response.plist'",
+          "In Info.plist",
+          "In the storyboard",
+          "In 'response.content'"
+        ],
+        "correctIndex": 3,
+        "explanation": "The response object carries the generated content, which can be text or a generable type."
+      },
+      {
+        "id": 3,
+        "question": "Why does the app need a fallback plan?",
+        "options": [
+          "Because not every device and configuration has the model available",
+          "Because the model is paid",
+          "Because it requires a connection",
+          "Because it only works in the simulator"
+        ],
+        "correctIndex": 0,
+        "explanation": "A robust design offers alternatives, such as fixed text or hiding the feature."
+      },
+      {
+        "id": 4,
+        "question": "What is the role of '@Guide'?",
+        "options": [
+          "Declaring a View",
+          "Creating a storyboard",
+          "Describing and guiding the value of a generable property",
+          "Connecting an IBOutlet"
+        ],
+        "correctIndex": 2,
+        "explanation": "It gives the model a description to fill in the field more accurately."
+      },
+      {
+        "id": 5,
+        "question": "What is the relationship between Foundation Models and Apple Intelligence?",
+        "options": [
+          "They are unrelated products",
+          "The framework lets apps use the on-device model that powers Apple Intelligence features",
+          "It is only for macOS",
+          "It is a paid cloud service"
+        ],
+        "correctIndex": 1,
+        "explanation": "The framework opens the local language model to developers, with privacy and no per-request cost."
+      },
+      {
+        "id": 6,
+        "question": "Why should the on-device model not be a source of facts?",
+        "options": [
+          "It is compact and can be wrong or invent information",
+          "It is always right",
+          "It has full internet access",
+          "It never answers"
+        ],
+        "correctIndex": 0,
+        "explanation": "Use it for language tasks and supply facts via prompts or tools, verifying the output."
+      }
+    ]
+  },
+  {
+    "id": 75,
+    "title": "Image Generation and AI Ethics",
+    "theory": "The Image Playground framework lets your app offer AI image generation with Apple's interface: in UIKit there is 'ImagePlaygroundViewController', and in SwiftUI you use the '.imagePlaygroundSheet(...)' modifier, which presents a sheet where the user describes the idea and chooses a style, such as animation, illustration or sketch. Your app can suggest a starting concept (text or image), and when the user finishes, the app receives the created image to use; the system handles the interface, the styles and the on-device processing, and it is advisable to check availability (for example, with 'supportsImagePlayground' in the environment) before showing the button. There are content-safety filters, and generated images carry metadata indicating they were made by AI, which helps transparency. From an ethics standpoint, responsible AI principles include fairness (avoiding bias and stereotypes), transparency (disclosing when something is AI-generated), privacy (care with photos and personal data), accountability (someone answers for the result) and inclusion. Generated images can reflect biases in the training data, raise copyright questions and be used for disinformation, such as deepfakes, which imitate real people without consent. AI features must also be accessible (alternative text, VoiceOver, clear controls) and have a 'human-in-the-loop': the user reviews, edits, accepts or discards the result before it is used. This connects with the certification objectives about legal, ethical and socioeconomic impact in app planning.",
+    "appleDocUrl": "https://developer.apple.com/documentation/imageplayground",
+    "category": "IA e Machine Learning",
+    "corporateCase": "A greeting-card app adds a 'Create illustration' button that opens the Image Playground sheet. The user reviews and picks the image before sending it, and the app discloses that the art was AI-generated and offers an accessible description for VoiceOver.",
+    "gameCase": "An adventure game lets players create their avatar with image generation, but blocks the use of real people's faces without consent. The team also reviews whether the generated styles represent diverse groups without stereotypes.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Present the Image Playground sheet in SwiftUI",
+        "codeSnippet": "Button(\"Criar\") { mostrar = true }\n    .___(isPresented: $mostrar, concept: \"gato astronauta\", onCompletion: { url in })",
+        "correctAnswer": "imagePlaygroundSheet",
+        "hint": "Modifier that shows the image generation sheet."
+      },
+      {
+        "id": 2,
+        "question": "Complete the UIKit class that presents the image generation experience",
+        "codeSnippet": "let vc = ImagePlayground___()",
+        "correctAnswer": "ViewController",
+        "hint": "The class ends with the common suffix of UIKit screens."
+      },
+      {
+        "id": 3,
+        "question": "Read from the environment whether the device offers Image Playground",
+        "codeSnippet": "@Environment(\\.___) private var disponivel",
+        "correctAnswer": "supportsImagePlayground",
+        "hint": "Boolean environment value that reports support."
+      },
+      {
+        "id": 4,
+        "question": "The user reviews and approves the result before using it: this design principle is called human-in-the-___",
+        "codeSnippet": "Design with the person in control: human-in-the-___",
+        "correctAnswer": "loop",
+        "hint": "English term meaning a cycle or circuit."
+      },
+      {
+        "id": 5,
+        "question": "When an AI reflects prejudices present in the training data, we say it has ___ (one word)",
+        "codeSnippet": "Imbalanced data can cause ___ in the AI's output.",
+        "correctAnswer": "bias",
+        "hint": "The word also used for unfair tendency."
+      },
+      {
+        "id": 6,
+        "question": "Describe the image for VoiceOver users",
+        "codeSnippet": "Image(\"avatar\").___(\"Avatar gerado por IA de um gato astronauta\")",
+        "correctAnswer": "accessibilityLabel",
+        "hint": "Accessibility modifier that sets the text VoiceOver reads."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "What does the Image Playground sheet offer your app?",
+        "options": [
+          "A code editor",
+          "A ready interface where the user describes an idea and picks a style to generate an image",
+          "A Create ML image classifier",
+          "A payment system"
+        ],
+        "correctIndex": 1,
+        "explanation": "The app presents the sheet, the system handles the experience and returns the created image when the user finishes."
+      },
+      {
+        "id": 2,
+        "question": "Which of these is a responsible AI principle?",
+        "options": [
+          "Always hiding the origin of images",
+          "Collecting as much data as possible",
+          "Avoiding bias testing",
+          "Transparency, for example disclosing when content was generated by AI"
+        ],
+        "correctIndex": 3,
+        "explanation": "Transparency helps people understand and trust content, and reduces the risk of deceiving them."
+      },
+      {
+        "id": 3,
+        "question": "Why is 'human-in-the-loop' important in generative AI features?",
+        "options": [
+          "Because the person can review, correct or reject the result before it is used",
+          "Because AI never errs",
+          "Because it removes the need for accessibility",
+          "Because it speeds up compilation"
+        ],
+        "correctIndex": 0,
+        "explanation": "AI can err or generate inappropriate content. Keeping the person in control reduces harm."
+      },
+      {
+        "id": 4,
+        "question": "What is a deepfake?",
+        "options": [
+          "A compression technique",
+          "A type of storyboard",
+          "Synthetic media that imitates a real person and can deceive and cause harm",
+          "An accessibility feature"
+        ],
+        "correctIndex": 2,
+        "explanation": "Deepfakes can be used in disinformation and fraud, which is why consent and labeling generated content matter."
+      },
+      {
+        "id": 5,
+        "question": "An image generator produces stereotypes for professions. What is the most likely cause?",
+        "options": [
+          "An iPhone failure",
+          "Bias in the training data",
+          "A SwiftUI bug",
+          "No internet"
+        ],
+        "correctIndex": 1,
+        "explanation": "Models learn patterns from data; biased data yields biased outputs, which require evaluation and mitigation."
+      },
+      {
+        "id": 6,
+        "question": "How can you make an image generation feature more accessible?",
+        "options": [
+          "Provide alternative text (VoiceOver), clear controls and alternatives to the visual flow",
+          "Use only color to indicate states",
+          "Remove labels",
+          "Rely on secret gestures"
+        ],
+        "correctIndex": 0,
+        "explanation": "Inclusion requires that everyone can use the feature, with labels, contrast and assistive technology support."
+      },
+      {
+        "id": 7,
+        "question": "Which legal concern relates to AI-generated images?",
+        "options": [
+          "None, since they are always free",
+          "Only the file size",
+          "Only the Xcode license",
+          "Copyright and use of people's likeness, which depend on context and local laws"
+        ],
+        "correctIndex": 3,
+        "explanation": "Take care with resemblance to protected works, use of real faces and service terms, and consult legal teams when needed."
+      },
+      {
+        "id": 8,
+        "question": "What are marks or metadata in AI-generated images for?",
+        "options": [
+          "Making the image more colorful",
+          "Increasing resolution",
+          "Indicating synthetic origin and supporting transparency",
+          "Replacing the license"
+        ],
+        "correctIndex": 2,
+        "explanation": "Provenance indicators help people tell generated content apart and fight disinformation."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Before showing the image generation button, what should the app check?",
+        "options": [
+          "Whether Xcode is open",
+          "Whether the device and configuration support the feature",
+          "Whether there is a storyboard",
+          "Whether the user has an 18-year-old account"
+        ],
+        "correctIndex": 1,
+        "explanation": "Not all devices support the feature. Hiding or replacing it avoids a broken experience."
+      },
+      {
+        "id": 2,
+        "question": "What is the most responsible attitude when using a person's photo as the basis for a generated image?",
+        "options": [
+          "Use it without telling them",
+          "Automatically post on social networks",
+          "Store on a server without informing",
+          "Obtain consent and respect privacy"
+        ],
+        "correctIndex": 3,
+        "explanation": "Photos are personal data; consent and a clear purpose are privacy principles."
+      },
+      {
+        "id": 3,
+        "question": "Which of these is a style commonly offered when generating images with Image Playground?",
+        "options": [
+          "Illustration",
+          "Compiler",
+          "Spreadsheet",
+          "Storyboard"
+        ],
+        "correctIndex": 0,
+        "explanation": "Styles such as animation, illustration and sketch guide the look of the image."
+      },
+      {
+        "id": 4,
+        "question": "Who is accountable for offensive content published by an app with an AI feature?",
+        "options": [
+          "Only the model",
+          "Nobody",
+          "The developer and organization that publish the app (accountability)",
+          "The Xcode user"
+        ],
+        "correctIndex": 2,
+        "explanation": "Accountability is a principle: the app should have filters, reporting and review to limit harm."
+      },
+      {
+        "id": 5,
+        "question": "Which practice reduces the risk of bias in an AI feature?",
+        "options": [
+          "Testing with only one profile",
+          "Testing with diverse inputs and audiences and fixing the problems found",
+          "Ignoring complaints",
+          "Hiding the results"
+        ],
+        "correctIndex": 1,
+        "explanation": "Evaluation with diversity finds failures before they reach users."
+      },
+      {
+        "id": 6,
+        "question": "Why can an 'AI-generated' notice be useful in the interface?",
+        "options": [
+          "It helps users calibrate their trust in the content",
+          "It makes the image sharper",
+          "It avoids all errors",
+          "It is required for every storyboard"
+        ],
+        "correctIndex": 0,
+        "explanation": "Disclosing the origin supports transparency and critical judgment."
+      }
+    ]
+  }
+]

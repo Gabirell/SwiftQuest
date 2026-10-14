@@ -1,0 +1,902 @@
+[
+ {
+  "id": 76,
+  "title": "visionOS: Ventanas, Volúmenes y Ornamentos",
+  "theory": "visionOS es el sistema del Apple Vision Pro y trae la computación espacial: tu app convive con el entorno real del usuario. Por defecto la app se ejecuta en el 'Shared Space', donde ventanas y volúmenes de varias apps coexisten una junto a otra; cuando necesita más, abre un 'Full Space' con 'ImmersiveSpace' y entonces solo tu app es visible (en los estilos 'mixed', 'progressive' o 'full'). Una ventana común es un 'WindowGroup' de SwiftUI, igual que en iOS, flotando en el espacio; para contenido 3D acotado se usa una ventana volumétrica con '.windowStyle(.volumetric)' y 'defaultSize(width:height:depth:in:)'. Los 'ornaments' (modificador '.ornament') son controles anclados al borde de una ventana, como barras de herramientas, que no ocupan el contenido. El contenido 3D se crea con 'RealityView' (que aloja entidades de RealityKit: 'Entity' + 'Component', como 'ModelComponent' y 'CollisionComponent') o, de forma sencilla, con 'Model3D' para mostrar un modelo USDZ. La entrada es con la mirada y las manos: el usuario mira un elemento y hace el gesto de pellizco, que equivale al toque; por eso los objetivos deben ser grandes (mínimo de unos 60 pt) y las entidades 3D necesitan 'InputTargetComponent' y 'CollisionComponent' para recibir gestos como '.gesture(TapGesture().targetedToAnyEntity())'. Piensa en la comodidad: no fijes el contenido a la cabeza, evita movimientos bruscos y coloca las ventanas a la altura de los ojos. Pruebas en el simulador del Apple Vision Pro en Xcode, que simula mirada y manos con el mouse, y reutilizas mucho código SwiftUI de iOS y iPadOS. Error común: olvidar declarar el 'ImmersiveSpace' en la 'App' antes de llamar a 'openImmersiveSpace'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/visionos",
+  "category": "visionOS",
+  "corporateCase": "Una app de decoración de muebles para una tienda muestra el catálogo en una ventana común y el sofá elegido en una ventana volumétrica con 'Model3D', que el cliente gira con la mano. Los botones de color y de compra quedan en un ornament bajo la ventana, sin tapar el producto.",
+  "gameCase": "Un juego de mesa usa una ventana volumétrica para el tablero 3D sobre la mesa real del jugador, con piezas como entidades de RealityKit que responden a la mirada y al pellizco. Para el nivel especial, el juego abre un 'ImmersiveSpace' que transporta al jugador a una ciudad fantástica.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declara una ventana volumétrica para mostrar contenido 3D acotado",
+    "codeSnippet": "WindowGroup { Globo() }\n    .windowStyle(.___)",
+    "correctAnswer": "volumetric",
+    "hint": "Es el estilo que da profundidad a la ventana, convirtiéndola en un volumen."
+   },
+   {
+    "id": 2,
+    "question": "Declara el espacio que ocupa todo el entorno del usuario",
+    "codeSnippet": "___(id: \"cena\") { CenaView() }",
+    "correctAnswer": "ImmersiveSpace",
+    "hint": "Es la escena de SwiftUI usada para experiencias inmersivas (Full Space)."
+   },
+   {
+    "id": 3,
+    "question": "Ancla una barra de controles al borde inferior de la ventana",
+    "codeSnippet": "Conteudo()\n    .___(attachmentAnchor: .scene(.bottom)) { Controles() }",
+    "correctAnswer": "ornament",
+    "hint": "El modificador tiene el mismo nombre que los 'adornos' anclados a la ventana."
+   },
+   {
+    "id": 4,
+    "question": "Aloja entidades de RealityKit dentro de una vista SwiftUI",
+    "codeSnippet": "___ { content in\n    content.add(entidade)\n}",
+    "correctAnswer": "RealityView",
+    "hint": "Es la vista que recibe un 'content' para añadir entidades 3D."
+   },
+   {
+    "id": 5,
+    "question": "Muestra un modelo 3D USDZ del bundle con la vista más simple",
+    "codeSnippet": "___(named: \"Robo\")",
+    "correctAnswer": "Model3D",
+    "hint": "La vista de SwiftUI que carga un modelo 3D de forma asíncrona."
+   },
+   {
+    "id": 6,
+    "question": "Obtén la acción del entorno que abre un espacio inmersivo",
+    "codeSnippet": "@Environment(\\.___) var abrirEspaco",
+    "correctAnswer": "openImmersiveSpace",
+    "hint": "La clave del Environment empieza con 'open' y termina con el nombre de la escena."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la diferencia entre Shared Space y Full Space en visionOS?",
+    "options": [
+     "En el Shared Space la app ocupa todo el entorno; en el Full Space comparte la pantalla",
+     "Shared Space es solo para juegos y Full Space solo para apps de productividad",
+     "En el Shared Space conviven varias apps; en el Full Space solo se muestra tu app",
+     "No hay diferencia; son nombres alternativos del mismo modo"
+    ],
+    "correctIndex": 2,
+    "explanation": "Toda app empieza en el Shared Space, conviviendo con otras. Al abrir un 'ImmersiveSpace' entra en un Full Space, donde solo aparece tu contenido y la app obtiene acceso a más recursos."
+   },
+   {
+    "id": 2,
+    "question": "¿Cómo 'toca' el usuario un botón en visionOS?",
+    "options": [
+     "Mirándolo y haciendo un gesto de pellizco con los dedos",
+     "Tocando físicamente con la mano una pantalla táctil",
+     "Apuntando un control con botones físicos",
+     "Diciendo 'toca' en voz alta"
+    ],
+    "correctIndex": 0,
+    "explanation": "En visionOS la selección es mirada + pellizco, equivalente al toque de iOS. Por eso 'Button' y 'TapGesture' funcionan sin cambios."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué hace el código '.windowStyle(.volumetric)'?",
+    "options": [
+     "Hace la ventana transparente y sin bordes",
+     "Abre un espacio inmersivo a pantalla completa",
+     "Fija la ventana a la cabeza del usuario",
+     "Crea una ventana con profundidad que muestra contenido 3D acotado"
+    ],
+    "correctIndex": 3,
+    "explanation": "Una ventana volumétrica es un volumen 3D en el Shared Space. No es inmersiva: las otras apps siguen visibles a su alrededor."
+   },
+   {
+    "id": 4,
+    "question": "¿Para qué sirven los ornaments?",
+    "options": [
+     "Para decorar el entorno real con objetos virtuales",
+     "Para anclar controles al borde de una ventana sin ocupar el área de contenido",
+     "Para animar entidades de RealityKit",
+     "Para abrir ventanas secundarias de la app"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los ornaments quedan anclados a la ventana (por ejemplo, debajo) y son ideales para barras de herramientas y botones, manteniendo libre el contenido principal."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué combinación permite que una entidad de RealityKit reciba un gesto de toque?",
+    "options": [
+     "Solo un 'ModelComponent'",
+     "'InputTargetComponent' y 'CollisionComponent' en la entidad",
+     "Solo un 'Button' de SwiftUI superpuesto",
+     "Un 'ImmersiveSpace' con estilo 'full'"
+    ],
+    "correctIndex": 1,
+    "explanation": "RealityKit usa el modelo Entity-Component. Para que el sistema detecte mirada/pellizco, la entidad debe ser objetivo de entrada y tener una forma de colisión. Sin eso el gesto nunca se dispara."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué práctica mejora la comodidad en visionOS?",
+    "options": [
+     "Poner texto pequeño muy cerca de los ojos para ocupar menos espacio",
+     "Mover todo el entorno rápidamente para dar impacto",
+     "Fijar ventanas al rostro del usuario para que lo sigan",
+     "Colocar el contenido a la altura de los ojos y evitar movimientos bruscos o elementos fijos a la cabeza"
+    ],
+    "correctIndex": 3,
+    "explanation": "El contenido fijo a la cabeza y los movimientos amplios y rápidos causan incomodidad. Objetivos grandes, distancia cómoda y pocos cambios bruscos hacen agradable el uso."
+   },
+   {
+    "id": 7,
+    "question": "¿Cómo probar una app de visionOS sin un Apple Vision Pro físico?",
+    "options": [
+     "Ejecutándola en el simulador del Apple Vision Pro en Xcode",
+     "Ejecutando la app directamente en un iPhone conectado",
+     "No es posible probar sin el dispositivo",
+     "Usando solo los Previews de SwiftUI en macOS"
+    ],
+    "correctIndex": 0,
+    "explanation": "Xcode incluye un simulador del Apple Vision Pro, donde el mouse y el teclado simulan mirada y manos. Para sensores y rendimiento reales se recomienda probar en el dispositivo."
+   },
+   {
+    "id": 8,
+    "question": "Tienes una app SwiftUI para iPad y quieres llevarla a visionOS. ¿Cuál es el mejor enfoque?",
+    "options": [
+     "Reescribir todo en UIKit",
+     "Reescribir todo en RealityKit",
+     "Reutilizar las vistas SwiftUI y adaptar ventanas, tamaños de objetivos y, si tiene sentido, añadir volúmenes y ornaments",
+     "Es imposible reutilizar código entre las plataformas"
+    ],
+    "correctIndex": 2,
+    "explanation": "SwiftUI se comparte entre las plataformas de Apple. Añades el destino visionOS y luego lo enriqueces con recursos espaciales, en lugar de empezar de cero."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué es un 'Model3D'?",
+    "options": [
+     "Un componente que aplica física a una entidad",
+     "Una escena inmersiva completa",
+     "Un tipo de gesto de rotación",
+     "Una vista SwiftUI que muestra un modelo 3D (como un USDZ) de forma sencilla"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Model3D' carga el modelo de forma asíncrona y lo muestra como una vista común. Para una interacción más compleja se usa 'RealityView' y entidades."
+   },
+   {
+    "id": 2,
+    "question": "Llamaste a 'openImmersiveSpace(id: \"cena\")' y no se abrió nada. ¿Cuál es la causa más probable?",
+    "options": [
+     "El simulador no soporta SwiftUI",
+     "El 'ImmersiveSpace(id: \"cena\")' no se declaró en la 'App'",
+     "La ventana principal debe ser volumétrica",
+     "El 'id' debe ser un entero"
+    ],
+    "correctIndex": 1,
+    "explanation": "El espacio inmersivo es una escena y debe declararse en el 'body' de la 'App' con el mismo 'id'. Solo entonces la acción del entorno puede abrirlo."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué son los 'Component' en RealityKit?",
+    "options": [
+     "Piezas de datos y comportamiento que se adjuntan a una 'Entity'",
+     "Subclases de 'View' de SwiftUI",
+     "Archivos de textura del proyecto",
+     "Ventanas secundarias de visionOS"
+    ],
+    "correctIndex": 0,
+    "explanation": "RealityKit sigue el patrón Entity-Component: la entidad es un contenedor, y componentes como 'ModelComponent' o 'CollisionComponent' definen qué es y qué hace."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es un tamaño adecuado para un objetivo interactivo con mirada + pellizco?",
+    "options": [
+     "Pequeño, 10 pt, para ahorrar espacio",
+     "Siempre 1 pt de alto",
+     "Grande, de unos 60 pt o más",
+     "El tamaño no importa"
+    ],
+    "correctIndex": 2,
+    "explanation": "Como la mirada es menos precisa que un dedo en la pantalla, los objetivos deben ser generosos. Controles pequeños y muy juntos dificultan la selección."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué estilo de inmersión deja al usuario ver el mundo real mezclado con el contenido de la app?",
+    "options": [
+     "Ninguno: visionOS nunca muestra el mundo real",
+     "Solo 'full'",
+     "'mixed'",
+     "'volumetric'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'mixed' mezcla contenido virtual con el entorno real; 'full' reemplaza todo por un entorno virtual y 'progressive' deja que el usuario ajuste la cantidad con la Digital Crown."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es la principal diferencia entre una ventana común y una volumétrica?",
+    "options": [
+     "La volumétrica tiene profundidad y aloja contenido 3D, mientras que la común es una superficie 2D",
+     "La común es inmersiva y la volumétrica no",
+     "La volumétrica solo funciona en Full Space",
+     "No hay diferencia visual"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ambas viven en el Shared Space. La común muestra interfaz 2D (con profundidad solo decorativa); la volumétrica define un volumen para objetos 3D que el usuario puede rodear."
+   }
+  ]
+ },
+ {
+  "id": 77,
+  "title": "watchOS: Interfaz, Complicaciones y Entrenamientos",
+  "theory": "El Apple Watch se usa en vistazos de pocos segundos, así que el diseño debe priorizar información esencial, textos cortos, controles grandes y flujos con pocos toques. En watchOS, SwiftUI es la base: 'NavigationStack' organiza la navegación en pila, 'TabView' con '.tabViewStyle(.page)' crea páginas deslizables y el modificador '.digitalCrownRotation($valor)' vincula la Digital Crown a un valor. Las complicaciones y los widgets del Smart Stack se crean con WidgetKit, usando familias como 'accessoryCircular', 'accessoryRectangular', 'accessoryInline' y 'accessoryCorner' y una timeline de entradas que el sistema muestra sin abrir la app. Los entrenamientos usan HealthKit: configuras un 'HKWorkoutConfiguration', creas un 'HKWorkoutSession' con el 'HKHealthStore' y un 'HKLiveWorkoutBuilder' para recopilar frecuencia cardíaca y calorías; durante una sesión activa la app sigue ejecutándose en segundo plano, lo que exige la capability de HealthKit y el modo de segundo plano de entrenamiento. Fuera de los entrenamientos, la ejecución en segundo plano es limitada: el sistema concede tareas de actualización con un presupuesto restringido, por lo que la app debe actualizar datos con moderación y recargar timelines solo cuando sea necesario. Una app puede ser independiente (funciona sin el iPhone, con red propia) o complementaria; cuando ambos lados se comunican, se usa 'WCSession' de WatchConnectivity ('updateApplicationContext', 'transferUserInfo' y 'sendMessage', este último solo con el otro lado alcanzable). Los hápticos con 'WKInterfaceDevice.current().play(_:)' dan retroalimentación discreta, pero no deben abusarse. La batería es un recurso escaso: evita animaciones continuas, polling y trabajo innecesario.",
+  "appleDocUrl": "https://developer.apple.com/documentation/watchos-apps",
+  "category": "watchOS",
+  "corporateCase": "Una app de una cadena de gimnasios ofrece en el reloj la lista de entrenamientos del día en una 'NavigationStack' y una complicación que muestra la próxima clase programada. La app es independiente, para que el alumno registre el entrenamiento incluso dejando el iPhone en el casillero.",
+  "gameCase": "Un juego de carreras de bolsillo usa la Digital Crown para controlar la velocidad del personaje y hápticos para señalar una vuelta completa. Una complicación en la esfera del reloj muestra el récord actual del jugador, actualizado por una timeline de WidgetKit.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Usa la vista de SwiftUI que organiza la navegación en pila",
+    "codeSnippet": "___ {\n    List(treinos) { Text($0.nome) }\n}",
+    "correctAnswer": "NavigationStack",
+    "hint": "Es la vista que gestiona la pila de pantallas, reemplazando la antigua NavigationView."
+   },
+   {
+    "id": 2,
+    "question": "Crea páginas deslizables horizontales en un TabView",
+    "codeSnippet": "TabView { Resumo(); Detalhes() }\n    .tabViewStyle(.___)",
+    "correctAnswer": "page",
+    "hint": "El estilo lleva el nombre de lo que deslizas: las páginas."
+   },
+   {
+    "id": 3,
+    "question": "Conecta la Digital Crown a una variable",
+    "codeSnippet": "Text(\"\\(valor)\")\n    .___($valor, from: 0, through: 10)",
+    "correctAnswer": "digitalCrownRotation",
+    "hint": "El nombre del modificador combina 'Digital Crown' con 'rotation'."
+   },
+   {
+    "id": 4,
+    "question": "Crea la sesión de entrenamiento de HealthKit",
+    "codeSnippet": "let sessao = try ___(healthStore: store, configuration: config)",
+    "correctAnswer": "HKWorkoutSession",
+    "hint": "Tipo de HealthKit que representa un entrenamiento activo."
+   },
+   {
+    "id": 5,
+    "question": "Reproduce el háptico que indica éxito",
+    "codeSnippet": "WKInterfaceDevice.current().play(.___)",
+    "correctAnswer": "success",
+    "hint": "Es el caso del enum de hápticos que comunica una acción completada con éxito."
+   },
+   {
+    "id": 6,
+    "question": "Accede a la sesión compartida de WatchConnectivity",
+    "codeSnippet": "let sessao = WCSession.___",
+    "correctAnswer": "default",
+    "hint": "Es la propiedad estática que devuelve la instancia única, escrita con la palabra en inglés para 'predeterminado'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué principio de diseño es más importante en el Apple Watch?",
+    "options": [
+     "Poner la mayor cantidad posible de información en pantalla",
+     "Replicar toda la interfaz de la app del iPhone",
+     "Mostrar la información esencial rápidamente, con pocas interacciones",
+     "Exigir largas secuencias de toques para completar una tarea"
+    ],
+    "correctIndex": 2,
+    "explanation": "El reloj se consulta en vistazos. Pantallas sencillas, textos cortos y objetivos grandes funcionan mejor que interfaces densas."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué hace '.tabViewStyle(.page)' en watchOS?",
+    "options": [
+     "Convierte el TabView en páginas que el usuario desliza",
+     "Crea una barra de pestañas inferior fija",
+     "Abre una nueva ventana",
+     "Desactiva la navegación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Con el estilo '.page', cada hijo del TabView se vuelve una página y el usuario alterna entre ellas deslizando, con indicadores de página."
+   },
+   {
+    "id": 3,
+    "question": "¿Cómo se construyen las complicaciones/widgets en los watchOS actuales?",
+    "options": [
+     "Con UIKit y storyboards",
+     "Con un bucle que actualiza el reloj cada segundo",
+     "Solo con WatchConnectivity",
+     "Con WidgetKit, describiendo una timeline de entradas"
+    ],
+    "correctIndex": 3,
+    "explanation": "WidgetKit permite al sistema mostrar las entradas de la timeline sin abrir la app. Eliges familias como 'accessoryCircular' y 'accessoryRectangular' para cada tipo de espacio."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué se necesita para recopilar datos durante un entrenamiento en el reloj?",
+    "options": [
+     "Solo un 'Timer' en segundo plano",
+     "Un 'HKWorkoutSession' con HealthKit autorizado y la capability correspondiente",
+     "Un 'WCSession' activo",
+     "Un widget del Smart Stack"
+    ],
+    "correctIndex": 1,
+    "explanation": "La sesión de entrenamiento de HealthKit mantiene la app activa y recopilando datos, como la frecuencia cardíaca, incluso con la muñeca baja. El usuario debe autorizar la lectura de los tipos de datos."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué afirmación sobre el segundo plano en watchOS es verdadera?",
+    "options": [
+     "Toda app puede ejecutarse indefinidamente en segundo plano",
+     "Fuera de una sesión de entrenamiento, el tiempo de ejecución en segundo plano es limitado y lo controla el sistema",
+     "La app nunca recibe tareas de actualización",
+     "El segundo plano es ilimitado si el reloj está cargando"
+    ],
+    "correctIndex": 1,
+    "explanation": "El sistema concede tareas de segundo plano con un presupuesto restringido para preservar la batería. Las sesiones de entrenamiento activas son la excepción, pues el usuario se está ejercitando."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuándo funciona 'sendMessage' de WCSession?",
+    "options": [
+     "Siempre, incluso con la otra app cerrada y el dispositivo apagado",
+     "Solo cuando el iPhone está desbloqueado y con Wi-Fi",
+     "Nunca, fue eliminado",
+     "Cuando el otro lado está alcanzable (reachable) en ese momento"
+    ],
+    "correctIndex": 3,
+    "explanation": "'sendMessage' es para comunicación inmediata y exige 'isReachable'. Para datos que pueden esperar, 'updateApplicationContext' y 'transferUserInfo' entregan después."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué caracteriza a una app de watchOS independiente?",
+    "options": [
+     "Funciona sin requerir una app complementaria instalada en el iPhone",
+     "Solo funciona con el iPhone cerca",
+     "No puede usar la red",
+     "No puede tener complicaciones"
+    ],
+    "correctIndex": 0,
+    "explanation": "Una app independiente se instala y se usa directamente en el reloj, con la red del propio Apple Watch, y aun así puede sincronizar con el iPhone cuando eso aporte valor."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué práctica ayuda a ahorrar batería en watchOS?",
+    "options": [
+     "Actualizar la interfaz 60 veces por segundo",
+     "Mantener una conexión de red abierta todo el tiempo",
+     "Evitar animaciones continuas y polling, actualizando datos solo cuando sea necesario",
+     "Recargar todas las timelines cada minuto"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cada actualización consume energía y las llamadas para recargar timelines tienen un presupuesto limitado. Actualizar bajo demanda y usar notificaciones o tareas en segundo plano es el camino."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué familia de widgets es circular para la esfera del reloj?",
+    "options": [
+     "'systemLarge'",
+     "'accessoryInline'",
+     "'systemExtraLarge'",
+     "'accessoryCircular'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'accessoryCircular' es una complicación redonda; 'accessoryInline' es una línea de texto y 'accessoryRectangular' un rectángulo. Las familias 'system' son para iPhone y iPad."
+   },
+   {
+    "id": 2,
+    "question": "¿Para qué sirve 'HKLiveWorkoutBuilder'?",
+    "options": [
+     "Para dibujar gráficos en pantalla",
+     "Para recopilar y organizar datos en tiempo real durante un entrenamiento",
+     "Para enviar mensajes al iPhone",
+     "Para crear complicaciones"
+    ],
+    "correctIndex": 1,
+    "explanation": "El builder, asociado a un 'HKWorkoutSession', recibe muestras como frecuencia cardíaca y energía activa y, al final, guarda el entrenamiento en HealthKit."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué método de WatchConnectivity es adecuado para sincronizar el estado más reciente de los ajustes sin exigir entrega inmediata?",
+    "options": [
+     "'updateApplicationContext'",
+     "'sendMessage' con respuesta inmediata",
+     "'WKInterfaceDevice.play'",
+     "'HKWorkoutSession.start'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'updateApplicationContext' envía el contexto más reciente; si hay varios envíos, solo importa el último. Es ideal para ajustes y estados actuales."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué puede hacer la Digital Crown en una app SwiftUI?",
+    "options": [
+     "Reemplazar la necesidad de cualquier toque",
+     "Disparar notificaciones push",
+     "Proporcionar una entrada de rotación precisa vinculada a un valor",
+     "Activar el modo de entrenamiento"
+    ],
+    "correctIndex": 2,
+    "explanation": "Con '.digitalCrownRotation', la rotación actualiza una variable, útil para desplazar listas o ajustar valores con precisión."
+   },
+   {
+    "id": 5,
+    "question": "¿Cuál es un buen uso del háptico?",
+    "options": [
+     "Vibrar continuamente mientras la app está abierta",
+     "Vibrar cada segundo como un reloj",
+     "Confirmar discretamente una acción importante, como el fin de una serie de ejercicios",
+     "Reemplazar todo el texto de la interfaz"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los hápticos deben ser puntuales y significativos. El uso excesivo molesta al usuario y consume batería."
+   },
+   {
+    "id": 6,
+    "question": "En una timeline de WidgetKit, ¿qué representa cada entrada?",
+    "options": [
+     "El contenido que la complicación mostrará en un instante de tiempo",
+     "Una llamada de red obligatoria",
+     "Un entrenamiento completado",
+     "Una sesión de WatchConnectivity"
+    ],
+    "correctIndex": 0,
+    "explanation": "La timeline es una lista de entradas con fechas. El sistema las presenta en el momento correcto, sin necesidad de ejecutar toda la app todo el tiempo."
+   }
+  ]
+ },
+ {
+  "id": 78,
+  "title": "macOS: Ventanas, Menús y Apps Basadas en Documentos",
+  "theory": "Las apps de Mac tienen convenciones propias: varias ventanas, barra de menús, atajos de teclado, barra lateral y archivos. En SwiftUI, una 'App' declara escenas: 'WindowGroup' crea ventanas que pueden tener varias instancias, 'Window' representa una única ventana con identificador y 'Settings' define la ventana de preferencias que se abre automáticamente con Cmd+,. Los menús se personalizan con el modificador '.commands { }', donde 'CommandMenu(\"Título\")' añade un menú completo y '.keyboardShortcut(\"n\", modifiers: .command)' asocia atajos a los botones. La barra de herramientas usa '.toolbar' con 'ToolbarItem', y la navegación típica de tres columnas usa 'NavigationSplitView' con barra lateral, lista y detalle. Las apps basadas en documentos usan 'DocumentGroup' con un tipo que adopta 'FileDocument' (o 'ReferenceFileDocument'): implementas 'readableContentTypes', 'init(configuration:)' y 'fileWrapper(configuration:)', y el sistema ofrece abrir, guardar, deshacer e historial de versiones. El App Sandbox aísla la app y cada acceso (archivos elegidos por el usuario, red, cámara) exige un entitlement, como 'com.apple.security.files.user-selected.read-write' y 'com.apple.security.network.client'. 'MenuBarExtra' crea un elemento en la barra de menús, útil para utilidades, y 'NSViewRepresentable' (con 'makeNSView' y 'updateNSView') permite incrustar vistas de AppKit en SwiftUI. Para distribuir, la Mac App Store exige el sandbox; fuera de ella se usa Developer ID con notarización de Apple y hardened runtime, para que Gatekeeper acepte la app.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/documentgroup",
+  "category": "macOS",
+  "corporateCase": "Una firma contable crea una app de Mac para editar informes en un formato propio, con 'DocumentGroup', atajos de teclado y una barra lateral que lista las secciones. Como la app se distribuye fuera de la Mac App Store, se firma con Developer ID y se notariza antes de entregarla a los clientes.",
+  "gameCase": "Un estudio indie hace un editor de niveles para su juego de Mac, donde cada nivel es un documento guardado en disco, con un menú 'Ferramentas' personalizado y atajos para cada pincel. Un 'MenuBarExtra' muestra el estado de la compilación de los niveles mientras el editor está en segundo plano.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declara la escena que crea la ventana de preferencias (Cmd+,)",
+    "codeSnippet": "___ {\n    PreferenciasView()\n}",
+    "correctAnswer": "Settings",
+    "hint": "Es la escena especial de SwiftUI para los ajustes de la app en macOS."
+   },
+   {
+    "id": 2,
+    "question": "Añade un menú completo llamado 'Ferramentas' a la barra de menús",
+    "codeSnippet": ".commands {\n    ___(\"Ferramentas\") {\n        Button(\"Limpar\") { }\n    }\n}",
+    "correctAnswer": "CommandMenu",
+    "hint": "El tipo que crea un nuevo menú de comandos con título."
+   },
+   {
+    "id": 3,
+    "question": "Asocia el atajo Cmd+N a un botón",
+    "codeSnippet": "Button(\"Novo\") { novo() }\n    .___(\"n\", modifiers: .command)",
+    "correctAnswer": "keyboardShortcut",
+    "hint": "El modificador cuyo nombre es 'atajo de teclado' en inglés."
+   },
+   {
+    "id": 4,
+    "question": "Crea el diseño de barra lateral y detalle",
+    "codeSnippet": "___ {\n    Sidebar()\n} detail: {\n    Detalhe()\n}",
+    "correctAnswer": "NavigationSplitView",
+    "hint": "Es la vista de navegación por columnas, distinta de NavigationStack."
+   },
+   {
+    "id": 5,
+    "question": "Declara la escena para una app basada en documentos",
+    "codeSnippet": "___(newDocument: TextoDoc()) { arquivo in\n    Editor(doc: arquivo.$document)\n}",
+    "correctAnswer": "DocumentGroup",
+    "hint": "La escena que gestiona abrir, guardar y crear documentos."
+   },
+   {
+    "id": 6,
+    "question": "Crea un elemento en la barra de menús de macOS",
+    "codeSnippet": "___(\"Status\", systemImage: \"bolt\") {\n    Text(\"Online\")\n}",
+    "correctAnswer": "MenuBarExtra",
+    "hint": "El tipo que añade un 'extra' a la barra de menús."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la diferencia entre 'WindowGroup' y 'Window' en macOS?",
+    "options": [
+     "'Window' permite varias instancias y 'WindowGroup' solo una",
+     "Ambos crean siempre exactamente una ventana",
+     "'WindowGroup' permite varias instancias de ventana; 'Window' es una ventana única",
+     "'Window' solo funciona en iOS"
+    ],
+    "correctIndex": 2,
+    "explanation": "'WindowGroup' es la opción predeterminada (Cmd+N abre nuevas ventanas). 'Window' es útil para una ventana única, como un panel de registro o una ventana de utilidad."
+   },
+   {
+    "id": 2,
+    "question": "¿Cómo añadir un menú completo a la barra de menús de la app?",
+    "options": [
+     "Con '.commands { CommandMenu(\"Nombre\") { ... } }' en la escena",
+     "Con un 'NavigationStack' dentro de la ventana",
+     "Creando un archivo .xib de menú",
+     "Con 'Settings { }'"
+    ],
+    "correctIndex": 0,
+    "explanation": "El modificador '.commands' personaliza la barra de menús. 'CommandMenu' crea un menú nuevo y 'CommandGroup' permite modificar menús existentes."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué debe hacer un tipo para usarse en un 'DocumentGroup'?",
+    "options": [
+     "Heredar de 'NSObject'",
+     "Ser una 'class' con 'ObservableObject'",
+     "Usar solo 'UserDefaults'",
+     "Adoptar 'FileDocument' (o 'ReferenceFileDocument') y declarar los tipos de contenido soportados"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sistema llama a 'init(configuration:)' para leer y a 'fileWrapper(configuration:)' para escribir. 'readableContentTypes' indica qué archivos abre la app."
+   },
+   {
+    "id": 4,
+    "question": "En el App Sandbox, ¿qué se necesita para que la app lea un archivo que el usuario eligió en un panel de apertura?",
+    "options": [
+     "Ningún entitlement, el sandbox lo permite todo",
+     "El entitlement de acceso a archivos seleccionados por el usuario",
+     "Desactivar el sandbox para siempre",
+     "Un entitlement de cámara"
+    ],
+    "correctIndex": 1,
+    "explanation": "El sandbox bloquea por defecto. Con 'com.apple.security.files.user-selected.read-only' (o read-write) la app accede exactamente a los archivos que el usuario eligió."
+   },
+   {
+    "id": 5,
+    "question": "Tu app de Mac con sandbox hace llamadas HTTPS a una API, pero todas fallan. ¿Cuál es la causa probable?",
+    "options": [
+     "Falta usar 'MenuBarExtra'",
+     "Falta el entitlement de cliente de red saliente",
+     "La app necesita ser notarizada",
+     "Falta el 'NSViewRepresentable'"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con el sandbox activo, las conexiones salientes exigen 'com.apple.security.network.client'. Sin él, el sistema bloquea la red aunque el código sea correcto."
+   },
+   {
+    "id": 6,
+    "question": "¿Para qué sirve 'NSViewRepresentable'?",
+    "options": [
+     "Para usar una vista SwiftUI en UIKit",
+     "Para crear un elemento de la barra de menús",
+     "Para definir atajos de teclado",
+     "Para usar una vista de AppKit dentro de una jerarquía SwiftUI"
+    ],
+    "correctIndex": 3,
+    "explanation": "Implementas 'makeNSView(context:)' para crear la vista y 'updateNSView(_:context:)' para sincronizarla con el estado de SwiftUI, útil cuando AppKit tiene recursos que SwiftUI aún no tiene."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál es la diferencia de distribución entre la Mac App Store y Developer ID?",
+    "options": [
+     "En la Mac App Store el sandbox es obligatorio; con Developer ID no, pero la app debe estar firmada y notarizada",
+     "Developer ID exige sandbox y la Mac App Store no",
+     "Ninguna de las dos necesita firma",
+     "La notarización solo vale para la Mac App Store"
+    ],
+    "correctIndex": 0,
+    "explanation": "Fuera de la tienda distribuyes la app tú mismo (en un sitio web, por ejemplo), pero la notarización de Apple y el hardened runtime hacen que Gatekeeper la acepte sin advertencias alarmantes."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué modificador de SwiftUI añade botones a la barra de herramientas de la ventana?",
+    "options": [
+     "'.commands { }'",
+     "'.ornament { }'",
+     "'.toolbar { ToolbarItem { ... } }'",
+     "'.sheet { }'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'.toolbar' declara los elementos de la barra de herramientas de la ventana. Cada 'ToolbarItem' puede tener ubicación, como principal o de navegación."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué escena usar para mostrar un ícono en la barra de menús?",
+    "options": [
+     "'DocumentGroup'",
+     "'Settings'",
+     "'ImmersiveSpace'",
+     "'MenuBarExtra'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'MenuBarExtra' crea un elemento de menú con ícono y contenido. Con el estilo '.window' muestra una vista SwiftUI completa en lugar de un menú simple."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué hace 'Settings' automáticamente?",
+    "options": [
+     "Crea un menú contextual",
+     "Conecta la ventana de preferencias con el elemento 'Settings' del menú y con el atajo Cmd+,",
+     "Abre la app a pantalla completa",
+     "Aplica el sandbox"
+    ],
+    "correctIndex": 1,
+    "explanation": "SwiftUI integra la escena 'Settings' con el menú de la app, así que solo describes el contenido."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es el papel del 'hardened runtime' en la distribución fuera de la tienda?",
+    "options": [
+     "Es un requisito de seguridad para la notarización",
+     "Reemplaza el sandbox para la Mac App Store",
+     "Solo se usa en apps de iOS",
+     "Cifra los documentos del usuario"
+    ],
+    "correctIndex": 0,
+    "explanation": "La notarización exige firma con Developer ID y hardened runtime activado. Apple analiza la app y devuelve un 'ticket' que Gatekeeper reconoce."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué vista es la base de una interfaz de tres columnas con barra lateral?",
+    "options": [
+     "'TabView' con estilo 'page'",
+     "'Form'",
+     "'NavigationSplitView'",
+     "'ZStack'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'NavigationSplitView' gestiona barra lateral, columna de contenido y detalle, adaptándose al tamaño de la ventana."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué hace 'keyboardShortcut(\"s\", modifiers: .command)'?",
+    "options": [
+     "Guarda el archivo automáticamente en todos los casos",
+     "Crea una ventana nueva",
+     "Asocia Cmd+S al botón o elemento de menú",
+     "Habilita el sandbox"
+    ],
+    "correctIndex": 2,
+    "explanation": "El atajo solo dispara la acción del control al que se aplicó. Guardar de verdad depende de la implementación de la acción."
+   },
+   {
+    "id": 6,
+    "question": "Tu app de barra de menús no debe aparecer en el Dock. ¿Qué enfoque existe?",
+    "options": [
+     "Configurar la app como agente (LSUIElement) en el Info.plist",
+     "Usar 'DocumentGroup'",
+     "Usar 'NSViewRepresentable'",
+     "Desactivar el sandbox"
+    ],
+    "correctIndex": 0,
+    "explanation": "La clave 'LSUIElement' (Application is agent) hace que la app no muestre ícono en el Dock ni menú principal, algo común en utilidades de barra de menús."
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "title": "Juegos con SpriteKit y GameKit",
+  "theory": "SpriteKit es el framework 2D de Apple para juegos y animaciones. Una 'SKView' presenta una 'SKScene', que es la raíz de un árbol de 'SKNode'; los nodos visibles incluyen 'SKSpriteNode' (imágenes), 'SKLabelNode' (texto) y 'SKShapeNode'. El origen de la escena está en la esquina inferior izquierda y el eje y crece hacia arriba. Las animaciones usan 'SKAction' ('move(by:duration:)', 'fadeOut', 'sequence', 'repeatForever') ejecutadas con 'node.run(_:)'. El ciclo del juego corre en cada cuadro: el sistema llama a 'update(_:)' en la escena, evalúa las acciones y simula la física, y allí pones la lógica continua, usando el tiempo recibido para calcular deltas. Los cuerpos físicos ('SKPhysicsBody') tienen 'categoryBitMask', 'collisionBitMask' y 'contactTestBitMask'; para recibir aviso de un contacto, se debe definir 'physicsWorld.contactDelegate' y 'didBegin(_:)' recibe un 'SKPhysicsContact'. En SwiftUI, 'SpriteView(scene:)' aloja una escena, que debe crearse una sola vez (por ejemplo, en una propiedad) y no dentro de 'body'. Los toques llegan por 'touchesBegan' en la escena o en nodos con 'isUserInteractionEnabled'. GameKit añade Game Center: autenticas al jugador con 'GKLocalPlayer.local.authenticateHandler', envías puntuaciones a tablas de clasificación (leaderboards) y reportas logros (achievements), configurados en App Store Connect. Para el rendimiento, reduce el número de nodos, elimina los que salieron de la pantalla con 'removeFromParent()', usa atlas de texturas ('SKTextureAtlas') y observa 'showsNodeCount' y 'showsFPS' durante el desarrollo.",
+  "appleDocUrl": "https://developer.apple.com/documentation/spritekit",
+  "category": "Recursos do Sistema",
+  "corporateCase": "Una empresa de educación crea un juego de matemáticas para niños con SpriteKit alojado en un 'SpriteView' dentro de una app SwiftUI. Las tablas de clasificación de Game Center motivan a los grupos a competir de forma sana, y el juego mantiene 60 cuadros por segundo reutilizando texturas de un atlas.",
+  "gameCase": "En un juego de naves, 'update(_:)' mueve el fondo y genera enemigos; las naves y los disparos tienen categorías de bits distintas, y 'didBegin(_:)' detecta la colisión para eliminar al enemigo y sumar puntos. Al final de la partida, la puntuación se envía a la tabla de Game Center y se desbloquea un logro al derrotar 100 enemigos.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Aloja una escena de SpriteKit dentro de una vista SwiftUI",
+    "codeSnippet": "SpriteView(___: cena)",
+    "correctAnswer": "scene",
+    "hint": "Es la etiqueta del parámetro que recibe la 'SKScene' (en inglés)."
+   },
+   {
+    "id": 2,
+    "question": "Crea la clase que representa la escena del juego",
+    "codeSnippet": "class Jogo: ___ {\n    override func didMove(to view: SKView) { }\n}",
+    "correctAnswer": "SKScene",
+    "hint": "Todas las escenas de SpriteKit heredan de esta clase."
+   },
+   {
+    "id": 3,
+    "question": "Crea un nodo que muestra la imagen de la nave",
+    "codeSnippet": "let nave = ___(imageNamed: \"nave\")",
+    "correctAnswer": "SKSpriteNode",
+    "hint": "El nodo de SpriteKit para mostrar una imagen o textura."
+   },
+   {
+    "id": 4,
+    "question": "Mueve el nodo 100 puntos a la derecha, de forma relativa, en 1 segundo",
+    "codeSnippet": "nave.run(SKAction.___(by: CGVector(dx: 100, dy: 0), duration: 1))",
+    "correctAnswer": "move",
+    "hint": "El nombre en Swift de la acción es un verbo de una palabra ('move(by:duration:)', frente a 'move(to:duration:)')."
+   },
+   {
+    "id": 5,
+    "question": "Implementa el método llamado en cada cuadro del juego",
+    "codeSnippet": "override func ___(_ currentTime: TimeInterval) {\n    // lógica do jogo\n}",
+    "correctAnswer": "update",
+    "hint": "El nombre del método del game loop de la escena."
+   },
+   {
+    "id": 6,
+    "question": "Recibe la notificación de inicio de contacto entre dos cuerpos físicos",
+    "codeSnippet": "func ___(_ contact: SKPhysicsContact) {\n    // colisão\n}",
+    "correctAnswer": "didBegin",
+    "hint": "El método de 'SKPhysicsContactDelegate' cuyo nombre indica el comienzo del contacto."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el origen del sistema de coordenadas predeterminado de una SKScene?",
+    "options": [
+     "Esquina superior izquierda, con el eje y creciendo hacia abajo",
+     "Siempre el centro de la pantalla, sin excepción",
+     "Esquina inferior izquierda, con el eje y creciendo hacia arriba",
+     "Esquina superior derecha"
+    ],
+    "correctIndex": 2,
+    "explanation": "A diferencia de UIKit, SpriteKit tiene y hacia arriba, con el 'anchorPoint' predeterminado de la escena en (0, 0). Olvidarlo genera nodos al revés o fuera de la pantalla."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuándo se llama al método 'update(_:)'?",
+    "options": [
+     "En cada cuadro, antes de evaluar las acciones y la física",
+     "Solo una vez, al presentar la escena",
+     "Solo cuando el usuario toca la pantalla",
+     "Cada segundo exacto"
+    ],
+    "correctIndex": 0,
+    "explanation": "Es el corazón del game loop. 'currentTime' permite calcular el tiempo entre cuadros para movimientos independientes de la tasa de cuadros."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es el papel de 'contactTestBitMask'?",
+    "options": [
+     "Define qué cuerpos colisionan físicamente",
+     "Define el color del cuerpo",
+     "Define la masa del cuerpo",
+     "Define para qué categorías el cuerpo genera notificaciones de contacto"
+    ],
+    "correctIndex": 3,
+    "explanation": "'collisionBitMask' controla la colisión física; 'contactTestBitMask' controla las notificaciones enviadas al 'contactDelegate'. Por defecto, 'contactTestBitMask' es cero y no se reporta ningún contacto."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué debes configurar para que se llame a 'didBegin(_:)'?",
+    "options": [
+     "Solo crear cuerpos físicos",
+     "'physicsWorld.contactDelegate = self' y 'contactTestBitMask' adecuados",
+     "Llamar a 'removeFromParent()' en todos los nodos",
+     "Usar 'SpriteView' con 'options: []'"
+    ],
+    "correctIndex": 1,
+    "explanation": "El delegate del mundo físico recibe el contacto, y el cuerpo debe declarar de qué categorías quiere recibir aviso. Sin ambos, el método nunca se dispara."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué enfoque es correcto para crear la escena en SwiftUI?",
+    "options": [
+     "Crear una escena nueva en cada evaluación del 'body'",
+     "Crear la 'SKScene' una vez, en una propiedad, y pasarla al 'SpriteView'",
+     "Crear la escena dentro de 'update(_:)'",
+     "SwiftUI no puede usar SpriteKit"
+    ],
+    "correctIndex": 1,
+    "explanation": "El 'body' puede reevaluarse muchas veces. Crear la escena en él puede reiniciar el juego. Mantenla en una propiedad estable ('@State' o una constante)."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo identifica GameKit al jugador en Game Center?",
+    "options": [
+     "Pidiendo el correo del jugador en un campo de texto",
+     "Creando obligatoriamente una cuenta propia",
+     "Leyendo el UUID del dispositivo",
+     "Asignando 'GKLocalPlayer.local.authenticateHandler' para autenticar"
+    ],
+    "correctIndex": 3,
+    "explanation": "El sistema llama al 'authenticateHandler', que muestra la pantalla de inicio de sesión de Game Center si es necesario. Solo después de autenticarse se pueden enviar puntuaciones."
+   },
+   {
+    "id": 7,
+    "question": "El juego va lento y 'showsNodeCount' muestra miles de nodos. ¿Cuál es la mejor acción?",
+    "options": [
+     "Eliminar nodos fuera de la pantalla y reutilizar texturas con un atlas",
+     "Añadir más 'SKAction' a cada nodo",
+     "Aumentar el tamaño de la ventana",
+     "Desactivar 'update(_:)'"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cada nodo cuesta en dibujo y en simulación. Eliminar los que salieron de la pantalla y agrupar texturas en atlas reduce las llamadas de dibujo."
+   },
+   {
+    "id": 8,
+    "question": "¿Para qué sirven los 'achievements' en Game Center?",
+    "options": [
+     "Para crear pantallas de inicio de sesión",
+     "Para guardar el progreso del juego en la nube",
+     "Para reconocer hitos del jugador, reportados mediante 'GKAchievement'",
+     "Para dibujar sprites"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los logros se configuran en App Store Connect y la app los reporta cuando el jugador alcanza el hito. Las tablas de clasificación (leaderboards) sirven para comparar puntuaciones."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Qué nodo muestra texto en SpriteKit?",
+    "options": [
+     "'SKTextNode'",
+     "Solo 'SKSpriteNode'",
+     "'SKEffectNode'",
+     "'SKLabelNode'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'SKLabelNode' dibuja una cadena con fuente y tamaño configurables. 'SKSpriteNode' es para imágenes y colores sólidos."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué hace 'SKAction.sequence([a, b])'?",
+    "options": [
+     "Ejecuta a y b al mismo tiempo",
+     "Ejecuta las acciones a y b una después de la otra",
+     "Repite a y b para siempre",
+     "Elimina el nodo"
+    ],
+    "correctIndex": 1,
+    "explanation": "'sequence' ejecuta en orden y 'group' en paralelo. Para repetir infinitamente, envuélvela en 'repeatForever'."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué propiedad activa la visualización de la tasa de cuadros durante el desarrollo?",
+    "options": [
+     "'showsFPS' en la SKView",
+     "'fps = true' en la escena",
+     "'debugMode' en cada nodo",
+     "No existe esa opción"
+    ],
+    "correctIndex": 0,
+    "explanation": "'showsFPS' y 'showsNodeCount' ayudan a diagnosticar el rendimiento. Deben desactivarse en la versión final."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué indica 'didMove(to:)'?",
+    "options": [
+     "El jugador movió el nodo",
+     "El juego terminó",
+     "La escena se presentó en una vista y es un buen lugar para configurar nodos",
+     "La física se pausó"
+    ],
+    "correctIndex": 2,
+    "explanation": "Se llama cuando la escena entra en una 'SKView'. Muchos juegos crean allí el escenario, al jugador y el 'contactDelegate'."
+   },
+   {
+    "id": 5,
+    "question": "¿Por qué usar 'SKTextureAtlas'?",
+    "options": [
+     "Para que el juego funcione sin imágenes",
+     "Para activar Game Center",
+     "Para agrupar texturas y reducir los costos de carga y dibujo",
+     "Para crear cuerpos físicos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las texturas en un atlas se pueden cargar y dibujar de forma más eficiente, lo que mejora el rendimiento y el tiempo de carga."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo enviar una puntuación a una tabla de Game Center?",
+    "options": [
+     "Autenticar al jugador y enviarla con 'GKLeaderboard' al ID de la tabla",
+     "Guardarla en 'UserDefaults', que sincroniza automáticamente con Game Center",
+     "Usar 'SKScene.submitScore'",
+     "Escribirla en el Info.plist"
+    ],
+    "correctIndex": 0,
+    "explanation": "La tabla se crea en App Store Connect con un ID. La app envía el valor mediante GameKit, una vez que el jugador está autenticado."
+   }
+  ]
+ }
+]

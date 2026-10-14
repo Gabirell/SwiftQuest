@@ -1,0 +1,834 @@
+[
+ {
+  "term": "enum",
+  "definition": "Uma enumeração: tipo que agrupa um conjunto fixo de casos relacionados, como norte, sul, leste, oeste. Os casos podem ter valores associados, e enums em Swift são tipos de valor."
+ },
+ {
+  "term": "protocol",
+  "definition": "Um modelo de métodos, propriedades e requisitos que um tipo promete fornecer. Classes, structs e enums adotam um protocol ao se conformarem a ele."
+ },
+ {
+  "term": "extension",
+  "definition": "Adiciona novas funcionalidades (métodos, propriedades computadas, inicializadores, conformidade a protocolos) a um tipo existente sem alterar seu código-fonte original."
+ },
+ {
+  "term": "generic",
+  "definition": "Código escrito com tipos substitutos, como <T>, para que uma função ou tipo funcione com vários tipos mantendo a segurança de tipos. Array<Element> é um tipo genérico."
+ },
+ {
+  "term": "closure",
+  "definition": "Um bloco de código autocontido que pode ser armazenado, passado e executado depois, capturando valores do contexto ao redor. Escreve-se com chaves: { parâmetros in corpo }."
+ },
+ {
+  "term": "escaping",
+  "definition": "O atributo @escaping marca um parâmetro closure que pode ser chamado depois que a função retorna, como um completion handler. Closures não escaping (o padrão) terminam antes do fim da função."
+ },
+ {
+  "term": "guard",
+  "definition": "Uma instrução que verifica uma condição e exige um else que saia do escopo atual (return, throw, break). Serve para saídas antecipadas e mantém valores desembrulhados disponíveis depois."
+ },
+ {
+  "term": "defer",
+  "definition": "Um bloco de código executado logo antes de o escopo atual terminar, não importa como. É útil para limpeza, como fechar arquivos ou liberar locks."
+ },
+ {
+  "term": "inout",
+  "definition": "Palavra-chave de parâmetro que permite a uma função modificar a variável de quem chamou. O chamador passa a variável com um e comercial (&)."
+ },
+ {
+  "term": "typealias",
+  "definition": "Dá um novo nome, geralmente mais curto ou claro, a um tipo existente. Não cria um novo tipo."
+ },
+ {
+  "term": "tuple",
+  "definition": "Um grupo leve de valores, possivelmente de tipos diferentes, tratado como um valor composto, como (404, \"Not Found\"). Os elementos podem ter nome ou ser acessados por índice."
+ },
+ {
+  "term": "subscript",
+  "definition": "Um atalho para ler e escrever elementos de uma coleção ou tipo próprio usando colchetes, como array[0] ou dict[\"key\"]. Define-se com a palavra-chave subscript."
+ },
+ {
+  "term": "shadowing",
+  "definition": "Declarar uma nova variável com o mesmo nome de uma de escopo externo, ocultando a externa dentro do escopo interno. Um exemplo comum é if let name = name."
+ },
+ {
+  "term": "scope",
+  "definition": "A região do código onde um nome (variável, constante, função) é visível e válido, geralmente delimitada por chaves. Um valor declarado dentro de um escopo não está disponível fora dele."
+ },
+ {
+  "term": "camelcase",
+  "definition": "Convenção de nomes do Swift: variáveis, funções e propriedades usam lowerCamelCase (userName), e tipos usam UpperCamelCase (UserProfile)."
+ },
+ {
+  "term": "type inference",
+  "definition": "A capacidade do compilador de deduzir o tipo de um valor a partir do valor inicial, permitindo escrever let age = 30 sem declarar Int."
+ },
+ {
+  "term": "type safety",
+  "definition": "O Swift verifica tipos em tempo de compilação e impede misturar tipos incompatíveis, como somar um String a um Int, evitando muitos bugs antes de o app rodar."
+ },
+ {
+  "term": "higher-order function",
+  "definition": "Uma função que recebe outra função ou closure como parâmetro, ou retorna uma. map, filter, reduce, sorted e forEach são exemplos comuns."
+ },
+ {
+  "term": "map",
+  "definition": "Uma função de ordem superior que transforma cada elemento de uma coleção com um closure e retorna um novo array com os resultados."
+ },
+ {
+  "term": "filter",
+  "definition": "Uma função de ordem superior que retorna uma nova coleção apenas com os elementos para os quais o closure retorna true."
+ },
+ {
+  "term": "reduce",
+  "definition": "Uma função de ordem superior que combina todos os elementos de uma coleção em um único valor, partindo de um valor inicial e aplicando um closure a cada elemento."
+ },
+ {
+  "term": "compactmap",
+  "definition": "Uma função de ordem superior como map que também descarta resultados nil e desembrulha o restante, útil para converter strings em números com segurança."
+ },
+ {
+  "term": "result",
+  "definition": "O enum Result<Success, Failure> representa um valor de sucesso ou um erro. Torna sucesso e falha explícitos e funciona bem com completion handlers."
+ },
+ {
+  "term": "throws",
+  "definition": "Marca uma função que pode falhar lançando um erro. Quem chama deve usar try (dentro de do-catch, ou try?/try!)."
+ },
+ {
+  "term": "do-catch",
+  "definition": "A instrução de tratamento de erros do Swift: o código que pode lançar erro roda em um bloco do, e cada erro é tratado em uma cláusula catch correspondente."
+ },
+ {
+  "term": "error",
+  "definition": "O protocol Error marca tipos que representam falhas. Enums são usados com frequência para definir erros próprios que podem ser lançados."
+ },
+ {
+  "term": "sendable",
+  "definition": "Um protocol para tipos cujos valores podem ser compartilhados com segurança entre domínios de concorrência (tasks, actors). Ajuda o compilador a evitar data races."
+ },
+ {
+  "term": "@mainactor",
+  "definition": "Um atributo que faz o código rodar no actor da main thread. Atualizações de UI devem ocorrer ali; views do SwiftUI e classes do UIKit geralmente são isoladas ao main actor."
+ },
+ {
+  "term": "task",
+  "definition": "Uma unidade de trabalho assíncrono na concorrência do Swift, criada com Task { }. Executa código async, pode ser cancelada e liga contextos síncronos a assíncronos."
+ },
+ {
+  "term": "data race",
+  "definition": "Um bug em que várias threads acessam a mesma memória ao mesmo tempo e ao menos uma escreve, gerando resultados imprevisíveis. Actors e Sendable ajudam a evitá-lo."
+ },
+ {
+  "term": "grand central dispatch",
+  "definition": "O sistema de concorrência de baixo nível da Apple (GCD). Executa trabalho em filas como DispatchQueue.main e DispatchQueue.global, e é anterior ao async/await."
+ },
+ {
+  "term": "completion handler",
+  "definition": "Um closure passado a uma função e chamado quando uma operação assíncrona termina, geralmente recebendo um resultado ou erro."
+ },
+ {
+  "term": "property wrapper",
+  "definition": "Um tipo marcado com @propertyWrapper que adiciona comportamento reutilizável a uma propriedade quando você a anota, como @State, @Published ou @AppStorage."
+ },
+ {
+  "term": "lazy",
+  "definition": "Um modificador para propriedades armazenadas cujo valor inicial só é calculado na primeira vez que são acessadas. Uma propriedade lazy deve ser declarada com var."
+ },
+ {
+  "term": "computed property",
+  "definition": "Uma propriedade que não armazena um valor, mas o calcula a cada acesso por meio de um getter (e opcionalmente um setter). É declarada com var e chaves."
+ },
+ {
+  "term": "stored property",
+  "definition": "Uma propriedade que guarda um valor como parte de uma instância de uma classe ou struct, declarada com let ou var."
+ },
+ {
+  "term": "property observer",
+  "definition": "Código associado a uma propriedade armazenada que roda quando o valor muda: willSet roda logo antes e didSet logo depois da mudança."
+ },
+ {
+  "term": "access control",
+  "definition": "Palavras-chave que limitam onde o código pode ser usado: open, public, internal (padrão), fileprivate e private, da visibilidade mais ampla à mais restrita."
+ },
+ {
+  "term": "private",
+  "definition": "Um nível de acesso que restringe uma declaração ao tipo ou extension que a contém no mesmo arquivo. Serve para ocultar detalhes de implementação."
+ },
+ {
+  "term": "mutating",
+  "definition": "Palavra-chave para métodos de struct ou enum que modificam as propriedades da própria instância. Sem ela, métodos de tipos de valor não podem alterar self."
+ },
+ {
+  "term": "memberwise initializer",
+  "definition": "Um inicializador que o Swift gera automaticamente para structs, com um parâmetro por propriedade armazenada, como User(name: \"Ana\", age: 30)."
+ },
+ {
+  "term": "initializer",
+  "definition": "Um método especial (init) que prepara uma nova instância definindo todas as suas propriedades armazenadas. Um tipo pode ter vários inicializadores."
+ },
+ {
+  "term": "deinit",
+  "definition": "Um desinicializador chamado logo antes de uma instância de classe ser desalocada. Use-o para liberar recursos; existe apenas em classes."
+ },
+ {
+  "term": "value type",
+  "definition": "Um tipo cujas instâncias são copiadas ao serem atribuídas ou passadas. Structs, enums, tuplas e tipos básicos como Int e String são tipos de valor."
+ },
+ {
+  "term": "reference type",
+  "definition": "Um tipo cujas instâncias são compartilhadas por referência: as cópias apontam para o mesmo objeto. Classes, closures e actors são tipos de referência."
+ },
+ {
+  "term": "inheritance",
+  "definition": "Uma classe pode herdar propriedades e métodos de uma superclasse e personalizá-los com override. Structs e enums não suportam herança."
+ },
+ {
+  "term": "polymorphism",
+  "definition": "A capacidade de tratar tipos diferentes por uma interface comum, como uma superclasse ou protocol, de modo que cada tipo responda à sua maneira."
+ },
+ {
+  "term": "optional chaining",
+  "definition": "Chamar propriedades ou métodos em um optional com ?, como user?.address?.city. Se algum elo for nil, toda a expressão é nil."
+ },
+ {
+  "term": "optional binding",
+  "definition": "Desembrulhar um optional com segurança usando if let ou guard let, executando código apenas quando o optional contém um valor."
+ },
+ {
+  "term": "nil-coalescing",
+  "definition": "O operador ?? retorna o valor do optional se existir, caso contrário um valor padrão, como em name ?? \"Guest\"."
+ },
+ {
+  "term": "force unwrap",
+  "definition": "Usar ! para extrair o valor de um optional, o que faz o app travar se for nil. Prefira optional binding ou ??."
+ },
+ {
+  "term": "switch",
+  "definition": "Uma instrução de controle de fluxo que compara um valor com padrões. Precisa ser exaustiva, não cai para o próximo caso e funciona com enums, ranges e tuplas."
+ },
+ {
+  "term": "array",
+  "definition": "Uma coleção ordenada de valores do mesmo tipo, acessada por índice inteiro começando em 0, como [Int] ou Array<String>."
+ },
+ {
+  "term": "dictionary",
+  "definition": "Uma coleção não ordenada de pares chave-valor, escrita [Key: Value]. Consultar uma chave retorna um optional."
+ },
+ {
+  "term": "set",
+  "definition": "Uma coleção não ordenada de valores únicos de um tipo Hashable. É rápida para verificar pertencimento e suporta união e interseção."
+ },
+ {
+  "term": "range",
+  "definition": "Uma sequência de valores entre dois limites: 1...5 é fechado (inclui 5) e 1..<5 é semiaberto (exclui 5)."
+ },
+ {
+  "term": "string interpolation",
+  "definition": "Incorporar valores dentro de uma string literal com \\(value), como \"Hello, \\(name)!\"."
+ },
+ {
+  "term": "equatable",
+  "definition": "Um protocol que permite comparar valores com == e !=. O Swift pode sintetizá-lo automaticamente quando todas as propriedades são Equatable."
+ },
+ {
+  "term": "hashable",
+  "definition": "Um protocol para valores que produzem um hash, necessário para elementos de Set e chaves de Dictionary. Baseia-se em Equatable."
+ },
+ {
+  "term": "identifiable",
+  "definition": "Um protocol que exige uma propriedade id estável para que o SwiftUI (List, ForEach) distinga os itens."
+ },
+ {
+  "term": "comparable",
+  "definition": "Um protocol que permite ordenar valores com <, >, <= e >=, possibilitando a ordenação."
+ },
+ {
+  "term": "some",
+  "definition": "A palavra-chave de tipo de retorno opaco, como em some View. Oculta o tipo concreto exato, embora o compilador o conheça."
+ },
+ {
+  "term": "any",
+  "definition": "Palavra-chave para tipos existenciais, como em any Shape: uma caixa que pode guardar qualquer valor conforme a um protocol."
+ },
+ {
+  "term": "operator",
+  "definition": "Um símbolo que realiza uma operação, como +, ==, && ou ??. O Swift permite sobrecarregar operadores ou criar os seus."
+ },
+ {
+  "term": "swift package manager",
+  "definition": "A ferramenta integrada da Apple (SPM) para adicionar e gerenciar dependências. No Xcode, use File > Add Package Dependencies; um arquivo Package.swift descreve um pacote."
+ },
+ {
+  "term": "xcode",
+  "definition": "O ambiente de desenvolvimento integrado (IDE) da Apple para criar apps para iPhone, iPad, Mac, Apple Watch, Apple TV e Apple Vision Pro. Inclui editor, compilador, Simulator e ferramentas de depuração."
+ },
+ {
+  "term": "workspace",
+  "definition": "Um arquivo .xcworkspace do Xcode que agrupa um ou mais projetos e suas dependências para compilarem juntos. O CocoaPods cria um."
+ },
+ {
+  "term": "navigator",
+  "definition": "O painel esquerdo do Xcode com abas como Project, Source Control, Symbol, Find, Issue, Test, Debug e Report navigators."
+ },
+ {
+  "term": "inspector",
+  "definition": "O painel direito do Xcode (utilities area) que mostra detalhes e ajustes do item selecionado, como os inspectors Attributes, Size e Identity."
+ },
+ {
+  "term": "scheme",
+  "definition": "Um scheme do Xcode define quais targets compilar, qual build configuration usar e o que executar, testar ou fazer profile. Você o escolhe na barra de ferramentas."
+ },
+ {
+  "term": "target",
+  "definition": "Um conjunto de instruções em um projeto Xcode para construir um produto, como um app, framework ou bundle de testes, com ajustes e arquivos próprios."
+ },
+ {
+  "term": "simulator",
+  "definition": "Uma ferramenta do Xcode que executa um iPhone, iPad ou outro dispositivo Apple virtual no seu Mac para testar apps sem hardware real."
+ },
+ {
+  "term": "breakpoint",
+  "definition": "Um marcador em uma linha de código que pausa a execução para inspecionar variáveis e avançar passo a passo. Clique na margem do número da linha no Xcode para criar um."
+ },
+ {
+  "term": "lldb",
+  "definition": "O depurador usado pelo Xcode. No console de debug você pode imprimir valores (po, p), avaliar expressões e controlar a execução enquanto pausado."
+ },
+ {
+  "term": "instruments",
+  "definition": "Um app de profiling do Xcode que mede desempenho, uso de memória, energia e mais, com templates como Time Profiler, Leaks e Allocations."
+ },
+ {
+  "term": "asset catalog",
+  "definition": "Um arquivo do Xcode (Assets.xcassets) que organiza imagens, ícones do app, cores e data sets, com variantes para escalas de tela e Dark Mode."
+ },
+ {
+  "term": "info.plist",
+  "definition": "A property list Info: arquivo que descreve a configuração do app, como nome de exibição, versão e descrições de permissões necessárias (por exemplo NSCameraUsageDescription)."
+ },
+ {
+  "term": "storyboard",
+  "definition": "Um arquivo do Interface Builder (.storyboard) que organiza visualmente telas UIKit e os segues que as conectam."
+ },
+ {
+  "term": "xib",
+  "definition": "Um arquivo do Interface Builder (.xib) que desenha a interface de uma única view ou view controller, geralmente para uma view ou célula reutilizável."
+ },
+ {
+  "term": "entitlements",
+  "definition": "Um arquivo que lista capacidades especiais que o app pode usar, como iCloud, Push Notifications ou App Groups. São incorporados quando o app é assinado."
+ },
+ {
+  "term": "capability",
+  "definition": "Um recurso que você ativa na aba Signing & Capabilities do Xcode, como Push Notifications, iCloud ou HealthKit, atualizando entitlements e o App ID."
+ },
+ {
+  "term": "build configuration",
+  "definition": "Um conjunto nomeado de build settings; novos projetos têm Debug (para desenvolvimento e depuração) e Release (otimizada para distribuição)."
+ },
+ {
+  "term": "derived data",
+  "definition": "A pasta onde o Xcode guarda produtos de compilação, índices e logs. Apagá-la pode resolver problemas estranhos de build."
+ },
+ {
+  "term": "playground",
+  "definition": "Um documento do Xcode para experimentar código Swift e ver resultados na hora, sem criar um app completo. Swift Playgrounds também é um app para iPad e Mac."
+ },
+ {
+  "term": "view",
+  "definition": "No SwiftUI, o protocol View descreve um pedaço de UI por meio da propriedade body. No UIKit, UIView é a classe base dos elementos visíveis."
+ },
+ {
+  "term": "swiftui",
+  "definition": "O framework declarativo da Apple para criar interfaces em todas as plataformas Apple: você descreve como a UI deve ser para um estado, e ela se atualiza sozinha."
+ },
+ {
+  "term": "body",
+  "definition": "A propriedade computada obrigatória de uma View do SwiftUI que retorna seu conteúdo, do tipo some View."
+ },
+ {
+  "term": "viewbuilder",
+  "definition": "Um result builder (@ViewBuilder) que permite listar várias views em um closure e combiná-las em uma, como no corpo de um VStack."
+ },
+ {
+  "term": "modifier",
+  "definition": "Um método chamado em uma view do SwiftUI que retorna uma view modificada, como .padding(), .font() ou .foregroundStyle(). A ordem importa."
+ },
+ {
+  "term": "@state",
+  "definition": "Um property wrapper para estado simples de valor pertencente a uma view do SwiftUI. Quando muda, o SwiftUI recalcula o body da view."
+ },
+ {
+  "term": "@binding",
+  "definition": "Um property wrapper que cria uma conexão bidirecional com um estado pertencente a outro lugar. Passa-se com cifrão, como $isOn."
+ },
+ {
+  "term": "@observable",
+  "definition": "Uma macro do framework Observation (iOS 17+) que torna uma classe observável. O SwiftUI atualiza apenas as views que leem as propriedades alteradas."
+ },
+ {
+  "term": "@bindable",
+  "definition": "Um property wrapper que cria bindings para as propriedades de um objeto @Observable, por exemplo para passar a um TextField."
+ },
+ {
+  "term": "@environment",
+  "definition": "Um property wrapper que lê um valor do ambiente do SwiftUI, como colorScheme, dismiss ou um modelo compartilhado."
+ },
+ {
+  "term": "@stateobject",
+  "definition": "Um property wrapper antigo que faz uma view do SwiftUI possuir uma instância de ObservableObject durante sua vida. @State com @Observable o substitui em código novo."
+ },
+ {
+  "term": "@published",
+  "definition": "Um property wrapper dentro de um ObservableObject que avisa mudanças aos assinantes, atualizando as views que o usam."
+ },
+ {
+  "term": "@appstorage",
+  "definition": "Um property wrapper que lê e grava um valor no UserDefaults e atualiza a view quando ele muda."
+ },
+ {
+  "term": "single source of truth",
+  "definition": "Um princípio em que cada dado tem um único dono e as outras views o leem ou fazem binding, evitando cópias conflitantes."
+ },
+ {
+  "term": "navigationstack",
+  "definition": "Um contêiner do SwiftUI que gerencia uma pilha de telas com navegação push e pop, usado com NavigationLink ou navigationDestination."
+ },
+ {
+  "term": "navigationlink",
+  "definition": "Um controle do SwiftUI que navega para outra view ao ser tocado, dentro de um NavigationStack."
+ },
+ {
+  "term": "tabview",
+  "definition": "Um contêiner do SwiftUI que mostra uma tab bar para alternar entre seções principais do app."
+ },
+ {
+  "term": "list",
+  "definition": "Um contêiner do SwiftUI que mostra linhas de dados em uma lista rolável de uma coluna, com suporte a seções, swipe actions e seleção."
+ },
+ {
+  "term": "foreach",
+  "definition": "Uma view do SwiftUI que cria views a partir de uma coleção de dados. Os itens precisam ser Identifiable ou é preciso fornecer um key path de id."
+ },
+ {
+  "term": "form",
+  "definition": "Um contêiner do SwiftUI para agrupar controles de entrada de dados como TextField, Toggle e Picker em um estilo adequado à plataforma."
+ },
+ {
+  "term": "vstack",
+  "definition": "Um contêiner do SwiftUI que organiza suas views filhas na vertical. Seus equivalentes são HStack (horizontal) e ZStack (em camadas)."
+ },
+ {
+  "term": "zstack",
+  "definition": "Um contêiner do SwiftUI que sobrepõe suas views filhas, de trás para frente."
+ },
+ {
+  "term": "lazyvstack",
+  "definition": "Uma pilha vertical que cria suas views filhas apenas quando estão prestes a aparecer na tela, o que é eficiente para conteúdo longo rolável."
+ },
+ {
+  "term": "lazyvgrid",
+  "definition": "Uma grade do SwiftUI que dispõe views em colunas flexíveis e as cria sob demanda, configurada com GridItem."
+ },
+ {
+  "term": "scrollview",
+  "definition": "Um contêiner do SwiftUI que permite rolar o conteúdo quando ele é maior que o espaço disponível."
+ },
+ {
+  "term": "spacer",
+  "definition": "Uma view flexível do SwiftUI que se expande para afastar outras views ao longo do eixo da pilha."
+ },
+ {
+  "term": "geometryreader",
+  "definition": "Um contêiner do SwiftUI que fornece ao conteúdo o tamanho e a posição do espaço disponível por um GeometryProxy, para layouts adaptáveis."
+ },
+ {
+  "term": "sheet",
+  "definition": "Uma view modal apresentada sobre a tela atual, no SwiftUI com o modifier .sheet. É fechada deslizando para baixo ou por código."
+ },
+ {
+  "term": "alert",
+  "definition": "Um pequeno diálogo modal que mostra uma mensagem e botões, no SwiftUI com o modifier .alert ou no UIKit com UIAlertController."
+ },
+ {
+  "term": "animation",
+  "definition": "Uma transição suave entre estados. No SwiftUI usa-se withAnimation { } ou o modifier .animation, com curvas como .easeInOut ou .spring."
+ },
+ {
+  "term": "preview",
+  "definition": "O canvas do Xcode que mostra uma renderização ao vivo de uma view SwiftUI enquanto você edita, definido com a macro #Preview."
+ },
+ {
+  "term": "onappear",
+  "definition": "Um modifier do SwiftUI que executa um closure quando uma view aparece na tela. .task é a alternativa assíncrona."
+ },
+ {
+  "term": "uikit",
+  "definition": "O framework imperativo da Apple para criar interfaces iOS e iPadOS com views e view controllers, ainda muito usado e interoperável com SwiftUI."
+ },
+ {
+  "term": "iboutlet",
+  "definition": "Um atributo (@IBOutlet) que conecta uma view do Interface Builder a uma propriedade no código para lê-la ou alterá-la."
+ },
+ {
+  "term": "ibaction",
+  "definition": "Um atributo (@IBAction) que marca um método como chamável pelo Interface Builder, por exemplo quando um botão é tocado."
+ },
+ {
+  "term": "interface builder",
+  "definition": "O editor visual do Xcode para desenhar interfaces UIKit em storyboards e arquivos xib, arrastando objetos e definindo constraints."
+ },
+ {
+  "term": "auto layout",
+  "definition": "Um sistema do UIKit que posiciona e dimensiona views usando constraints que descrevem suas relações, adaptando o layout a diferentes telas."
+ },
+ {
+  "term": "constraint",
+  "definition": "Uma regra do Auto Layout, como 'a borda leading fica a 16 pontos da superview', que determina a posição ou o tamanho de uma view."
+ },
+ {
+  "term": "uistackview",
+  "definition": "Uma view do UIKit que organiza suas subviews em linha ou coluna e gerencia espaçamento e alinhamento automaticamente."
+ },
+ {
+  "term": "uiviewcontroller",
+  "definition": "A classe do UIKit que gerencia a view de uma tela e seu ciclo de vida, com métodos como viewDidLoad e viewWillAppear."
+ },
+ {
+  "term": "segue",
+  "definition": "Uma transição de storyboard entre dois view controllers, como show ou present modally. Os dados podem ser preparados em prepare(for:sender:)."
+ },
+ {
+  "term": "delegate",
+  "definition": "Um padrão de projeto em que um objeto delega responsabilidade ou eventos a outro por meio de um protocol, como em UITableViewDelegate. Propriedades delegate geralmente são weak."
+ },
+ {
+  "term": "data source",
+  "definition": "Um protocol do UIKit adotado por um objeto que fornece os dados exibidos por uma view, como UITableViewDataSource fornecendo linhas e células."
+ },
+ {
+  "term": "uitableview",
+  "definition": "Uma view do UIKit que mostra uma lista rolável de uma coluna com linhas (células), controlada por data source e delegate."
+ },
+ {
+  "term": "uicollectionview",
+  "definition": "Uma view do UIKit que exibe itens em layouts flexíveis, como grades, usando células e um objeto de layout."
+ },
+ {
+  "term": "reuse identifier",
+  "definition": "Uma string que permite a uma table ou collection view reciclar células fora da tela com dequeueReusableCell(withIdentifier:), economizando memória."
+ },
+ {
+  "term": "safe area",
+  "definition": "A parte da tela não coberta pelo notch, Dynamic Island, home indicator ou barras. O conteúdo deve ficar nela, exceto fundos."
+ },
+ {
+  "term": "view lifecycle",
+  "definition": "A sequência de eventos pela qual um view controller passa: viewDidLoad, viewWillAppear, viewDidAppear, viewWillDisappear e viewDidDisappear."
+ },
+ {
+  "term": "size class",
+  "definition": "Uma característica (compact ou regular) que descreve largura e altura disponíveis, usada para adaptar layouts entre iPhone, iPad e orientações."
+ },
+ {
+  "term": "userdefaults",
+  "definition": "Um armazenamento chave-valor simples para pequenas preferências do usuário que persiste entre execuções. Não serve para dados grandes ou sensíveis."
+ },
+ {
+  "term": "codable",
+  "definition": "Um typealias para Encodable e Decodable. Tipos que o adotam podem ser convertidos de e para formatos como JSON com JSONEncoder e JSONDecoder."
+ },
+ {
+  "term": "json",
+  "definition": "JavaScript Object Notation: um formato de texto leve para dados com objetos, arrays, strings, números e booleanos, muito usado por APIs web."
+ },
+ {
+  "term": "swiftdata",
+  "definition": "O framework da Apple (iOS 17+) para modelar e persistir dados com código Swift e macros, baseado na tecnologia do Core Data e integrado ao SwiftUI."
+ },
+ {
+  "term": "@model",
+  "definition": "A macro do SwiftData aplicada a uma classe para torná-la um modelo persistente cujas propriedades são salvas no armazenamento."
+ },
+ {
+  "term": "@query",
+  "definition": "Um property wrapper do SwiftData que busca objetos de modelo e mantém uma view SwiftUI atualizada, com ordenação e filtro opcionais."
+ },
+ {
+  "term": "modelcontext",
+  "definition": "O objeto do SwiftData usado para inserir, excluir e salvar objetos de modelo. As views normalmente o leem do environment."
+ },
+ {
+  "term": "core data",
+  "definition": "O framework de persistência mais antigo da Apple para grafos de objetos, com editor de modelo, managed objects e managed object context. Pode guardar dados em SQLite."
+ },
+ {
+  "term": "cloudkit",
+  "definition": "O framework da Apple para guardar dados do app no iCloud e sincronizá-los entre os dispositivos do usuário, usando containers e bancos."
+ },
+ {
+  "term": "keychain",
+  "definition": "O armazenamento seguro e criptografado da Apple para pequenos segredos como senhas e tokens, acessado pelo framework Security."
+ },
+ {
+  "term": "urlsession",
+  "definition": "A API do Foundation para requisições de rede, como baixar dados ou chamar web services, com métodos async como data(from:)."
+ },
+ {
+  "term": "rest api",
+  "definition": "Um estilo de web service em que recursos são acessados por URLs e métodos HTTP como GET, POST, PUT e DELETE, geralmente trocando JSON."
+ },
+ {
+  "term": "http",
+  "definition": "O protocolo da web. Requisições têm método, URL, headers e corpo opcional; respostas têm um código de status como 200 (OK) ou 404 (Not Found)."
+ },
+ {
+  "term": "filemanager",
+  "definition": "Uma classe do Foundation para trabalhar com arquivos e pastas no sandbox do app, como o diretório Documents."
+ },
+ {
+  "term": "sandbox",
+  "definition": "Isolamento de segurança que limita um app ao seu próprio container e a recursos aprovados, impedindo que apps leiam dados uns dos outros."
+ },
+ {
+  "term": "persistence",
+  "definition": "Salvar dados para que sobrevivam ao fechamento do app, usando opções como UserDefaults, arquivos, SwiftData, Core Data ou iCloud."
+ },
+ {
+  "term": "combine",
+  "definition": "O framework da Apple para processar valores ao longo do tempo com publishers e subscribers. É usado por @Published e ObservableObject."
+ },
+ {
+  "term": "unit test",
+  "definition": "Um teste automatizado que verifica um pequeno trecho de código, como uma função, de forma isolada. Testes rápidos e repetíveis detectam regressões."
+ },
+ {
+  "term": "xctest",
+  "definition": "O framework de testes original da Apple. Classes de teste herdam de XCTestCase e verificam com XCTAssertEqual, XCTAssertTrue e funções semelhantes."
+ },
+ {
+  "term": "swift testing",
+  "definition": "O framework moderno de testes da Apple, com o atributo @Test e a macro #expect, testes parametrizados e sintaxe mais legível."
+ },
+ {
+  "term": "ui test",
+  "definition": "Um teste automatizado que abre o app e interage com a interface tocando e digitando, usando XCUIApplication."
+ },
+ {
+  "term": "test-driven development",
+  "definition": "Uma prática de escrever primeiro um teste que falha, depois o código que o faz passar, e então refatorar (red, green, refactor)."
+ },
+ {
+  "term": "refactoring",
+  "definition": "Reestruturar o código para melhorar legibilidade ou design sem mudar seu comportamento. Testes ajudam a garantir que nada quebre."
+ },
+ {
+  "term": "debugging",
+  "definition": "Encontrar e corrigir bugs lendo logs, usando breakpoints, inspecionando variáveis e reproduzindo o problema."
+ },
+ {
+  "term": "testflight",
+  "definition": "O serviço da Apple para distribuir builds beta a testadores internos e externos e coletar feedback antes do lançamento na App Store."
+ },
+ {
+  "term": "app store connect",
+  "definition": "O portal web da Apple para gerenciar apps: criar registros de apps, enviar builds, TestFlight, metadados, preços, avaliações e relatórios de vendas."
+ },
+ {
+  "term": "provisioning profile",
+  "definition": "Um arquivo que liga um app ID, certificados e, em desenvolvimento, dispositivos registrados, permitindo que o app rode em dispositivos ou seja distribuído."
+ },
+ {
+  "term": "code signing",
+  "definition": "Assinar criptograficamente um app com um certificado para que a Apple e os usuários verifiquem quem o criou e que não foi alterado. O Xcode pode gerenciá-lo automaticamente."
+ },
+ {
+  "term": "certificate",
+  "definition": "Uma credencial digital emitida pela Apple que comprova sua identidade como desenvolvedor e é usada para assinar apps, como Apple Development ou Apple Distribution."
+ },
+ {
+  "term": "bundle identifier",
+  "definition": "Uma string única em formato de domínio reverso, como com.company.MyApp, que identifica um app nos sistemas da Apple."
+ },
+ {
+  "term": "app review",
+  "definition": "O processo da Apple de verificar apps enviados segundo as App Review Guidelines quanto a segurança, desempenho, negócios, design e regras legais antes do lançamento."
+ },
+ {
+  "term": "privacy manifest",
+  "definition": "Um arquivo PrivacyInfo.xcprivacy que declara quais dados um app e seus SDKs coletam e quais APIs de motivo obrigatório usam."
+ },
+ {
+  "term": "app tracking transparency",
+  "definition": "ATT: um framework que exige que apps peçam permissão antes de rastrear usuários em apps e sites de outras empresas. O aviso é exibido com ATTrackingManager."
+ },
+ {
+  "term": "storekit",
+  "definition": "O framework da Apple para compras dentro do app e assinaturas, que permite carregar produtos, processar compras e verificar direitos."
+ },
+ {
+  "term": "in-app purchase",
+  "definition": "Conteúdo ou recursos vendidos dentro de um app, como consumíveis, não consumíveis ou assinaturas, tratados pelo StoreKit."
+ },
+ {
+  "term": "push notification",
+  "definition": "Uma mensagem enviada a um dispositivo pelo Apple Push Notification service (APNs) mesmo quando o app não está em execução. Exige permissão do usuário."
+ },
+ {
+  "term": "app lifecycle",
+  "definition": "Os estados pelos quais um app passa (not running, inactive, active, background, suspended). No SwiftUI, scenePhase os informa."
+ },
+ {
+  "term": "hig",
+  "definition": "As Human Interface Guidelines: recomendações de design da Apple para criar apps intuitivos e consistentes em cada plataforma."
+ },
+ {
+  "term": "design cycle",
+  "definition": "Um processo iterativo: pesquisar, definir, idear, prototipar, testar e refinar. O feedback dos usuários orienta cada rodada."
+ },
+ {
+  "term": "prototype",
+  "definition": "Uma versão inicial e simplificada de um app, usada para explorar ideias e testar com usuários antes do desenvolvimento completo."
+ },
+ {
+  "term": "wireframe",
+  "definition": "Um esboço simples e de pouco detalhe do layout de uma tela, mostrando onde ficam os elementos, sem cores nem visual final."
+ },
+ {
+  "term": "user story",
+  "definition": "Uma frase curta que descreve uma necessidade do ponto de vista do usuário: 'Como [usuário], quero [objetivo] para [benefício].'"
+ },
+ {
+  "term": "user experience",
+  "definition": "UX: como a pessoa se sente ao usar um produto, incluindo usabilidade, clareza e eficiência. A interface do usuário (UI) é a parte visual."
+ },
+ {
+  "term": "accessibility",
+  "definition": "Projetar apps para que pessoas com deficiência possam usá-los, com suporte a VoiceOver, Dynamic Type, contraste suficiente e Reduce Motion."
+ },
+ {
+  "term": "voiceover",
+  "definition": "O leitor de tela integrado da Apple que fala o que há na tela. Os apps o suportam com accessibility labels, hints e traits."
+ },
+ {
+  "term": "accessibility label",
+  "definition": "Um texto curto lido pelo VoiceOver para descrever um elemento, definido com .accessibilityLabel no SwiftUI ou accessibilityLabel no UIKit."
+ },
+ {
+  "term": "dynamic type",
+  "definition": "Um recurso do sistema que permite ao usuário escolher o tamanho de texto preferido. Os apps o suportam usando estilos de texto como .body e .headline."
+ },
+ {
+  "term": "dark mode",
+  "definition": "Uma aparência escura em todo o sistema. Os apps se adaptam usando cores semânticas e do asset catalog que mudam automaticamente."
+ },
+ {
+  "term": "localization",
+  "definition": "Adaptar um app a diferentes idiomas e regiões, com strings traduzidas em String Catalogs e datas, números e moedas conforme a localidade."
+ },
+ {
+  "term": "internationalization",
+  "definition": "Preparar um app para suportar muitos idiomas e regiões, por exemplo evitando texto fixo no código e suportando layouts da direita para a esquerda."
+ },
+ {
+  "term": "sf symbols",
+  "definition": "A biblioteca da Apple com milhares de ícones escaláveis que combinam com o texto do sistema, usada com Image(systemName:) no SwiftUI."
+ },
+ {
+  "term": "haptics",
+  "definition": "Feedback tátil por vibrações do Taptic Engine do dispositivo, como UIImpactFeedbackGenerator ou sensoryFeedback do SwiftUI."
+ },
+ {
+  "term": "core ml",
+  "definition": "O framework da Apple para executar modelos de machine learning treinados no dispositivo, usando o formato .mlmodel ou .mlpackage."
+ },
+ {
+  "term": "create ml",
+  "definition": "A ferramenta da Apple, como app para Mac (aberto pelo Xcode) e como framework, para treinar modelos de machine learning próprios, como classificadores de imagem ou texto, com seus dados e pouco código."
+ },
+ {
+  "term": "vision",
+  "definition": "O framework da Apple para visão computacional, como reconhecimento de texto, detecção de rostos, leitura de códigos de barras e classificação de imagens."
+ },
+ {
+  "term": "natural language",
+  "definition": "O framework da Apple para analisar texto: detectar idioma, tokenizar, marcar classes gramaticais e sentimento."
+ },
+ {
+  "term": "foundation models",
+  "definition": "O framework da Apple para usar o modelo de linguagem on-device do Apple Intelligence nos apps, para gerar e estruturar texto de forma privada."
+ },
+ {
+  "term": "on-device model",
+  "definition": "Um modelo de machine learning que roda localmente no dispositivo em vez de em um servidor, oferecendo mais privacidade, uso offline e baixa latência."
+ },
+ {
+  "term": "machine learning",
+  "definition": "Um campo da IA em que computadores aprendem padrões a partir de dados para fazer previsões ou decisões, em vez de seguir regras escritas à mão."
+ },
+ {
+  "term": "training data",
+  "definition": "Os exemplos rotulados usados para ensinar um modelo de machine learning. Sua qualidade e diversidade afetam muito a precisão e o viés."
+ },
+ {
+  "term": "git",
+  "definition": "Um sistema de controle de versão distribuído que registra mudanças como commits. O Xcode tem suporte nativo a Git no Source Control navigator."
+ },
+ {
+  "term": "commit",
+  "definition": "Um instantâneo salvo de mudanças no controle de versão, com uma mensagem que explica o quê e por quê."
+ },
+ {
+  "term": "branch",
+  "definition": "Uma linha independente de desenvolvimento no Git, usada para trabalhar em uma funcionalidade sem afetar o código principal até o merge."
+ },
+ {
+  "term": "api",
+  "definition": "Application Programming Interface: o conjunto de tipos, funções e regras que um framework ou serviço expõe para que outro código o use."
+ },
+ {
+  "term": "framework",
+  "definition": "Um pacote de código e recursos reutilizáveis, como UIKit, SwiftUI ou Foundation, importado com import. Você também pode criar o seu."
+ },
+ {
+  "term": "foundation",
+  "definition": "O framework base com tipos essenciais como String, Date, URL, Data, JSONDecoder e UserDefaults."
+ },
+ {
+  "term": "main thread",
+  "definition": "A thread onde a interface do usuário roda. Trabalho longo ali trava o app, então tarefas pesadas vão para segundo plano e atualizações de UI voltam à main thread."
+ },
+ {
+  "term": "memory leak",
+  "definition": "Memória que nunca é liberada porque algo ainda a referencia, geralmente por um retain cycle. Faz o app consumir cada vez mais memória."
+ },
+ {
+  "term": "capture list",
+  "definition": "Uma lista entre colchetes no início de um closure, como [weak self], que controla como valores são capturados e ajuda a evitar retain cycles."
+ },
+ {
+  "term": "mvc",
+  "definition": "Model-View-Controller: um padrão que separa dados (model), interface (view) e a lógica que os conecta (controller). É o padrão tradicional do UIKit."
+ },
+ {
+  "term": "singleton",
+  "definition": "Um tipo com uma única instância compartilhada em todo o app, como UserDefaults.standard. É prático, mas pode dificultar testes."
+ },
+ {
+  "term": "dependency injection",
+  "definition": "Passar para um tipo, de fora, os objetos de que ele precisa em vez de criá-los internamente, o que torna o código flexível e mais fácil de testar."
+ },
+ {
+  "term": "api key",
+  "definition": "Uma string secreta que identifica seu app para um web service. Nunca deve ficar fixa no código de um repositório público."
+ },
+ {
+  "term": "asyncimage",
+  "definition": "Uma view do SwiftUI que baixa e mostra uma imagem de uma URL, com fases de placeholder e erro."
+ },
+ {
+  "term": "swift concurrency",
+  "definition": "O modelo embutido do Swift para código assíncrono e paralelo, com async/await, Task, actors e concorrência estruturada."
+ }
+]

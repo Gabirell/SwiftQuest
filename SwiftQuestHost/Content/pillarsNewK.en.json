@@ -1,0 +1,677 @@
+[
+ {
+  "id": 59,
+  "title": "Location and Maps (Core Location and MapKit)",
+  "theory": "Core Location provides the device position through 'CLLocationManager'. You create the manager, set a 'delegate' and ask for authorization: 'requestWhenInUseAuthorization()' allows location only while the app is in use, and 'requestAlwaysAuthorization()' also allows background use (which needs a strong justification). The system only shows the alert if Info.plist contains the 'NSLocationWhenInUseUsageDescription' key with text explaining why; without it, the prompt never appears. The permission state (.notDetermined, .restricted, .denied, .authorizedWhenInUse, .authorizedAlways) arrives through the delegate in 'locationManagerDidChangeAuthorization(_:)', and positions arrive in 'locationManager(_:didUpdateLocations:)' as 'CLLocation' objects, which hold a 'coordinate' (latitude and longitude in degrees), altitude and accuracy. Converting between an address and a coordinate is done with geocoding (MKGeocodingRequest from MapKit; 'CLGeocoder' was deprecated in iOS 26), which is asynchronous and rate limited. In SwiftUI, the 'Map' view takes a 'MapCameraPosition' (for example '@State var camera: MapCameraPosition = .automatic') and accepts content such as 'Marker' (the default balloon) and 'Annotation' (any view of yours). Place search uses 'MKLocalSearch' with an 'MKLocalSearch.Request' whose 'naturalLanguageQuery' sets the text. Respect privacy and battery: ask for the lowest accuracy you need, call 'stopUpdatingLocation()' when done, and handle denial gracefully by explaining the benefit and offering to open Settings. In Xcode, test with Debug > Simulate Location or a GPX file, since the simulator has no real GPS.",
+  "appleDocUrl": "https://developer.apple.com/documentation/corelocation/cllocationmanager",
+  "category": "Recursos do Sistema",
+  "corporateCase": "A delivery app shows the customer's position and nearby restaurants on a 'Map', found with 'MKLocalSearch'. The 'when in use' permission is requested only when the user taps 'Use my location', and if they deny it, the app offers typing the address manually.",
+  "gameCase": "An augmented reality treasure-hunt game uses 'CLLocationManager' to know when the player gets close to a point of interest. To save battery, the game uses moderate accuracy and stops updates when the player opens the menu or backgrounds the app.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Create the object responsible for receiving location updates",
+    "codeSnippet": "let gerenciador = ___()",
+    "correctAnswer": "CLLocationManager",
+    "hint": "It is the Core Location class that manages the device location."
+   },
+   {
+    "id": 2,
+    "question": "Ask for location authorization only while the app is in use",
+    "codeSnippet": "gerenciador.___()",
+    "correctAnswer": "requestWhenInUseAuthorization",
+    "hint": "The name starts with 'request' and ends with 'Authorization'; it includes 'WhenInUse'."
+   },
+   {
+    "id": 3,
+    "question": "Start receiving device positions",
+    "codeSnippet": "gerenciador.___()",
+    "correctAnswer": "startUpdatingLocation",
+    "hint": "The method that starts continuous location updates."
+   },
+   {
+    "id": 4,
+    "question": "Register the class itself to receive the manager's callbacks",
+    "codeSnippet": "gerenciador.___ = self",
+    "correctAnswer": "delegate",
+    "hint": "The delegation-pattern property that receives the events."
+   },
+   {
+    "id": 5,
+    "question": "Show a default balloon on the SwiftUI map at the given coordinate",
+    "codeSnippet": "Map { ___(\"Praça\", coordinate: coord) }",
+    "correctAnswer": "Marker",
+    "hint": "It is the default map content with a title and coordinate; 'Annotation' needs a custom view."
+   },
+   {
+    "id": 6,
+    "question": "Create a MapKit place search from a request",
+    "codeSnippet": "let busca = ___(request: pedido)",
+    "correctAnswer": "MKLocalSearch",
+    "hint": "MapKit class whose name combines 'MK', 'Local' and 'Search'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Which Info.plist key is required to ask for location only while the app is in use?",
+    "options": [
+     "NSLocationUsageDescription",
+     "NSCameraUsageDescription",
+     "NSLocationWhenInUseUsageDescription",
+     "NSLocationPreciseUsageDescription"
+    ],
+    "correctIndex": 2,
+    "explanation": "Without 'NSLocationWhenInUseUsageDescription' and a clear text, the system does not show the permission alert. The camera key is unrelated to location."
+   },
+   {
+    "id": 2,
+    "question": "The user has not answered the location alert yet. What is the authorization status?",
+    "options": [
+     "notDetermined",
+     "denied",
+     "restricted",
+     "authorizedWhenInUse"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.notDetermined' means no decision has been made; only in this state does calling 'requestWhenInUseAuthorization()' make sense. '.denied' and '.restricted' need different handling."
+   },
+   {
+    "id": 3,
+    "question": "Which delegate method receives the device's new positions?",
+    "options": [
+     "locationManagerDidChangeAuthorization(_:)",
+     "locationManager(_:didFailWithError:)",
+     "locationManagerShouldDisplayHeadingCalibration(_:)",
+     "locationManager(_:didUpdateLocations:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Positions arrive as an array of 'CLLocation' in 'didUpdateLocations'. 'DidChangeAuthorization' reports permission changes and 'didFailWithError' reports errors."
+   },
+   {
+    "id": 4,
+    "question": "The user denied location permission. What is the best approach?",
+    "options": [
+     "Ask for permission again in a loop until they accept",
+     "Explain the benefit, offer an alternative (e.g. typing an address) and a shortcut to Settings",
+     "Close the app with an error",
+     "Ignore it and silently use a fake location"
+    ],
+    "correctIndex": 1,
+    "explanation": "After a denial the system does not show the alert again. The app should stay useful with alternatives and, if appropriate, open Settings via 'UIApplication.openSettingsURLString'."
+   },
+   {
+    "id": 5,
+    "question": "Which practice helps save battery when using location?",
+    "options": [
+     "Keep 'startUpdatingLocation' active all the time",
+     "Always use the best possible accuracy",
+     "Use the lowest accuracy needed and stop updates when they are no longer useful",
+     "Ask for 'Always' authorization for safety"
+    ],
+    "correctIndex": 2,
+    "explanation": "Continuous high-accuracy GPS drains the battery. Tune 'desiredAccuracy' and call 'stopUpdatingLocation()' when finished."
+   },
+   {
+    "id": 6,
+    "question": "What is reverse geocoding for?",
+    "options": [
+     "Converting a coordinate into a readable address (placemark)",
+     "Converting an address into a 3D map",
+     "Computing the user's speed",
+     "Finding out the granted permission"
+    ],
+    "correctIndex": 0,
+    "explanation": "Reverse geocoding turns latitude/longitude into street, city and so on. It is asynchronous and rate limited, so avoid calling it on every position update."
+   },
+   {
+    "id": 7,
+    "question": "In SwiftUI, which type controls the camera position of a 'Map'?",
+    "options": [
+     "CLLocationManager",
+     "MapCameraPosition",
+     "MKMapView",
+     "CLHeading"
+    ],
+    "correctIndex": 1,
+    "explanation": "With 'Map(position: $camera)', the '@State' of type 'MapCameraPosition' controls the displayed region or item (.automatic, .region, .item and so on). 'MKMapView' belongs to UIKit."
+   },
+   {
+    "id": 8,
+    "question": "How can you test the app at a specific position without leaving home?",
+    "options": [
+     "Location cannot be tested in Xcode",
+     "Editing Info.plist with the coordinates",
+     "Disabling the delegate",
+     "Using Debug > Simulate Location in Xcode or a GPX file"
+    ],
+    "correctIndex": 3,
+    "explanation": "Xcode can simulate predefined cities or GPX routes in the simulator and on a device, without changing the app code."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "When is the best time to ask for location authorization?",
+    "options": [
+     "Always on the first line of 'App.init'",
+     "At the moment the user triggers a feature that needs it",
+     "After 10 app launches",
+     "Never; the system asks by itself"
+    ],
+    "correctIndex": 1,
+    "explanation": "Asking in context increases acceptance because the user understands the reason. Asking at launch without explanation usually leads to denial."
+   },
+   {
+    "id": 2,
+    "question": "Which type holds a geographic coordinate in Core Location?",
+    "options": [
+     "CGPoint, with x and y",
+     "CLRegion, with a name",
+     "CLLocationCoordinate2D, with latitude and longitude",
+     "MKRoute, with steps"
+    ],
+    "correctIndex": 2,
+    "explanation": "'CLLocationCoordinate2D' has 'latitude' and 'longitude' in degrees (Double). 'CGPoint' represents screen points, not geographic positions."
+   },
+   {
+    "id": 3,
+    "question": "What is the difference between 'Marker' and 'Annotation' in SwiftUI's 'Map'?",
+    "options": [
+     "'Marker' is the default balloon; 'Annotation' accepts any custom view",
+     "'Marker' is only for routes and 'Annotation' for points",
+     "'Annotation' was removed from MapKit",
+     "There is no difference"
+    ],
+    "correctIndex": 0,
+    "explanation": "Use 'Marker' for the default system look and 'Annotation' when you need your own SwiftUI content, such as a photo or a card."
+   },
+   {
+    "id": 4,
+    "question": "What does 'Always' authorization allow, beyond foreground use?",
+    "options": [
+     "Ignoring user privacy",
+     "Using GPS without battery cost",
+     "Skipping the delegate",
+     "Receiving location in the background, requiring a justification in Info.plist"
+    ],
+    "correctIndex": 3,
+    "explanation": "'Always' requires 'NSLocationAlwaysAndWhenInUseUsageDescription' and a real justification, such as navigation. For most apps, 'when in use' is enough."
+   },
+   {
+    "id": 5,
+    "question": "The user granted only approximate location (reducedAccuracy). What can the app do?",
+    "options": [
+     "Nothing; the app must be reinstalled",
+     "Work with reduced accuracy or request temporary full accuracy with a reason",
+     "Force full accuracy without asking",
+     "Switch to 'CLGeocoder'"
+    ],
+    "correctIndex": 1,
+    "explanation": "Since iOS 14 users can grant approximate location. The app reads 'accuracyAuthorization' and can use 'requestTemporaryFullAccuracyAuthorization(purposeKey:)'."
+   },
+   {
+    "id": 6,
+    "question": "The app calls 'requestWhenInUseAuthorization()' but the alert never appears. What is the most likely cause?",
+    "options": [
+     "The delegate is nil",
+     "The map was not created",
+     "The 'NSLocationWhenInUseUsageDescription' key is missing from Info.plist",
+     "iOS is out of date"
+    ],
+    "correctIndex": 2,
+    "explanation": "The system only shows the alert if the key with the description exists. This is one of the most common mistakes when starting with location."
+   }
+  ]
+ },
+ {
+  "id": 60,
+  "title": "Local and Push Notifications",
+  "theory": "The UserNotifications framework manages local notifications (scheduled by the app itself) and remote ones (sent by a server through APNs). Everything starts with 'UNUserNotificationCenter.current()' and 'requestAuthorization(options:)', asking permission for '.alert', '.sound' and '.badge'; the user may deny, and the app must still work. A local notification is made of 'UNMutableNotificationContent' (title, body, sound, categoryIdentifier), a trigger and a 'UNNotificationRequest' with an identifier. Triggers are 'UNTimeIntervalNotificationTrigger' (after N seconds; repeating requires at least 60 s), 'UNCalendarNotificationTrigger' (date and time via 'DateComponents') and 'UNLocationNotificationTrigger' (when entering or leaving a region). You schedule with 'add(_:)' and remove with 'removePendingNotificationRequests(withIdentifiers:)'; reusing the same identifier replaces the previous one. By default, when the app is in the foreground the notification is not shown, unless the delegate implements 'userNotificationCenter(_:willPresent:)' and returns options such as '.banner' and '.sound'. Actions and categories ('UNNotificationAction' and 'UNNotificationCategory') add buttons, and the user's response arrives in 'didReceive response'. For push, the app calls 'registerForRemoteNotifications()', receives the APNs device token, sends it to your server, which sends a JSON payload (4 KB limit) with the 'aps' key. You must enable the Push Notifications capability in Signing & Capabilities. A silent push uses 'content-available: 1', shows nothing to the user and has no guaranteed delivery. Best practices: ask for permission in context, do not spam, and never put sensitive data in the payload.",
+  "appleDocUrl": "https://developer.apple.com/documentation/usernotifications/unusernotificationcenter",
+  "category": "Recursos do Sistema",
+  "corporateCase": "A health app schedules daily medication reminders with 'UNCalendarNotificationTrigger', and the user can tap 'Taken' or 'Snooze' right on the notification thanks to a 'UNNotificationCategory'. The server sends push to announce test results, without including medical data in the payload.",
+  "gameCase": "A game schedules a local notification to announce when the farm construction finishes, using a 'UNTimeIntervalNotificationTrigger'. If the player opens the app earlier, the pending notification is removed by its identifier, so it does not bother them needlessly.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Get the app's shared notification center",
+    "codeSnippet": "let centro = UNUserNotificationCenter.___()",
+    "correctAnswer": "current",
+    "hint": "It is the static method that returns the shared instance."
+   },
+   {
+    "id": 2,
+    "question": "Create the editable content of a notification",
+    "codeSnippet": "let conteudo = ___()",
+    "correctAnswer": "UNMutableNotificationContent",
+    "hint": "The 'mutable' UserNotifications type that holds title, body and sound."
+   },
+   {
+    "id": 3,
+    "question": "Create a 60-second trigger that does not repeat",
+    "codeSnippet": "UNTimeIntervalNotificationTrigger(timeInterval: 60, ___: false)",
+    "correctAnswer": "repeats",
+    "hint": "The Boolean parameter says whether the notification repeats."
+   },
+   {
+    "id": 4,
+    "question": "Build the notification request with an identifier",
+    "codeSnippet": "UNNotificationRequest(___: \"lembrete\", content: c, trigger: g)",
+    "correctAnswer": "identifier",
+    "hint": "The parameter holding the text \"lembrete\" identifies the request so it can be replaced or removed."
+   },
+   {
+    "id": 5,
+    "question": "Cancel the pending notifications with the given identifier",
+    "codeSnippet": "centro.___(withIdentifiers: [\"lembrete\"])",
+    "correctAnswer": "removePendingNotificationRequests",
+    "hint": "The method that removes requests not yet delivered."
+   },
+   {
+    "id": 6,
+    "question": "Register the app to receive APNs push",
+    "codeSnippet": "UIApplication.shared.___()",
+    "correctAnswer": "registerForRemoteNotifications",
+    "hint": "It starts with 'register' and ends with 'RemoteNotifications'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Why must you call 'requestAuthorization(options:)'?",
+    "options": [
+     "To register the app with APNs automatically",
+     "Without the user's permission, the app cannot display notification alerts, sounds or badges",
+     "To create the 'UNMutableNotificationContent'",
+     "To enable Wi-Fi"
+    ],
+    "correctIndex": 1,
+    "explanation": "Notifications depend on consent. The app checks 'getNotificationSettings' and still works when the user denies."
+   },
+   {
+    "id": 2,
+    "question": "How do you schedule a notification every day at 8 am?",
+    "options": [
+     "'UNCalendarNotificationTrigger' with DateComponents(hour: 8) and repeats: true",
+     "'UNTimeIntervalNotificationTrigger' with 28800 and repeats: true",
+     "'UNLocationNotificationTrigger'",
+     "Calling 'startUpdatingLocation'"
+    ],
+    "correctIndex": 0,
+    "explanation": "The calendar trigger uses date components. A repeating interval trigger does not follow the wall clock, only a distance in seconds."
+   },
+   {
+    "id": 3,
+    "question": "What is the minimum interval of a repeating 'UNTimeIntervalNotificationTrigger'?",
+    "options": [
+     "1 second",
+     "10 seconds",
+     "60 seconds",
+     "24 hours"
+    ],
+    "correctIndex": 2,
+    "explanation": "Notifications repeated by interval need at least 60 seconds. For specific times of day, prefer the calendar trigger."
+   },
+   {
+    "id": 4,
+    "question": "With the app in the foreground, the local notification arrives but nothing appears. What is missing?",
+    "options": [
+     "Removing the notification category",
+     "Using remote push only",
+     "Changing the identifier",
+     "Implementing 'userNotificationCenter(_:willPresent:)' and returning options such as '.banner' and '.sound'"
+    ],
+    "correctIndex": 3,
+    "explanation": "By default the system does not present notifications while the app is in the foreground; the delegate decides how to present them."
+   },
+   {
+    "id": 5,
+    "question": "What is the device token in push notifications?",
+    "options": [
+     "The user's password",
+     "An identifier for the device/app issued by APNs, which your server uses to address the push",
+     "An App Store certificate",
+     "The notification body text"
+    ],
+    "correctIndex": 1,
+    "explanation": "The app receives it in 'didRegisterForRemoteNotificationsWithDeviceToken' and sends it to the server, which uses it when asking APNs to deliver the payload."
+   },
+   {
+    "id": 6,
+    "question": "What is required in the project to receive remote push?",
+    "options": [
+     "Enabling the Push Notifications capability in Signing & Capabilities",
+     "Adding the Core Data library",
+     "Writing the NSPushUsageDescription key",
+     "Nothing; it works without setup"
+    ],
+    "correctIndex": 0,
+    "explanation": "The capability adds the 'aps-environment' entitlement to the App ID. There is no 'NSPushUsageDescription' usage key."
+   },
+   {
+    "id": 7,
+    "question": "What characterizes a silent push?",
+    "options": [
+     "A payload with 'alert' and a quieter 'sound'",
+     "A push that skips APNs",
+     "A payload with 'content-available: 1', no visible alert and non-guaranteed delivery",
+     "A scheduled local push"
+    ],
+    "correctIndex": 2,
+    "explanation": "A silent push wakes the app to refresh data in the background, but the system may throttle it. It should not be used for critical messages."
+   },
+   {
+    "id": 8,
+    "question": "To show action buttons on a notification, what is needed?",
+    "options": [
+     "Just put the buttons in the body",
+     "Use 'UIAlertController'",
+     "Implement 'viewDidLoad'",
+     "Register a 'UNNotificationCategory' with actions and set 'categoryIdentifier' on the content"
+    ],
+    "correctIndex": 3,
+    "explanation": "The category groups the 'UNNotificationAction' items. The user's tap reaches the delegate in 'userNotificationCenter(_:didReceive:)'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Which trigger fires a notification when arriving at a place?",
+    "options": [
+     "'UNLocationNotificationTrigger' with a circular region",
+     "'UNCalendarNotificationTrigger'",
+     "'UNTimeIntervalNotificationTrigger'",
+     "'UNPushNotificationTrigger'"
+    ],
+    "correctIndex": 0,
+    "explanation": "The location trigger uses a 'CLCircularRegion' and requires location permission in addition to notification permission."
+   },
+   {
+    "id": 2,
+    "question": "What is the best practice for asking notification permission?",
+    "options": [
+     "Ask on every app launch",
+     "Hide the reason from the user",
+     "Ask at a relevant moment, explaining the value, not right at launch",
+     "Ask before showing any screen"
+    ],
+    "correctIndex": 2,
+    "explanation": "The system alert effectively appears only once. Asking too early, without context, raises the denial rate."
+   },
+   {
+    "id": 3,
+    "question": "What is the size limit of a regular remote notification payload?",
+    "options": [
+     "256 bytes",
+     "4 KB",
+     "1 MB",
+     "No limit"
+    ],
+    "correctIndex": 1,
+    "explanation": "APNs accepts payloads up to 4 KB (4096 bytes) for regular notifications. Large data should be downloaded later by the app."
+   },
+   {
+    "id": 4,
+    "question": "You schedule a new request with the same identifier as a pending one. What happens?",
+    "options": [
+     "Both are delivered",
+     "The app crashes",
+     "The new one is ignored",
+     "The previous request is replaced by the new one"
+    ],
+    "correctIndex": 3,
+    "explanation": "The identifier is the key: reusing it updates the schedule, which avoids duplicate notifications."
+   },
+   {
+    "id": 5,
+    "question": "How do you protect sensitive data when using push?",
+    "options": [
+     "Send the minimum in the payload and fetch sensitive content in the app or with a Notification Service Extension",
+     "Put the user's ID number in the push body",
+     "Disable the capability",
+     "Use only silent push"
+    ],
+    "correctIndex": 0,
+    "explanation": "Payloads may show on the lock screen. A service extension ('mutable-content') can download or decrypt content before displaying it."
+   },
+   {
+    "id": 6,
+    "question": "What happens if a 'UNNotificationRequest' is created with 'trigger: nil'?",
+    "options": [
+     "It is never delivered",
+     "The notification is delivered immediately",
+     "It is delivered at midnight",
+     "The app is terminated"
+    ],
+    "correctIndex": 1,
+    "explanation": "A nil trigger means 'deliver now'. It is useful, for example, to announce the completion of a background task."
+   }
+  ]
+ },
+ {
+  "id": 61,
+  "title": "Photos and Camera (PhotosPicker and AVFoundation)",
+  "theory": "'PhotosPicker', from the PhotosUI framework, is the modern way to let the user choose photos or videos in SwiftUI: 'PhotosPicker(selection: $item, matching: .images) { Text(\"Choose\") }', where 'item' is a '@State' of type 'PhotosPickerItem?'. The picker runs outside your app's process and the system delivers only the items the user chose, so it needs no permission and no Info.plist key. To get the data, use 'try await item.loadTransferable(type: Data.self)', which returns an Optional (nil if it could not be loaded) and must be called in an asynchronous context, for example inside '.onChange(of:)' with a 'Task'. With 'Data' you create 'UIImage(data:)' (also Optional) and display it with 'Image(uiImage:)'. The camera, on the other hand, requires permission: add 'NSCameraUsageDescription' to Info.plist and check 'AVCaptureDevice.authorizationStatus(for: .video)', whose states are notDetermined, restricted, denied and authorized; request access with 'AVCaptureDevice.requestAccess(for:)'. For simple capture use 'UIImagePickerController' with 'sourceType = .camera' (system interface); for full control (preview, focus, quality) use 'AVCaptureSession' with an input (device) and an output (photo or video output). Camera images have millions of pixels and use a lot of memory, so downscale before displaying. Saving to the photo library requires 'NSPhotoLibraryAddUsageDescription'. The simulator has no real camera, so test capture on a physical device, and always offer an alternative when permission is denied.",
+  "appleDocUrl": "https://developer.apple.com/documentation/photosui/photospicker",
+  "category": "Recursos do Sistema",
+  "corporateCase": "An insurance app asks the customer for photos of the vehicle after an accident: they pick images from the gallery with 'PhotosPicker', without granting access to the whole library, or take new photos with the camera. Before uploading to the server, the images are downscaled to save data and memory.",
+  "gameCase": "A character-creation game lets the player choose a photo for the avatar with 'PhotosPicker' and crops it into a square. If the player denies camera access, the game shows a notice and keeps offering the gallery choice.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Import the framework that contains PhotosPicker",
+    "codeSnippet": "import ___",
+    "correctAnswer": "PhotosUI",
+    "hint": "The name combines 'Photos' with 'UI'."
+   },
+   {
+    "id": 2,
+    "question": "Show the system photo picker, filtering by images",
+    "codeSnippet": "___(selection: $item, matching: .images) { Text(\"Choose\") }",
+    "correctAnswer": "PhotosPicker",
+    "hint": "The PhotosUI view that presents the gallery."
+   },
+   {
+    "id": 3,
+    "question": "Declare the state that holds the user's choice",
+    "codeSnippet": "@State private var item: ___?",
+    "correctAnswer": "PhotosPickerItem",
+    "hint": "The type of the item selected by the picker."
+   },
+   {
+    "id": 4,
+    "question": "Load the chosen photo's data asynchronously",
+    "codeSnippet": "let dados = try await item.___(type: Data.self)",
+    "correctAnswer": "loadTransferable",
+    "hint": "Item method that loads a 'Transferable' type."
+   },
+   {
+    "id": 5,
+    "question": "Display a UIImage in a SwiftUI view",
+    "codeSnippet": "Image(___: imagem)",
+    "correctAnswer": "uiImage",
+    "hint": "The label of the initializer that takes a UIImage."
+   },
+   {
+    "id": 6,
+    "question": "Which Info.plist key justifies camera use?",
+    "codeSnippet": "<key>___</key>",
+    "correctAnswer": "NSCameraUsageDescription",
+    "hint": "It starts with 'NS', ends with 'UsageDescription' and has 'Camera' in the middle."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Why does 'PhotosPicker' not ask for photo library permission?",
+    "options": [
+     "Because it secretly reads all photos",
+     "Because it runs outside the app's process and delivers only the items the user picks",
+     "Because it only works in the simulator",
+     "Because it uses the camera"
+    ],
+    "correctIndex": 1,
+    "explanation": "The picker is a system interface, and the app cannot see the rest of the library. This favors privacy and simplifies code."
+   },
+   {
+    "id": 2,
+    "question": "What happens when using the camera without the 'NSCameraUsageDescription' key in Info.plist?",
+    "options": [
+     "The app terminates with an error when accessing the camera",
+     "The system picks a default text",
+     "The camera opens without permission",
+     "Nothing, the key is optional"
+    ],
+    "correctIndex": 0,
+    "explanation": "iOS requires the justification text before asking for permission; without it, the access terminates the app."
+   },
+   {
+    "id": 3,
+    "question": "What is the main difference between 'UIImagePickerController' and 'AVCaptureSession'?",
+    "options": [
+     "The first only records video",
+     "The second needs no permission",
+     "The first uses the ready-made system interface; the second gives full control over preview and capture",
+     "They are identical"
+    ],
+    "correctIndex": 2,
+    "explanation": "'UIImagePickerController' with '.camera' is quick to use. 'AVCaptureSession' needs more code but allows custom interface and settings."
+   },
+   {
+    "id": 4,
+    "question": "What does 'loadTransferable(type: Data.self)' return?",
+    "options": [
+     "Always a UIImage",
+     "A String with the file path",
+     "A Bool",
+     "An Optional value (nil if it cannot load), in an asynchronous call that can throw"
+    ],
+    "correctIndex": 3,
+    "explanation": "It is 'async throws' and returns 'Data?'. So use 'try await' and handle nil, for example with 'if let'."
+   },
+   {
+    "id": 5,
+    "question": "A 12-megapixel photo is fully loaded into a 'UIImage' for a thumbnail. What is the problem?",
+    "options": [
+     "Unnecessary memory use; it is better to downscale the image",
+     "None, iOS always downscales by itself",
+     "It loses permission",
+     "It turns black and white"
+    ],
+    "correctIndex": 0,
+    "explanation": "A 12 MP bitmap takes tens of megabytes in memory. Generate a reduced version for lists and thumbnails."
+   },
+   {
+    "id": 6,
+    "question": "Which key allows only adding photos to the library (saving)?",
+    "options": [
+     "NSPhotosPickerUsageDescription",
+     "NSPhotoLibraryAddUsageDescription",
+     "NSSaveUsageDescription",
+     "NSCameraUsageDescription"
+    ],
+    "correctIndex": 1,
+    "explanation": "To save with 'UIImageWriteToSavedPhotosAlbum' or PhotoKit with add-only access, the 'Add' key is enough. It is less invasive than full read access."
+   },
+   {
+    "id": 7,
+    "question": "The user denied camera permission ('.denied'). What is the recommended behavior?",
+    "options": [
+     "Ask again in a loop",
+     "Open the camera anyway",
+     "Explain the need and offer the photo picker or a shortcut to Settings",
+     "Close the app"
+    ],
+    "correctIndex": 2,
+    "explanation": "The system does not ask again after a denial. Alternatives and a link to Settings preserve the experience."
+   },
+   {
+    "id": 8,
+    "question": "What is a limitation of the iOS simulator when working with the camera?",
+    "options": [
+     "It cannot open PhotosPicker",
+     "It has no Info.plist",
+     "It only has a front camera",
+     "It has no real camera, so capture must be tested on a physical device"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the simulator, 'isSourceTypeAvailable(.camera)' returns false. PhotosPicker works with sample photos."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "How do you allow choosing several photos in 'PhotosPicker'?",
+    "options": [
+     "Use 'selection' with an array of 'PhotosPickerItem' and 'maxSelectionCount'",
+     "Create several hidden PhotosPickers",
+     "Call 'loadTransferable' several times without an array",
+     "It is not possible"
+    ],
+    "correctIndex": 0,
+    "explanation": "The version with 'selection: $items' (an array) accepts multiple choices, with an optional limit in 'maxSelectionCount'."
+   },
+   {
+    "id": 2,
+    "question": "What does the 'matching: .videos' parameter do?",
+    "options": [
+     "Records videos with the camera",
+     "Filters the picker to show only videos",
+     "Saves videos to the library",
+     "Removes photos from the device"
+    ],
+    "correctIndex": 1,
+    "explanation": "The 'PHPickerFilter' restricts types: '.images', '.videos', '.livePhotos' or combinations."
+   },
+   {
+    "id": 3,
+    "question": "Which call requests camera access in code?",
+    "options": [
+     "AVCaptureSession.askUser()",
+     "UIImagePicker.request()",
+     "AVCaptureDevice.requestAccess(for: .video)",
+     "PhotosPicker.requestAccess()"
+    ],
+    "correctIndex": 2,
+    "explanation": "It shows the system alert and returns a Bool with the user's answer. Check 'authorizationStatus(for:)' first."
+   },
+   {
+    "id": 4,
+    "question": "When is 'NSPhotoLibraryUsageDescription' needed?",
+    "options": [
+     "Whenever PhotosPicker is used",
+     "Only to use the camera",
+     "Never",
+     "When the app reads the photo library directly via PhotoKit, without PhotosPicker"
+    ],
+    "correctIndex": 3,
+    "explanation": "PhotosPicker does not need it. Broad library access with 'PHPhotoLibrary' requires permission and a justification."
+   },
+   {
+    "id": 5,
+    "question": "'UIImage(data: dados)' receives invalid data. What happens?",
+    "options": [
+     "It crashes the app",
+     "It returns nil, since the initializer is failable",
+     "It returns a black image",
+     "It throws an exception"
+    ],
+    "correctIndex": 1,
+    "explanation": "It returns 'UIImage?'. Use 'if let' or 'guard let' to handle the case where the data is not a valid image."
+   },
+   {
+    "id": 6,
+    "question": "Why is 'session.startRunning()' usually called off the main thread?",
+    "options": [
+     "Because it only works in the background",
+     "Because it creates the Info.plist",
+     "Because it is a blocking call that can freeze the interface",
+     "Because it needs Wi-Fi"
+    ],
+    "correctIndex": 2,
+    "explanation": "Starting the session can take time. The documentation recommends a dedicated queue so the UI does not freeze."
+   }
+  ]
+ }
+]

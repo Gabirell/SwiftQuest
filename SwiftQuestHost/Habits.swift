@@ -7,20 +7,27 @@ final class HabitStore: ObservableObject {
     static let shared = HabitStore()
 
     @Published private(set) var counts: [String: Int]
-    @Published var dailyGoal: Int { didSet { UserDefaults.standard.set(dailyGoal, forKey: "habitGoal") } }
+    @Published var dailyGoal: Int { didSet { UserDefaults.standard.set(dailyGoal, forKey: Storage.key("habitGoal")) } }
     @Published var reminderEnabled: Bool { didSet { UserDefaults.standard.set(reminderEnabled, forKey: "habitReminderOn") } }
     @Published var reminderMinutes: Int { didSet { UserDefaults.standard.set(reminderMinutes, forKey: "habitReminderMinutes") } }
     @Published var notificationsDenied = false
 
-    private let countsKey = "habitCounts"
+    private var countsKey: String { Storage.key("habitCounts") }
 
     private init() {
-        counts = (UserDefaults.standard.dictionary(forKey: countsKey) as? [String: Int]) ?? [:]
-        let goal = UserDefaults.standard.integer(forKey: "habitGoal")
+        counts = (UserDefaults.standard.dictionary(forKey: Storage.key("habitCounts")) as? [String: Int]) ?? [:]
+        let goal = UserDefaults.standard.integer(forKey: Storage.key("habitGoal"))
         dailyGoal = goal > 0 ? goal : 3
         reminderEnabled = UserDefaults.standard.bool(forKey: "habitReminderOn")
         let minutes = UserDefaults.standard.object(forKey: "habitReminderMinutes") as? Int
         reminderMinutes = minutes ?? 19 * 60
+    }
+
+    /// Reloads the current profile's habits (called when the profile changes).
+    func reload() {
+        counts = (UserDefaults.standard.dictionary(forKey: countsKey) as? [String: Int]) ?? [:]
+        let goal = UserDefaults.standard.integer(forKey: Storage.key("habitGoal"))
+        dailyGoal = goal > 0 ? goal : 3
     }
 
     // MARK: Days

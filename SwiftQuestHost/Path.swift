@@ -14,7 +14,7 @@ struct PathStep: Identifiable {
 enum PathBuilder {
     static func steps(_ loc: Localizer) -> [PathStep] {
         let lessons = loc.lessons.map { PathStep(id: "l-\($0.id)", kind: .lesson($0.id), title: $0.title, detail: $0.summary) }
-        let pillars = loc.pillars.sorted { $0.id < $1.id }.map {
+        let pillars = loc.pillars.sorted { (CourseData.categoryRank($0.categoryName), $0.id) < (CourseData.categoryRank($1.categoryName), $1.id) }.map {
             PathStep(id: "p-\($0.id)", kind: .pillar($0.id), title: "\($0.id). \($0.title)", detail: loc.category($0.categoryName))
         }
         return lessons + pillars
@@ -53,6 +53,13 @@ struct PathView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text(loc.t("nav.path")).font(.largeTitle.bold())
                 TodayCard()
+                if let weak = course.weakTopics().first {
+                    Button { route.selection = .focus } label: {
+                        Label("\(loc.t("focus.next")): \(loc.topicName(weak.topic))", systemImage: "target")
+                            .foregroundStyle(.orange)
+                    }
+                    .buttonStyle(.link)
+                }
                 HStack {
                     if let next {
                         Button { route.go(steps[next]) } label: {
@@ -124,7 +131,12 @@ struct ReviewView: View {
                         get: { picked },
                         set: { value in
                             picked = value
-                            if let value { course.markQuestion(item.0, correct: value == item.1.question.correctIndex) }
+                            if let value {
+                                course.markQuestion(item.0, correct: value == item.1.question.correctIndex)
+                                if let topic = reviewTopic(item.0) {
+                                    course.recordAttempt(topic: topic, correct: value == item.1.question.correctIndex)
+                                }
+                            }
                         }))
                     .id(item.0)
                     Button(loc.t("next.question")) { picked = nil; offset += 1 }.buttonStyle(.borderedProminent)
@@ -133,6 +145,16 @@ struct ReviewView: View {
             .padding(28)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+}
+
+/// Statistics topic behind a review-queue key ("p:3:2" -> "p:3", "e:exam-1:4" -> its category).
+@MainActor
+private func reviewTopic(_ key: String) -> String? {
+    let parts = key.split(separator: ":").map(String.init)
+    switch parts.first {
+    case "p" where parts.count >= 2: return "p:\(parts[1])"
+    default: return nil
     }
 }
 

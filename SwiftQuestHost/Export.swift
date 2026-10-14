@@ -20,6 +20,11 @@ enum ProgressExporter {
             let r = course.progress(for: p)
             md += "| \(p.id). \(p.title) | \(r.percentage)% | \(r.quizScore)/\(p.quiz.count) | \(r.exercisesDone)/\(p.exercises.count) |\n"
         }
+        let weak = course.weakTopics()
+        if !weak.isEmpty {
+            md += "\n## \(loc.t("nav.focus"))\n\n"
+            for w in weak { md += "- \(loc.topicName(w.topic)) — \(Int((w.stat.recentAccuracy * 100).rounded()))% (\(w.stat.correct)/\(w.stat.attempts))\n" }
+        }
         md += "\n## \(loc.t("nav.exams"))\n\n"
         for e in loc.exams { md += "- [\(course.snapshot.passedExams.contains(e.id) ? "x" : " ")] \(e.title)\n" }
         md += "\n## \(loc.t("nav.badges"))\n\n"
@@ -44,6 +49,7 @@ enum ProgressExporter {
             "passedExams": course.snapshot.passedExams,
             "solvedChallenges": course.snapshot.solvedChallenges,
             "savedTerms": course.snapshot.savedTerms,
+            "needsAttention": course.weakTopics().map { ["topic": $0.topic, "recentAccuracy": $0.stat.recentAccuracy, "attempts": $0.stat.attempts] as [String: Any] },
             "pillars": loc.pillars.map { p -> [String: Any] in
                 let r = course.progress(for: p)
                 return ["id": p.id, "title": p.title, "percent": r.percentage, "quiz": r.quizScore, "exercises": r.exercisesDone]

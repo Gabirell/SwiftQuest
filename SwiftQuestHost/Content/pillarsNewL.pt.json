@@ -1,0 +1,677 @@
+[
+ {
+  "id": 62,
+  "title": "Widgets com WidgetKit",
+  "theory": "Um widget é uma pequena visão SwiftUI que mostra informação do seu app na Tela de Início, na Tela Bloqueada, na Central de Notificações ou no StandBy. Ele vive em uma 'widget extension', um target separado criado em File > New > Target > Widget Extension. O ponto de entrada é uma 'struct' marcada com '@main' que conforma a 'Widget' e devolve uma 'WidgetConfiguration' (como 'StaticConfiguration' ou 'AppIntentConfiguration'). Um widget não é um app em execução: o sistema pede ao seu 'TimelineProvider' uma linha do tempo, ou seja, vários 'TimelineEntry' (cada um com uma 'date') já prontos, e depois só exibe a entrada certa no horário certo. O provider implementa 'placeholder(in:)', 'getSnapshot(in:completion:)' e 'getTimeline(in:completion:)'; com configuração editável pelo usuário usa-se o 'AppIntentTimelineProvider', cuja versão é async. A política de recarga ('.atEnd', '.after(date)' ou '.never') diz quando pedir uma nova linha do tempo, mas o sistema decide: cada widget tem um orçamento diário de atualizações (o orçamento é dinâmico e por widget; para um widget muito visto costuma ficar entre 40 e 70 por dia), então não tente atualizar a cada segundo. Para forçar uma atualização depois de uma mudança no app, chame 'WidgetCenter.shared.reloadAllTimelines()'. Como app e extension são processos distintos, compartilhe dados por meio de um App Group ('UserDefaults(suiteName:)' ou uma pasta compartilhada). Os tamanhos são definidos com '.supportedFamilies' ('.systemSmall', '.systemMedium', '.systemLarge', '.accessoryCircular' etc.), e desde o iOS 17 widgets podem ser interativos com 'Button(intent:)' e 'Toggle(isOn:intent:)', que executam um App Intent sem abrir o app. Já as Live Activities (ActivityKit) usam a mesma extension para mostrar um evento em andamento na Tela Bloqueada e na Dynamic Island, mas são iniciadas e atualizadas pelo app. Para testar, use '#Preview(as: .systemSmall)' com a lista de entradas da linha do tempo.",
+  "appleDocUrl": "https://developer.apple.com/documentation/widgetkit",
+  "category": "Recursos do Sistema",
+  "corporateCase": "Um app de entregas oferece um widget médio que mostra o status do pedido e a previsão de chegada. O app grava o estado em um App Group sempre que o pedido muda e chama 'reloadAllTimelines()', enquanto uma Live Activity acompanha o entregador em tempo real na Tela Bloqueada.",
+  "gameCase": "Um jogo de fazenda mostra em um widget pequeno quanto tempo falta para a colheita ficar pronta, usando uma linha do tempo com entradas futuras em vez de atualizar a cada minuto. Um botão com 'Button(intent:)' permite regar as plantas direto da Tela de Início.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare o ponto de entrada do widget, conformando ao protocolo certo",
+    "codeSnippet": "@main\nstruct ClimaWidget: ___ {\n    var body: some WidgetConfiguration { ... }\n}",
+    "correctAnswer": "Widget",
+    "hint": "O protocolo tem o mesmo nome do conceito: um ... da Tela de Início."
+   },
+   {
+    "id": 2,
+    "question": "Faça a struct representar um ponto da linha do tempo",
+    "codeSnippet": "struct ClimaEntry: ___ {\n    let date: Date\n    let temperatura: Int\n}",
+    "correctAnswer": "TimelineEntry",
+    "hint": "Todo item da linha do tempo exige a propriedade 'date'."
+   },
+   {
+    "id": 3,
+    "question": "Limite o widget ao menor tamanho da Tela de Início",
+    "codeSnippet": ".supportedFamilies([.___])",
+    "correctAnswer": "systemSmall",
+    "hint": "O caso começa com 'system' e termina com o tamanho."
+   },
+   {
+    "id": 4,
+    "question": "Peça uma nova linha do tempo para daqui a 15 minutos",
+    "codeSnippet": "let proxima = Date().addingTimeInterval(900)\nTimeline(entries: entradas, policy: .___(proxima))",
+    "correctAnswer": "after",
+    "hint": "A política recebe uma data: 'recarregar ... desta data'."
+   },
+   {
+    "id": 5,
+    "question": "Faça o botão do widget executar um App Intent sem abrir o app",
+    "codeSnippet": "Button(___: IncrementarIntent()) {\n    Text(\"+1\")\n}",
+    "correctAnswer": "intent",
+    "hint": "O rótulo do argumento tem o nome do tipo de ação que ele recebe."
+   },
+   {
+    "id": 6,
+    "question": "Após salvar dados no app, peça ao sistema para recarregar todas as linhas do tempo",
+    "codeSnippet": "WidgetCenter.shared.___()",
+    "correctAnswer": "reloadAllTimelines",
+    "hint": "O nome do método diz: 'recarregar todas as timelines'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Onde um widget do WidgetKit é implementado?",
+    "options": [
+     "No target principal do app, dentro do AppDelegate",
+     "Em um Swift Package sem target",
+     "Em uma widget extension, um target separado",
+     "Dentro de uma View com o modificador '.widget()'"
+    ],
+    "correctIndex": 2,
+    "explanation": "Widgets rodam em um processo próprio, por isso ficam em uma widget extension criada via File > New > Target."
+   },
+   {
+    "id": 2,
+    "question": "Qual a função do TimelineProvider?",
+    "options": [
+     "Fornecer ao sistema as entradas (TimelineEntry) com datas para o widget exibir",
+     "Desenhar o widget na tela a cada segundo",
+     "Enviar notificações push ao widget",
+     "Salvar os dados do app no iCloud"
+    ],
+    "correctIndex": 0,
+    "explanation": "O provider prepara a linha do tempo antecipadamente; o sistema a exibe nos horários indicados sem executar seu código o tempo todo."
+   },
+   {
+    "id": 3,
+    "question": "Um widget precisa mostrar um valor que o app salvou. Qual é a forma correta de compartilhar esse dado?",
+    "options": [
+     "UserDefaults.standard, pois é o mesmo para app e widget",
+     "Uma variável global no app",
+     "Passar o valor pelo Info.plist",
+     "Um App Group, por exemplo UserDefaults(suiteName:) com o identificador do grupo"
+    ],
+    "correctIndex": 3,
+    "explanation": "App e extension têm sandboxes diferentes; UserDefaults.standard não é compartilhado. É preciso habilitar o App Group nos dois targets."
+   },
+   {
+    "id": 4,
+    "question": "Por que não é boa ideia criar uma timeline que se atualiza a cada segundo?",
+    "options": [
+     "Porque o SwiftUI não suporta segundos",
+     "Porque cada widget tem um orçamento limitado de atualizações por dia e o sistema pode adiar ou descartar as recargas excedentes",
+     "Porque widgets só podem ter uma entrada",
+     "Porque a App Store rejeita widgets com datas"
+    ],
+    "correctIndex": 1,
+    "explanation": "O sistema limita as atualizações com um orçamento dinâmico (tipicamente 40 a 70 por dia para um widget muito visto) e pode adiar as solicitações excedentes, para poupar bateria. Prefira entradas futuras pré-calculadas e Text(date, style: .timer) para contagens."
+   },
+   {
+    "id": 5,
+    "question": "Qual API permite um widget (iOS 17+) executar uma ação ao toque sem abrir o app?",
+    "options": [
+     "Button(action:) com uma closure comum",
+     "Button(intent:) ou Toggle(isOn:intent:) com um App Intent",
+     "NavigationLink dentro do widget",
+     "onTapGesture"
+    ],
+    "correctIndex": 1,
+    "explanation": "Widgets não executam closures arbitrárias; apenas Button e Toggle ligados a um AppIntent são interativos."
+   },
+   {
+    "id": 6,
+    "question": "O usuário completa uma tarefa no app e o widget continua mostrando o valor antigo. Qual a melhor correção?",
+    "options": [
+     "Pedir ao usuário que reinstale o app",
+     "Criar uma Task infinita dentro do widget",
+     "Trocar o widget para systemLarge",
+     "Gravar o novo estado no App Group e chamar WidgetCenter.shared.reloadAllTimelines() (ou reloadTimelines(ofKind:))"
+    ],
+    "correctIndex": 3,
+    "explanation": "O app sabe quando os dados mudam e pode avisar o WidgetKit. O widget não pode rodar tarefas em segundo plano por conta própria."
+   },
+   {
+    "id": 7,
+    "question": "Qual a relação entre Live Activities e widgets?",
+    "options": [
+     "Usam ActivityKit e a interface fica na widget extension, mas o app (ou push) inicia e atualiza a atividade",
+     "Live Activities são widgets que se atualizam sozinhos sem o app",
+     "Só funcionam no Apple Watch",
+     "Substituem totalmente o TimelineProvider"
+    ],
+    "correctIndex": 0,
+    "explanation": "A interface é definida com ActivityConfiguration na extension; o ciclo de vida é controlado pelo app com Activity.request e update."
+   },
+   {
+    "id": 8,
+    "question": "Como um toque no widget pode abrir uma tela específica do app?",
+    "options": [
+     "Chamando NavigationStack dentro do widget",
+     "Usando UIApplication.shared.open dentro da view",
+     "Com widgetURL(_:) ou Link, tratando a URL no app com onOpenURL",
+     "Não é possível abrir o app a partir de um widget"
+    ],
+    "correctIndex": 2,
+    "explanation": "widgetURL e Link atribuem uma URL (deep link) ao toque; o app a recebe e navega, por exemplo com '.onOpenURL'."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual método do provider devolve a entrada usada na galeria de widgets e para pré-visualizações rápidas?",
+    "options": [
+     "reloadTimeline",
+     "getSnapshot",
+     "makeBody",
+     "getPlaceholder2"
+    ],
+    "correctIndex": 1,
+    "explanation": "'getSnapshot' fornece uma entrada rápida para a galeria; 'placeholder' é o esboço exibido enquanto os dados carregam; 'getTimeline' fornece a linha do tempo real."
+   },
+   {
+    "id": 2,
+    "question": "Qual tipo de configuração usar quando o usuário deve poder editar parâmetros do widget (por exemplo, escolher uma cidade)?",
+    "options": [
+     "StaticConfiguration",
+     "ActivityConfiguration",
+     "ListConfiguration",
+     "AppIntentConfiguration com um intent de configuração"
+    ],
+    "correctIndex": 3,
+    "explanation": "'StaticConfiguration' não tem opções editáveis. 'AppIntentConfiguration' usa um WidgetConfigurationIntent com @Parameter que o usuário edita no widget."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece com um widget cujo TimelineProvider retorna policy '.never'?",
+    "options": [
+     "O sistema não pede nova linha do tempo até o app chamar WidgetCenter para recarregar",
+     "Ele é removido da tela",
+     "Ele recarrega a cada hora",
+     "O app trava"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.never' é útil quando só o app sabe quando o conteúdo muda; ele então dispara a recarga."
+   },
+   {
+    "id": 4,
+    "question": "Qual modificador (iOS 17+) define o fundo que o sistema pode remover em contextos como StandBy?",
+    "options": [
+     "background(Color.clear)",
+     "widgetBackground()",
+     "containerBackground(for: .widget)",
+     "ignoresSafeArea()"
+    ],
+    "correctIndex": 2,
+    "explanation": "Desde o iOS 17 o fundo do widget deve ser declarado com containerBackground(for: .widget) para que o sistema o adapte ou remova."
+   },
+   {
+    "id": 5,
+    "question": "Como mostrar uma pré-visualização do widget no Xcode com várias entradas?",
+    "options": [
+     "Rodar o app e esperar a atualização",
+     "Usar PreviewProvider apenas com o tamanho do iPhone",
+     "Não é possível pré-visualizar widgets",
+     "Usar #Preview(as: .systemSmall) { MeuWidget() } timeline: { entradas }"
+    ],
+    "correctIndex": 3,
+    "explanation": "A macro #Preview com 'as:' e 'timeline:' mostra o widget na família escolhida e permite percorrer as entradas no canvas."
+   },
+   {
+    "id": 6,
+    "question": "Um widget pode conter um ScrollView rolável ou um TextField para digitação?",
+    "options": [
+     "Sim, igual a um app",
+     "Não: widgets são exibições estáticas; só Button/Toggle com intent e links são interativos",
+     "Apenas no iPad",
+     "Apenas se usar Task"
+    ],
+    "correctIndex": 1,
+    "explanation": "Widgets não rolam nem aceitam texto. Para abrir telas do app, use widgetURL ou Link."
+   }
+  ]
+ },
+ {
+  "id": 63,
+  "title": "App Intents, Siri e Atalhos",
+  "theory": "O framework App Intents permite expor ações e conteúdo do seu app ao sistema, para que o Siri, o app Atalhos, o Spotlight, widgets, controles e o botão de Ação os usem. Uma ação é uma 'struct' que conforma ao protocolo 'AppIntent', com um 'static let title' e o método 'func perform() async throws -> some IntentResult', onde está a lógica. Parâmetros são declarados com o property wrapper '@Parameter', e o sistema os pede ao usuário se faltarem; 'parameterSummary' controla como a frase da ação aparece no app Atalhos. Para tipos próprios, use 'AppEnum' (conjunto fixo de valores, com 'caseDisplayRepresentations') ou 'AppEntity' (objetos como uma tarefa ou um livro, com um 'EntityQuery' que sabe buscá-los por id ou sugeri-los). Um 'AppShortcutsProvider' lista 'AppShortcut' com frases faladas, e cada frase precisa conter '\\(.applicationName)'; assim, os atalhos funcionam logo após a instalação, sem configuração, e aparecem no Siri e no Spotlight. As mesmas intents alimentam 'Button(intent:)' em widgets e ações de 'ControlWidget'. Para devolver algo ao usuário, retorne '.result(dialog:)' ou um valor tipado ('ReturnsValue'); use 'requestConfirmation()' antes de ações destrutivas. Do ponto de vista de privacidade, uma intent pode ser executada pela tela bloqueada ou por voz, então ações sensíveis devem exigir autenticação ('authenticationPolicy') e nunca expor dados privados em respostas faladas. Doar intents ('donate') informa ao sistema o que o usuário faz, para sugestões; o App Intents moderno reduz essa necessidade. Erros de implementação comuns: esquecer a frase com o nome do app, fazer trabalho pesado na thread principal e criar 'perform()' que depende de uma tela aberta.",
+  "appleDocUrl": "https://developer.apple.com/documentation/appintents/appintent",
+  "category": "Recursos do Sistema",
+  "corporateCase": "Um app de tarefas expõe a intent 'Adicionar Tarefa' com um parâmetro de título e uma 'AppEntity' de lista. O usuário diz 'Adicione uma tarefa no Tarefas' ao Siri ou monta um atalho que combina a ação com o app Lembretes, sem abrir o app, e a ação de apagar tudo exige confirmação e autenticação.",
+  "gameCase": "Um jogo de corrida declara um 'AppEnum' com os circuitos e uma intent 'Iniciar Corrida' que abre direto no circuito escolhido. O jogador a associa ao botão de Ação do iPhone ou a uma frase do Siri.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare uma ação do app que o sistema pode executar",
+    "codeSnippet": "struct AbrirTarefaIntent: ___ {\n    static let title: LocalizedStringResource = \"Abrir tarefa\"\n}",
+    "correctAnswer": "AppIntent",
+    "hint": "O protocolo do framework App Intents que representa uma ação."
+   },
+   {
+    "id": 2,
+    "question": "Declare um parâmetro que o sistema pedirá ao usuário",
+    "codeSnippet": "@___(title: \"Nome\") var nome: String",
+    "correctAnswer": "Parameter",
+    "hint": "O property wrapper tem o nome de 'parâmetro' em inglês."
+   },
+   {
+    "id": 3,
+    "question": "Implemente o método que contém a lógica da intent",
+    "codeSnippet": "func ___() async throws -> some IntentResult {\n    return .result()\n}",
+    "correctAnswer": "perform",
+    "hint": "O verbo em inglês que significa 'executar'."
+   },
+   {
+    "id": 4,
+    "question": "Declare um tipo com um conjunto fixo de valores escolhíveis na intent",
+    "codeSnippet": "enum Prioridade: String, ___ {\n    case alta, baixa\n}",
+    "correctAnswer": "AppEnum",
+    "hint": "Um enum para o App Intents; o nome junta 'App' e 'Enum'."
+   },
+   {
+    "id": 5,
+    "question": "Registre os atalhos que aparecem no Siri e no Spotlight sem configuração",
+    "codeSnippet": "struct MeusAtalhos: ___ {\n    static var appShortcuts: [AppShortcut] { ... }\n}",
+    "correctAnswer": "AppShortcutsProvider",
+    "hint": "O tipo 'provedor' de AppShortcuts."
+   },
+   {
+    "id": 6,
+    "question": "Modele um objeto do app (como uma tarefa) para que o sistema o reconheça como parâmetro",
+    "codeSnippet": "struct TarefaEntity: ___ {\n    var id: UUID\n    var displayRepresentation: DisplayRepresentation { ... }\n}",
+    "correctAnswer": "AppEntity",
+    "hint": "Parente do AppEnum, mas para objetos com identidade."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Para que serve o método perform() de um AppIntent?",
+    "options": [
+     "Para definir o título da ação",
+     "Para registrar a frase do Siri",
+     "Para executar a lógica da ação e devolver um IntentResult",
+     "Para desenhar a interface do atalho"
+    ],
+    "correctIndex": 2,
+    "explanation": "perform() é assíncrono e lança erros; é nele que a ação faz seu trabalho e devolve o resultado (com ou sem diálogo/valor)."
+   },
+   {
+    "id": 2,
+    "question": "O que acontece se um parâmetro obrigatório ficar sem valor quando a intent é chamada pela voz?",
+    "options": [
+     "O sistema pergunta ao usuário pelo valor (pode-se customizar a pergunta)",
+     "O app trava",
+     "perform() é chamado com valor aleatório",
+     "A intent é ignorada silenciosamente"
+    ],
+    "correctIndex": 0,
+    "explanation": "Parâmetros do @Parameter sem valor disparam uma resolução: o sistema pede o dado ao usuário antes de chamar perform()."
+   },
+   {
+    "id": 3,
+    "question": "Qual requisito vale para as frases de um AppShortcut?",
+    "options": [
+     "Devem ter no máximo uma palavra",
+     "Só podem ser em inglês",
+     "Devem terminar com ponto de interrogação",
+     "Precisam incluir o nome do app via \\(.applicationName)"
+    ],
+    "correctIndex": 3,
+    "explanation": "O nome do app contextualiza a frase para o Siri. Sem ele, o compilador/validação de App Shortcuts reclama."
+   },
+   {
+    "id": 4,
+    "question": "Qual a diferença entre AppEnum e AppEntity?",
+    "options": [
+     "Nenhuma, são sinônimos",
+     "AppEnum modela um conjunto fixo de casos; AppEntity modela objetos dinâmicos com identidade, buscados por um EntityQuery",
+     "AppEntity só funciona em widgets",
+     "AppEnum precisa de banco de dados"
+    ],
+    "correctIndex": 1,
+    "explanation": "Prioridades ou circuitos fixos viram AppEnum; tarefas, livros ou contatos do usuário viram AppEntity."
+   },
+   {
+    "id": 5,
+    "question": "Uma intent 'Apagar todos os dados' pode ser acionada por voz com o iPhone bloqueado. Qual a melhor prática?",
+    "options": [
+     "Executar direto para ser mais rápido",
+     "Exigir autenticação (authenticationPolicy) e pedir confirmação com requestConfirmation()",
+     "Esconder a intent do Siri sem exigir mais nada",
+     "Armazenar a senha do usuário na intent"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ações destrutivas ou sensíveis devem exigir desbloqueio do dispositivo e confirmação, nunca confiar apenas em quem fala."
+   },
+   {
+    "id": 6,
+    "question": "Como a mesma intent pode ser reaproveitada em um widget interativo?",
+    "options": [
+     "Copiando o código para outra struct",
+     "Registrando-a no Info.plist",
+     "Não é possível",
+     "Passando-a a Button(intent:) ou Toggle(isOn:intent:) na view do widget"
+    ],
+    "correctIndex": 3,
+    "explanation": "O mesmo AppIntent alimenta Siri, Atalhos, widgets e controles, evitando duplicação (o target deve compartilhar o código)."
+   },
+   {
+    "id": 7,
+    "question": "O que controla o parameterSummary?",
+    "options": [
+     "A frase legível da ação e a ordem dos parâmetros exibidas no app Atalhos",
+     "A senha da intent",
+     "O tempo limite de perform()",
+     "A cor do ícone do atalho"
+    ],
+    "correctIndex": 0,
+    "explanation": "Summary(\"Adicionar \\(\\.$titulo)\") define como a ação aparece no editor de Atalhos."
+   },
+   {
+    "id": 8,
+    "question": "O que significa 'doar' (donate) uma intent?",
+    "options": [
+     "Enviar o código da intent a outros desenvolvedores",
+     "Cobrar o usuário pela ação",
+     "Informar ao sistema que o usuário realizou a ação, para que ele possa sugeri-la depois",
+     "Duplicar a intent no iCloud"
+    ],
+    "correctIndex": 2,
+    "explanation": "A doação alimenta sugestões inteligentes (Siri, Spotlight) com base no comportamento real do usuário."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual propriedade faz a intent abrir o app em primeiro plano ao ser executada?",
+    "options": [
+     "static var foreground = YES",
+     "static let openAppWhenRun = true",
+     "@Parameter(open: true)",
+     "var launch: Bool"
+    ],
+    "correctIndex": 1,
+    "explanation": "openAppWhenRun = true leva o app à frente; sem ela, a intent roda sem abrir a interface. A partir do iOS 26, openAppWhenRun está obsoleta em favor de 'supportedModes' (por exemplo, '.foreground')."
+   },
+   {
+    "id": 2,
+    "question": "Qual tipo de retorno de perform() devolve uma frase falada/mostrada ao usuário?",
+    "options": [
+     "return print(\"Tarefa criada\")",
+     "return \"Tarefa criada\" sem tipo",
+     "return Task.result",
+     "return .result(dialog: \"Tarefa criada\")"
+    ],
+    "correctIndex": 3,
+    "explanation": "'.result(dialog:)' (com o tipo ProvidesDialog) é a forma de responder por voz ou texto."
+   },
+   {
+    "id": 3,
+    "question": "O que o EntityQuery faz em um AppEntity?",
+    "options": [
+     "Busca entidades por id e sugere opções ao usuário",
+     "Cria a interface",
+     "Faz login",
+     "Gera frases do Siri"
+    ],
+    "correctIndex": 0,
+    "explanation": "O sistema precisa resolver ids e listar sugestões, ex.: entities(for:) e suggestedEntities()."
+   },
+   {
+    "id": 4,
+    "question": "Onde atalhos declarados em um AppShortcutsProvider aparecem?",
+    "options": [
+     "Somente após o usuário criar manualmente cada um",
+     "Apenas na App Store",
+     "No app Atalhos, no Spotlight e no Siri, automaticamente após a instalação",
+     "Apenas no Apple Watch"
+    ],
+    "correctIndex": 2,
+    "explanation": "É a grande vantagem do App Shortcuts: disponíveis sem configuração do usuário."
+   },
+   {
+    "id": 5,
+    "question": "Qual cuidado de privacidade vale ao responder por voz com o dialog da intent?",
+    "options": [
+     "Nenhum, o dialog é sempre privado",
+     "Sempre falar o nome completo do usuário",
+     "Salvar o diálogo em log público",
+     "Evitar falar dados sensíveis (saldo, mensagens) quando o dispositivo pode estar bloqueado ou em público"
+    ],
+    "correctIndex": 3,
+    "explanation": "Respostas faladas podem ser ouvidas por outras pessoas; combine com autenticação para dados sensíveis."
+   },
+   {
+    "id": 6,
+    "question": "Qual a vantagem de colocar a lógica de uma intent em um serviço compartilhado?",
+    "options": [
+     "Evita testar o código",
+     "A UI, a intent, o widget e os testes reaproveitam a mesma implementação",
+     "Faz o Siri entender mais idiomas",
+     "Elimina a necessidade de AppEntity"
+    ],
+    "correctIndex": 1,
+    "explanation": "Separar a regra de negócio da apresentação é o princípio por trás de uma boa intent."
+   }
+  ]
+ },
+ {
+  "id": 64,
+  "title": "iPadOS: Multitarefa e Interfaces Adaptáveis",
+  "theory": "No iPad o seu app pode rodar em tela cheia, em Split View ao lado de outro app, em Slide Over, em várias janelas ou no Stage Manager, onde a janela tem tamanho livre. Por isso você não deve assumir o tamanho do aparelho nem usar 'UIScreen.main.bounds': o layout precisa reagir ao espaço realmente disponível. A ferramenta básica são as 'size classes': cada janela tem uma classe horizontal e uma vertical, '.compact' ou '.regular'. Em SwiftUI você as lê com '@Environment(\\.horizontalSizeClass)'; um iPad em tela cheia é regular x regular, mas em Split View estreito vira compact na horizontal, como um iPhone. 'ViewThatFits' escolhe o primeiro filho que cabe no espaço, ótimo para trocar 'HStack' por 'VStack'. Para listas com detalhe, use 'NavigationSplitView' com duas ou três colunas (sidebar, content, detail); ele se comporta como pilha em larguras compactas e mostra colunas lado a lado em larguras amplas, e 'columnVisibility' controla quais aparecem. Várias janelas usam 'WindowGroup' (inclusive com id) e '@Environment(\\.openWindow)'. Arrastar e soltar usa 'draggable' (o tipo deve ser 'Transferable') e 'dropDestination(for:)'. Teclado e ponteiro são cidadãos de primeira classe: '.keyboardShortcut', 'commands' (menu na barra do iPadOS), '.hoverEffect' e 'contextMenu'. Para testar, use previews com diferentes dispositivos e orientações, o Simulator com vários iPads e redimensione ou ative Split View e Stage Manager. Erros comuns: valores fixos de largura, ignorar a orientação e não oferecer atalhos de teclado.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/navigationsplitview",
+  "category": "Recursos do Sistema",
+  "corporateCase": "Um app de e-mail corporativo usa 'NavigationSplitView' com três colunas (caixas, mensagens, leitura) no iPad e uma pilha no iPhone. Atalhos de teclado como Cmd+N e arrastar anexos para a janela de composição aumentam a produtividade, e o usuário abre vários e-mails em janelas separadas.",
+  "gameCase": "Um jogo de tabuleiro mostra o tabuleiro e o chat lado a lado quando a largura é regular e usa 'ViewThatFits' para empilhá-los em Split View estreito. Jogadores arrastram peças com 'draggable' e 'dropDestination', e o cursor destaca as casas com 'hoverEffect'.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Leia a size class horizontal pelo ambiente do SwiftUI",
+    "codeSnippet": "@Environment(\\.___) private var sizeClass",
+    "correctAnswer": "horizontalSizeClass",
+    "hint": "A chave do ambiente é 'horizontal' + 'SizeClass'."
+   },
+   {
+    "id": 2,
+    "question": "Escolha automaticamente o primeiro layout que cabe no espaço",
+    "codeSnippet": "___ {\n    HStack { Foto(); Texto() }\n    VStack { Foto(); Texto() }\n}",
+    "correctAnswer": "ViewThatFits",
+    "hint": "O nome diz: 'a view que ... (cabe)'."
+   },
+   {
+    "id": 3,
+    "question": "Crie uma interface de colunas com sidebar e detalhe",
+    "codeSnippet": "___ {\n    Sidebar()\n} detail: {\n    Detalhe()\n}",
+    "correctAnswer": "NavigationSplitView",
+    "hint": "Combina 'Navigation' e 'SplitView'."
+   },
+   {
+    "id": 4,
+    "question": "Obtenha a ação do ambiente que abre uma nova janela",
+    "codeSnippet": "@Environment(\\.___) private var openWindow",
+    "correctAnswer": "openWindow",
+    "hint": "O nome da ação é verbo + substantivo: 'abrir' + 'janela'."
+   },
+   {
+    "id": 5,
+    "question": "Permita arrastar o item (que conforma a Transferable)",
+    "codeSnippet": "Text(tarefa.titulo)\n    .___(tarefa)",
+    "correctAnswer": "draggable",
+    "hint": "O modificador começa com 'drag' e termina com 'able'."
+   },
+   {
+    "id": 6,
+    "question": "Associe Cmd+N a um botão",
+    "codeSnippet": "Button(\"Novo\") { criar() }\n    .___(\"n\", modifiers: .command)",
+    "correctAnswer": "keyboardShortcut",
+    "hint": "Modificador de atalho de teclado."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual a combinação de size classes de um iPad em tela cheia?",
+    "options": [
+     "compact x compact",
+     "compact x regular",
+     "regular x regular",
+     "regular x compact"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tela cheia no iPad tem largura e altura regulares. Em Split View estreito, a largura vira compact."
+   },
+   {
+    "id": 2,
+    "question": "Por que evitar UIScreen.main.bounds para decidir o layout no iPad?",
+    "options": [
+     "O app pode ocupar só parte da tela (Split View, Stage Manager, janelas), então o tamanho da tela não é o da janela",
+     "Ele foi removido do iOS",
+     "Ele só funciona no iPhone",
+     "Ele consome muita bateria"
+    ],
+    "correctIndex": 0,
+    "explanation": "Use size classes, ViewThatFits ou GeometryReader, que refletem o espaço real da janela."
+   },
+   {
+    "id": 3,
+    "question": "Como o NavigationSplitView se comporta em largura compact?",
+    "options": [
+     "Mostra três colunas espremidas",
+     "Fecha o app",
+     "Esconde o detalhe para sempre",
+     "Colapsa para uma navegação em pilha"
+    ],
+    "correctIndex": 3,
+    "explanation": "O mesmo código funciona no iPhone e no iPad: colunas quando há espaço, pilha quando não há."
+   },
+   {
+    "id": 4,
+    "question": "Qual a função do ViewThatFits?",
+    "options": [
+     "Redimensiona imagens para caber",
+     "Exibe o primeiro filho que cabe no espaço disponível",
+     "Ajusta a fonte automaticamente em todo o app",
+     "Rotaciona a tela"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ele avalia os filhos na ordem e escolhe o primeiro cujo tamanho ideal cabe; coloque o mais largo primeiro."
+   },
+   {
+    "id": 5,
+    "question": "O que é necessário para usar .draggable(_:) com um tipo próprio?",
+    "options": [
+     "O tipo ser uma class",
+     "O tipo conformar a Transferable",
+     "O app estar em Stage Manager",
+     "Nada, aceita qualquer tipo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Transferable descreve como o valor é serializado para arrastar e soltar, copiar/colar e compartilhar."
+   },
+   {
+    "id": 6,
+    "question": "Como abrir uma nova janela com conteúdo específico no iPad usando SwiftUI?",
+    "options": [
+     "Criar um segundo UIWindow manualmente em SwiftUI",
+     "Usar NavigationLink",
+     "Reiniciar o app",
+     "Declarar um WindowGroup com id e chamar openWindow(id:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Cada WindowGroup define um tipo de cena; openWindow abre uma nova instância (também com valor)."
+   },
+   {
+    "id": 7,
+    "question": "Qual recurso melhora a experiência com trackpad e mouse ao passar o ponteiro sobre um botão?",
+    "options": [
+     "hoverEffect",
+     "blur",
+     "redacted",
+     "scaleToFit"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.hoverEffect(.highlight)' (ou .lift) dá feedback visual ao ponteiro; 'onHover' detecta a entrada."
+   },
+   {
+    "id": 8,
+    "question": "Como testar o mesmo layout em vários tamanhos de iPad sem rodar o app?",
+    "options": [
+     "Não há como",
+     "Só em aparelho físico",
+     "Usar #Preview com diferentes dispositivos/orientações e variantes no canvas, e depois o Simulator com Split View",
+     "Mudar o Info.plist"
+    ],
+    "correctIndex": 2,
+    "explanation": "O canvas permite comparar vários previews; o Simulator valida multitarefa real (Split View, Slide Over, Stage Manager)."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual propriedade do ambiente indica se a largura é compact ou regular?",
+    "options": [
+     "verticalSizeClass",
+     "horizontalSizeClass",
+     "userInterfaceStyle",
+     "dynamicTypeSize"
+    ],
+    "correctIndex": 1,
+    "explanation": "horizontalSizeClass refere-se à largura; verticalSizeClass à altura."
+   },
+   {
+    "id": 2,
+    "question": "O que o Stage Manager muda para o desenvolvedor?",
+    "options": [
+     "O app deixa de poder usar SwiftUI",
+     "As size classes deixam de existir",
+     "Só funciona com apps UIKit",
+     "As janelas podem ter tamanhos arbitrários e redimensionáveis, então o layout deve ser flexível"
+    ],
+    "correctIndex": 3,
+    "explanation": "Layouts adaptativos baseados no espaço disponível funcionam em todos os modos."
+   },
+   {
+    "id": 3,
+    "question": "Qual closure recebe os itens soltos em dropDestination?",
+    "options": [
+     "Um array dos itens soltos e a localização do drop; retorna Bool",
+     "Somente uma string",
+     "Nada",
+     "Uma View"
+    ],
+    "correctIndex": 0,
+    "explanation": "A assinatura é '.dropDestination(for: T.self) { items, location in ... return true }'."
+   },
+   {
+    "id": 4,
+    "question": "Para que serve columnVisibility no NavigationSplitView?",
+    "options": [
+     "Para trocar a cor das colunas",
+     "Para desativar o detalhe",
+     "Para controlar programaticamente quais colunas ficam visíveis",
+     "Para definir o idioma"
+    ],
+    "correctIndex": 2,
+    "explanation": "Um Binding<NavigationSplitViewVisibility> permite mostrar ou esconder a sidebar, por exemplo."
+   },
+   {
+    "id": 5,
+    "question": "Qual a forma de oferecer comandos no menu do iPad e atalhos descobertos ao segurar Cmd?",
+    "options": [
+     "print() no console",
+     "Usar apenas botões na tela",
+     "Arquivo Menu.plist",
+     "O modificador .commands { } na Scene com CommandMenu/CommandGroup e .keyboardShortcut"
+    ],
+    "correctIndex": 3,
+    "explanation": "commands integra o app à barra de menus do iPadOS e ao overlay de atalhos."
+   },
+   {
+    "id": 6,
+    "question": "Qual a melhor abordagem para um painel lateral fixo de 320 pt no iPad?",
+    "options": [
+     "Usar frame fixo sempre, ignorando o tamanho da janela",
+     "Mostrá-lo só em horizontalSizeClass == .regular (ou via NavigationSplitView) e ter alternativa para compact",
+     "Remover o iPad do suporte",
+     "Usar UIScreen.main.bounds"
+    ],
+    "correctIndex": 1,
+    "explanation": "Em Split View estreito um painel fixo comprimiria o conteúdo; adapte pelo espaço real."
+   }
+  ]
+ }
+]

@@ -1,0 +1,677 @@
+[
+ {
+  "id": 46,
+  "title": "SwiftUI: Listas, Navegación y Pestañas",
+  "theory": "En SwiftUI, 'List' muestra filas desplazables y 'ForEach' genera vistas a partir de una colección; ambos deben identificar cada elemento, ya sea mediante la conformidad a 'Identifiable' (propiedad 'id') o mediante el parámetro 'id:' con un key path como '\\.self'. 'Section' agrupa filas con un encabezado, 'swipeActions' agrega botones al deslizar la fila y 'onDelete' y 'onMove' (disponibles en vistas dinámicas como 'ForEach', no en filas estáticas) permiten eliminar y reordenar. La navegación moderna usa 'NavigationStack': declaras 'NavigationLink(value:)' con un valor 'Hashable' y, en un único lugar, 'navigationDestination(for:)' indica qué vista mostrar para ese tipo. Para navegar desde código, guarda un 'NavigationPath' en '@State', pásalo como 'NavigationStack(path:)' y usa 'append' para apilar y 'removeLast' para volver. El título y la barra de herramientas se definen en la vista de contenido, con 'navigationTitle' y 'toolbar', nunca en el propio NavigationStack. 'TabView' con 'Tab' crea pestañas, 'NavigationSplitView' arma diseños de dos o tres columnas (que pasan a pila en el iPhone), 'searchable' agrega el campo de búsqueda ligado a un texto (tú filtras los datos) y 'refreshable' habilita arrastrar para actualizar con un closure 'async'. Errores comunes: olvidar el 'navigationDestination' correspondiente al tipo del valor, usar 'ForEach(0..<array.count)' con datos mutables y esperar que 'searchable' filtre solo. En el examen Certiport y en el currículo Develop in Swift, saber armar listas y jerarquías de navegación es la base de casi toda app.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/navigationstack",
+  "category": "SwiftUI",
+  "corporateCase": "Una app de gestión de pedidos muestra una lista de pedidos agrupada en secciones por estado, con 'swipeActions' para archivar y 'searchable' para encontrar clientes. Al tocar un pedido se apila el detalle mediante 'NavigationLink(value:)', y un 'NavigationPath' permite volver a la raíz al terminar la atención.",
+  "gameCase": "En un juego, el menú principal es un 'TabView' con las pestañas Tienda, Inventario y Ranking. El inventario usa 'NavigationSplitView' en iPad, con la lista de objetos a la izquierda y el detalle del objeto seleccionado a la derecha, y 'refreshable' recarga el ranking en línea.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Haz que el tipo sea identificable para que List y ForEach lo usen sin indicar 'id:'",
+    "codeSnippet": "struct Tarefa: ___ { let id = UUID(); var titulo: String }",
+    "correctAnswer": "Identifiable",
+    "hint": "El protocolo exige una propiedad llamada id."
+   },
+   {
+    "id": 2,
+    "question": "Indica a una List de Strings cómo identificar cada elemento, usando el propio valor",
+    "codeSnippet": "List(nomes, ___: \\.self) { nome in Text(nome) }",
+    "correctAnswer": "id",
+    "hint": "Es la etiqueta del parámetro que recibe el key path."
+   },
+   {
+    "id": 3,
+    "question": "Crea un enlace de navegación que envía un valor Hashable al NavigationStack",
+    "codeSnippet": "NavigationLink(___: tarefa) { Text(tarefa.titulo) }",
+    "correctAnswer": "value",
+    "hint": "En lugar de destination, usa la etiqueta que pasa un valor."
+   },
+   {
+    "id": 4,
+    "question": "Declara qué vista aparece cuando se apila un valor de tipo Tarefa",
+    "codeSnippet": ".___(for: Tarefa.self) { t in DetalheView(tarefa: t) }",
+    "correctAnswer": "navigationDestination",
+    "hint": "El modificador empieza con 'navigation' y termina con 'Destination'."
+   },
+   {
+    "id": 5,
+    "question": "Crea el estado que guarda la pila para navegar desde código",
+    "codeSnippet": "@State private var caminho = ___()",
+    "correctAnswer": "NavigationPath",
+    "hint": "Es el tipo con type erasure que acepta append y removeLast."
+   },
+   {
+    "id": 6,
+    "question": "Agrega un campo de búsqueda vinculado al texto escrito",
+    "codeSnippet": "List(itens) { Text($0.nome) }\n    .___(text: $busca)",
+    "correctAnswer": "searchable",
+    "hint": "El nombre del modificador significa 'con capacidad de búsqueda' en inglés."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Qué exige List(items) { ... } cuando no indicas 'id:'?",
+    "options": [
+     "Que los elementos sean Codable",
+     "Que los elementos sean Identifiable (o que el id se indique explícitamente)",
+     "Que el array sea de Strings",
+     "Que la lista esté dentro de un NavigationStack"
+    ],
+    "correctIndex": 1,
+    "explanation": "Para saber qué fila cambió, se insertó o se eliminó, SwiftUI necesita una identidad estable. Los tipos 'Identifiable' proveen 'id'; de lo contrario usa 'id: \\.propiedad'."
+   },
+   {
+    "id": 2,
+    "question": "¿Dónde se puede aplicar 'onDelete(perform:)' para habilitar la eliminación al deslizar?",
+    "options": [
+     "En una List estática con filas escritas a mano",
+     "En el ForEach que genera las filas",
+     "En cualquier Text dentro de la List",
+     "Solo en Section"
+    ],
+    "correctIndex": 1,
+    "explanation": "'onDelete' y 'onMove' pertenecen a vistas dinámicas como 'ForEach'. El closure recibe un 'IndexSet' con las posiciones a eliminar de tu array."
+   },
+   {
+    "id": 3,
+    "question": "Usas NavigationLink(value: tarea) pero no se abre ninguna pantalla al tocar. ¿Cuál es la causa más probable?",
+    "options": [
+     "Falta un 'navigationDestination(for: Tarefa.self)' dentro del NavigationStack",
+     "El valor debe ser un String",
+     "Falta un 'NavigationPath' en @State",
+     "NavigationLink no funciona dentro de una List"
+    ],
+    "correctIndex": 0,
+    "explanation": "Con enlaces basados en valores, el NavigationStack busca un destino registrado para el tipo del valor. Sin 'navigationDestination(for:)' para 'Tarefa', no se apila nada."
+   },
+   {
+    "id": 4,
+    "question": "¿Cómo volver a la pantalla raíz desde código con 'var ruta: NavigationPath'?",
+    "options": [
+     "'ruta.clear()' es el método oficial",
+     "'dismiss()' siempre vuelve a la raíz",
+     "'ruta.removeLast(ruta.count)'",
+     "'ruta.append(nil)'"
+    ],
+    "correctIndex": 2,
+    "explanation": "'NavigationPath' es una colección de valores apilados. Quitar todos los elementos con 'removeLast(ruta.count)' lleva al inicio; 'dismiss' solo cierra la pantalla actual."
+   },
+   {
+    "id": 5,
+    "question": "¿Dónde se aplica correctamente 'navigationTitle'?",
+    "options": [
+     "En la vista de contenido dentro del NavigationStack",
+     "En el NavigationStack, después de las llaves",
+     "Solo en el App",
+     "En cada NavigationLink"
+    ],
+    "correctIndex": 0,
+    "explanation": "El título pertenece a la vista mostrada en la pila, pues cada pantalla apilada puede tener el suyo. Ponerlo en el propio NavigationStack no produce el efecto esperado."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué código crea una pestaña en el SwiftUI moderno (iOS 18+)?",
+    "options": [
+     "Tab(\"Inicio\", systemImage: \"house\") { InicioView() } dentro de un TabView",
+     "NavigationTab(\"Inicio\") { }",
+     "Button(\"Inicio\") { } dentro de un TabView",
+     "TabItem(\"Inicio\") { }"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Tab(_:systemImage:content:)' declara título, icono y contenido. La forma anterior, '.tabItem { }' aplicada a cada vista, sigue siendo válida en versiones más antiguas."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué recibe el modificador 'refreshable'?",
+    "options": [
+     "Un closure asíncrono; el indicador de carga permanece hasta que termina",
+     "Un closure síncrono ejecutado en cada frame",
+     "Un número de segundos entre actualizaciones",
+     "Un Binding<Bool> de carga"
+    ],
+    "correctIndex": 0,
+    "explanation": "'refreshable { await recargar() }' habilita el gesto de arrastrar para actualizar. Como el closure es 'async', SwiftUI mantiene el spinner hasta que se completa."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué tiene de malo 'ForEach(0..<tareas.count) { i in ... }' cuando se pueden agregar y quitar tareas?",
+    "options": [
+     "'ForEach' no acepta Int",
+     "El rango no es constante y puede generar índices inválidos al cambiar el array; es mejor 'ForEach(tareas)' con Identifiable",
+     "Impide usar 'Section'",
+     "Nada, es la forma recomendada"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un ForEach con rango variable depende de índices que dejan de existir cuando el array se reduce, y provoca avisos o fallos. Usa la propia colección con identidad estable."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Para qué sirve 'NavigationSplitView'?",
+    "options": [
+     "Abrir dos pantallas modales a la vez",
+     "Crear diseños de barra lateral, contenido y detalle que colapsan en una pila en pantallas compactas",
+     "Dividir un String en partes",
+     "Reemplazar el TabView en el iPhone"
+    ],
+    "correctIndex": 1,
+    "explanation": "Es la base de apps estilo Mail y Notas: dos o tres columnas en iPad y Mac, y navegación en pila en el iPhone."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué ocurre al usar 'searchable(text: $busqueda)' en una List?",
+    "options": [
+     "SwiftUI muestra el campo, pero tú filtras los datos según 'busqueda'",
+     "La lista se filtra automáticamente por los textos de las filas",
+     "El campo solo aparece en macOS",
+     "El teclado se desactiva"
+    ],
+    "correctIndex": 0,
+    "explanation": "'searchable' solo proporciona el campo y el binding del texto. La lógica de filtrado (por ejemplo una propiedad computada) es responsabilidad de tu código."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál es la función de 'Section' en una List?",
+    "options": [
+     "Mejorar el rendimiento del desplazamiento",
+     "Permitir onDelete",
+     "Agrupar filas con encabezado y pie opcionales",
+     "Aislar la lista de la navegación"
+    ],
+    "correctIndex": 2,
+    "explanation": "'Section(\"Pendientes\") { ForEach(...) }' organiza las filas en grupos, algo común en Ajustes y agendas."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué se necesita para que 'onMove' reordene filas?",
+    "options": [
+     "Un modo de edición (por ejemplo EditButton) y mover los datos con 'move(fromOffsets:toOffset:)'",
+     "Nada, funciona siempre",
+     "Usar solo Strings",
+     "Un NavigationPath"
+    ],
+    "correctIndex": 0,
+    "explanation": "El closure de 'onMove' recibe un 'IndexSet' y un destino, y debes actualizar el array, normalmente con 'array.move(fromOffsets:toOffset:)'. El modo de edición muestra los controles de arrastre."
+   },
+   {
+    "id": 5,
+    "question": "¿En qué se diferencia 'NavigationPath' de un array tipado como '[Tarefa]' en 'NavigationStack(path:)'?",
+    "options": [
+     "'NavigationPath' acepta valores Hashable de distintos tipos, mientras que el array guarda un solo tipo",
+     "El array es más lento",
+     "NavigationPath solo funciona en macOS",
+     "No hay diferencia"
+    ],
+    "correctIndex": 0,
+    "explanation": "Con 'NavigationPath' apilas tipos variados (Tarefa, Cliente...), cada uno con su 'navigationDestination'. Un array tipado sirve cuando toda la pila es de un único tipo."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué ventaja tiene 'NavigationLink(value:)' sobre 'NavigationLink(destination:)'?",
+    "options": [
+     "Siempre requiere menos código",
+     "El destino queda desacoplado y se declara una vez, y la pila puede controlarse desde código",
+     "Funciona sin NavigationStack",
+     "Impide volver"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con valores, el destino se registra de forma centralizada y se crea solo cuando hace falta, y el mismo valor puede apilarse desde código mediante 'NavigationPath'."
+   }
+  ]
+ },
+ {
+  "id": 47,
+  "title": "SwiftUI: Formularios y Controles de Entrada",
+  "theory": "'Form' es un contenedor que agrupa controles de entrada y se adapta al estilo de la plataforma (en iOS, una lista agrupada). Los controles se enlazan al estado mediante un Binding, que se obtiene con el prefijo '$' sobre una propiedad '@State': 'TextField' y 'SecureField' editan un String, 'TextEditor' edita texto de varias líneas, 'Toggle(isOn:)' edita un Bool, 'Slider' y 'Stepper' editan números (Slider usa Double) y 'DatePicker' edita una Date. 'Picker' enlaza la selección con la 'tag' de cada opción, y el tipo de la tag debe ser exactamente el tipo de la selección, incluido Optional. Estilos como '.menu', '.segmented', '.wheel' y '.navigationLink' cambian la apariencia. 'Button' acepta un 'role' como '.destructive' o '.cancel', que da significado semántico y visual, y 'Menu' agrupa acciones. Para el teclado, 'keyboardType', 'textContentType', 'submitLabel' y 'onSubmit' mejoran la escritura, y '@FocusState' con 'focused(_:equals:)' controla qué campo está activo. La validación suele hacerse con propiedades computadas que alimentan 'disabled()' en el botón de enviar. 'Link' abre una URL y 'ShareLink' abre la hoja de compartir. Para accesibilidad, el título del control se convierte en la etiqueta de VoiceOver; los controles solo con icono necesitan 'accessibilityLabel'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/form",
+  "category": "SwiftUI",
+  "corporateCase": "Una app bancaria tiene un formulario de registro con un TextField de correo (teclado de correo y 'submitLabel(.next)'), un SecureField de contraseña y un botón 'Crear cuenta' que permanece 'disabled' hasta que el correo y la contraseña sean válidos. El '@FocusState' lleva el cursor al siguiente campo cuando el usuario toca Return.",
+  "gameCase": "En la pantalla de ajustes de un juego, un 'Slider' regula el volumen, un 'Toggle' activa la vibración, un 'Picker' segmentado elige la dificultad y un 'Stepper' define el número de jugadores. Un 'ShareLink' permite compartir el código de la sala con amigos.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Enlaza el TextField al estado 'nome' usando el parámetro correcto",
+    "codeSnippet": "TextField(\"Nome\", ___: $nome)",
+    "correctAnswer": "text",
+    "hint": "El parámetro recibe el binding del texto escrito."
+   },
+   {
+    "id": 2,
+    "question": "Usa el campo de texto que oculta los caracteres escritos",
+    "codeSnippet": "___(\"Senha\", text: $senha)",
+    "correctAnswer": "SecureField",
+    "hint": "Su nombre combina 'Secure' con 'Field'."
+   },
+   {
+    "id": 3,
+    "question": "Enlaza el Toggle a la propiedad Bool 'ativo'",
+    "codeSnippet": "Toggle(\"Notificações\", ___: $ativo)",
+    "correctAnswer": "isOn",
+    "hint": "La etiqueta del parámetro significa 'está activado'."
+   },
+   {
+    "id": 4,
+    "question": "Asocia la opción Azul al valor de la selección del Picker",
+    "codeSnippet": "Picker(\"Cor\", selection: $cor) {\n    Text(\"Azul\").___(Cor.azul)\n}",
+    "correctAnswer": "tag",
+    "hint": "El modificador etiqueta cada opción con un valor de la selección."
+   },
+   {
+    "id": 5,
+    "question": "Declara la propiedad que controla qué campo recibe el foco del teclado",
+    "codeSnippet": "@___ private var campo: Campo?",
+    "correctAnswer": "FocusState",
+    "hint": "Es un property wrapper con el nombre 'Focus' + 'State'."
+   },
+   {
+    "id": 6,
+    "question": "Dale al botón el rol semántico de acción destructiva",
+    "codeSnippet": "Button(\"Excluir\", ___: .destructive) { apagar() }",
+    "correctAnswer": "role",
+    "hint": "Indica el parámetro cuyo valor es .destructive."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el papel de 'Form' en SwiftUI?",
+    "options": [
+     "Agrupar controles de entrada, adoptando el estilo de formulario de la plataforma",
+     "Validar automáticamente los campos",
+     "Enviar datos al servidor",
+     "Reemplazar al TextField"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Form' solo organiza y da estilo a los controles (en iOS, una lista agrupada). La validación y el envío son lógica tuya."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué significa '$texto' al pasarlo a un TextField?",
+    "options": [
+     "Una copia inmutable",
+     "Un Binding<String> que permite al campo leer y escribir el estado",
+     "El valor del texto en mayúsculas",
+     "Una referencia a un IBOutlet"
+    ],
+    "correctIndex": 1,
+    "explanation": "El prefijo '$' accede al 'projectedValue' de '@State', un Binding. Da al control acceso de lectura y escritura al estado."
+   },
+   {
+    "id": 3,
+    "question": "Tienes '@State var cor: Cor? = nil' y opciones con '.tag(Cor.azul)'. La selección no aparece. ¿Por qué?",
+    "options": [
+     "La tag es Cor, pero la selección es Cor?; los tipos no coinciden. Usa '.tag(Cor?.some(.azul))'",
+     "Picker no acepta enums",
+     "Falta un Toggle",
+     "tag solo funciona con Int"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Picker compara la tag con el valor de la selección, tipo por tipo. Con selección opcional, las tags también deben ser opcionales."
+   },
+   {
+    "id": 4,
+    "question": "¿Para qué sirve '@FocusState'?",
+    "options": [
+     "Animar la vista",
+     "Desactivar el teclado",
+     "Leer y definir qué campo de texto tiene el foco, junto con 'focused(_:equals:)'",
+     "Guardar el estado entre ejecuciones"
+    ],
+    "correctIndex": 2,
+    "explanation": "Con un enum de campos y '.focused($campo, equals: .email)' mueves el foco desde código, por ejemplo en 'onSubmit'."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué modificador cambia el texto de la tecla Return del teclado?",
+    "options": [
+     "submitLabel",
+     "keyboardType",
+     "textContentType",
+     "textInputAutocapitalization"
+    ],
+    "correctIndex": 0,
+    "explanation": "'submitLabel(.next)', '.done', '.search', etc. definen la etiqueta de la tecla; 'onSubmit' ejecuta la acción cuando se toca."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué hace el role '.destructive' en un Button?",
+    "options": [
+     "Impide el doble toque",
+     "Indica semánticamente una acción destructiva, normalmente resaltada en rojo; la acción en sí sigue siendo tu código",
+     "Borra los datos automáticamente",
+     "Cierra la app"
+    ],
+    "correctIndex": 1,
+    "explanation": "El role comunica el significado al sistema y a la accesibilidad, pero no ejecuta nada por sí solo."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál es la mejor forma de impedir el envío de un formulario con el correo vacío?",
+    "options": [
+     "'.disabled(email.isEmpty)' en el botón, calculado a partir del estado",
+     "Ocultar el botón con 'opacity(0)'",
+     "Usar try?",
+     "Mostrar un print en la consola"
+    ],
+    "correctIndex": 0,
+    "explanation": "'disabled' recibe una condición derivada del estado, que se actualiza automáticamente, e informa además a la accesibilidad de que el botón no está disponible."
+   },
+   {
+    "id": 8,
+    "question": "¿Por qué 'Slider(value: $volumen, in: 0...10)' no compila cuando 'volumen' es '@State var volumen = 5'?",
+    "options": [
+     "El rango debe ser abierto",
+     "El estado debe ser un String",
+     "La inferencia crea un Int, pero Slider necesita un valor de punto flotante como Double",
+     "Slider no acepta rangos"
+    ],
+    "correctIndex": 2,
+    "explanation": "'5' se infiere como Int por defecto. Declara 'var volumen: Double = 5' (o '5.0') para que el Binding tenga el tipo esperado."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la principal diferencia entre 'TextEditor' y 'TextField'?",
+    "options": [
+     "TextEditor oculta el texto",
+     "TextEditor edita texto de varias líneas, pero no tiene placeholder integrado",
+     "TextEditor solo funciona en iPad",
+     "TextField no usa Binding"
+    ],
+    "correctIndex": 1,
+    "explanation": "'TextEditor' es la opción para textos largos. Para un campo que crece, también es posible 'TextField' con 'axis: .vertical'."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué parámetro limita el DatePicker a elegir solo la fecha, sin la hora?",
+    "options": [
+     "displayedComponents: .date",
+     "datePickerStyle: .date",
+     "mode: .date",
+     "onlyDate: true"
+    ],
+    "correctIndex": 0,
+    "explanation": "'displayedComponents' acepta '.date', '.hourAndMinute' o ambos. El parámetro 'in:' restringe el rango permitido."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué estilo de Picker muestra pocas opciones lado a lado en un control segmentado?",
+    "options": [
+     "wheel",
+     "inline",
+     "segmented",
+     "menu"
+    ],
+    "correctIndex": 2,
+    "explanation": "'.pickerStyle(.segmented)' es ideal para 2 a 4 opciones cortas. En un Form, el estilo por defecto en iOS es navigationLink (abre otra pantalla de selección); fuera de un Form, el valor por defecto es el menú."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es la diferencia entre 'Link' y 'ShareLink'?",
+    "options": [
+     "Link abre una URL; ShareLink abre la hoja de compartir del sistema",
+     "Ninguna",
+     "Link solo funciona con correos",
+     "ShareLink abre Safari"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Link(\"Sitio\", destination: url)' navega a la URL; 'ShareLink(item: url)' presenta la share sheet para enviar el contenido."
+   },
+   {
+    "id": 5,
+    "question": "¿Cómo se comporta Toggle('Notificaciones', isOn: $activo) con VoiceOver?",
+    "options": [
+     "El título del control se usa como etiqueta y se anuncia el estado activado o desactivado",
+     "Se ignora",
+     "Siempre hay que usar accessibilityHint",
+     "Solo funciona si tiene un icono"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los controles estándar ya son accesibles; el título se convierte en la etiqueta. Usa 'accessibilityLabel' cuando la etiqueta sea solo un icono o imagen."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué garantiza SecureField?",
+    "options": [
+     "Envía el texto por HTTPS",
+     "Oculta los caracteres mostrados en pantalla; proteger los datos es responsabilidad de la app",
+     "Cifra la contraseña en el almacenamiento",
+     "Impide las capturas de pantalla"
+    ],
+    "correctIndex": 1,
+    "explanation": "'SecureField' solo enmascara la visualización. Para contraseñas, usa también 'textContentType(.password)' para el autocompletado y guarda las credenciales en el Keychain."
+   }
+  ]
+ },
+ {
+  "id": 48,
+  "title": "SwiftUI: Animaciones, Gestos y Presentaciones",
+  "theory": "Hay dos formas de animar en SwiftUI: la implícita, '.animation(_:value:)', anima los cambios de propiedades animables siempre que cambia el 'value' observado, y la explícita, 'withAnimation { }', anima todo lo que dependa de los cambios de estado hechos dentro del closure. Opacidad, escala, rotación, desplazamiento y colores son animables porque se pueden interpolar numéricamente. Curvas como '.easeInOut' y resortes como '.spring' (o '.spring(duration:bounce:)', donde bounce 0 elimina el rebote) dan una sensación natural. Una 'transition' define cómo una vista entra y sale de la jerarquía, pero solo se anima cuando la inserción o eliminación ocurre dentro de una animación; 'matchedGeometryEffect' con '@Namespace' hace que la misma vista parezca moverse entre dos diseños. Gestos como 'TapGesture', 'LongPressGesture', 'DragGesture' y 'MagnifyGesture' se adjuntan con 'gesture' y se combinan con 'simultaneously(with:)', 'sequenced(before:)' o 'exclusively(before:)'; '@GestureState' guarda valores que vuelven al inicial cuando el gesto termina. Para las presentaciones, 'sheet', 'fullScreenCover', 'popover', 'alert' y 'confirmationDialog' se controlan con un Bool ('isPresented') o con un item opcional ('item'), y 'presentationDetents' define las alturas de la hoja. Dentro de la vista presentada, '@Environment(\\.dismiss)' la cierra. 'onAppear' se ejecuta cuando la vista aparece, y 'task' ejecuta trabajo asíncrono que se cancela automáticamente cuando la vista desaparece.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/withanimation(_:_:)",
+  "category": "SwiftUI",
+  "corporateCase": "En una app de reservas, al tocar un hotel se abre una hoja ('sheet') con 'presentationDetents' de media altura, y el botón Confirmar usa 'withAnimation' para cambiar de pantalla con una transición suave. Un 'confirmationDialog' pregunta cómo cancelar la reserva y '.task' carga la disponibilidad cuando aparece la pantalla.",
+  "gameCase": "En un juego de cartas, cada carta usa 'DragGesture' para arrastrarse y 'matchedGeometryEffect' para volar de la mano a la mesa. Un 'LongPressGesture' muestra el detalle de la carta y una animación con '.spring' le da un rebote al soltarla.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Anima la escala siempre que cambie la propiedad 'grande', usando el parámetro de observación",
+    "codeSnippet": "Circle()\n    .scaleEffect(grande ? 2 : 1)\n    .animation(.spring, ___: grande)",
+    "correctAnswer": "value",
+    "hint": "El segundo parámetro de animation(_:value:) lleva el nombre de lo que observa."
+   },
+   {
+    "id": 2,
+    "question": "Ejecuta el cambio de estado dentro de una animación explícita",
+    "codeSnippet": "___(.easeInOut) { aberto.toggle() }",
+    "correctAnswer": "withAnimation",
+    "hint": "Es la función global que recibe una animación y un closure."
+   },
+   {
+    "id": 3,
+    "question": "Aplica el modificador que define cómo entra y sale el Text de la jerarquía",
+    "codeSnippet": "if mostrar { Text(\"Oi\").___(.slide) }",
+    "correctAnswer": "transition",
+    "hint": "El modificador lleva el nombre de la propia idea: 'transición'."
+   },
+   {
+    "id": 4,
+    "question": "Controla la presentación de la hoja con un Binding Bool",
+    "codeSnippet": ".sheet(___: $mostrar) { DetalheView() }",
+    "correctAnswer": "isPresented",
+    "hint": "El parámetro indica si la hoja 'está presentada'."
+   },
+   {
+    "id": 5,
+    "question": "Declara la acción de entorno que cierra la vista actual",
+    "codeSnippet": "@Environment(\\.___) private var dismiss",
+    "correctAnswer": "dismiss",
+    "hint": "La clave del Environment es un verbo: 'descartar'."
+   },
+   {
+    "id": 6,
+    "question": "Actualiza el desplazamiento mientras el dedo se mueve durante el arrastre",
+    "codeSnippet": "DragGesture().___ { v in deslocamento = v.translation }",
+    "correctAnswer": "onChanged",
+    "hint": "Es el callback que se llama en cada cambio del gesto, antes de onEnded."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la diferencia entre '.animation(_:value:)' y 'withAnimation'?",
+    "options": [
+     "La primera anima los cambios observados de esa vista cuando 'value' cambia; la segunda anima todos los cambios causados por un bloque de código",
+     "Ninguna",
+     "withAnimation solo funciona con springs",
+     "'.animation' es exclusiva de los gestos"
+    ],
+    "correctIndex": 0,
+    "explanation": "La implícita se adjunta a la vista y reacciona a un valor; la explícita envuelve el cambio de estado y afecta todo lo que dependa de él."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué exige 'matchedGeometryEffect(id:in:)' para funcionar?",
+    "options": [
+     "Una Task",
+     "Dos vistas con el mismo id y el mismo '@Namespace', en estados distintos de la interfaz",
+     "Un Timer",
+     "Un DragGesture"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las dos vistas comparten identificador y namespace, y SwiftUI interpola posición y tamaño entre ellas cuando el cambio ocurre dentro de una animación."
+   },
+   {
+    "id": 3,
+    "question": "'if mostrar { Text(\"Hola\").transition(.slide) }' y 'mostrar.toggle()' sin ninguna animación. ¿Qué ocurre?",
+    "options": [
+     "La vista aparece y desaparece sin animarse, pues la transición solo corre dentro de una animación",
+     "El Text se desliza normalmente",
+     "Error de compilación",
+     "Solo anima al quitarse"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las transiciones dependen de un contexto de animación, como 'withAnimation { mostrar.toggle() }' o '.animation(_:value:)' en el contenedor."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué modificador de gesto ejecuta dos gestos en orden, con el segundo solo después de que el primero tenga éxito?",
+    "options": [
+     "exclusively(before:)",
+     "highPriorityGesture",
+     "sequenced(before:)",
+     "simultaneously(with:)"
+    ],
+    "correctIndex": 2,
+    "explanation": "'LongPressGesture().sequenced(before: DragGesture())' exige la pulsación larga antes del arrastre, patrón usado para reordenar elementos."
+   },
+   {
+    "id": 5,
+    "question": "¿Cómo hacer que una hoja ocupe la mitad de la pantalla y pueda expandirse?",
+    "options": [
+     "'.presentationDetents([.medium, .large])' en el contenido de la hoja",
+     "'.sheet(...).frame(height: 400)'",
+     "'fullScreenCover'",
+     "'.popover'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'presentationDetents' define las alturas permitidas. El modificador va en la vista de contenido presentada dentro de la hoja."
+   },
+   {
+    "id": 6,
+    "question": "¿Cómo puede cerrarse una vista presentada con 'sheet'?",
+    "options": [
+     "Usando un NavigationPath",
+     "Leyendo '@Environment(\\.dismiss)' y llamando a 'dismiss()'",
+     "Llamando a exit(0)",
+     "No puede, solo la cierra el padre"
+    ],
+    "correctIndex": 1,
+    "explanation": "La action 'dismiss' del entorno cierra la presentación actual (hoja, pantalla apilada, etc.), sin tener que pasar un Binding hacia abajo."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué ventaja tiene '.task { }' sobre '.onAppear { Task { } }'?",
+    "options": [
+     "El trabajo asíncrono se cancela automáticamente cuando la vista desaparece",
+     "Siempre se ejecuta en otro hilo",
+     "Es síncrono",
+     "Se ejecuta una vez por segundo"
+    ],
+    "correctIndex": 0,
+    "explanation": "'task' está ligado al ciclo de vida de la vista: acepta 'await' directamente y la tarea se cancela al salir. 'task(id:)' se reinicia cuando cambia el id."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué produce '.spring(duration: 0.5, bounce: 0)'?",
+    "options": [
+     "Un error",
+     "Una animación instantánea",
+     "Un movimiento suave de resorte, sin oscilar más allá del destino",
+     "Una animación con mucho rebote"
+    ],
+    "correctIndex": 2,
+    "explanation": "'bounce' controla el rebote: 0 nunca supera el valor final, mientras que valores mayores oscilan más."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "¿Cuándo elegir 'confirmationDialog' en lugar de 'alert'?",
+    "options": [
+     "Para un error fatal",
+     "Para que el usuario elija entre varias acciones relacionadas, como Guardar, Descartar o Cancelar",
+     "Para mostrar solo un OK",
+     "Nunca, está obsoleto"
+    ],
+    "correctIndex": 1,
+    "explanation": "'alert' informa o pide una confirmación breve; 'confirmationDialog' presenta al usuario un conjunto de opciones de acción."
+   },
+   {
+    "id": 2,
+    "question": "¿En qué se diferencia 'fullScreenCover' de 'sheet'?",
+    "options": [
+     "Cubre toda la interfaz y no se descarta deslizando; hay que cerrarla desde código",
+     "Son idénticos",
+     "Solo existe en macOS",
+     "Solo acepta Strings"
+    ],
+    "correctIndex": 0,
+    "explanation": "'fullScreenCover' se usa para flujos inmersivos (onboarding, cámara) que la app controla con un botón y 'dismiss'."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué gesto detecta el pellizco para ampliar en iOS 17 y posteriores?",
+    "options": [
+     "DragGesture",
+     "Solo RotateGesture",
+     "MagnifyGesture, cuyo valor trae la propiedad 'magnification'",
+     "TapGesture"
+    ],
+    "correctIndex": 2,
+    "explanation": "'MagnifyGesture' sustituye al antiguo 'MagnificationGesture' y expone 'value.magnification' para ajustar la escala."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué ocurre con un '@GestureState' cuando el gesto termina?",
+    "options": [
+     "Vuelve automáticamente a su valor inicial",
+     "Conserva el último valor",
+     "Genera un error",
+     "Pasa a nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "'@GestureState' es temporal: se restablece al valor inicial al terminar o cancelarse el gesto. Para valores permanentes, guarda el resultado en '@State' en 'onEnded'."
+   },
+   {
+    "id": 5,
+    "question": "¿Cómo se comporta un 'popover' por defecto en un iPhone (ancho compacto)?",
+    "options": [
+     "Se adapta a una hoja; se puede cambiar con 'presentationCompactAdaptation'",
+     "Siempre flota como un globo",
+     "No aparece",
+     "Se convierte en alert"
+    ],
+    "correctIndex": 0,
+    "explanation": "En anchos compactos el popover se adapta. 'presentationCompactAdaptation(.popover)' pide mantenerlo como globo."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué ventaja tiene 'sheet(item:)' sobre 'sheet(isPresented:)'?",
+    "options": [
+     "No permite cerrar",
+     "Presenta con un item opcional Identifiable y usa el valor para armar el contenido, volviendo a nil al cerrar",
+     "Es más lento",
+     "Elimina la necesidad de dismiss"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con 'item', el contenido recibe directamente el valor seleccionado y el Binding vuelve a nil al descartarse, evitando estados inconsistentes."
+   }
+  ]
+ }
+]

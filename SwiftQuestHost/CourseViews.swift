@@ -42,6 +42,7 @@ struct QuestionView: View {
 
 struct QuizSet: View {
     let questions: [CourseQuestion]
+    var topic: String?              // statistics topic ("p:<pillar>") for the needs-attention analysis
     var keyPrefix: String?          // when set, wrong answers go to the review queue as "<prefix>:<question id>"
     var onScore: ((Int) -> Void)?
     @EnvironmentObject var course: CourseProgress
@@ -57,6 +58,9 @@ struct QuizSet: View {
                         picks[q.id] = value
                         if let prefix = keyPrefix, let value {
                             course.markQuestion("\(prefix):\(q.id)", correct: value == q.correctIndex)
+                        }
+                        if let topic, let value {
+                            course.recordAttempt(topic: topic, correct: value == q.correctIndex)
                         }
                         report()
                     }))
@@ -81,8 +85,9 @@ struct CourseView: View {
     @State private var selected: Int? = 1
 
     private var groups: [(String, [Pillar])] {
-        CourseData.categoryOrder.compactMap { cat in
-            let items = loc.pillars.filter { $0.categoryName == cat }
+        let extra = Set(loc.pillars.map(\.categoryName)).subtracting(CourseData.categoryOrder).sorted()
+        return (CourseData.categoryOrder + extra).compactMap { cat in
+            let items = loc.pillars.filter { $0.categoryName == cat }.sorted { $0.id < $1.id }
             return items.isEmpty ? nil : (cat, items)
         }
     }
@@ -130,9 +135,7 @@ struct PillarDetail: View {
                 Text(pillar.title).font(.largeTitle.bold())
                 Text(loc.category(pillar.categoryName)).font(.subheadline).foregroundStyle(.secondary)
                 Text(markdown(pillar.theory))
-                if let s = pillar.appleDocUrl, let url = URL(string: s) {
-                    Link(loc.t("official.docs"), destination: url)
-                }
+                DocLinksSection(links: DocsData.links(pillar: pillar.id, main: pillar.appleDocUrl))
                 GroupBox(loc.t("case.corporate")) {
                     Text(markdown(pillar.corporateCase)).frame(maxWidth: .infinity, alignment: .leading).padding(4)
                 }
@@ -142,11 +145,11 @@ struct PillarDetail: View {
                 Text(loc.t("exercises")).font(.title3.bold())
                 ForEach(pillar.exercises) { ExerciseRow(pillarID: pillar.id, exercise: $0) }
                 Text(loc.t("quiz")).font(.title3.bold())
-                QuizSet(questions: pillar.quiz, keyPrefix: "p:\(pillar.id)") { progress.recordQuiz(pillar: pillar.id, correct: $0) }
+                QuizSet(questions: pillar.quiz, topic: "p:\(pillar.id)", keyPrefix: "p:\(pillar.id)") { progress.recordQuiz(pillar: pillar.id, correct: $0) }
                 if let extra = pillar.extraQuiz, !extra.isEmpty {
                     if showExtra {
                         Text(loc.t("quiz.extra")).font(.title3.bold())
-                        QuizSet(questions: extra)
+                        QuizSet(questions: extra, topic: "p:\(pillar.id)")
                     } else {
                         Button(loc.t("quiz.extra.show")) { showExtra = true }
                     }
@@ -300,6 +303,7 @@ struct ExamRunner: View {
         finished = true
         for q in exam.questions {
             progress.markQuestion("e:\(exam.id):\(q.id)", correct: picks[q.id] == q.correctIndex)
+            progress.recordAttempt(topic: "e:\(exam.category)", correct: picks[q.id] == q.correctIndex)
         }
         progress.recordExam(id: exam.id, passed: passed)
     }

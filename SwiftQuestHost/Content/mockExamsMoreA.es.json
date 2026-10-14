@@ -1,0 +1,1058 @@
+[
+ {
+  "id": "exam-5",
+  "title": "Simulacro de Certificación: Planificación, Diseño y Teoría",
+  "description": "Cubre el ciclo de diseño, la protección y el compromiso de datos sensibles, los impactos legales, éticos y socioeconómicos, la HIG, la accesibilidad y la privacidad.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "En el ciclo de diseño, ¿qué fase viene justo después del prototipo?",
+    "options": [
+     "Evaluar (probar con usuarios)",
+     "Hacer brainstorming",
+     "Publicar en la App Store",
+     "Planificar el flujo de pantallas"
+    ],
+    "correctIndex": 0,
+    "explanation": "El orden es brainstorming, planificar, prototipar y evaluar. Tras el prototipo se evalúa con usuarios reales y el resultado alimenta nuevas iteraciones. El brainstorming y la planificación van antes del prototipo, y publicar solo ocurre después de validar la idea."
+   },
+   {
+    "id": 2,
+    "question": "¿Cuál es el objetivo principal de la fase de brainstorming?",
+    "options": [
+     "Elegir la arquitectura final del código",
+     "Corregir errores encontrados por los usuarios",
+     "Dibujar las pantallas finales en alta fidelidad",
+     "Generar muchas ideas sin juzgarlas de inmediato"
+    ],
+    "correctIndex": 3,
+    "explanation": "En el brainstorming lo importante es la cantidad y variedad de ideas, sin criticar. La arquitectura y las pantallas finales llegan en fases posteriores, y corregir errores de usuarios pertenece a la evaluación."
+   },
+   {
+    "id": 3,
+    "question": "Un equipo enumera las funciones de la app, define el público y dibuja el flujo entre pantallas en papel. ¿En qué fase del ciclo de diseño está?",
+    "options": [
+     "Evaluar",
+     "Planificar",
+     "Prototipar",
+     "Debug"
+    ],
+    "correctIndex": 1,
+    "explanation": "Definir funciones, público y flujo de pantallas es planificar. Prototipar es construir algo que se pueda probar, como una maqueta interactiva, y evaluar es probar y recoger comentarios. Debug no es una fase del ciclo de diseño."
+   },
+   {
+    "id": 4,
+    "question": "¿Cuál es la mejor razón para crear un prototipo antes de programar la app completa?",
+    "options": [
+     "Evitar la necesidad de pruebas con usuarios",
+     "Garantizar que la app no tendrá errores",
+     "Validar la idea y el flujo rápido y con poco costo",
+     "Reemplazar la planificación"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los prototipos (en papel o interactivos) revelan problemas pronto, antes de gastar tiempo programando. No eliminan las pruebas con usuarios, no garantizan ausencia de errores y no reemplazan la planificación."
+   },
+   {
+    "id": 5,
+    "question": "En las pruebas, 8 de 10 usuarios no encuentran el botón Guardar. ¿Cuál es el siguiente paso más adecuado en el ciclo de diseño?",
+    "options": [
+     "Iterar: ajustar el diseño del botón y probar de nuevo",
+     "Ignorarlo, ya que la mayoría de las apps tiene ese problema",
+     "Publicarlo así y corregir tras las reseñas",
+     "Eliminar el botón de la app"
+    ],
+    "correctIndex": 0,
+    "explanation": "El ciclo de diseño es iterativo: los resultados de la evaluación vuelven al diseño y una nueva prueba confirma la mejora. Ignorar o publicar con un problema conocido perjudica a los usuarios, y quitar el botón elimina una función necesaria."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es el lugar recomendado en iOS para guardar la contraseña o el token de acceso de un usuario?",
+    "options": [
+     "UserDefaults",
+     "Un archivo de texto plano en la carpeta Documents",
+     "Una variable global en el código",
+     "Keychain"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Keychain guarda datos sensibles cifrados y protegidos por el sistema. UserDefaults y los archivos de texto plano no están cifrados y pueden leerse en copias de seguridad o dispositivos comprometidos; una variable global se pierde al cerrar la app y queda expuesta en el código."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál de estas prácticas COMPROMETE la seguridad de los datos de los usuarios?",
+    "options": [
+     "Usar HTTPS en todas las solicitudes",
+     "Enviar el inicio de sesión por una conexión HTTP sin cifrar",
+     "Guardar contraseñas en el Keychain",
+     "Pedir autenticación con Face ID para abrir datos privados"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los datos enviados por HTTP plano viajan como texto legible y pueden interceptarse, por ejemplo en Wi-Fi público. HTTPS, el Keychain y Face ID son protecciones, no riesgos."
+   },
+   {
+    "id": 8,
+    "question": "Una app del clima pide ubicación precisa todo el tiempo y acceso a los contactos. ¿Qué principio de privacidad se está violando?",
+    "options": [
+     "Cifrado en tránsito",
+     "Accesibilidad para lectores de pantalla",
+     "Minimización de datos: recopilar solo lo necesario para la función",
+     "Compatibilidad con versiones antiguas de iOS"
+    ],
+    "correctIndex": 2,
+    "explanation": "Una app debe pedir solo los datos y permisos que realmente necesita. Una app del clima no necesita contactos y, con frecuencia, basta la ubicación aproximada mientras se usa. Las otras opciones no tienen relación con el problema descrito."
+   },
+   {
+    "id": 9,
+    "question": "Un usuario recibe un correo falso de su 'banco' y escribe su contraseña en un sitio clonado. ¿Qué desafío de seguridad es y qué defensa ayuda más?",
+    "options": [
+     "Phishing; autenticación de dos factores y revisar las URL",
+     "Desbordamiento de memoria; reiniciar el iPhone",
+     "Error de diseño; usar Auto Layout",
+     "Fuga de memoria; usar ARC"
+    ],
+    "correctIndex": 0,
+    "explanation": "Engañar al usuario para que revele credenciales es phishing, un ataque de ingeniería social. La autenticación de dos factores limita el daño aunque se filtre la contraseña. Las demás opciones describen problemas técnicos sin relación."
+   },
+   {
+    "id": 10,
+    "question": "Una app dirigida a niños pequeños recopila su nombre y ubicación. ¿Cuál es la consideración legal más importante?",
+    "options": [
+     "Ninguna, ya que los niños no tienen datos personales",
+     "Solo el tamaño del archivo de la app",
+     "Solo el color de los íconos",
+     "Las leyes de protección de datos exigen consentimiento de los tutores y reglas más estrictas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Leyes como LGPD (Brasil), GDPR (Europa) y COPPA (EE. UU.) imponen reglas especiales para los datos de niños, incluido el consentimiento de los tutores. Los datos de niños sí son datos personales, y el tamaño del archivo o el color de los íconos no son asuntos legales de privacidad."
+   },
+   {
+    "id": 11,
+    "question": "Una app vende los hábitos de uso de los usuarios a anunciantes sin avisar a nadie. ¿Cuál es el principal problema ético?",
+    "options": [
+     "La app consume mucha batería",
+     "Falta de transparencia y de consentimiento informado",
+     "La interfaz usa fuentes pequeñas",
+     "La app no tiene modo oscuro"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los usuarios tienen derecho a saber qué datos se recopilan y cómo se usan, y a dar su consentimiento. La batería, las fuentes y el modo oscuro son cuestiones de calidad, no de ética en el uso de datos."
+   },
+   {
+    "id": 12,
+    "question": "Una app exige el iPhone más nuevo e internet rápido para funcionar. ¿Qué impacto socioeconómico puede causar?",
+    "options": [
+     "Aumentar la seguridad de los datos",
+     "Reducir el tamaño del código",
+     "Excluir a personas de bajos ingresos o con conexión limitada (brecha digital)",
+     "Mejorar la accesibilidad"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los requisitos altos de hardware y red dejan fuera a quienes no pueden pagarlos o viven donde la conectividad es mala. Esto no mejora la seguridad ni la accesibilidad y no tiene relación con el tamaño del código."
+   },
+   {
+    "id": 13,
+    "question": "¿Qué son las Human Interface Guidelines (HIG) de Apple?",
+    "options": [
+     "Recomendaciones de diseño para crear apps coherentes e intuitivas en las plataformas de Apple",
+     "Una biblioteca de código para redes",
+     "Reglas de precios de la App Store",
+     "Un manual del compilador de Swift"
+    ],
+    "correctIndex": 0,
+    "explanation": "La HIG orienta el diseño, la navegación, la tipografía, el color, los íconos y la interacción para que las apps se sientan naturales en el sistema. No es una biblioteca de código, una política de precios ni un manual del compilador."
+   },
+   {
+    "id": 14,
+    "question": "Según la HIG, ¿cuál es el tamaño mínimo recomendado para un área tocable en iPhone?",
+    "options": [
+     "10 x 10 pt",
+     "24 x 12 pt",
+     "100 x 100 pt",
+     "44 x 44 pt"
+    ],
+    "correctIndex": 3,
+    "explanation": "La HIG recomienda áreas de toque de al menos 44x44 puntos para que sean fáciles de acertar con el dedo. 10x10 o 24x12 son demasiado pequeñas; 100x100 no es obligatorio y desperdiciaría espacio."
+   },
+   {
+    "id": 15,
+    "question": "Un botón solo tiene un ícono de papelera y ningún texto. ¿Qué debe hacer el desarrollador para los usuarios de VoiceOver?",
+    "options": [
+     "Aumentar el brillo del color del ícono",
+     "Definir un accessibility label como 'Eliminar'",
+     "Desactivar VoiceOver en la app",
+     "Cambiar el ícono por uno más pequeño"
+    ],
+    "correctIndex": 1,
+    "explanation": "VoiceOver lee el accessibility label del elemento; sin texto puede anunciar algo vago. Cambiar color o tamaño, o desactivar la función, no describe el propósito del botón."
+   },
+   {
+    "id": 16,
+    "question": "¿Qué recurso permite que el texto de la app siga el tamaño de fuente elegido por el usuario en Ajustes?",
+    "options": [
+     "Auto Layout",
+     "Modo oscuro",
+     "Dynamic Type",
+     "Core Data"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dynamic Type escala las fuentes según la preferencia del usuario, esencial para personas con baja visión. Auto Layout organiza elementos, el modo oscuro cambia el esquema de color y Core Data persiste datos."
+   },
+   {
+    "id": 17,
+    "question": "Una app muestra los errores solo poniendo el campo en rojo. ¿Cuál es el problema de accesibilidad?",
+    "options": [
+     "Los usuarios con daltonismo pueden no notarlo; hay que reforzarlo con texto o un ícono",
+     "El rojo gasta más batería",
+     "El campo quedará demasiado pequeño",
+     "El rojo no está permitido por la App Store"
+    ],
+    "correctIndex": 0,
+    "explanation": "No se debe transmitir información solo con color. Añadir un mensaje de texto o un símbolo ayuda a quienes no distinguen colores y también a quienes usan lectores de pantalla. El rojo no está prohibido ni afecta la batería o el tamaño del campo."
+   },
+   {
+    "id": 18,
+    "question": "La app necesita usar la cámara. ¿Qué debe proporcionar el desarrollador para que iOS pueda solicitar el acceso?",
+    "options": [
+     "Una imagen en el catálogo de assets",
+     "Un nuevo target de pruebas",
+     "Un segue hacia la cámara",
+     "Una descripción de uso (NSCameraUsageDescription) en Info.plist"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sin la clave de descripción de uso en Info.plist, la app se cierra al acceder a la cámara; el texto aparece en la alerta de permiso y explica al usuario por qué se necesita el acceso. Los assets, los targets de pruebas y los segues no conceden permisos."
+   },
+   {
+    "id": 19,
+    "question": "El usuario negó el permiso de ubicación. ¿Qué comportamiento de la app es el más adecuado?",
+    "options": [
+     "Cerrar la app de inmediato",
+     "Seguir funcionando con funciones reducidas y explicar cómo activarlo en Ajustes",
+     "Pedir el permiso en bucle hasta que se acepte",
+     "Recopilar la ubicación a escondidas de todos modos"
+    ],
+    "correctIndex": 1,
+    "explanation": "Respetar la decisión del usuario y ofrecer una alternativa es una buena práctica de privacidad y UX. Cerrar la app, insistir en bucle o burlar la negación son prácticas hostiles, y lo último es imposible en iOS y poco ético."
+   },
+   {
+    "id": 20,
+    "question": "¿Qué exige la App Store respecto a la 'etiqueta de privacidad' (privacy nutrition label) de una app?",
+    "options": [
+     "Que la app nunca recopile ningún dato",
+     "Que la app tenga más de 1000 usuarios",
+     "Que el desarrollador informe qué datos recopila la app y cómo se usan",
+     "Que todo el código sea público"
+    ],
+    "correctIndex": 2,
+    "explanation": "La etiqueta de privacidad muestra a los usuarios, antes de descargar, los tipos de datos recopilados y sus fines. Recopilar datos no está prohibido, solo debe declararse; el número de usuarios y el código abierto no son requisitos."
+   }
+  ]
+ },
+ {
+  "id": "exam-6",
+  "title": "Simulacro de Certificación: Navegación en el Proyecto y Xcode",
+  "description": "Cubre tipos de archivo, navigators, inspectors y áreas de Xcode, catálogos de assets, target membership, previews, el simulador, schemes, targets, Git y Swift Package Manager.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "¿Cuál es el contenido típico de un archivo con extensión .swift?",
+    "options": [
+     "Código fuente escrito en Swift",
+     "Imágenes de la app",
+     "Un archivo de audio",
+     "Configuración de permisos del sistema"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los archivos .swift guardan código Swift: structs, clases, funciones y view controllers. Las imágenes van en assets y las descripciones de permisos en Info.plist."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué es un archivo .storyboard en un proyecto UIKit?",
+    "options": [
+     "Un archivo con las pruebas unitarias",
+     "Un paquete de dependencias",
+     "El ejecutable final de la app",
+     "Un archivo que describe visualmente pantallas (scenes) y las transiciones entre ellas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los storyboards son archivos (XML) editados en Interface Builder que definen scenes, objetos y segues. Las pruebas van en targets de prueba, las dependencias en SPM y el ejecutable lo genera la compilación."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué archivo guarda configuraciones de la app, como el nombre visible y los textos de justificación de permisos?",
+    "options": [
+     "Package.swift",
+     "Info.plist",
+     "Assets.xcassets",
+     "LaunchScreen.storyboard"
+    ],
+    "correctIndex": 1,
+    "explanation": "Info.plist es una property list con los metadatos y claves de configuración de la app, incluidas las *UsageDescription. Package.swift describe un paquete SPM, Assets.xcassets guarda recursos visuales y la launch screen define la pantalla de inicio."
+   },
+   {
+    "id": 4,
+    "question": "¿En qué área de Xcode se encuentra el Attributes inspector?",
+    "options": [
+     "Navigator area, en el lado izquierdo",
+     "Debug area, en la parte inferior",
+     "Utilities area, en el lado derecho",
+     "Barra de herramientas, en la parte superior"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los inspectors (File, Attributes, Size, Connections) están en la Utilities area a la derecha. El lado izquierdo tiene los navigators y la parte inferior tiene la Debug area con la consola."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué atajo muestra u oculta el área de navigators (lado izquierdo) de Xcode?",
+    "options": [
+     "Cmd + 0",
+     "Option + Cmd + 0",
+     "Shift + Cmd + Y",
+     "Cmd + R"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cmd+0 alterna los navigators, Option+Cmd+0 alterna los inspectors (derecha) y Shift+Cmd+Y alterna la debug area. Cmd+R compila y ejecuta la app. Los mismos botones existen en la esquina superior derecha de la ventana."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué navigator lista los errores y advertencias de compilación del proyecto?",
+    "options": [
+     "Find navigator",
+     "Test navigator",
+     "Project navigator",
+     "Issue navigator"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Issue navigator agrupa errores y advertencias por archivo. El Project navigator muestra la estructura de archivos, el Find navigator busca y el Test navigator lista y ejecuta pruebas."
+   },
+   {
+    "id": 7,
+    "question": "¿Para qué sirve el catálogo de assets (Assets.xcassets)?",
+    "options": [
+     "Guardar el código Swift de la app",
+     "Organizar imágenes, colores, el ícono de la app y otros recursos con variantes por pantalla y apariencia",
+     "Gestionar versiones del código con Git",
+     "Ejecutar la app en el simulador"
+    ],
+    "correctIndex": 1,
+    "explanation": "El catálogo de assets centraliza imágenes, color sets, íconos y variantes como modo claro/oscuro y @2x/@3x. El código va en archivos .swift, Git gestiona versiones y el simulador ejecuta la app."
+   },
+   {
+    "id": 8,
+    "question": "¿Cómo se importa una imagen para que la app pueda usarla por nombre?",
+    "options": [
+     "Cambiar su extensión a .swift",
+     "Pegar su ruta en Info.plist",
+     "Arrastrarla al catálogo de assets y darle nombre al image set",
+     "Escribir el nombre en la consola de depuración"
+    ],
+    "correctIndex": 2,
+    "explanation": "Al arrastrar la imagen al catálogo, Xcode crea un image set cuyo nombre se usa en el código, por ejemplo Image(\"logo\"). Las demás opciones no registran el recurso en la app."
+   },
+   {
+    "id": 9,
+    "question": "Un archivo de sonido se añadió al proyecto, pero la app no lo encuentra al ejecutar. ¿Cuál es la causa más probable?",
+    "options": [
+     "El archivo no está marcado en el Target Membership del target de la app",
+     "El archivo está en modo oscuro",
+     "Xcode no acepta archivos de sonido",
+     "El simulador está en la orientación equivocada"
+    ],
+    "correctIndex": 0,
+    "explanation": "Solo los archivos con el target marcado en el File inspector (Target Membership) se copian al bundle de la app. Si no está marcado, el código no lo encuentra en tiempo de ejecución. Las otras opciones no tienen sentido."
+   },
+   {
+    "id": 10,
+    "question": "¿Qué código carga una imagen llamada \"logo\" del catálogo de assets en SwiftUI y UIKit, respectivamente?",
+    "options": [
+     "Image(file: \"logo\")\nUIImage(path: \"logo\")",
+     "Picture(\"logo\")\nUIImage.load(\"logo\")",
+     "Image(\"logo.swift\")\nUIImage(\"logo\")",
+     "Image(\"logo\")\nUIImage(named: \"logo\")"
+    ],
+    "correctIndex": 3,
+    "explanation": "SwiftUI usa Image(\"nombre\") y UIKit usa UIImage(named:), que devuelve un Optional porque el nombre puede no existir. Los otros inicializadores no existen o usan parámetros incorrectos."
+   },
+   {
+    "id": 11,
+    "question": "¿Por qué usar un Color Set del catálogo de assets en lugar de un valor de color fijo en el código?",
+    "options": [
+     "Hace la app más rápida que cualquier otra opción",
+     "Permite definir variantes para modo claro y oscuro y reutilizar el color por nombre",
+     "Es la única forma de usar colores en iOS",
+     "Elimina la necesidad de Auto Layout"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los Color Sets centralizan el color, permiten variantes por apariencia y facilitan cambiar la identidad visual en un solo lugar. No son la única forma de usar colores ni afectan el rendimiento o el diseño."
+   },
+   {
+    "id": 12,
+    "question": "¿Qué macro de Swift permite mostrar una vista en el Canvas de Xcode sin ejecutar la app?",
+    "options": [
+     "@Preview",
+     "#Canvas",
+     "#Preview",
+     "@Previewable struct"
+    ],
+    "correctIndex": 2,
+    "explanation": "El bloque #Preview { ContentView() } declara la vista previa mostrada en el Canvas y se actualiza al editar el código. @Preview y #Canvas no existen; @Previewable es un atributo que se usa dentro de un #Preview para declarar propiedades de estado, no la macro principal."
+   },
+   {
+    "id": 13,
+    "question": "¿Cómo se prueba la app en otro modelo de iPhone o versión de iOS en el Simulator?",
+    "options": [
+     "Elegir otro destino de ejecución (run destination) en la barra de herramientas de Xcode",
+     "Reescribir la app para cada modelo",
+     "Cambiar el nombre del target",
+     "Cambiar la extensión de los archivos"
+    ],
+    "correctIndex": 0,
+    "explanation": "El selector de destino junto al scheme permite elegir cualquier simulador instalado, con su modelo y versión de iOS. No hay que reescribir la app, y el nombre del target o las extensiones no influyen."
+   },
+   {
+    "id": 14,
+    "question": "¿Qué define un scheme en Xcode?",
+    "options": [
+     "El diseño de las pantallas en el storyboard",
+     "El tamaño de fuente del editor",
+     "Los colores de la app en modo oscuro",
+     "Qué targets compilar y cómo ejecutar, probar y archivar la app, incluida la configuración Debug o Release"
+    ],
+    "correctIndex": 3,
+    "explanation": "Un scheme conecta targets con las acciones Run, Test, Profile, Analyze y Archive, y elige la build configuration de cada una. El diseño, la fuente del editor y los colores no forman parte del scheme."
+   },
+   {
+    "id": 15,
+    "question": "¿Qué es un target en un proyecto de Xcode?",
+    "options": [
+     "Un tipo de variable en Swift",
+     "Un conjunto de archivos y configuraciones de compilación que produce un producto, como una app o un bundle de pruebas",
+     "Una imagen en el catálogo de assets",
+     "Un dispositivo físico conectado al Mac"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los targets definen qué construir y cómo: la app, extensiones, pruebas unitarias y de UI. No son variables ni imágenes, y un dispositivo es un run destination, no un target."
+   },
+   {
+    "id": 16,
+    "question": "Hiciste un commit en Xcode, pero tus compañeros no ven el cambio en el repositorio remoto. ¿Qué falta?",
+    "options": [
+     "Build",
+     "Clean Build Folder",
+     "Push",
+     "Run"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un commit registra el cambio solo en el repositorio local; hay que hacer push para enviar los commits al remoto. Build, Clean y Run no interactúan con el repositorio Git."
+   },
+   {
+    "id": 17,
+    "question": "¿Qué navigator de Xcode muestra ramas, historial de commits y repositorios remotos?",
+    "options": [
+     "Source Control navigator",
+     "Breakpoint navigator",
+     "Report navigator",
+     "Symbol navigator"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Source Control navigator muestra ramas, etiquetas, remotos y el historial de commits. El Breakpoint navigator lista breakpoints, el Report navigator muestra registros de compilación y ejecución y el Symbol navigator lista símbolos del código."
+   },
+   {
+    "id": 18,
+    "question": "¿Cuál es el motivo principal de usar una rama para desarrollar una nueva función?",
+    "options": [
+     "Hacer la app más rápida",
+     "Evitar el uso de commits",
+     "Borrar el historial antiguo",
+     "Aislar el trabajo sin afectar el código estable hasta que la función esté lista"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las ramas permiten trabajar en paralelo y hacer merge después. No cambian el rendimiento, no reemplazan los commits y no borran el historial."
+   },
+   {
+    "id": 19,
+    "question": "¿Cuál es la ruta en Xcode para añadir una biblioteca de terceros mediante Swift Package Manager?",
+    "options": [
+     "Product > Archive",
+     "File > Add Package Dependencies...",
+     "Editor > Add Library Target",
+     "Window > Organizer"
+    ],
+    "correctIndex": 1,
+    "explanation": "En File > Add Package Dependencies se indica la URL del repositorio y la regla de versión. Product > Archive genera la compilación para distribución, y las otras opciones no añaden paquetes."
+   },
+   {
+    "id": 20,
+    "question": "Añadiste un paquete vía SPM, pero al escribir import MiPaquete aparece 'No such module'. ¿Cuál es una causa probable?",
+    "options": [
+     "El archivo Swift no tiene comentarios",
+     "El simulador está apagado",
+     "El producto del paquete no se vinculó al target correcto",
+     "La variable es una constante"
+    ],
+    "correctIndex": 2,
+    "explanation": "El producto del paquete debe figurar en Frameworks, Libraries and Embedded Content del target que lo importa; espera también la resolución del paquete. Los comentarios, el simulador o las constantes no afectan los imports."
+   }
+  ]
+ },
+ {
+  "id": "exam-7",
+  "title": "Simulacro de Certificación: Interface Builder y UIKit",
+  "description": "Cubre objetos del storyboard y document outline, attributes inspector, IBOutlet e IBAction, connections inspector, Auto Layout, stack views, view controllers, segues, navegación, table views y modificación de objetos por código.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "¿Para qué sirve el Document Outline en Interface Builder?",
+    "options": [
+     "Mostrar la jerarquía de scenes y objetos del storyboard en forma de lista",
+     "Mostrar la consola de depuración",
+     "Listar los commits de Git",
+     "Elegir el simulador de ejecución"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Document Outline lista cada scene y sus objetos en la jerarquía y facilita seleccionar vistas superpuestas u ocultas. La consola, Git y los simuladores pertenecen a otras partes de Xcode."
+   },
+   {
+    "id": 2,
+    "question": "¿Cómo se indica qué view controller se muestra primero al abrir la app?",
+    "options": [
+     "Renombrar la clase a Initial",
+     "Colocarlo al inicio del archivo Swift",
+     "Añadir una imagen al catálogo de assets",
+     "Marcar 'Is Initial View Controller' en el Attributes inspector (flecha de entrada)"
+    ],
+    "correctIndex": 3,
+    "explanation": "La flecha de entrada apunta al initial view controller, definido por la opción Is Initial View Controller. El nombre de la clase, la posición en el archivo Swift y los assets no influyen."
+   },
+   {
+    "id": 3,
+    "question": "Quieres cambiar el texto, el color y la fuente de un label sin escribir código. ¿Dónde se hace?",
+    "options": [
+     "Connections inspector",
+     "Attributes inspector",
+     "Identity inspector (Custom Class)",
+     "Debug area"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Attributes inspector expone propiedades visuales como Text, Color y Font. El Connections inspector muestra enlaces, el Identity inspector define la clase y la debug area muestra la consola."
+   },
+   {
+    "id": 4,
+    "question": "Necesitas cambiar el texto de un UILabel desde código cuando carga la pantalla. ¿Qué debes crear para ese label?",
+    "options": [
+     "@IBAction",
+     "@IBInspectable struct",
+     "@IBOutlet",
+     "@objc enum"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un @IBOutlet es una referencia al objeto del storyboard que permite leer y cambiar sus propiedades (label.text). @IBAction sirve para reaccionar a eventos, y las otras opciones no conectan objetos del storyboard."
+   },
+   {
+    "id": 5,
+    "question": "Quieres ejecutar código cuando el usuario toque un botón. ¿Qué debes crear?",
+    "options": [
+     "@IBAction",
+     "@IBOutlet",
+     "@State",
+     "@Published"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un @IBAction es un método vinculado a un evento del control, como Touch Up Inside. @IBOutlet solo referencia el objeto; @State y @Published son de SwiftUI y Combine, no de Interface Builder."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es la declaración típica de un outlet para un UILabel llamado nameLabel?",
+    "options": [
+     "@IBAction weak var nameLabel: UILabel!",
+     "@IBOutlet func nameLabel(_ sender: UILabel)",
+     "@IBOutlet let nameLabel = UILabel",
+     "@IBOutlet weak var nameLabel: UILabel!"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los outlets son variables, normalmente weak (la vista ya pertenece a la jerarquía) e implícitamente desenvueltas (!) porque se conectan después de crear el controller. @IBAction no se aplica a variables, y los outlets no son funciones ni let."
+   },
+   {
+    "id": 7,
+    "question": "¿Cuál es la forma estándar de crear un outlet o action desde el storyboard?",
+    "options": [
+     "Hacer doble clic en el objeto y escribir su nombre",
+     "Control-arrastrar del objeto al código en el Assistant editor",
+     "Copiar y pegar el objeto en el archivo Swift",
+     "Arrastrar el objeto al catálogo de assets"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con el Assistant editor mostrando storyboard y código lado a lado, Control-arrastrar inserta el outlet o action y crea la conexión. Las otras acciones no conectan el objeto con el código."
+   },
+   {
+    "id": 8,
+    "question": "Borraste el outlet nameLabel del código, pero la conexión antigua sigue en el storyboard. ¿Qué pasa al abrir la pantalla?",
+    "options": [
+     "El código no compila",
+     "El label desaparece en silencio sin ningún error",
+     "La app se cierra con un error de runtime que dice que la clase no es compatible con la clave 'nameLabel'",
+     "Xcode reconstruye la conexión por sí solo"
+    ],
+    "correctIndex": 2,
+    "explanation": "El storyboard se carga en tiempo de ejecución e intenta enlazar una propiedad que ya no existe, lanzando NSUnknownKeyException. No es un error de compilación. Se corrige eliminando la conexión obsoleta en el Connections inspector."
+   },
+   {
+    "id": 9,
+    "question": "¿Cuál es la función del Connections inspector?",
+    "options": [
+     "Mostrar y editar las conexiones (outlets, actions, segues) de un objeto seleccionado",
+     "Elegir la fuente del texto",
+     "Definir el color de fondo de la vista",
+     "Configurar la conexión a internet de la app"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Connections inspector lista los outlets, actions y segues del objeto y permite eliminar conexiones rotas. La fuente y el color son del Attributes inspector, y 'conexión' aquí no significa red."
+   },
+   {
+    "id": 10,
+    "question": "¿Qué hace Auto Layout?",
+    "options": [
+     "Traduce la app a otros idiomas",
+     "Guarda datos del usuario en la nube",
+     "Detecta errores de sintaxis en el código",
+     "Calcula la posición y el tamaño de las vistas a partir de constraints, adaptándose a distintas pantallas"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los constraints describen relaciones como márgenes, alineaciones y proporciones, y el sistema resuelve el diseño para cada tamaño de pantalla. La localización, la nube y la sintaxis son otros temas."
+   },
+   {
+    "id": 11,
+    "question": "Una vista tiene solo constraints de ancho y alto y Xcode muestra líneas rojas en el storyboard. ¿Cuál es el problema?",
+    "options": [
+     "Hay demasiados constraints para que Xcode los acepte",
+     "Faltan constraints de posición (horizontal y vertical), por lo que el diseño es ambiguo",
+     "La vista necesita un IBAction",
+     "El storyboard no admite vistas con tamaño"
+    ],
+    "correctIndex": 1,
+    "explanation": "Para un diseño completo, cada vista necesita constraints que definan posición y tamaño. Solo con tamaño, no se sabe dónde va. La cantidad de constraints no es el problema y IBAction no afecta el diseño."
+   },
+   {
+    "id": 12,
+    "question": "¿Cuál es la ventaja de usar un UIStackView?",
+    "options": [
+     "Ejecuta animaciones 3D automáticamente",
+     "Almacena datos en disco",
+     "Organiza las subvistas en fila o columna con espaciado y distribución, reduciendo constraints manuales",
+     "Convierte la app a Android"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las stack views se encargan de colocar a sus hijos según axis, distribution, alignment y spacing, simplificando los diseños adaptables. La animación 3D, el disco y Android no forman parte de su función."
+   },
+   {
+    "id": 13,
+    "question": "¿Qué propiedad define si una stack view apila los elementos en horizontal o en vertical?",
+    "options": [
+     "axis",
+     "alignment",
+     "spacing",
+     "distribution"
+    ],
+    "correctIndex": 0,
+    "explanation": "axis (.horizontal o .vertical) define la dirección. alignment controla la alineación en el eje perpendicular, spacing la distancia entre elementos y distribution cómo se reparte el espacio a lo largo del eje."
+   },
+   {
+    "id": 14,
+    "question": "¿Por qué se recomienda alinear constraints al Safe Area en lugar del borde de la pantalla?",
+    "options": [
+     "Para que la app use menos memoria",
+     "Para evitar el uso de storyboards",
+     "Para desactivar el modo oscuro",
+     "Para que el contenido no quede bajo el notch, la Dynamic Island, la barra de estado o el indicador home"
+    ],
+    "correctIndex": 3,
+    "explanation": "El safe area es la región libre de elementos del sistema y recortes de hardware. Alinear a ella mantiene botones y textos visibles y tocables. No tiene relación con memoria, storyboards o modo oscuro."
+   },
+   {
+    "id": 15,
+    "question": "¿En qué método del ciclo de vida de un UIViewController se suele hacer la configuración inicial, tras cargar la vista en memoria?",
+    "options": [
+     "viewDidDisappear(_:)",
+     "viewDidLoad()",
+     "deinit",
+     "application(_:didFinishLaunchingWithOptions:)"
+    ],
+    "correctIndex": 1,
+    "explanation": "viewDidLoad() se llama una vez, cuando la vista y sus outlets ya están disponibles. viewDidDisappear ocurre al salir de la pantalla, deinit al liberar el objeto y el último método pertenece al AppDelegate."
+   },
+   {
+    "id": 16,
+    "question": "¿Qué es un segue en el storyboard?",
+    "options": [
+     "Un tipo de constraint",
+     "Un outlet para una imagen",
+     "Una transición entre dos scenes, como Show (push) o Present Modally",
+     "Una herramienta de depuración"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los segues conectan un view controller con otro y definen el estilo de transición, por ejemplo Show, Present Modally o Popover. Los constraints, los outlets y la depuración son conceptos distintos."
+   },
+   {
+    "id": 17,
+    "question": "¿Qué método se sobrescribe para enviar datos al view controller de destino antes de que ocurra un segue?",
+    "options": [
+     "prepare(for:sender:)",
+     "viewWillAppear(_:)",
+     "performSegue(withIdentifier:sender:)",
+     "dismiss(animated:)"
+    ],
+    "correctIndex": 0,
+    "explanation": "prepare(for:sender:) recibe el UIStoryboardSegue, cuyo destination permite configurar el siguiente controller. performSegue dispara el segue, viewWillAppear se llama cuando aparece la pantalla y dismiss cierra una pantalla presentada."
+   },
+   {
+    "id": 18,
+    "question": "¿Cuál es el papel de un UINavigationController?",
+    "options": [
+     "Organizar secciones paralelas en una barra inferior",
+     "Mostrar una lista desplazable de filas",
+     "Guardar el estado de los datos",
+     "Gestionar una pila de view controllers, con barra de navegación y botón Atrás automático"
+    ],
+    "correctIndex": 3,
+    "explanation": "Un navigation controller hace push y pop de view controllers en una pila, partiendo de un root view controller. Las secciones paralelas en una barra inferior son un UITabBarController y las listas desplazables son table views."
+   },
+   {
+    "id": 19,
+    "question": "¿Qué método de UITableViewDataSource indica cuántas filas tiene una sección?",
+    "options": [
+     "tableView(_:cellForRowAt:)",
+     "tableView(_:numberOfRowsInSection:)",
+     "tableView(_:didSelectRowAt:)",
+     "numberOfSections(in:)"
+    ],
+    "correctIndex": 1,
+    "explanation": "numberOfRowsInSection devuelve el número de filas. cellForRowAt devuelve la celda de cada fila, didSelectRowAt es un método de delegate para toques y numberOfSections cuenta secciones, no filas."
+   },
+   {
+    "id": 20,
+    "question": "¿Qué línea oculta un botón llamado saveButton desde código?",
+    "options": [
+     "saveButton.hidden = true",
+     "saveButton.visible = false",
+     "saveButton.isHidden = true",
+     "saveButton.remove()"
+    ],
+    "correctIndex": 2,
+    "explanation": "La propiedad correcta de UIView es isHidden. hidden y visible no existen en Swift/UIKit, y remove() no es un método de UIButton (quitarlo de la jerarquía sería removeFromSuperview())."
+   }
+  ]
+ },
+ {
+  "id": "exam-8",
+  "title": "Simulacro de Certificación: El Lenguaje Swift",
+  "description": "Cubre funciones, enums, constantes y variables, inferencia de tipos, operadores, structs, arrays, control de flujo y bucles, convenciones de nombres, alcance y shadowing.",
+  "category": "Certificação",
+  "timeLimitMinutes": 30,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Dada la función siguiente, ¿qué llamada es válida?\nfunc greet(name: String) -> String {\n    \"Hi, \\(name)\"\n}",
+    "options": [
+     "greet(name: \"Ana\")",
+     "greet(\"Ana\")",
+     "greet(name = \"Ana\")",
+     "greet(String: \"Ana\")"
+    ],
+    "correctIndex": 0,
+    "explanation": "Por defecto el nombre del parámetro también es la etiqueta del argumento, así que la llamada exige name: seguido del valor. Omitir la etiqueta, usar = o usar el tipo como etiqueta es un error de compilación."
+   },
+   {
+    "id": 2,
+    "question": "Dada la función siguiente, ¿qué llamada es válida?\nfunc move(from start: Int, to end: Int) { }",
+    "options": [
+     "move(1, 5)",
+     "move(start: 1, end: 5)",
+     "move(from: 1, 5)",
+     "move(from: 1, to: 5)"
+    ],
+    "correctIndex": 3,
+    "explanation": "En la declaración, el primer nombre (from, to) es la etiqueta externa usada en la llamada, y el segundo (start, end) es el nombre interno usado dentro de la función. Por eso start: y end: no son válidos en la llamada."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué llamada es válida para esta función?\nfunc square(_ n: Int) -> Int { n * n }",
+    "options": [
+     "square(n: 4)",
+     "square(4)",
+     "square(value: 4)",
+     "square(Int: 4)"
+    ],
+    "correctIndex": 1,
+    "explanation": "El guion bajo antes del nombre del parámetro elimina la etiqueta del argumento, así que basta pasar el valor. Con etiqueta (n: o value:) o con el tipo como etiqueta, el compilador se queja."
+   },
+   {
+    "id": 4,
+    "question": "¿Qué imprime este código?\nfunc double(_ x: Int) -> Int { x * 2 }\nprint(double(3) + 1)",
+    "options": [
+     "8",
+     "6",
+     "7",
+     "4"
+    ],
+    "correctIndex": 2,
+    "explanation": "double(3) devuelve 6 y luego se suma 1, lo que da 7. El 8 vendría de double(3 + 1); la llamada se evalúa antes de la suma."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué imprime este código?\nfunc hello(name: String = \"World\") {\n    print(\"Hello, \\(name)\")\n}\nhello()",
+    "options": [
+     "Hello, World",
+     "Hello, name",
+     "Hello, ",
+     "Error de compilación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Los parámetros con valor por defecto pueden omitirse en la llamada y entonces se usa el valor por defecto. No hay error, y la interpolación muestra el valor de name, no el texto 'name'."
+   },
+   {
+    "id": 6,
+    "question": "¿Cuál es el problema de este código?\nfunc total(a: Int, b: Int) -> Int {\n    let sum = a + b\n    print(sum)\n}",
+    "options": [
+     "print no se puede usar dentro de funciones",
+     "sum debe declararse con var",
+     "Los parámetros necesitan la etiqueta _",
+     "Falta un return: la función promete devolver un Int"
+    ],
+    "correctIndex": 3,
+    "explanation": "Una función con tipo de retorno -> Int debe devolver un Int en todos los caminos; aquí falta 'return sum'. print funciona en cualquier función, let basta para sum y las etiquetas son opcionales."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué ocurre con este código?\nenum Light { case red, yellow, green }\nlet l = Light.red\nswitch l {\ncase .red: print(\"Stop\")\ncase .green: print(\"Go\")\n}",
+    "options": [
+     "Imprime Stop",
+     "Error de compilación: el switch no es exhaustivo (falta .yellow o default)",
+     "No imprime nada",
+     "Falla en tiempo de ejecución"
+    ],
+    "correctIndex": 1,
+    "explanation": "En Swift todo switch debe cubrir todos los casos del enum o tener un default, y esto se verifica al compilar, por lo que el código ni siquiera se ejecuta. Añade case .yellow o default."
+   },
+   {
+    "id": 8,
+    "question": "¿Qué imprime este código?\nenum Planet: Int { case mercury = 1, venus, earth }\nprint(Planet.earth.rawValue)",
+    "options": [
+     "2",
+     "0",
+     "3",
+     "earth"
+    ],
+    "correctIndex": 2,
+    "explanation": "Con raw values enteros, los casos siguientes incrementan el anterior: mercury = 1, venus = 2, earth = 3. 2 sería venus, 0 solo ocurriría sin valor inicial en el primer caso, y rawValue es un Int, no el nombre."
+   },
+   {
+    "id": 9,
+    "question": "¿Qué línea causa un error de compilación?\n1  let limit = 10\n2  var count = 0\n3  count = 5\n4  limit = 20",
+    "options": [
+     "Línea 4: limit es una constante",
+     "Línea 3: count es una constante",
+     "Línea 2: var no puede valer 0",
+     "Línea 1: let exige un tipo explícito"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las constantes declaradas con let no pueden reasignarse ('Cannot assign to value: limit is a let constant'). count es var y puede cambiar, 0 es un valor válido y el tipo Int se infiere sin escribirlo."
+   },
+   {
+    "id": 10,
+    "question": "¿Qué tipo se infiere para c?\nlet c = 7 / 2.0",
+    "options": [
+     "Int",
+     "String",
+     "Float",
+     "Double"
+    ],
+    "correctIndex": 3,
+    "explanation": "El literal 2.0 tiene punto decimal, por lo que es Double, y el 7 se trata como Double en esta expresión, dando 3.5. Int perdería la parte decimal, y Float solo se usa si se declara explícitamente."
+   },
+   {
+    "id": 11,
+    "question": "¿Qué imprime este código?\nlet score: Double = 10\nprint(score)",
+    "options": [
+     "10",
+     "10.0",
+     "Error de compilación",
+     "10.00"
+    ],
+    "correctIndex": 1,
+    "explanation": "Con la anotación : Double, el literal 10 se trata como Double y print muestra 10.0. No hay error porque un literal entero puede inicializar un Double, y print no añade ceros extra."
+   },
+   {
+    "id": 12,
+    "question": "¿Cuál es el resultado de 7 / 2 + 7 % 3 en Swift, con todos los valores Int?",
+    "options": [
+     "4.5",
+     "5",
+     "4",
+     "3"
+    ],
+    "correctIndex": 2,
+    "explanation": "La división de Int trunca: 7 / 2 = 3. El resto 7 % 3 = 1. Sumando, 3 + 1 = 4. 4.5 requeriría Double; 5 y 3 vienen de errores en las operaciones."
+   },
+   {
+    "id": 13,
+    "question": "¿Qué ocurre con este código?\nlet a = 3\nlet b = 2.5\nprint(a + b)",
+    "options": [
+     "Error de compilación: no se pueden sumar un Int y un Double",
+     "Imprime 5.5",
+     "Imprime 5",
+     "Imprime 5.0"
+    ],
+    "correctIndex": 0,
+    "explanation": "a es Int y b es Double; Swift no convierte tipos automáticamente en operaciones. Haría falta Double(a) + b, que imprimiría 5.5."
+   },
+   {
+    "id": 14,
+    "question": "¿Cuál es el resultado de esta expresión?\nprint(5 > 3 && 2 > 4 || 1 == 1)",
+    "options": [
+     "false",
+     "1",
+     "Error de compilación",
+     "true"
+    ],
+    "correctIndex": 3,
+    "explanation": "&& tiene mayor precedencia que ||. Primero (5 > 3 && 2 > 4) = true && false = false; luego false || (1 == 1) = false || true = true. El resultado es un Bool, nunca 1."
+   },
+   {
+    "id": 15,
+    "question": "¿Qué imprime este código?\nvar n = 10\nn += 5\nn -= 3\nn *= 2\nprint(n)",
+    "options": [
+     "12",
+     "24",
+     "20",
+     "17"
+    ],
+    "correctIndex": 1,
+    "explanation": "10 + 5 = 15; 15 - 3 = 12; 12 * 2 = 24. El valor 12 es el resultado antes de la última línea."
+   },
+   {
+    "id": 16,
+    "question": "Dada la struct siguiente, ¿qué línea crea una instancia correctamente?\nstruct Dog {\n    var name: String\n    var age: Int\n}",
+    "options": [
+     "let d = Dog(\"Rex\", 3)",
+     "let d = Dog(age: 3, name: \"Rex\")",
+     "let d = Dog(name: \"Rex\", age: 3)",
+     "let d = new Dog(name: \"Rex\", age: 3)"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las structs reciben un inicializador memberwise con etiquetas en el orden de las propiedades. Sin etiquetas, con el orden cambiado o con 'new' (que no existe en Swift) el código no compila."
+   },
+   {
+    "id": 17,
+    "question": "¿Qué imprime este código?\nstruct Dog { var name: String }\nvar a = Dog(name: \"A\")\nvar b = a\nb.name = \"B\"\nprint(a.name)",
+    "options": [
+     "A",
+     "B",
+     "AB",
+     "Error de compilación"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las structs son tipos por valor: var b = a crea una copia independiente. Cambiar b no afecta a, así que a.name sigue siendo 'A'. Con una class sería 'B'."
+   },
+   {
+    "id": 18,
+    "question": "¿Por qué no compila este código?\nstruct Counter {\n    var n = 0\n    mutating func inc() { n += 1 }\n}\nlet c = Counter()\nc.inc()",
+    "options": [
+     "Las structs no pueden tener métodos",
+     "n debe declararse sin valor inicial",
+     "inc() debe devolver un Int",
+     "c es let e inc() es mutating, que solo puede llamarse sobre una var"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los métodos mutating modifican la propia struct, por lo que requieren una instancia variable. Cambiar 'let c' por 'var c' lo corrige. Las structs pueden tener métodos, se permiten valores iniciales y no se exige retorno."
+   },
+   {
+    "id": 19,
+    "question": "¿Qué ocurre al ejecutar este código?\nlet fruits = [\"a\", \"b\", \"c\"]\nprint(fruits[3])",
+    "options": [
+     "Imprime nil",
+     "Falla en tiempo de ejecución: índice fuera de rango",
+     "Imprime c",
+     "Imprime una cadena vacía"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los índices van de 0 a count - 1, así que el último es fruits[2]. Acceder a fruits[3] provoca el error fatal 'Index out of range'. Los arrays no devuelven nil ni repiten el último elemento."
+   },
+   {
+    "id": 20,
+    "question": "¿Qué imprime este código?\nvar nums = [1, 2, 3]\nnums.append(4)\nnums.remove(at: 0)\nprint(nums)",
+    "options": [
+     "[1, 2, 3, 4]",
+     "[1, 2, 3]",
+     "[2, 3, 4]",
+     "[2, 3]"
+    ],
+    "correctIndex": 2,
+    "explanation": "append(4) añade al final, dando [1, 2, 3, 4]; remove(at: 0) quita el primer elemento (1), quedando [2, 3, 4]. Las otras opciones ignoran una de las operaciones."
+   },
+   {
+    "id": 21,
+    "question": "¿Qué valor se imprime?\nvar s = 0\nfor i in 1..<4 {\n    s += i\n}\nprint(s)",
+    "options": [
+     "6",
+     "10",
+     "3",
+     "24"
+    ],
+    "correctIndex": 0,
+    "explanation": "El rango semiabierto 1..<4 abarca de 1 a 3, y 1 + 2 + 3 = 6. 10 sería el resultado de 1...4 (rango cerrado)."
+   },
+   {
+    "id": 22,
+    "question": "¿Qué imprime este código?\nfor i in 1...5 {\n    if i == 3 { continue }\n    if i == 5 { break }\n    print(i)\n}",
+    "options": [
+     "1, 2, 4 y 5",
+     "1 y 2",
+     "1, 2, 3 y 4",
+     "1, 2 y 4 (uno por línea)"
+    ],
+    "correctIndex": 3,
+    "explanation": "continue salta el 3 sin imprimir, y break termina el bucle cuando i vale 5 antes del print. Así salen 1, 2 y 4. Incluir el 5 ignora el break, y el 3 ignora el continue."
+   },
+   {
+    "id": 23,
+    "question": "¿Qué identificador es válido y sigue la convención para el nombre de una variable?",
+    "options": [
+     "2ndPlace",
+     "userAge",
+     "user-age",
+     "UserAge"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las variables usan lowerCamelCase. 2ndPlace empieza con un número y user-age tiene un guion, ambos inválidos. UserAge es válido, pero UpperCamelCase es la convención para tipos (struct, class, enum), no para variables."
+   },
+   {
+    "id": 24,
+    "question": "¿Qué imprime este código?\nvar x = 1\nif true {\n    let x = 2\n    print(x)\n}\nprint(x)",
+    "options": [
+     "2 y luego 2",
+     "1 y luego 1",
+     "2 y luego 1",
+     "Error de compilación por redeclaración"
+    ],
+    "correctIndex": 2,
+    "explanation": "El let x dentro del if es una nueva constante que oculta (shadowing) la variable externa solo en ese alcance. Dentro imprime 2; fuera, la variable original sigue valiendo 1. Declarar el mismo nombre en un alcance interno está permitido."
+   },
+   {
+    "id": 25,
+    "question": "¿Qué ocurre con este código?\nfor i in 1...3 {\n    let doubled = i * 2\n}\nprint(doubled)",
+    "options": [
+     "Error de compilación: 'doubled' no existe fuera del bucle (cannot find in scope)",
+     "Imprime 6",
+     "Imprime 0",
+     "Imprime nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las constantes y variables solo existen dentro de las llaves donde se declararon. doubled vive solo en el cuerpo del for; para usarla después, declárala antes del bucle con var. No hay valor por defecto ni nil."
+   }
+  ]
+ }
+]

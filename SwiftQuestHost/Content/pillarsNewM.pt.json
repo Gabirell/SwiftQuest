@@ -1,0 +1,701 @@
+[
+ {
+  "id": 65,
+  "title": "Testes de Interface, Desempenho e Cobertura",
+  "theory": "Uma boa estratégia de testes segue a pirâmide: muitos testes unitários (rápidos, isolados, sobre uma função ou tipo), menos testes de integração (vários componentes juntos, como ViewModel e serviço) e poucos testes de interface (lentos, simulam o usuário). O XCUITest faz isso com 'XCUIApplication': você cria 'let app = XCUIApplication()', chama 'app.launch()' e localiza elementos por consultas como 'app.buttons[\"salvar\"]' ou 'app.textFields[\"email\"]', agindo com 'tap()' e 'typeText(_:)'. A forma mais estável de achar elementos é o 'accessibilityIdentifier' (em SwiftUI, '.accessibilityIdentifier(\"salvar\")'), que não muda com o idioma nem com o texto exibido. Testes de UI ficam instáveis (flaky) quando usam pausas fixas; prefira 'waitForExistence(timeout:)', passe 'launchArguments' para começar de um estado conhecido e use o botão de gravação do Xcode apenas como ponto de partida, refinando as consultas geradas. Para desempenho, 'measure { }' em um XCTestCase executa o bloco várias vezes e compara com uma linha de base (baseline). Um test plan ('.xctestplan') define quais testes rodam, em quais configurações (idiomas, regiões, destinos) e se a cobertura de código é coletada; assim o mesmo teste roda em vários simuladores e dispositivos. A cobertura de código mostra quais linhas foram executadas, mas cobertura alta não prova ausência de bugs, apenas que o código foi exercitado. O Swift Testing complementa o XCTest com '@Test', '#expect', testes parametrizados com 'arguments:' e organização por 'tags' e 'traits'; código assíncrono é testado com funções 'async throws', sem expectations manuais. Na integração contínua, 'xcodebuild test -scheme ... -destination ...' ou o Xcode Cloud executam esses testes a cada alteração.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcuiautomation",
+  "category": "Swift Moderno",
+  "corporateCase": "Uma equipe de banco digital mantém centenas de testes unitários para regras de juros, alguns testes de integração para o fluxo de transferência e um punhado de testes XCUITest para login e pagamento. O Xcode Cloud roda o test plan em dois iPhones e um iPad a cada pull request, e a cobertura de código ajuda a ver quais regras ainda não foram testadas.",
+  "gameCase": "Em um jogo, a lógica de pontuação e de combos é coberta por testes unitários parametrizados com várias combinações de entrada. Um teste de desempenho com 'measure' garante que o cálculo de colisões de 500 inimigos não passe do orçamento de quadros, e um teste XCUITest percorre o menu até iniciar a primeira fase.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Inicie o app dentro do teste de interface",
+    "codeSnippet": "let app = XCUIApplication()\napp.___()",
+    "correctAnswer": "launch",
+    "hint": "Método que abre o aplicativo em teste."
+   },
+   {
+    "id": 2,
+    "question": "Dê um identificador de acessibilidade estável ao botão, para os testes de UI o encontrarem",
+    "codeSnippet": "Button(\"Salvar\") { salvar() }\n    .___(\"botaoSalvar\")",
+    "correctAnswer": "accessibilityIdentifier",
+    "hint": "É um modifier cujo nome começa com accessibility e termina com Identifier."
+   },
+   {
+    "id": 3,
+    "question": "Meça o desempenho da ordenação em um XCTestCase",
+    "codeSnippet": "func testDesempenho() {\n    ___ { ordenarLista() }\n}",
+    "correctAnswer": "measure",
+    "hint": "O método que executa o bloco várias vezes e calcula a média."
+   },
+   {
+    "id": 4,
+    "question": "Declare um teste com Swift Testing",
+    "codeSnippet": "___ func somaFunciona() {\n    #expect(2 + 2 == 4)\n}",
+    "correctAnswer": "@Test",
+    "hint": "Atributo que marca uma função como teste, no lugar do prefixo 'test' do XCTest."
+   },
+   {
+    "id": 5,
+    "question": "Permita que o teste chame código assíncrono com await",
+    "codeSnippet": "func testBusca() ___ throws {\n    let r = try await servico.buscar()\n    XCTAssertFalse(r.isEmpty)\n}",
+    "correctAnswer": "async",
+    "hint": "Palavra-chave que vem antes de 'throws' em funções assíncronas."
+   },
+   {
+    "id": 6,
+    "question": "Rode o mesmo teste para cada valor da lista (teste parametrizado)",
+    "codeSnippet": "@Test(___: [1, 2, 3])\nfunc positivo(n: Int) {\n    #expect(n > 0)\n}",
+    "correctAnswer": "arguments",
+    "hint": "O rótulo do parâmetro que recebe a coleção de entradas."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual distribuição de testes melhor representa a pirâmide de testes?",
+    "options": [
+     "Muitos testes de UI, poucos unitários",
+     "Muitos testes unitários, menos de integração e poucos de UI",
+     "Quantidades iguais de cada tipo",
+     "Somente testes de integração"
+    ],
+    "correctIndex": 1,
+    "explanation": "Testes unitários são rápidos e baratos, por isso formam a base. Testes de UI são lentos e frágeis, então ficam no topo e em menor número."
+   },
+   {
+    "id": 2,
+    "question": "Qual é a forma mais robusta de localizar um botão em um teste XCUITest?",
+    "options": [
+     "Pelo texto exibido, que muda com o idioma",
+     "Pela posição na tela em pontos",
+     "Pelo 'accessibilityIdentifier' definido no app",
+     "Pelo índice do elemento na hierarquia"
+    ],
+    "correctIndex": 2,
+    "explanation": "O identificador é independente de idioma, de layout e do texto. Texto e índices quebram quando a interface é traduzida ou reorganizada."
+   },
+   {
+    "id": 3,
+    "question": "Após tocar em um botão, a próxima tela demora a aparecer e o teste falha de vez em quando. Qual a melhor correção?",
+    "options": [
+     "Usar 'waitForExistence(timeout:)' no elemento esperado",
+     "Inserir 'sleep(10)' antes de cada passo",
+     "Remover a verificação da tela",
+     "Executar o teste duas vezes"
+    ],
+    "correctIndex": 0,
+    "explanation": "Esperar por uma condição é rápido quando tudo vai bem e tolerante quando há atraso. Pausas fixas deixam a suíte lenta e continuam instáveis."
+   },
+   {
+    "id": 4,
+    "question": "O que faz 'measure { }' em um XCTestCase?",
+    "options": [
+     "Mede o tamanho do arquivo do app",
+     "Conta linhas de código executadas",
+     "Cancela o teste se passar de 1 segundo",
+     "Executa o bloco várias vezes, registra o tempo médio e permite comparar com uma baseline"
+    ],
+    "correctIndex": 3,
+    "explanation": "Os testes de desempenho executam o bloco repetidamente e reportam média e desvio. Ao definir uma baseline, o Xcode sinaliza regressões de velocidade."
+   },
+   {
+    "id": 5,
+    "question": "Para que serve um test plan ('.xctestplan')?",
+    "options": [
+     "Gerar documentação do código",
+     "Definir quais testes rodam e com quais configurações (idioma, região, cobertura), reutilizando o mesmo conjunto",
+     "Substituir o esquema de build por completo",
+     "Publicar o app na App Store"
+    ],
+    "correctIndex": 1,
+    "explanation": "O test plan reúne os testes e as configurações em um arquivo, permitindo rodar o mesmo teste em vários idiomas ou com cobertura ligada sem duplicar esquemas."
+   },
+   {
+    "id": 6,
+    "question": "Um projeto tem 100% de cobertura de código. O que isso garante?",
+    "options": [
+     "Que não existem bugs",
+     "Que todos os cenários de entrada foram verificados",
+     "Que todas as linhas foram executadas por algum teste, não que as verificações sejam corretas",
+     "Que o app passará na revisão da App Store"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cobertura mede execução, não qualidade das asserções. Um teste sem nenhum 'XCTAssert' pode executar uma linha e mesmo assim não validar nada."
+   },
+   {
+    "id": 7,
+    "question": "Com Swift Testing, o que acontece com '@Test(arguments: [1, 2, 3]) func f(n: Int)'?",
+    "options": [
+     "A função roda uma vez para cada valor, e cada execução é reportada separadamente",
+     "A função roda uma única vez com o array inteiro",
+     "O código não compila, pois arguments não existe",
+     "A função roda só com o primeiro valor"
+    ],
+    "correctIndex": 0,
+    "explanation": "Testes parametrizados executam o corpo uma vez por argumento e mostram o resultado de cada caso, o que ajuda a identificar exatamente qual entrada falhou."
+   },
+   {
+    "id": 8,
+    "question": "Qual comando executa os testes de um esquema pela linha de comando, por exemplo em CI?",
+    "options": [
+     "xcodebuild clean",
+     "xcodebuild archive",
+     "xcodebuild build",
+     "xcodebuild test -scheme MeuApp -destination 'platform=iOS Simulator,name=iPhone 17'"
+    ],
+    "correctIndex": 3,
+    "explanation": "A ação 'test' compila e roda os testes no destino indicado. 'build' só compila, 'archive' gera o pacote de distribuição e 'clean' apaga artefatos."
+   },
+   {
+    "id": 9,
+    "question": "Em um teste de lógica de ViewModel que chama um serviço ('async'), qual a abordagem mais simples?",
+    "options": [
+     "Escrever uma função de teste 'async throws' e usar 'await' diretamente",
+     "Usar sleep até a resposta chegar",
+     "Chamar o serviço em uma thread manual com DispatchQueue",
+     "Não testar código assíncrono"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tanto XCTest quanto Swift Testing aceitam funções de teste 'async'. Isso evita expectations manuais e deixa o código linear e legível."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Em um teste XCTest antigo com callback (completion handler), como esperar o resultado?",
+    "options": [
+     "Com 'XCTestExpectation' e 'wait(for:timeout:)'",
+     "Com um laço while(true)",
+     "Ignorando o callback",
+     "Com print no console"
+    ],
+    "correctIndex": 0,
+    "explanation": "A expectation avisa ao teste que o trabalho assíncrono terminou. Sem ela, o método de teste acabaria antes do callback ser chamado e passaria sem verificar nada."
+   },
+   {
+    "id": 2,
+    "question": "Para que servem as 'tags' do Swift Testing, como '.tags(.rede)'?",
+    "options": [
+     "Para traduzir o nome do teste",
+     "Para ocultar o teste do relatório",
+     "Para agrupar testes e filtrar quais executar, por exemplo só os de rede",
+     "Para definir a ordem de execução"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tags categorizam testes entre arquivos e suítes. O Xcode e o test plan permitem incluir ou excluir testes por tag, útil para separar testes rápidos dos lentos."
+   },
+   {
+    "id": 3,
+    "question": "Qual prática reduz testes de UI instáveis (flaky)?",
+    "options": [
+     "Começar sempre de um estado conhecido (launchArguments, dados de teste) e esperar por condições em vez de pausas",
+     "Aumentar todos os timeouts para 5 minutos",
+     "Rodar o teste em um dispositivo diferente a cada vez",
+     "Compartilhar dados entre testes para economizar tempo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Testes independentes e determinísticos falham por motivos reais. Dados compartilhados e dependência de tempo geram falhas intermitentes difíceis de reproduzir."
+   },
+   {
+    "id": 4,
+    "question": "Você gravou um teste de UI com o botão de gravação e ele gerou 'app.buttons.element(boundBy: 2).tap()'. O que fazer?",
+    "options": [
+     "Manter como está, pois o Xcode sempre gera o melhor código",
+     "Apagar o teste",
+     "Adicionar mais índices ao código",
+     "Trocar por uma consulta com 'accessibilityIdentifier', mais legível e resistente a mudanças de layout"
+    ],
+    "correctIndex": 3,
+    "explanation": "O código gravado é um ponto de partida. Índices dependem da ordem dos elementos e quebram quando a tela muda; identificadores deixam a intenção clara."
+   },
+   {
+    "id": 5,
+    "question": "Como rodar a mesma suíte de testes em vários simuladores com 'xcodebuild'?",
+    "options": [
+     "Não é possível, só um destino por vez",
+     "Repetindo a opção '-destination' para cada simulador desejado (ou usando configurações do test plan)",
+     "Alterando o código dos testes para cada aparelho",
+     "Usando apenas o Xcode gráfico"
+    ],
+    "correctIndex": 1,
+    "explanation": "O xcodebuild aceita várias opções '-destination' e roda os testes em cada uma. O test plan também permite variar idioma e região por configuração."
+   },
+   {
+    "id": 6,
+    "question": "O que é o Xcode Cloud?",
+    "options": [
+     "Um simulador de iPhone na nuvem apenas para jogos",
+     "Um serviço de armazenamento de fotos",
+     "Um serviço de integração e entrega contínuas da Apple que compila, testa e distribui o app por workflows",
+     "Um substituto do Swift Package Manager"
+    ],
+    "correctIndex": 2,
+    "explanation": "O Xcode Cloud é integrado ao Xcode e ao App Store Connect. Os workflows rodam em eventos como um push ou pull request, executando testes e até enviando builds ao TestFlight."
+   }
+  ]
+ },
+ {
+  "id": 66,
+  "title": "Desempenho e Instruments",
+  "theory": "Instruments é a ferramenta do Xcode para medir o que o app realmente faz (Product > Profile, que compila em Release). O template Time Profiler amostra a CPU e mostra quais funções consomem mais tempo, ideal para achar trabalho pesado na thread principal. Allocations acompanha a memória alocada por tipo e Leaks detecta objetos que ficaram sem nenhuma referência alcançável. Os vazamentos mais comuns em Swift são ciclos de retenção: dois objetos (ou um objeto e uma closure) com referências fortes entre si, como em 'servico.carregar { self.atualizar($0) }'; a correção é a lista de captura '[weak self]' (ou 'unowned' quando o tempo de vida é garantido). O Memory Graph Debugger do Xcode mostra os objetos vivos e marca vazamentos com um ícone roxo de exclamação. Energy Log e o relatório de energia revelam consumo excessivo por localização contínua, timers e polling de rede; o instrumento SwiftUI mostra quantas vezes o 'body' das views é recalculado. Para o tempo de inicialização, evite trabalho pesado em 'init' e no lançamento; para rolagem fluida (hitches), cada quadro precisa ficar dentro do orçamento (cerca de 16,7 ms a 60 Hz) usando listas preguiçosas como 'LazyVStack' e imagens reduzidas (downsampling), já que o bitmap decodificado ocupa largura x altura x 4 bytes, independentemente do tamanho do arquivo. Trabalho demorado deve sair da thread principal com funções 'async' que não rodem no '@MainActor' (por exemplo, marcadas com '@concurrent' no Swift 6.2, ou métodos de um 'actor'), voltando ao '@MainActor' só para atualizar a UI. O MetricKit entrega métricas e diagnósticos de usuários reais, complementando o Instruments, que mede no seu aparelho.",
+  "appleDocUrl": "https://developer.apple.com/documentation/xcode/improving-your-app-s-performance",
+  "category": "Swift Moderno",
+  "corporateCase": "Em um app de notícias, o Time Profiler revelou que a decodificação de JSON do feed rodava na thread principal e causava travadas ao abrir a tela. Mover o parse para uma função assíncrona, reduzir as imagens das capas e usar 'LazyVStack' fez a rolagem voltar a ficar fluida, e o MetricKit confirmou a melhora com usuários reais.",
+  "gameCase": "Em um jogo, o Memory Graph mostrou que cada fase carregada deixava as texturas na memória porque o gerenciador de fase e um callback se referenciavam fortemente. Corrigir com '[weak self]' e usar o instrumento Allocations impediu o crescimento de memória que fechava o app após uma hora de jogo.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Evite um ciclo de retenção na closure capturando self de forma fraca",
+    "codeSnippet": "servico.carregar { [___ self] resultado in\n    self?.atualizar(resultado)\n}",
+    "correctAnswer": "weak",
+    "hint": "Self vira opcional dentro da closure, por isso o '?'."
+   },
+   {
+    "id": 2,
+    "question": "Garanta que a atualização da imagem aconteça na thread principal",
+    "codeSnippet": "___ func mostrarFoto(_ img: UIImage) {\n    imageView.image = img\n}",
+    "correctAnswer": "@MainActor",
+    "hint": "Atributo do ator global associado à UI."
+   },
+   {
+    "id": 3,
+    "question": "Use um contêiner que só cria as linhas visíveis em uma lista longa",
+    "codeSnippet": "ScrollView {\n    ___ {\n        ForEach(itens) { Linha(item: $0) }\n    }\n}",
+    "correctAnswer": "LazyVStack",
+    "hint": "É um VStack com prefixo que indica carregamento sob demanda."
+   },
+   {
+    "id": 4,
+    "question": "Complete: o template do Instruments que amostra a CPU para achar funções lentas se chama ___ Profiler",
+    "codeSnippet": "___ Profiler",
+    "correctAnswer": "Time",
+    "hint": "Mede o tempo gasto em cada função."
+   },
+   {
+    "id": 5,
+    "question": "Complete: dois objetos que se referenciam fortemente formam um ciclo de ___ (retain cycle)",
+    "codeSnippet": "ciclo de ___",
+    "correctAnswer": "retenção",
+    "hint": "Em inglês, 'retain'; é o que o ARC faz com referências fortes."
+   },
+   {
+    "id": 6,
+    "question": "Importe o framework que entrega métricas e diagnósticos de usuários reais",
+    "codeSnippet": "import ___",
+    "correctAnswer": "MetricKit",
+    "hint": "O nome combina 'metric' com 'kit'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é o uso principal do template Time Profiler do Instruments?",
+    "options": [
+     "Detectar vazamentos de memória",
+     "Medir o consumo de bateria",
+     "Ver as chamadas de rede",
+     "Descobrir quais funções consomem mais tempo de CPU, inclusive na thread principal"
+    ],
+    "correctIndex": 3,
+    "explanation": "O Time Profiler amostra as pilhas de chamadas e mostra onde o tempo é gasto. Vazamentos são tema do Leaks, e energia é tema do Energy Log."
+   },
+   {
+    "id": 2,
+    "question": "A tela foi fechada, mas o 'deinit' do ViewModel nunca é chamado e a memória só cresce. Qual a causa mais provável?",
+    "options": [
+     "Um ciclo de retenção, como uma closure que captura self fortemente",
+     "Falta de import Foundation",
+     "O uso de struct no ViewModel",
+     "Excesso de memória RAM do aparelho"
+    ],
+    "correctIndex": 0,
+    "explanation": "Se nada libera a última referência forte, o ARC não chama o 'deinit'. Closures guardadas pelo próprio objeto e capturando self sem [weak self] são o caso clássico."
+   },
+   {
+    "id": 3,
+    "question": "Qual a diferença entre capturar com 'weak' e com 'unowned'?",
+    "options": [
+     "Não há diferença",
+     "'unowned' sempre vira nil",
+     "'weak' é sempre mais lenta e proibida em closures",
+     "'weak' vira opcional e nil quando o objeto some; 'unowned' não é opcional e trava se usado após a liberação"
+    ],
+    "correctIndex": 3,
+    "explanation": "Use 'weak' quando o objeto pode desaparecer antes da closure. 'unowned' só é seguro se o tempo de vida do objeto capturado é garantido ser maior."
+   },
+   {
+    "id": 4,
+    "question": "Decodificar um JSON grande na thread principal causa travadas. Qual a melhor correção?",
+    "options": [
+     "Aumentar o tamanho da fonte",
+     "Mover o trabalho para uma função 'async' fora do '@MainActor' e atualizar a UI de volta no '@MainActor'",
+     "Chamar o parse duas vezes",
+     "Colocar o parse dentro de onAppear, mantendo-o síncrono"
+    ],
+    "correctIndex": 1,
+    "explanation": "Qualquer trabalho síncrono longo na thread principal bloqueia a UI. Trabalho pesado vai para fora do ator principal (uma função 'async' não isolada ao MainActor, como '@concurrent' no Swift 6.2, ou um actor), e só a atribuição do resultado volta ao '@MainActor'."
+   },
+   {
+    "id": 5,
+    "question": "Por que uma foto de 200 KB em disco pode consumir vários MB de memória na tela?",
+    "options": [
+     "Porque o iOS duplica todos os arquivos",
+     "Porque o arquivo é descomprimido na RAM em dobro",
+     "Porque o bitmap decodificado ocupa largura x altura x 4 bytes, independentemente do tamanho do arquivo",
+     "Porque fotos nunca são liberadas"
+    ],
+    "correctIndex": 2,
+    "explanation": "JPEG e PNG são formatos comprimidos. Para exibir, a imagem é decodificada em pixels. Por isso é melhor reduzir (downsample) para o tamanho exibido."
+   },
+   {
+    "id": 6,
+    "question": "Uma lista com 10.000 itens em SwiftUI usa 'ScrollView { VStack { ForEach... } }' e abre devagar. O que ajuda?",
+    "options": [
+     "Trocar 'VStack' por 'LazyVStack' para criar as linhas apenas quando ficam visíveis",
+     "Trocar por HStack",
+     "Adicionar mais modificadores .padding",
+     "Duplicar a lista"
+    ],
+    "correctIndex": 0,
+    "explanation": "'VStack' cria todas as linhas de uma vez. O contêiner preguiçoso só instancia o que está perto da tela, reduzindo tempo de abertura e memória."
+   },
+   {
+    "id": 7,
+    "question": "O app demora para abrir. Qual medida ajuda no tempo de lançamento?",
+    "options": [
+     "Carregar todos os dados e imagens no init do App",
+     "Adicionar uma animação de splash longa",
+     "Registrar mais logs no console",
+     "Adiar trabalho não essencial para depois do primeiro quadro, carregando de forma assíncrona"
+    ],
+    "correctIndex": 3,
+    "explanation": "O usuário só precisa da primeira tela para começar. Inicializações pesadas bloqueiam o lançamento; o que não é necessário agora deve ser carregado depois."
+   },
+   {
+    "id": 8,
+    "question": "O que é o MetricKit?",
+    "options": [
+     "Um framework de interface gráfica",
+     "Um framework que entrega ao app métricas (inicialização, memória, energia) e diagnósticos de usuários reais",
+     "Um instrumento do Instruments para vazamentos",
+     "Uma biblioteca de gráficos para dashboards"
+    ],
+    "correctIndex": 1,
+    "explanation": "Instruments mede no seu aparelho durante o desenvolvimento. O MetricKit complementa com dados agregados do campo, entregues ao app geralmente uma vez por dia."
+   },
+   {
+    "id": 9,
+    "question": "Por que se deve perfilar o app com Product > Profile (build Release) em vez de só rodar em Debug?",
+    "options": [
+     "Porque Debug não compila",
+     "Porque Release é sempre mais lento",
+     "Porque o Instruments só funciona no simulador",
+     "Porque Debug desativa otimizações e distorce os tempos medidos"
+    ],
+    "correctIndex": 3,
+    "explanation": "O build de Debug é compilado sem otimizações, então as medições não refletem o app da App Store. O ideal é perfilar em Release e, de preferência, em um dispositivo real."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que o Memory Graph Debugger do Xcode mostra?",
+    "options": [
+     "O histórico de commits do Git",
+     "Os objetos vivos na memória e as referências entre eles, destacando possíveis vazamentos",
+     "O consumo de bateria por hora",
+     "A árvore de arquivos do projeto"
+    ],
+    "correctIndex": 2,
+    "explanation": "Com o app em execução, o botão Debug Memory Graph captura o grafo de objetos. Vazamentos aparecem marcados com um ícone roxo de exclamação, e as setas revelam quem os mantém vivos."
+   },
+   {
+    "id": 2,
+    "question": "Qual destes comportamentos mais aumenta o impacto de energia do app?",
+    "options": [
+     "Atualizar a localização continuamente e fazer polling de rede em intervalos curtos",
+     "Usar structs em vez de classes",
+     "Usar o modo escuro",
+     "Armazenar dados em UserDefaults"
+    ],
+    "correctIndex": 0,
+    "explanation": "Rádio, GPS e CPU acordados constantemente drenam a bateria. Prefira notificações push, localização significativa e agrupar requisições."
+   },
+   {
+    "id": 3,
+    "question": "O que é um 'hitch' de rolagem?",
+    "options": [
+     "Um erro de compilação",
+     "Uma tela vazia",
+     "Uma mensagem de memória baixa",
+     "Um quadro que não fica pronto a tempo, causando uma pausa perceptível na animação"
+    ],
+    "correctIndex": 3,
+    "explanation": "A tela é atualizada em intervalos fixos (cerca de 16,7 ms a 60 Hz). Se o app não termina o trabalho do quadro nesse prazo, o quadro anterior permanece e o usuário vê um engasgo."
+   },
+   {
+    "id": 4,
+    "question": "O que o instrumento SwiftUI ajuda a descobrir?",
+    "options": [
+     "Erros de sintaxe",
+     "Quais views recalculam o 'body' e com que frequência, revelando atualizações desnecessárias",
+     "O tamanho do binário",
+     "Quantos usuários baixaram o app"
+    ],
+    "correctIndex": 1,
+    "explanation": "Recomputações excessivas do 'body' por mudanças de estado amplas demais causam lentidão. O instrumento mostra causas e custos para você reduzir o escopo do estado."
+   },
+   {
+    "id": 5,
+    "question": "Em uma classe '@MainActor', qual código ainda bloqueia a UI?",
+    "options": [
+     "Uma chamada 'await' a uma função assíncrona de rede",
+     "Uma atribuição a uma propriedade @Published",
+     "Um 'for' com milhões de iterações executado de forma síncrona",
+     "Um 'Task.sleep'"
+    ],
+    "correctIndex": 2,
+    "explanation": "Estar no ator principal significa que o código síncrono longo ocupa a thread principal. 'await' suspende e libera a thread; um laço pesado síncrono não."
+   },
+   {
+    "id": 6,
+    "question": "O Leaks do Instruments aponta um objeto vazado. O que fazer em seguida?",
+    "options": [
+     "Reiniciar o Mac",
+     "Aumentar a memória do app",
+     "Ignorar, pois o ARC resolve sozinho",
+     "Inspecionar quem o mantém vivo (memory graph) e quebrar o ciclo, por exemplo com 'weak'"
+    ],
+    "correctIndex": 3,
+    "explanation": "O ARC não resolve ciclos de referência forte. Encontrar a seta de referência que forma o ciclo e torná-la fraca (ou desfazê-la) elimina o vazamento."
+   }
+  ]
+ },
+ {
+  "id": 67,
+  "title": "Concorrência na Prática: async/await, Tasks e UI",
+  "theory": "Uma função 'async' pode ser suspensa; quem a chama usa 'await' no ponto de suspensão, e a thread fica livre para outros trabalhos enquanto espera (não é bloqueio). Em concorrência estruturada, 'async let' e 'withTaskGroup' criam tarefas filhas cujo tempo de vida é limitado ao escopo. Código síncrono, como a ação de um botão, inicia trabalho assíncrono com 'Task { await ... }'; em SwiftUI, o modifier '.task { }' faz isso quando a view aparece e cancela a tarefa automaticamente quando ela some. O cancelamento é cooperativo: 'cancel()' apenas sinaliza, e o seu código precisa verificar com 'Task.checkCancellation()' ou 'Task.isCancelled' (funções como 'Task.sleep' e 'URLSession' já lançam erro). O '@MainActor' garante que o código rode na thread principal; um ViewModel que atualiza a interface deve ser '@MainActor' (ou '@Observable' com propriedades atualizadas no ator principal). Sequências assíncronas são consumidas com 'for await' (por exemplo 'for try await linha in url.lines'), e 'AsyncStream' transforma eventos de callbacks ou delegates em uma sequência assíncrona. Para APIs antigas com completion handler, 'withCheckedContinuation' (ou 'withCheckedThrowingContinuation') faz a ponte e deve chamar 'resume' exatamente uma vez. Tipos que cruzam fronteiras de isolamento precisam ser 'Sendable' (structs imutáveis, atores); no modo Swift 6 com concorrência estrita, data races viram erros de compilação. Use um 'actor' quando vários contextos acessam o mesmo estado mutável. Lembre que dentro de um actor um 'await' é um ponto de reentrância: o estado pode ter mudado após retomar.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swift/concurrency",
+  "category": "Swift Moderno",
+  "corporateCase": "Em um app de delivery, a tela de restaurantes usa '.task { await viewModel.carregar() }' para buscar a lista quando aparece e cancelar a busca se o usuário voltar. O ViewModel é '@MainActor', então atribuir o resultado à propriedade observada é seguro, e erros de rede são tratados com 'do/catch'.",
+  "gameCase": "Em um jogo multijogador, as mensagens do servidor chegam por um delegate antigo e são expostas como um 'AsyncStream', consumido com 'for await' em uma tarefa que atualiza o placar. Quando o jogador sai da partida, a tarefa é cancelada e o stream é encerrado.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare uma função assíncrona que pode lançar erros",
+    "codeSnippet": "func buscar() ___ throws -> [Item] {\n    try await servico.itens()\n}",
+    "correctAnswer": "async",
+    "hint": "Palavra-chave que marca a função como suspendível, antes de 'throws'."
+   },
+   {
+    "id": 2,
+    "question": "Marque o ponto em que a função pode ser suspensa",
+    "codeSnippet": "let itens = try ___ servico.buscar()",
+    "correctAnswer": "await",
+    "hint": "Vai em toda chamada a uma função async."
+   },
+   {
+    "id": 3,
+    "question": "Carregue dados quando a view aparecer, com cancelamento automático ao sumir",
+    "codeSnippet": "List(vm.itens) { Text($0.nome) }\n    .___ { await vm.carregar() }",
+    "correctAnswer": "task",
+    "hint": "É um modifier de view com nome de uma palavra, equivalente a Task atrelada ao ciclo de vida da view."
+   },
+   {
+    "id": 4,
+    "question": "Consuma uma sequência assíncrona linha por linha",
+    "codeSnippet": "for try ___ linha in url.lines {\n    print(linha)\n}",
+    "correctAnswer": "await",
+    "hint": "A mesma palavra usada para chamar funções async aparece no laço."
+   },
+   {
+    "id": 5,
+    "question": "Converta uma API com completion handler em uma função async",
+    "codeSnippet": "let n = await ___ { continuation in\n    contar { continuation.resume(returning: $0) }\n}",
+    "correctAnswer": "withCheckedContinuation",
+    "hint": "Função cujo nome começa com 'with' e termina em 'Continuation', na versão com verificação."
+   },
+   {
+    "id": 6,
+    "question": "Verifique se a tarefa foi cancelada e lance o erro de cancelamento",
+    "codeSnippet": "func processar() async throws {\n    try Task.___()\n}",
+    "correctAnswer": "checkCancellation",
+    "hint": "Método estático do tipo Task que lança CancellationError se a tarefa foi cancelada."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "O que 'await' faz?",
+    "options": [
+     "Bloqueia a thread até a função terminar",
+     "Cria uma nova thread do sistema",
+     "Marca um possível ponto de suspensão: a função pausa e a thread fica livre enquanto espera",
+     "Cancela a tarefa atual"
+    ],
+    "correctIndex": 2,
+    "explanation": "'await' não bloqueia a thread. A tarefa é suspensa e retomada depois, permitindo que a thread execute outros trabalhos, como atualizar a interface."
+   },
+   {
+    "id": 2,
+    "question": "Qual a vantagem de '.task { }' sobre '.onAppear { Task { } }' em SwiftUI?",
+    "options": [
+     "A tarefa é cancelada automaticamente quando a view desaparece",
+     "É mais rápido em todos os casos",
+     "Roda sempre em segundo plano",
+     "Dispensa o uso de await"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.task' vincula a tarefa ao ciclo de vida da view e a cancela quando ela some. Com Task dentro de onAppear, você precisaria guardar a tarefa e cancelá-la manualmente."
+   },
+   {
+    "id": 3,
+    "question": "Você chama 'task.cancel()'. O que acontece com um laço longo que não verifica cancelamento?",
+    "options": [
+     "A tarefa para imediatamente, em qualquer linha",
+     "O programa trava",
+     "O laço continua até o fim, pois o cancelamento é cooperativo",
+     "O Swift lança uma exceção automaticamente na próxima linha"
+    ],
+    "correctIndex": 2,
+    "explanation": "'cancel()' apenas marca a tarefa como cancelada. Cabe ao código checar 'Task.isCancelled' ou chamar 'try Task.checkCancellation()', ou usar APIs que já verificam."
+   },
+   {
+    "id": 4,
+    "question": "Como garantir que um ViewModel atualize propriedades de UI com segurança?",
+    "options": [
+     "Usar DispatchQueue.global() em todo método",
+     "Declarar as propriedades como 'static'",
+     "Evitar usar async no ViewModel",
+     "Marcar a classe com '@MainActor'"
+    ],
+    "correctIndex": 3,
+    "explanation": "'@MainActor' faz o compilador exigir que o acesso ocorra na thread principal, evitando atualizações de interface em segundo plano e avisos de data race."
+   },
+   {
+    "id": 5,
+    "question": "Qual regra vale para 'withCheckedContinuation'?",
+    "options": [
+     "Deve chamar resume zero ou mais vezes",
+     "Só funciona com funções síncronas",
+     "Deve chamar 'resume' exatamente uma vez em todos os caminhos de execução",
+     "O resultado nunca pode ser retornado"
+    ],
+    "correctIndex": 2,
+    "explanation": "Esquecer o resume deixa a tarefa suspensa para sempre; chamar duas vezes é um erro. A versão 'Checked' detecta o uso incorreto e avisa em tempo de execução."
+   },
+   {
+    "id": 6,
+    "question": "O compilador (Swift 6) reclama que 'class Cache { var itens: [String] = [] }' não é Sendable ao enviá-la a outra tarefa. Qual a solução adequada?",
+    "options": [
+     "Silenciar com '@unchecked Sendable' sem proteção",
+     "Transformá-la em 'actor' (ou em struct imutável) para isolar o estado",
+     "Declarar 'itens' como 'public'",
+     "Trocar 'var' por 'let' e continuar mutando"
+    ],
+    "correctIndex": 1,
+    "explanation": "Uma classe com estado mutável compartilhado causa data races. Um actor serializa o acesso; '@unchecked Sendable' só é válido se você garantir a segurança por outro meio, como um lock."
+   },
+   {
+    "id": 7,
+    "question": "Quando é mais indicado usar um 'actor'?",
+    "options": [
+     "Quando várias tarefas precisam ler e modificar o mesmo estado mutável com segurança",
+     "Quando se quer um tipo de valor copiável",
+     "Para toda struct do projeto",
+     "Para código que só roda na UI"
+    ],
+    "correctIndex": 0,
+    "explanation": "Actors protegem estado mutável compartilhado de data races. Para UI, o '@MainActor' é o mais apropriado, e para dados imutáveis uma struct Sendable basta."
+   },
+   {
+    "id": 8,
+    "question": "Para que serve 'AsyncStream'?",
+    "options": [
+     "Para fazer download de arquivos grandes",
+     "Para criar threads manualmente",
+     "Para criptografar dados",
+     "Para transformar eventos produzidos ao longo do tempo (callbacks, delegates) em uma sequência consumida com 'for await'"
+    ],
+    "correctIndex": 3,
+    "explanation": "O AsyncStream recebe valores por meio de 'yield' em um closure e os entrega a quem itera com 'for await'. É a ponte natural para APIs baseadas em delegate ou notificações."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que muda ao ativar a concorrência estrita (Swift 6 language mode)?",
+    "options": [
+     "O app fica mais rápido automaticamente",
+     "O uso de async deixa de funcionar",
+     "Todas as classes viram actors",
+     "Possíveis data races passam a ser reportadas como erros de compilação"
+    ],
+    "correctIndex": 3,
+    "explanation": "No Swift 6 o compilador verifica o isolamento e a conformidade a Sendable. Em projetos existentes, é possível migrar aos poucos, começando por avisos."
+   },
+   {
+    "id": 2,
+    "question": "Considere 'let a = await f()' seguido de 'let b = await g()'. Como f e g são independentes, como acelerar?",
+    "options": [
+     "Trocar await por try",
+     "Chamar g dentro de f",
+     "Usar 'async let a = f()' e 'async let b = g()' e aguardar ambos depois",
+     "Marcar as funções com @MainActor"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dois 'await' em sequência executam um após o outro. 'async let' inicia ambos em paralelo e você só espera os resultados quando precisar deles."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece com 'try await Task.sleep(for: .seconds(5))' se a tarefa for cancelada durante a espera?",
+    "options": [
+     "Lança 'CancellationError' e encerra a espera antes do tempo",
+     "Continua dormindo os 5 segundos",
+     "O app fecha",
+     "Retorna normalmente sem aviso"
+    ],
+    "correctIndex": 0,
+    "explanation": "'Task.sleep' coopera com o cancelamento: acorda imediatamente e lança erro. Por isso a chamada exige 'try' e deve ser tratada ou propagada."
+   },
+   {
+    "id": 4,
+    "question": "Dentro de um actor, após um 'await', por que não se deve assumir que o estado é o mesmo de antes?",
+    "options": [
+     "Porque actors não guardam estado",
+     "Porque o await recria o actor",
+     "Porque variáveis do actor são sempre constantes",
+     "Porque o actor é reentrante: outras chamadas podem ter rodado e alterado o estado durante a suspensão"
+    ],
+    "correctIndex": 3,
+    "explanation": "A reentrância evita deadlocks, mas exige reverificar condições após cada 'await' (por exemplo, checar saldo de novo antes de debitar)."
+   },
+   {
+    "id": 5,
+    "question": "Qual a diferença entre 'Task { }' e 'Task.detached { }' criada dentro de um método '@MainActor'?",
+    "options": [
+     "Nenhuma",
+     "'Task' herda o ator e a prioridade do contexto (roda no MainActor); 'detached' não herda o isolamento",
+     "'detached' é sempre mais lenta",
+     "'Task' é síncrona"
+    ],
+    "correctIndex": 1,
+    "explanation": "A Task comum herda o contexto, então o trecho síncrono dentro dela ainda roda na thread principal. A 'detached' é independente e roda fora do ator, mas deve ser usada com cuidado."
+   },
+   {
+    "id": 6,
+    "question": "Uma Button action '{ viewModel.carregar() }' dá erro porque 'carregar' é async. Qual a correção?",
+    "options": [
+     "Remover o 'async' de carregar",
+     "Trocar o Button por Text",
+     "Envolver a chamada em 'Task { await viewModel.carregar() }'",
+     "Adicionar 'throws' ao botão"
+    ],
+    "correctIndex": 2,
+    "explanation": "A closure de ação do botão é síncrona e não pode usar 'await' diretamente. 'Task' cria o contexto assíncrono necessário a partir de código síncrono."
+   }
+  ]
+ }
+]

@@ -1,0 +1,226 @@
+{
+ "pillars": {
+  "49": [
+   {
+    "title": "UIStoryboard | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uistoryboard"
+   },
+   {
+    "title": "UIViewController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uiviewcontroller"
+   },
+   {
+    "title": "Storyboards | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uistoryboardsegue"
+   },
+   {
+    "title": "Develop in Swift Tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "50": [
+   {
+    "title": "UIStackView | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uistackview"
+   },
+   {
+    "title": "NSLayoutConstraint | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/nslayoutconstraint"
+   },
+   {
+    "title": "UILayoutGuide | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uilayoutguide"
+   },
+   {
+    "title": "Human Interface Guidelines: Layout",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/layout"
+   }
+  ],
+  "51": [
+   {
+    "title": "UIViewController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uiviewcontroller"
+   },
+   {
+    "title": "UINavigationController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uinavigationcontroller"
+   },
+   {
+    "title": "UIStoryboardSegue | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uistoryboardsegue"
+   },
+   {
+    "title": "UITabBarController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uitabbarcontroller"
+   },
+   {
+    "title": "Human Interface Guidelines: Navigation and search",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/navigation-and-search"
+   }
+  ],
+  "52": [
+   {
+    "title": "UITableView | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uitableview"
+   },
+   {
+    "title": "UICollectionView | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uicollectionview"
+   },
+   {
+    "title": "UITableViewDataSource | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uitableviewdatasource"
+   },
+   {
+    "title": "Human Interface Guidelines: Lists and tables",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/lists-and-tables"
+   }
+  ],
+  "53": [
+   {
+    "title": "UIAlertController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uialertcontroller"
+   },
+   {
+    "title": "UIControl | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uicontrol"
+   },
+   {
+    "title": "UIViewController | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uiviewcontroller"
+   },
+   {
+    "title": "UITextFieldDelegate | UIKit",
+    "url": "https://developer.apple.com/documentation/uikit/uitextfielddelegate"
+   },
+   {
+    "title": "Protocols \u2014 Delegation",
+    "url": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/#Delegation"
+   }
+  ],
+  "59": [
+   {
+    "title": "CLLocationManager | Core Location",
+    "url": "https://developer.apple.com/documentation/corelocation/cllocationmanager"
+   },
+   {
+    "title": "Core Location",
+    "url": "https://developer.apple.com/documentation/corelocation"
+   },
+   {
+    "title": "MapKit",
+    "url": "https://developer.apple.com/documentation/mapkit"
+   },
+   {
+    "title": "Map | MapKit for SwiftUI",
+    "url": "https://developer.apple.com/documentation/mapkit/map"
+   },
+   {
+    "title": "Requesting authorization to use location services",
+    "url": "https://developer.apple.com/documentation/corelocation/requesting-authorization-to-use-location-services"
+   }
+  ],
+  "60": [
+   {
+    "title": "UNUserNotificationCenter | User Notifications",
+    "url": "https://developer.apple.com/documentation/usernotifications/unusernotificationcenter"
+   },
+   {
+    "title": "User Notifications",
+    "url": "https://developer.apple.com/documentation/usernotifications"
+   },
+   {
+    "title": "UNNotificationRequest | User Notifications",
+    "url": "https://developer.apple.com/documentation/usernotifications/unnotificationrequest"
+   },
+   {
+    "title": "Registering your app with APNs",
+    "url": "https://developer.apple.com/documentation/usernotifications/registering-your-app-with-apns"
+   },
+   {
+    "title": "Human Interface Guidelines: Notifications",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/notifications"
+   }
+  ],
+  "61": [
+   {
+    "title": "PhotosPicker | PhotosUI",
+    "url": "https://developer.apple.com/documentation/photosui/photospicker"
+   },
+   {
+    "title": "PhotosUI",
+    "url": "https://developer.apple.com/documentation/photosui"
+   },
+   {
+    "title": "AVFoundation",
+    "url": "https://developer.apple.com/documentation/avfoundation"
+   },
+   {
+    "title": "AVCaptureSession | AVFoundation",
+    "url": "https://developer.apple.com/documentation/avfoundation/avcapturesession"
+   },
+   {
+    "title": "Human Interface Guidelines: Privacy",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/privacy"
+   }
+  ],
+  "68": [
+   {
+    "title": "Capabilities | Xcode",
+    "url": "https://developer.apple.com/documentation/xcode/capabilities"
+   },
+   {
+    "title": "Signing and capabilities",
+    "url": "https://developer.apple.com/support/code-signing/"
+   },
+   {
+    "title": "Setting up a capability",
+    "url": "https://developer.apple.com/documentation/xcode/adding-capabilities-to-your-app"
+   },
+   {
+    "title": "Distributing your app for beta testing and releases",
+    "url": "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases"
+   }
+  ],
+  "69": [
+   {
+    "title": "Distributing your app for beta testing and releases",
+    "url": "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases"
+   },
+   {
+    "title": "TestFlight",
+    "url": "https://developer.apple.com/testflight/"
+   },
+   {
+    "title": "TestFlight Overview | App Store Connect Help",
+    "url": "https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview"
+   },
+   {
+    "title": "Code signing support",
+    "url": "https://developer.apple.com/support/code-signing/"
+   }
+  ],
+  "70": [
+   {
+    "title": "App Review Guidelines",
+    "url": "https://developer.apple.com/app-store/review/guidelines/"
+   },
+   {
+    "title": "App Store Connect Help",
+    "url": "https://developer.apple.com/help/app-store-connect/"
+   },
+   {
+    "title": "StoreKit",
+    "url": "https://developer.apple.com/documentation/storekit"
+   },
+   {
+    "title": "In-App Purchase | StoreKit",
+    "url": "https://developer.apple.com/documentation/storekit/in-app-purchase"
+   },
+   {
+    "title": "TestFlight",
+    "url": "https://developer.apple.com/testflight/"
+   }
+  ]
+ }
+}

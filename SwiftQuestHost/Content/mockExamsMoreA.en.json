@@ -1,0 +1,1058 @@
+[
+ {
+  "id": "exam-5",
+  "title": "Certification Mock Exam: Planning, Design and Theory",
+  "description": "Covers the design cycle, protecting and compromising sensitive data, legal, ethical and socioeconomic impacts, the HIG, accessibility and privacy.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "In the design cycle, which phase comes right after the prototype?",
+    "options": [
+     "Evaluate (test with users)",
+     "Brainstorm",
+     "Publish on the App Store",
+     "Plan the screen flow"
+    ],
+    "correctIndex": 0,
+    "explanation": "The order is brainstorm, plan, prototype, evaluate. After the prototype you evaluate it with real users and the results feed new iterations. Brainstorm and planning come before the prototype, and publishing only happens after the idea is validated."
+   },
+   {
+    "id": 2,
+    "question": "What is the main goal of the brainstorm phase?",
+    "options": [
+     "Choose the final code architecture",
+     "Fix bugs found by users",
+     "Draw the final high-fidelity screens",
+     "Generate many ideas without judging them right away"
+    ],
+    "correctIndex": 3,
+    "explanation": "Brainstorming is about quantity and variety of ideas, without criticism. Architecture and final screens come in later phases, and fixing user-reported bugs belongs to evaluation."
+   },
+   {
+    "id": 3,
+    "question": "A team lists the app's features, defines the audience and sketches the flow between screens on paper. Which design-cycle phase is it in?",
+    "options": [
+     "Evaluate",
+     "Plan",
+     "Prototype",
+     "Debug"
+    ],
+    "correctIndex": 1,
+    "explanation": "Defining features, audience and screen flow is planning. Prototyping is building something testable, such as a clickable mockup, and evaluating is testing and gathering feedback. Debug is not a design-cycle phase."
+   },
+   {
+    "id": 4,
+    "question": "What is the best reason to build a prototype before coding the full app?",
+    "options": [
+     "Avoid the need for user testing",
+     "Guarantee the app will have no bugs",
+     "Validate the idea and flow quickly and cheaply",
+     "Replace planning"
+    ],
+    "correctIndex": 2,
+    "explanation": "Prototypes (paper or clickable) reveal problems early, before you spend time coding. They do not remove user testing, do not guarantee bug-free software and do not replace planning."
+   },
+   {
+    "id": 5,
+    "question": "In testing, 8 of 10 users cannot find the Save button. What is the most appropriate next step in the design cycle?",
+    "options": [
+     "Iterate: adjust the button's design and test again",
+     "Ignore it, since most apps have this problem",
+     "Ship as is and fix after the reviews",
+     "Delete the button from the app"
+    ],
+    "correctIndex": 0,
+    "explanation": "The design cycle is iterative: evaluation results feed back into the design and a new test confirms the improvement. Ignoring or shipping a known problem harms users, and removing the button deletes a needed feature."
+   },
+   {
+    "id": 6,
+    "question": "What is the recommended place on iOS to store a user's password or access token?",
+    "options": [
+     "UserDefaults",
+     "A plain text file in the Documents folder",
+     "A global variable in the code",
+     "Keychain"
+    ],
+    "correctIndex": 3,
+    "explanation": "The Keychain stores sensitive data encrypted and protected by the system. UserDefaults and plain text files are not encrypted and can be read from backups or compromised devices; a global variable is lost when the app closes and is exposed in code."
+   },
+   {
+    "id": 7,
+    "question": "Which of these practices COMPROMISES the security of users' data?",
+    "options": [
+     "Using HTTPS for all requests",
+     "Sending the login over an unencrypted HTTP connection",
+     "Storing passwords in the Keychain",
+     "Requiring Face ID to open private data"
+    ],
+    "correctIndex": 1,
+    "explanation": "Data sent over plain HTTP travels as readable text and can be intercepted, for example on public Wi-Fi. HTTPS, the Keychain and Face ID are protections, not risks."
+   },
+   {
+    "id": 8,
+    "question": "A weather app asks for always-on precise location and access to contacts. Which privacy principle is being violated?",
+    "options": [
+     "Encryption in transit",
+     "Accessibility for screen readers",
+     "Data minimization: collect only what the feature needs",
+     "Compatibility with older iOS versions"
+    ],
+    "correctIndex": 2,
+    "explanation": "An app should request only the data and permissions it really needs. A weather app does not need contacts, and approximate location while in use is often enough. The other options are unrelated to the problem described."
+   },
+   {
+    "id": 9,
+    "question": "A user gets a fake email from their 'bank' and types their password on a cloned site. Which security challenge is this and which defense helps most?",
+    "options": [
+     "Phishing; two-factor authentication and checking URLs",
+     "Memory overflow; restarting the iPhone",
+     "Layout bug; using Auto Layout",
+     "Memory leak; using ARC"
+    ],
+    "correctIndex": 0,
+    "explanation": "Tricking users into revealing credentials is phishing, a social engineering attack. Two-factor authentication limits the damage even if the password leaks. The other options describe technical problems unrelated to this."
+   },
+   {
+    "id": 10,
+    "question": "An app aimed at young children collects their name and location. What is the most important legal consideration?",
+    "options": [
+     "None, since children have no personal data",
+     "Only the app's file size",
+     "Only the icon color",
+     "Data protection laws require guardian consent and stricter rules"
+    ],
+    "correctIndex": 3,
+    "explanation": "Laws such as LGPD (Brazil), GDPR (Europe) and COPPA (US) impose special rules for children's data, including guardian consent. Children's data is personal data, and file size or icon color are not legal privacy matters."
+   },
+   {
+    "id": 11,
+    "question": "An app sells users' usage habits to advertisers without telling anyone. What is the main ethical problem?",
+    "options": [
+     "The app drains the battery",
+     "Lack of transparency and informed consent",
+     "The interface uses small fonts",
+     "The app has no dark mode"
+    ],
+    "correctIndex": 1,
+    "explanation": "Users have the right to know what data is collected and how it is used, and to consent. Battery, fonts and dark mode are quality matters, not ethics of data use."
+   },
+   {
+    "id": 12,
+    "question": "An app requires the newest iPhone and fast internet to work. What socioeconomic impact can this cause?",
+    "options": [
+     "Increase data security",
+     "Reduce code size",
+     "Excluding low-income users or those with limited connectivity (digital divide)",
+     "Improve accessibility"
+    ],
+    "correctIndex": 2,
+    "explanation": "High hardware and network requirements leave out people who cannot afford them or live where connectivity is poor. This does not improve security or accessibility and has nothing to do with code size."
+   },
+   {
+    "id": 13,
+    "question": "What are Apple's Human Interface Guidelines (HIG)?",
+    "options": [
+     "Design recommendations for building consistent, intuitive apps on Apple platforms",
+     "A networking code library",
+     "App Store pricing rules",
+     "A Swift compiler manual"
+    ],
+    "correctIndex": 0,
+    "explanation": "The HIG guides layout, navigation, typography, color, icons and interaction so apps feel natural on the system. It is not a code library, a pricing policy or a compiler manual."
+   },
+   {
+    "id": 14,
+    "question": "According to the HIG, what is the recommended minimum size of a tappable area on iPhone?",
+    "options": [
+     "10 x 10 pt",
+     "24 x 12 pt",
+     "100 x 100 pt",
+     "44 x 44 pt"
+    ],
+    "correctIndex": 3,
+    "explanation": "The HIG recommends tap targets of at least 44x44 points so they are easy to hit with a finger. 10x10 or 24x12 are too small; 100x100 is not required and would waste space."
+   },
+   {
+    "id": 15,
+    "question": "A button has only a trash icon and no text. What should the developer do for VoiceOver users?",
+    "options": [
+     "Make the icon color brighter",
+     "Set an accessibility label such as 'Delete'",
+     "Turn VoiceOver off in the app",
+     "Swap the icon for a smaller one"
+    ],
+    "correctIndex": 1,
+    "explanation": "VoiceOver reads the element's accessibility label; with no text it may announce something vague. Changing color, size or disabling the feature does not describe the button's purpose."
+   },
+   {
+    "id": 16,
+    "question": "Which feature lets the app's text follow the font size the user chose in Settings?",
+    "options": [
+     "Auto Layout",
+     "Dark Mode",
+     "Dynamic Type",
+     "Core Data"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dynamic Type scales text fonts according to the user's preference, essential for low-vision users. Auto Layout arranges elements, Dark Mode changes the color scheme and Core Data persists data."
+   },
+   {
+    "id": 17,
+    "question": "An app shows errors only by turning the field red. What is the accessibility problem?",
+    "options": [
+     "Color-blind users may not notice it; reinforce with text or an icon",
+     "Red uses more battery",
+     "The field becomes too small",
+     "Red is not allowed by the App Store"
+    ],
+    "correctIndex": 0,
+    "explanation": "Information should not be conveyed by color alone. Adding a text message or symbol helps people who cannot distinguish colors and also screen reader users. Red is not forbidden and does not affect battery or field size."
+   },
+   {
+    "id": 18,
+    "question": "The app needs to use the camera. What must the developer provide so iOS can request access?",
+    "options": [
+     "An image in the asset catalog",
+     "A new test target",
+     "A segue to the camera",
+     "A usage description (NSCameraUsageDescription) in Info.plist"
+    ],
+    "correctIndex": 3,
+    "explanation": "Without the usage description key in Info.plist, the app crashes when accessing the camera; the text appears in the permission alert and tells the user why access is needed. Assets, test targets and segues do not grant permissions."
+   },
+   {
+    "id": 19,
+    "question": "The user denied the location permission. Which app behavior is the most appropriate?",
+    "options": [
+     "Quit the app immediately",
+     "Keep working with reduced features and explain how to enable it in Settings",
+     "Ask for permission repeatedly until accepted",
+     "Collect the location secretly anyway"
+    ],
+    "correctIndex": 1,
+    "explanation": "Respecting the user's decision and offering an alternative is good privacy and UX practice. Quitting, nagging in a loop or bypassing the denial is hostile, and the last is both impossible on iOS and unethical."
+   },
+   {
+    "id": 20,
+    "question": "What does the App Store require regarding an app's privacy 'nutrition label'?",
+    "options": [
+     "That the app never collects any data",
+     "That the app has over 1000 users",
+     "That the developer discloses which data the app collects and how it is used",
+     "That all the code is public"
+    ],
+    "correctIndex": 2,
+    "explanation": "The privacy label shows users, before download, the data types collected and their purposes. Collecting data is not forbidden, only required to be declared; user count and open source are not requirements."
+   }
+  ]
+ },
+ {
+  "id": "exam-6",
+  "title": "Certification Mock Exam: Project Navigation and Xcode",
+  "description": "Covers file types, Xcode navigators, inspectors and areas, asset catalogs, target membership, previews, the simulator, schemes, targets, Git and Swift Package Manager.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "What is the typical content of a file with the .swift extension?",
+    "options": [
+     "Source code written in Swift",
+     "App images",
+     "An audio file",
+     "System permission settings"
+    ],
+    "correctIndex": 0,
+    "explanation": "The .swift files hold Swift code: structs, classes, functions and view controllers. Images live in assets, and permission descriptions live in Info.plist."
+   },
+   {
+    "id": 2,
+    "question": "What is a .storyboard file in a UIKit project?",
+    "options": [
+     "A file with the unit tests",
+     "A dependency package",
+     "The final app executable",
+     "A file that visually describes screens (scenes) and the transitions between them"
+    ],
+    "correctIndex": 3,
+    "explanation": "Storyboards are (XML) files edited in Interface Builder that define scenes, objects and segues. Tests live in test targets, dependencies in SPM and the executable is produced by the build."
+   },
+   {
+    "id": 3,
+    "question": "Which file stores app settings such as the display name and permission usage descriptions?",
+    "options": [
+     "Package.swift",
+     "Info.plist",
+     "Assets.xcassets",
+     "LaunchScreen.storyboard"
+    ],
+    "correctIndex": 1,
+    "explanation": "Info.plist is a property list with the app's metadata and configuration keys, including the *UsageDescription keys. Package.swift describes an SPM package, Assets.xcassets stores visual resources and the launch screen defines the startup screen."
+   },
+   {
+    "id": 4,
+    "question": "In which area of Xcode is the Attributes inspector found?",
+    "options": [
+     "Navigator area, on the left side",
+     "Debug area, at the bottom",
+     "Utilities area, on the right side",
+     "Toolbar, at the top"
+    ],
+    "correctIndex": 2,
+    "explanation": "The inspectors (File, Attributes, Size, Connections) live in the Utilities area on the right. The left side has the navigators and the bottom has the Debug area with the console."
+   },
+   {
+    "id": 5,
+    "question": "Which shortcut shows or hides Xcode's navigator area (left side)?",
+    "options": [
+     "Cmd + 0",
+     "Option + Cmd + 0",
+     "Shift + Cmd + Y",
+     "Cmd + R"
+    ],
+    "correctIndex": 0,
+    "explanation": "Cmd+0 toggles the navigators, Option+Cmd+0 toggles the inspectors (right) and Shift+Cmd+Y toggles the debug area. Cmd+R builds and runs the app. The same buttons exist at the top right of the window."
+   },
+   {
+    "id": 6,
+    "question": "Which navigator lists the project's compile errors and warnings?",
+    "options": [
+     "Find navigator",
+     "Test navigator",
+     "Project navigator",
+     "Issue navigator"
+    ],
+    "correctIndex": 3,
+    "explanation": "The Issue navigator groups errors and warnings by file. The Project navigator shows the file structure, the Find navigator searches and the Test navigator lists and runs tests."
+   },
+   {
+    "id": 7,
+    "question": "What is the asset catalog (Assets.xcassets) used for?",
+    "options": [
+     "Storing the app's Swift code",
+     "Organizing images, colors, the app icon and other resources with variants per screen and appearance",
+     "Managing code versions with Git",
+     "Running the app in the simulator"
+    ],
+    "correctIndex": 1,
+    "explanation": "The asset catalog centralizes images, color sets, icons and variants such as light/dark mode and @2x/@3x. Code lives in .swift files, Git manages versions and the simulator runs the app."
+   },
+   {
+    "id": 8,
+    "question": "How do you import an image so the app can use it by name?",
+    "options": [
+     "Rename its extension to .swift",
+     "Paste its path into Info.plist",
+     "Drag it into the asset catalog and name the image set",
+     "Type the name in the debug console"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dragging the image into the catalog makes Xcode create an image set whose name is used in code, for example Image(\"logo\"). The other options do not register the resource in the app."
+   },
+   {
+    "id": 9,
+    "question": "A sound file was added to the project but the app cannot find it at run time. What is the most likely cause?",
+    "options": [
+     "The file is not checked in the app target's Target Membership",
+     "The file is in dark mode",
+     "Xcode does not accept sound files",
+     "The simulator is in the wrong orientation"
+    ],
+    "correctIndex": 0,
+    "explanation": "Only files whose target is checked in the File inspector (Target Membership) are copied into the app bundle. If it is unchecked, code cannot find it at run time. The other options make no sense."
+   },
+   {
+    "id": 10,
+    "question": "Which code loads an image named \"logo\" from the asset catalog in SwiftUI and UIKit, respectively?",
+    "options": [
+     "Image(file: \"logo\")\nUIImage(path: \"logo\")",
+     "Picture(\"logo\")\nUIImage.load(\"logo\")",
+     "Image(\"logo.swift\")\nUIImage(\"logo\")",
+     "Image(\"logo\")\nUIImage(named: \"logo\")"
+    ],
+    "correctIndex": 3,
+    "explanation": "SwiftUI uses Image(\"name\") and UIKit uses UIImage(named:), which returns an Optional because the name may not exist. The other initializers do not exist or use wrong parameters."
+   },
+   {
+    "id": 11,
+    "question": "Why use a Color Set in the asset catalog instead of a fixed color value in code?",
+    "options": [
+     "It makes the app faster than any other option",
+     "It allows light and dark variants and reusing the color by name",
+     "It is the only way to use colors on iOS",
+     "It removes the need for Auto Layout"
+    ],
+    "correctIndex": 1,
+    "explanation": "Color Sets centralize the color, allow per-appearance variants and make it easy to change the visual identity in one place. They are not the only way to use colors and do not affect performance or layout."
+   },
+   {
+    "id": 12,
+    "question": "Which Swift macro lets you show a view in Xcode's Canvas without running the app?",
+    "options": [
+     "@Preview",
+     "#Canvas",
+     "#Preview",
+     "@Previewable struct"
+    ],
+    "correctIndex": 2,
+    "explanation": "The #Preview { ContentView() } block declares the preview shown in the Canvas and updates as you edit code. @Preview and #Canvas do not exist; @Previewable is an attribute used inside a #Preview to declare state properties, not the main macro."
+   },
+   {
+    "id": 13,
+    "question": "How do you test the app on another iPhone model or iOS version in the Simulator?",
+    "options": [
+     "Choose another run destination in Xcode's toolbar",
+     "Rewrite the app for each model",
+     "Change the target name",
+     "Change the file extensions"
+    ],
+    "correctIndex": 0,
+    "explanation": "The destination selector next to the scheme lets you pick any installed simulator, with its model and iOS version. The app need not be rewritten, and target names or extensions have no influence."
+   },
+   {
+    "id": 14,
+    "question": "What does a scheme define in Xcode?",
+    "options": [
+     "The screen layout in the storyboard",
+     "The editor font size",
+     "The app colors in dark mode",
+     "Which targets to build and how to run, test and archive the app, including the Debug or Release configuration"
+    ],
+    "correctIndex": 3,
+    "explanation": "A scheme connects targets to the Run, Test, Profile, Analyze and Archive actions and picks the build configuration for each. Layout, editor font and colors are not part of a scheme."
+   },
+   {
+    "id": 15,
+    "question": "What is a target in an Xcode project?",
+    "options": [
+     "A kind of variable in Swift",
+     "A set of files and build settings that produces a product, such as an app or a test bundle",
+     "An image in the asset catalog",
+     "A physical device connected to the Mac"
+    ],
+    "correctIndex": 1,
+    "explanation": "Targets define what to build and how: the app, extensions, unit and UI tests. They are not variables or images, and a device is a run destination, not a target."
+   },
+   {
+    "id": 16,
+    "question": "You committed in Xcode but your teammates cannot see the change in the remote repository. What is missing?",
+    "options": [
+     "Build",
+     "Clean Build Folder",
+     "Push",
+     "Run"
+    ],
+    "correctIndex": 2,
+    "explanation": "A commit records the change only in the local repository; you must push to send commits to the remote. Build, Clean and Run do not interact with the Git repository."
+   },
+   {
+    "id": 17,
+    "question": "Which Xcode navigator shows branches, commit history and remote repositories?",
+    "options": [
+     "Source Control navigator",
+     "Breakpoint navigator",
+     "Report navigator",
+     "Symbol navigator"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Source Control navigator displays branches, tags, remotes and commit history. The Breakpoint navigator lists breakpoints, the Report navigator shows build and run logs and the Symbol navigator lists code symbols."
+   },
+   {
+    "id": 18,
+    "question": "What is the main reason to use a branch to develop a new feature?",
+    "options": [
+     "Make the app faster",
+     "Avoid using commits",
+     "Delete the old history",
+     "Isolate the work without affecting stable code until the feature is ready"
+    ],
+    "correctIndex": 3,
+    "explanation": "Branches allow parallel work and a merge later. They do not change performance, do not replace commits and do not delete history."
+   },
+   {
+    "id": 19,
+    "question": "What is the path in Xcode to add a third-party library through Swift Package Manager?",
+    "options": [
+     "Product > Archive",
+     "File > Add Package Dependencies...",
+     "Editor > Add Library Target",
+     "Window > Organizer"
+    ],
+    "correctIndex": 1,
+    "explanation": "In File > Add Package Dependencies you enter the repository URL and version rule. Product > Archive creates a distribution build, and the other options do not add packages."
+   },
+   {
+    "id": 20,
+    "question": "You added a package via SPM, but writing import MyPackage gives 'No such module'. What is a likely cause?",
+    "options": [
+     "The Swift file has no comments",
+     "The simulator is turned off",
+     "The package product was not linked to the right target",
+     "The variable is a constant"
+    ],
+    "correctIndex": 2,
+    "explanation": "The package product must be listed under Frameworks, Libraries and Embedded Content for the target that imports it; also wait for package resolution. Comments, the simulator or constants do not affect imports."
+   }
+  ]
+ },
+ {
+  "id": "exam-7",
+  "title": "Certification Mock Exam: Interface Builder and UIKit",
+  "description": "Covers storyboard objects and the document outline, the attributes inspector, IBOutlet and IBAction, the connections inspector, Auto Layout, stack views, view controllers, segues, navigation, table views and modifying objects in code.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "What is the Document Outline used for in Interface Builder?",
+    "options": [
+     "Show the hierarchy of the storyboard's scenes and objects as a list",
+     "Show the debug console",
+     "List the Git commits",
+     "Choose the run simulator"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Document Outline lists each scene and its objects in the hierarchy, making it easy to select overlapping or hidden views. The console, Git and simulators belong to other parts of Xcode."
+   },
+   {
+    "id": 2,
+    "question": "How do you indicate which view controller is shown first when the app opens?",
+    "options": [
+     "Rename the class to Initial",
+     "Put it at the top of the Swift file",
+     "Add an image to the asset catalog",
+     "Check 'Is Initial View Controller' in the Attributes inspector (entry arrow)"
+    ],
+    "correctIndex": 3,
+    "explanation": "The entry arrow points to the initial view controller, set by the Is Initial View Controller option. The class name, position in the Swift file and assets have no influence."
+   },
+   {
+    "id": 3,
+    "question": "You want to change a label's text, color and font without writing code. Where do you do it?",
+    "options": [
+     "Connections inspector",
+     "Attributes inspector",
+     "Identity inspector (Custom Class)",
+     "Debug area"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Attributes inspector exposes visual properties like Text, Color and Font. The Connections inspector shows links, the Identity inspector sets the class and the debug area shows the console."
+   },
+   {
+    "id": 4,
+    "question": "You need to change a UILabel's text from code when the screen loads. What should you create for that label?",
+    "options": [
+     "@IBAction",
+     "@IBInspectable struct",
+     "@IBOutlet",
+     "@objc enum"
+    ],
+    "correctIndex": 2,
+    "explanation": "An @IBOutlet is a reference to the storyboard object, letting you read and change its properties (label.text). @IBAction is for reacting to events, and the other options do not connect storyboard objects."
+   },
+   {
+    "id": 5,
+    "question": "You want code to run when the user taps a button. What should you create?",
+    "options": [
+     "@IBAction",
+     "@IBOutlet",
+     "@State",
+     "@Published"
+    ],
+    "correctIndex": 0,
+    "explanation": "An @IBAction is a method tied to a control event such as Touch Up Inside. @IBOutlet merely references the object; @State and @Published belong to SwiftUI and Combine, not Interface Builder."
+   },
+   {
+    "id": 6,
+    "question": "What is the typical declaration of an outlet for a UILabel called nameLabel?",
+    "options": [
+     "@IBAction weak var nameLabel: UILabel!",
+     "@IBOutlet func nameLabel(_ sender: UILabel)",
+     "@IBOutlet let nameLabel = UILabel",
+     "@IBOutlet weak var nameLabel: UILabel!"
+    ],
+    "correctIndex": 3,
+    "explanation": "Outlets are variables, usually weak (the view is already owned by the hierarchy) and implicitly unwrapped (!) because they are connected after the controller is created. @IBAction does not apply to variables, and outlets are neither functions nor let."
+   },
+   {
+    "id": 7,
+    "question": "What is the standard way to create an outlet or action from the storyboard?",
+    "options": [
+     "Double-click the object and type its name",
+     "Control-drag from the object into the code in the Assistant editor",
+     "Copy and paste the object into the Swift file",
+     "Drag the object into the asset catalog"
+    ],
+    "correctIndex": 1,
+    "explanation": "With the Assistant editor showing storyboard and code side by side, Control-dragging inserts the outlet or action and creates the connection. The other actions do not connect the object to code."
+   },
+   {
+    "id": 8,
+    "question": "You deleted the nameLabel outlet from the code, but the old connection remains in the storyboard. What happens when the screen opens?",
+    "options": [
+     "The code does not compile",
+     "The label silently disappears with no error",
+     "The app crashes with a runtime error saying the class is not key value coding-compliant for 'nameLabel'",
+     "Xcode rebuilds the connection by itself"
+    ],
+    "correctIndex": 2,
+    "explanation": "The storyboard is loaded at run time and tries to bind to a property that no longer exists, raising NSUnknownKeyException. It is not a compile error. Fix it by removing the stale connection in the Connections inspector."
+   },
+   {
+    "id": 9,
+    "question": "What is the role of the Connections inspector?",
+    "options": [
+     "Show and edit the connections (outlets, actions, segues) of a selected object",
+     "Choose the text font",
+     "Set the view's background color",
+     "Configure the app's internet connection"
+    ],
+    "correctIndex": 0,
+    "explanation": "The Connections inspector lists an object's outlets, actions and segues and lets you remove broken connections. Font and color belong to the Attributes inspector, and 'connection' here does not mean networking."
+   },
+   {
+    "id": 10,
+    "question": "What does Auto Layout do?",
+    "options": [
+     "Translates the app into other languages",
+     "Saves user data to the cloud",
+     "Detects syntax errors in code",
+     "Calculates view position and size from constraints, adapting to different screens"
+    ],
+    "correctIndex": 3,
+    "explanation": "Constraints describe relationships such as margins, alignments and ratios, and the system resolves the layout for each screen size. Localization, cloud and syntax are other topics."
+   },
+   {
+    "id": 11,
+    "question": "A view has only width and height constraints and Xcode shows red lines in the storyboard. What is the problem?",
+    "options": [
+     "There are too many constraints for Xcode to accept",
+     "Position constraints (horizontal and vertical) are missing, so the layout is ambiguous",
+     "The view needs an IBAction",
+     "The storyboard does not support sized views"
+    ],
+    "correctIndex": 1,
+    "explanation": "For a complete layout, each view needs constraints that define position and size. With size only, its location is undefined. The number of constraints is not the problem, and IBAction does not affect layout."
+   },
+   {
+    "id": 12,
+    "question": "What is the advantage of using a UIStackView?",
+    "options": [
+     "Runs 3D animations automatically",
+     "Stores data on disk",
+     "Arranges subviews in a row or column with spacing and distribution, reducing manual constraints",
+     "Converts the app to Android"
+    ],
+    "correctIndex": 2,
+    "explanation": "Stack views handle child placement according to axis, distribution, alignment and spacing, simplifying adaptive layouts. 3D animation, disk storage and Android are not part of their job."
+   },
+   {
+    "id": 13,
+    "question": "Which property defines whether a stack view stacks its items horizontally or vertically?",
+    "options": [
+     "axis",
+     "alignment",
+     "spacing",
+     "distribution"
+    ],
+    "correctIndex": 0,
+    "explanation": "axis (.horizontal or .vertical) sets the direction. alignment controls alignment on the perpendicular axis, spacing the gap between items and distribution how space is shared along the axis."
+   },
+   {
+    "id": 14,
+    "question": "Why is it recommended to align constraints to the Safe Area instead of the screen edge?",
+    "options": [
+     "So the app uses less memory",
+     "To avoid using storyboards",
+     "To disable dark mode",
+     "So content does not sit under the notch, Dynamic Island, status bar or home indicator"
+    ],
+    "correctIndex": 3,
+    "explanation": "The safe area is the region free from system elements and hardware cutouts. Aligning to it keeps buttons and text visible and tappable. It has nothing to do with memory, storyboards or dark mode."
+   },
+   {
+    "id": 15,
+    "question": "In which UIViewController lifecycle method is initial setup typically done, after the view is loaded into memory?",
+    "options": [
+     "viewDidDisappear(_:)",
+     "viewDidLoad()",
+     "deinit",
+     "application(_:didFinishLaunchingWithOptions:)"
+    ],
+    "correctIndex": 1,
+    "explanation": "viewDidLoad() is called once, when the view and its outlets are available. viewDidDisappear happens when leaving the screen, deinit when the object is released and the last method belongs to the AppDelegate."
+   },
+   {
+    "id": 16,
+    "question": "What is a segue in the storyboard?",
+    "options": [
+     "A kind of constraint",
+     "An outlet for an image",
+     "A transition between two scenes, such as Show (push) or Present Modally",
+     "A debugging tool"
+    ],
+    "correctIndex": 2,
+    "explanation": "Segues connect one view controller to another and define the transition style, for example Show, Present Modally or Popover. Constraints, outlets and debugging are different concepts."
+   },
+   {
+    "id": 17,
+    "question": "Which method do you override to send data to the destination view controller before a segue happens?",
+    "options": [
+     "prepare(for:sender:)",
+     "viewWillAppear(_:)",
+     "performSegue(withIdentifier:sender:)",
+     "dismiss(animated:)"
+    ],
+    "correctIndex": 0,
+    "explanation": "prepare(for:sender:) receives the UIStoryboardSegue, whose destination lets you configure the next controller. performSegue triggers the segue, viewWillAppear is called when the screen appears and dismiss closes a presented screen."
+   },
+   {
+    "id": 18,
+    "question": "What is the role of a UINavigationController?",
+    "options": [
+     "Organize parallel sections in a bottom bar",
+     "Show a scrollable list of rows",
+     "Save the data state",
+     "Manage a stack of view controllers, with a navigation bar and an automatic Back button"
+    ],
+    "correctIndex": 3,
+    "explanation": "A navigation controller pushes and pops view controllers on a stack, starting from a root view controller. Parallel sections in a bottom bar are a UITabBarController and scrollable lists are table views."
+   },
+   {
+    "id": 19,
+    "question": "Which UITableViewDataSource method tells how many rows a section has?",
+    "options": [
+     "tableView(_:cellForRowAt:)",
+     "tableView(_:numberOfRowsInSection:)",
+     "tableView(_:didSelectRowAt:)",
+     "numberOfSections(in:)"
+    ],
+    "correctIndex": 1,
+    "explanation": "numberOfRowsInSection returns the row count. cellForRowAt returns each row's cell, didSelectRowAt is a delegate method for taps and numberOfSections counts sections, not rows."
+   },
+   {
+    "id": 20,
+    "question": "Which line hides a button called saveButton from code?",
+    "options": [
+     "saveButton.hidden = true",
+     "saveButton.visible = false",
+     "saveButton.isHidden = true",
+     "saveButton.remove()"
+    ],
+    "correctIndex": 2,
+    "explanation": "The correct UIView property is isHidden. hidden and visible do not exist in Swift/UIKit, and remove() is not a UIButton method (removing it from the hierarchy would be removeFromSuperview())."
+   }
+  ]
+ },
+ {
+  "id": "exam-8",
+  "title": "Certification Mock Exam: The Swift Language",
+  "description": "Covers functions, enums, constants and variables, type inference, operators, structs, arrays, control flow and loops, naming conventions, scope and shadowing.",
+  "category": "Certificação",
+  "timeLimitMinutes": 30,
+  "questions": [
+   {
+    "id": 1,
+    "question": "Given the function below, which call is valid?\nfunc greet(name: String) -> String {\n    \"Hi, \\(name)\"\n}",
+    "options": [
+     "greet(name: \"Ana\")",
+     "greet(\"Ana\")",
+     "greet(name = \"Ana\")",
+     "greet(String: \"Ana\")"
+    ],
+    "correctIndex": 0,
+    "explanation": "By default the parameter name is also the argument label, so the call needs name: followed by the value. Omitting the label, using = or using the type as a label is a compile error."
+   },
+   {
+    "id": 2,
+    "question": "Given the function below, which call is valid?\nfunc move(from start: Int, to end: Int) { }",
+    "options": [
+     "move(1, 5)",
+     "move(start: 1, end: 5)",
+     "move(from: 1, 5)",
+     "move(from: 1, to: 5)"
+    ],
+    "correctIndex": 3,
+    "explanation": "In the declaration, the first name (from, to) is the external label used at the call site, and the second (start, end) is the internal name used inside the function. That is why start: and end: are not valid in the call."
+   },
+   {
+    "id": 3,
+    "question": "Which call is valid for this function?\nfunc square(_ n: Int) -> Int { n * n }",
+    "options": [
+     "square(n: 4)",
+     "square(4)",
+     "square(value: 4)",
+     "square(Int: 4)"
+    ],
+    "correctIndex": 1,
+    "explanation": "The underscore before the parameter name removes the argument label, so you just pass the value. With a label (n: or value:) or with the type as a label, the compiler complains."
+   },
+   {
+    "id": 4,
+    "question": "What does this code print?\nfunc double(_ x: Int) -> Int { x * 2 }\nprint(double(3) + 1)",
+    "options": [
+     "8",
+     "6",
+     "7",
+     "4"
+    ],
+    "correctIndex": 2,
+    "explanation": "double(3) returns 6 and then 1 is added, giving 7. The 8 would come from double(3 + 1); the call is evaluated before the addition."
+   },
+   {
+    "id": 5,
+    "question": "What does this code print?\nfunc hello(name: String = \"World\") {\n    print(\"Hello, \\(name)\")\n}\nhello()",
+    "options": [
+     "Hello, World",
+     "Hello, name",
+     "Hello, ",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "Parameters with a default value can be omitted at the call site, and the default is used. There is no error, and the interpolation shows the value of name, not the text 'name'."
+   },
+   {
+    "id": 6,
+    "question": "What is wrong with this code?\nfunc total(a: Int, b: Int) -> Int {\n    let sum = a + b\n    print(sum)\n}",
+    "options": [
+     "print cannot be used inside functions",
+     "sum must be declared with var",
+     "The parameters need the _ label",
+     "A return is missing: the function promises to return an Int"
+    ],
+    "correctIndex": 3,
+    "explanation": "A function with a -> Int return type must return an Int on all paths; here 'return sum' is missing. print works in any function, let is fine for sum and labels are optional."
+   },
+   {
+    "id": 7,
+    "question": "What happens with this code?\nenum Light { case red, yellow, green }\nlet l = Light.red\nswitch l {\ncase .red: print(\"Stop\")\ncase .green: print(\"Go\")\n}",
+    "options": [
+     "Prints Stop",
+     "Compile error: the switch is not exhaustive (.yellow or default is missing)",
+     "Prints nothing",
+     "Crashes at run time"
+    ],
+    "correctIndex": 1,
+    "explanation": "In Swift every switch must cover all enum cases or have a default, and this is checked at compile time, so the code never runs. Add case .yellow or default."
+   },
+   {
+    "id": 8,
+    "question": "What does this code print?\nenum Planet: Int { case mercury = 1, venus, earth }\nprint(Planet.earth.rawValue)",
+    "options": [
+     "2",
+     "0",
+     "3",
+     "earth"
+    ],
+    "correctIndex": 2,
+    "explanation": "With integer raw values, later cases auto-increment from the previous: mercury = 1, venus = 2, earth = 3. 2 would be venus, 0 would only occur with no starting value, and rawValue is an Int, not the name."
+   },
+   {
+    "id": 9,
+    "question": "Which line causes a compile error?\n1  let limit = 10\n2  var count = 0\n3  count = 5\n4  limit = 20",
+    "options": [
+     "Line 4: limit is a constant",
+     "Line 3: count is a constant",
+     "Line 2: var cannot be 0",
+     "Line 1: let requires an explicit type"
+    ],
+    "correctIndex": 0,
+    "explanation": "Constants declared with let cannot be reassigned ('Cannot assign to value: limit is a let constant'). count is a var and can change, 0 is a valid value and the Int type is inferred without being written."
+   },
+   {
+    "id": 10,
+    "question": "What type is inferred for c?\nlet c = 7 / 2.0",
+    "options": [
+     "Int",
+     "String",
+     "Float",
+     "Double"
+    ],
+    "correctIndex": 3,
+    "explanation": "The literal 2.0 has a decimal point, so it is a Double, and the 7 is treated as a Double in this expression, giving 3.5. Int would drop the fraction, and Float is only used if declared explicitly."
+   },
+   {
+    "id": 11,
+    "question": "What does this code print?\nlet score: Double = 10\nprint(score)",
+    "options": [
+     "10",
+     "10.0",
+     "Compile error",
+     "10.00"
+    ],
+    "correctIndex": 1,
+    "explanation": "With the : Double annotation, the literal 10 is treated as a Double and print shows 10.0. There is no error because an integer literal can initialize a Double, and print does not add extra zeros."
+   },
+   {
+    "id": 12,
+    "question": "What is the result of 7 / 2 + 7 % 3 in Swift, with all values Int?",
+    "options": [
+     "4.5",
+     "5",
+     "4",
+     "3"
+    ],
+    "correctIndex": 2,
+    "explanation": "Int division truncates: 7 / 2 = 3. The remainder 7 % 3 = 1. Adding gives 3 + 1 = 4. 4.5 would need Double; 5 and 3 come from mistakes in the operations."
+   },
+   {
+    "id": 13,
+    "question": "What happens with this code?\nlet a = 3\nlet b = 2.5\nprint(a + b)",
+    "options": [
+     "Compile error: you cannot add an Int and a Double",
+     "Prints 5.5",
+     "Prints 5",
+     "Prints 5.0"
+    ],
+    "correctIndex": 0,
+    "explanation": "a is an Int and b is a Double; Swift does not convert types automatically in operations. You would need Double(a) + b, which would print 5.5."
+   },
+   {
+    "id": 14,
+    "question": "What is the result of this expression?\nprint(5 > 3 && 2 > 4 || 1 == 1)",
+    "options": [
+     "false",
+     "1",
+     "Compile error",
+     "true"
+    ],
+    "correctIndex": 3,
+    "explanation": "&& has higher precedence than ||. First (5 > 3 && 2 > 4) = true && false = false; then false || (1 == 1) = false || true = true. The result is a Bool, never 1."
+   },
+   {
+    "id": 15,
+    "question": "What does this code print?\nvar n = 10\nn += 5\nn -= 3\nn *= 2\nprint(n)",
+    "options": [
+     "12",
+     "24",
+     "20",
+     "17"
+    ],
+    "correctIndex": 1,
+    "explanation": "10 + 5 = 15; 15 - 3 = 12; 12 * 2 = 24. The value 12 is the result before the last line."
+   },
+   {
+    "id": 16,
+    "question": "Given the struct below, which line creates an instance correctly?\nstruct Dog {\n    var name: String\n    var age: Int\n}",
+    "options": [
+     "let d = Dog(\"Rex\", 3)",
+     "let d = Dog(age: 3, name: \"Rex\")",
+     "let d = Dog(name: \"Rex\", age: 3)",
+     "let d = new Dog(name: \"Rex\", age: 3)"
+    ],
+    "correctIndex": 2,
+    "explanation": "Structs get a memberwise initializer with labels in property order. Without labels, with swapped order or with 'new' (which does not exist in Swift) the code does not compile."
+   },
+   {
+    "id": 17,
+    "question": "What does this code print?\nstruct Dog { var name: String }\nvar a = Dog(name: \"A\")\nvar b = a\nb.name = \"B\"\nprint(a.name)",
+    "options": [
+     "A",
+     "B",
+     "AB",
+     "Compile error"
+    ],
+    "correctIndex": 0,
+    "explanation": "Structs are value types: var b = a creates an independent copy. Changing b does not affect a, so a.name stays 'A'. With a class, it would be 'B'."
+   },
+   {
+    "id": 18,
+    "question": "Why does this code not compile?\nstruct Counter {\n    var n = 0\n    mutating func inc() { n += 1 }\n}\nlet c = Counter()\nc.inc()",
+    "options": [
+     "Structs cannot have methods",
+     "n must be declared without an initial value",
+     "inc() must return an Int",
+     "c is a let and inc() is mutating, which can only be called on a var"
+    ],
+    "correctIndex": 3,
+    "explanation": "Mutating methods change the struct itself, so they require a variable instance. Changing 'let c' to 'var c' fixes it. Structs can have methods, initial values are allowed and no return is required."
+   },
+   {
+    "id": 19,
+    "question": "What happens when this code runs?\nlet fruits = [\"a\", \"b\", \"c\"]\nprint(fruits[3])",
+    "options": [
+     "Prints nil",
+     "Crashes at run time: index out of range",
+     "Prints c",
+     "Prints an empty string"
+    ],
+    "correctIndex": 1,
+    "explanation": "Indexes run from 0 to count - 1, so the last one is fruits[2]. Accessing fruits[3] triggers a fatal 'Index out of range' error. Arrays do not return nil or repeat the last element."
+   },
+   {
+    "id": 20,
+    "question": "What does this code print?\nvar nums = [1, 2, 3]\nnums.append(4)\nnums.remove(at: 0)\nprint(nums)",
+    "options": [
+     "[1, 2, 3, 4]",
+     "[1, 2, 3]",
+     "[2, 3, 4]",
+     "[2, 3]"
+    ],
+    "correctIndex": 2,
+    "explanation": "append(4) adds to the end, giving [1, 2, 3, 4]; remove(at: 0) removes the first element (1), leaving [2, 3, 4]. The other options ignore one of the operations."
+   },
+   {
+    "id": 21,
+    "question": "What value is printed?\nvar s = 0\nfor i in 1..<4 {\n    s += i\n}\nprint(s)",
+    "options": [
+     "6",
+     "10",
+     "3",
+     "24"
+    ],
+    "correctIndex": 0,
+    "explanation": "The half-open range 1..<4 covers 1 to 3, and 1 + 2 + 3 = 6. 10 would be the result of 1...4 (closed range)."
+   },
+   {
+    "id": 22,
+    "question": "What does this code print?\nfor i in 1...5 {\n    if i == 3 { continue }\n    if i == 5 { break }\n    print(i)\n}",
+    "options": [
+     "1, 2, 4 and 5",
+     "1 and 2",
+     "1, 2, 3 and 4",
+     "1, 2 and 4 (one per line)"
+    ],
+    "correctIndex": 3,
+    "explanation": "continue skips 3 without printing, and break ends the loop when i is 5 before the print. So 1, 2 and 4 are printed. Including 5 ignores the break, and 3 ignores the continue."
+   },
+   {
+    "id": 23,
+    "question": "Which identifier is valid and follows the convention for a variable name?",
+    "options": [
+     "2ndPlace",
+     "userAge",
+     "user-age",
+     "UserAge"
+    ],
+    "correctIndex": 1,
+    "explanation": "Variables use lowerCamelCase. 2ndPlace starts with a digit and user-age has a hyphen, both invalid. UserAge is valid, but UpperCamelCase is the convention for types (struct, class, enum), not variables."
+   },
+   {
+    "id": 24,
+    "question": "What does this code print?\nvar x = 1\nif true {\n    let x = 2\n    print(x)\n}\nprint(x)",
+    "options": [
+     "2 and then 2",
+     "1 and then 1",
+     "2 and then 1",
+     "Compile error for redeclaration"
+    ],
+    "correctIndex": 2,
+    "explanation": "The let x inside the if is a new constant that shadows the outer variable only within that scope. Inside it prints 2; outside, the original variable is still 1. Declaring the same name in an inner scope is allowed."
+   },
+   {
+    "id": 25,
+    "question": "What happens with this code?\nfor i in 1...3 {\n    let doubled = i * 2\n}\nprint(doubled)",
+    "options": [
+     "Compile error: 'doubled' does not exist outside the loop (cannot find in scope)",
+     "Prints 6",
+     "Prints 0",
+     "Prints nil"
+    ],
+    "correctIndex": 0,
+    "explanation": "Constants and variables only exist within the braces where they were declared. doubled lives only in the for body; to use it afterwards, declare it before the loop with var. There is no default value or nil."
+   }
+  ]
+ }
+]

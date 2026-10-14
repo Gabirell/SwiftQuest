@@ -1,0 +1,1058 @@
+[
+ {
+  "id": "exam-9",
+  "title": "Simulacro Certificación: Depuración",
+  "description": "Conexiones de Interface Builder, tipos de error, mensajes de consola, breakpoints, LLDB, logs, Instruments y problemas de memoria con ARC al estilo de la certificación.",
+  "category": "Certificação",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "En un storyboard, ¿qué panel de Xcode muestra los IBOutlets, IBActions y segues conectados al objeto seleccionado?",
+    "options": [
+     "Attributes inspector",
+     "Connections inspector",
+     "Size inspector",
+     "Identity inspector"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Connections inspector lista los outlets, actions, segues y delegates conectados al objeto y permite eliminar conexiones obsoletas. El Attributes inspector edita la apariencia, el Size inspector edita frame/constraints y el Identity inspector define la clase personalizada."
+   },
+   {
+    "id": 2,
+    "question": "La app se cierra al abrir la pantalla con: 'this class is not key value coding-compliant for the key nameLabel'. Acabas de renombrar la propiedad @IBOutlet nameLabel en el código. ¿Cuál es la causa más probable y la solución?",
+    "options": [
+     "Falta un import UIKit en el archivo del controller",
+     "El deployment target es muy bajo; sube la versión mínima de iOS",
+     "El storyboard aún tiene una conexión al outlet antiguo; elimínala en el Connections inspector y reconecta con el nuevo nombre",
+     "La propiedad debería declararse como weak var en lugar de @IBOutlet"
+    ],
+    "correctIndex": 2,
+    "explanation": "El archivo del storyboard guarda el nombre de clave 'nameLabel'. Si la propiedad ya no existe con ese nombre, el runtime falla al aplicar KVC. Eliminar la conexión obsoleta y recrearla lo soluciona. Los imports, el deployment target y weak no tienen relación con este error."
+   },
+   {
+    "id": 3,
+    "question": "El código compila y corre sin cerrarse, pero el promedio calculado con 'let promedio = suma / cantidad' (ambos Int) muestra 2 en lugar de 2,5. ¿Qué tipo de error es?",
+    "options": [
+     "Error de sintaxis",
+     "Error de runtime (crash)",
+     "Error de enlazado (linker)",
+     "Error de lógica"
+    ],
+    "correctIndex": 3,
+    "explanation": "No se violó ninguna regla del lenguaje: la división entera trunca el resultado, así que el programa hace lo escrito pero no lo que se pretendía. Es un error de lógica. Un error de sintaxis lo rechazaría el compilador y uno de runtime cerraría la app."
+   },
+   {
+    "id": 4,
+    "question": "Un IBOutlet declarado como 'var titleLabel: UILabel!' nunca se conectó en el storyboard. La app se cierra al ejecutar 'titleLabel.text = \"Hola\"' en viewDidLoad. ¿Qué mensaje aparece en la consola?",
+    "options": [
+     "Fatal error: Index out of range",
+     "Fatal error: Unexpectedly found nil while implicitly unwrapping an Optional value",
+     "unrecognized selector sent to instance",
+     "Fatal error: Double value cannot be converted to Int"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un outlet sin conectar queda en nil y, al ser un Implicitly Unwrapped Optional, acceder a él provoca el trap 'Unexpectedly found nil while implicitly unwrapping...'. La solución es conectar el outlet en el Connections inspector. Los otros mensajes corresponden a un índice inválido, un método inexistente y una conversión numérica."
+   },
+   {
+    "id": 5,
+    "question": "Considera:\nlet nombres = [\"Ana\", \"Bia\", \"Caio\"]\nprint(nombres[3])\n¿Qué ocurre?",
+    "options": [
+     "Imprime nil",
+     "Imprime \"Caio\"",
+     "Crash en runtime: Fatal error: Index out of range",
+     "Error de compilación, porque el array solo tiene 3 elementos"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los arrays se indexan desde 0, por lo que los índices válidos son 0, 1 y 2. Acceder al índice 3 provoca un trap en runtime con 'Index out of range'. Swift no devuelve nil al usar subíndices (solo APIs como first lo hacen) y el compilador no valida el índice."
+   },
+   {
+    "id": 6,
+    "question": "Al tocar un botón, la app se cierra con 'unrecognized selector sent to instance'. El botón está ligado a un @IBAction en el storyboard, pero borraste ese método del controller. ¿Qué debes hacer?",
+    "options": [
+     "Agregar un breakpoint de línea en viewDidLoad",
+     "Reemplazar el botón por un UILabel",
+     "Abrir el Connections inspector del botón y eliminar la conexión al método que ya no existe (o recrear el método)",
+     "Declarar el controller como final class"
+    ],
+    "correctIndex": 2,
+    "explanation": "El storyboard intenta enviar el mensaje (selector) al controller, que ya no implementa el método, de ahí 'unrecognized selector'. Elimina la conexión obsoleta o recrea el método con el mismo nombre. Los breakpoints ayudan a diagnosticar pero no corrigen; cambiar el control o usar final no lo resuelve."
+   },
+   {
+    "id": 7,
+    "question": "Quieres que el depurador se detenga en el punto exacto donde se lance cualquier excepción, sin conocer la línea de antemano. ¿Qué breakpoint usas?",
+    "options": [
+     "Exception breakpoint",
+     "Breakpoint de línea (clic en el margen)",
+     "Symbolic breakpoint en viewDidLoad",
+     "Breakpoint con acción de sonido"
+    ],
+    "correctIndex": 0,
+    "explanation": "El Exception Breakpoint (se crea en el Breakpoint navigator con el botón +) se detiene en cuanto se lanza una excepción y muestra la pila de llamadas en el punto de la causa. El breakpoint de línea exige saber dónde parar y el simbólico se detiene cuando se llama a una función concreta."
+   },
+   {
+    "id": 8,
+    "question": "¿Cómo registrar el valor de una variable en la consola cada vez que se ejecuta una línea, sin detener la app?",
+    "options": [
+     "Poner un breakpoint y presionar Continue manualmente en cada parada",
+     "Desactivar todos los breakpoints (Cmd+Y) y usar solo Instruments",
+     "Cambiar el scheme a Release",
+     "Editar el breakpoint, agregar la acción Log Message y marcar 'Automatically continue after evaluating actions'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los breakpoints admiten acciones como Log Message; con 'Automatically continue' marcado, la app no se pausa y el mensaje (que puede incluir @expr@) aparece en la consola. Detenerse y continuar a mano es lento, y desactivar breakpoints o cambiar a Release no registra nada."
+   },
+   {
+    "id": 9,
+    "question": "La ejecución está pausada en 'let total = calcularTotal(items)'. Quieres ejecutar esa línea completa, incluida la llamada, y detenerte en la siguiente línea del MISMO método. ¿Qué comando usas?",
+    "options": [
+     "Step Into",
+     "Step Out",
+     "Continue",
+     "Step Over"
+    ],
+    "correctIndex": 3,
+    "explanation": "Step Over (F6) ejecuta toda la línea actual, incluidas las llamadas a funciones, y se detiene en la siguiente. Step Into (F7) entraría en calcularTotal, Step Out terminaría la función actual volviendo a quien la llamó y Continue solo se detiene en el siguiente breakpoint."
+   },
+   {
+    "id": 10,
+    "question": "Entraste (Step Into) en una función larga y notas que no es la culpable. ¿Qué hace el comando Step Out?",
+    "options": [
+     "Termina la sesión de depuración",
+     "Ejecuta el resto de la función actual y se pausa de vuelta en quien la llamó",
+     "Salta al siguiente breakpoint, ignorando al llamador",
+     "Reinicia la app desde el principio"
+    ],
+    "correctIndex": 1,
+    "explanation": "Step Out (F8) completa la función en ejecución y se pausa justo al retornar, en el código que la llamó. Terminar la sesión es el botón Stop, ir al siguiente breakpoint es Continue y reiniciar requiere ejecutar la app de nuevo."
+   },
+   {
+    "id": 11,
+    "question": "En un bucle de 1000 iteraciones, el bug solo aparece cuando i == 500. ¿Cómo pausar solo en esa iteración sin editar el código?",
+    "options": [
+     "Colocar 500 breakpoints",
+     "Usar un Exception breakpoint",
+     "Agregar una Condition al breakpoint con la expresión i == 500",
+     "Reducir el bucle a 500 iteraciones"
+    ],
+    "correctIndex": 2,
+    "explanation": "Cada breakpoint tiene un campo Condition: el depurador solo se pausa cuando la expresión es verdadera, evitando 1000 paradas. Los exception breakpoints no filtran por valores y cambiar el bucle alteraría el comportamiento que quieres investigar."
+   },
+   {
+    "id": 12,
+    "question": "Con la app pausada, en la consola de LLDB, ¿qué comando cambia la variable 'contador' a 10 sin recompilar?",
+    "options": [
+     "po contador",
+     "expression contador = 10",
+     "bt contador 10",
+     "continue contador"
+    ],
+    "correctIndex": 1,
+    "explanation": "El comando 'expression' (o 'e') evalúa código en el contexto pausado, incluidas las asignaciones, y permite probar hipótesis sin recompilar. 'po contador' solo muestra el valor (sin asignación), 'bt' muestra la pila de llamadas y 'continue' reanuda la ejecución."
+   },
+   {
+    "id": 13,
+    "question": "¿Qué comando de LLDB muestra la pila de llamadas (backtrace) del hilo actual?",
+    "options": [
+     "bt",
+     "po",
+     "frame variable",
+     "step"
+    ],
+    "correctIndex": 0,
+    "explanation": "'bt' (backtrace) lista las funciones llamadas hasta el punto actual, útil tras un crash. 'po' imprime la descripción de un objeto, 'frame variable' lista las variables locales del frame y 'step' avanza una línea."
+   },
+   {
+    "id": 14,
+    "question": "Dado 'struct Punto { var x = 1; var y = 2 }' y 'let p = Punto()', ¿cuál es la diferencia entre print(p) y dump(p)?",
+    "options": [
+     "dump(p) usa reflexión e imprime la estructura jerárquica con cada propiedad en su propia línea",
+     "dump(p) solo funciona con clases",
+     "print(p) muestra la dirección de memoria, dump(p) no",
+     "No hay diferencia; son alias"
+    ],
+    "correctIndex": 0,
+    "explanation": "print muestra una descripción compacta (Punto(x: 1, y: 2)), mientras que dump(p) usa Mirror para listar el tipo y las propiedades en líneas indentadas, útil con valores anidados. Ambos funcionan con structs y ninguno imprime la dirección por defecto."
+   },
+   {
+    "id": 15,
+    "question": "En una app de producción, ¿por qué es mejor usar Logger (framework os) que print?",
+    "options": [
+     "El compilador elimina print automáticamente del código",
+     "Logger cifra el tráfico de red",
+     "Logger solo funciona en el Simulator",
+     "Tiene niveles (debug, info, error), se integra con el log unificado/Console.app y permite ocultar datos con privacy: .private"
+    ],
+    "correctIndex": 3,
+    "explanation": "Logger envía los mensajes al sistema de logging unificado: se pueden filtrar por subsystem/category y nivel, son baratos y admiten privacidad, como en '\\(email, privacy: .private)'. print solo escribe en stdout, el compilador no lo elimina, y Logger no tiene relación con la red ni se limita al Simulator."
+   },
+   {
+    "id": 16,
+    "question": "La interfaz de la app se traba al desplazar una lista. ¿Qué herramienta/plantilla de Instruments muestra qué funciones consumen más tiempo de CPU?",
+    "options": [
+     "Time Profiler",
+     "Leaks",
+     "Network",
+     "Core Data"
+    ],
+    "correctIndex": 0,
+    "explanation": "Time Profiler muestrea la pila de llamadas periódicamente y revela los métodos que más ocupan la CPU, ideal para congelamientos de UI. Leaks busca memoria filtrada, Network analiza tráfico y Core Data mide operaciones de persistencia, no la CPU por función."
+   },
+   {
+    "id": 17,
+    "question": "Considera:\nclass Dueno { var mascota: Mascota? ; deinit { print(\"Dueno liberado\") } }\nclass Mascota { var dueno: Dueno? ; deinit { print(\"Mascota liberada\") } }\nvar d: Dueno? = Dueno()\nvar m: Mascota? = Mascota()\nd?.mascota = m\nm?.dueno = d\nd = nil\nm = nil\n¿Qué se imprime?",
+    "options": [
+     "Dueno liberado y luego Mascota liberada",
+     "Mascota liberada y luego Dueno liberado",
+     "Nada: hay un ciclo de retención y no se llama a ningún deinit",
+     "Un error de compilación por referencia circular"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dueno y Mascota se referencian con fuerza, así que el contador de cada uno nunca llega a cero aunque d y m sean nil: una fuga de memoria (visible en el Debug Memory Graph como objetos filtrados). La solución es hacer una referencia weak, por ejemplo 'weak var dueno: Dueno?'. El compilador no detecta ciclos."
+   },
+   {
+    "id": 18,
+    "question": "Un view controller guarda un closure en una propiedad (var onTap: (() -> Void)?) y dentro usa self.titulo. El deinit del controller nunca se llama. ¿Cuál es la corrección adecuada?",
+    "options": [
+     "Marcar el closure como @escaping",
+     "Usar la lista de captura [weak self] en el closure",
+     "Asignar self = nil dentro del closure",
+     "Declarar la propiedad como lazy"
+    ],
+    "correctIndex": 1,
+    "explanation": "El controller retiene el closure y el closure retiene a self: un ciclo de retención. [weak self] (o [unowned self] cuando el tiempo de vida está garantizado) rompe el ciclo. @escaping solo indica que el closure sobrevive a la llamada; self no se puede asignar y lazy no cambia la captura."
+   },
+   {
+    "id": 19,
+    "question": "¿Qué línea causa un crash en runtime?\nlet valores = [10, 20, 30]\nlet a = valores.first!          // línea 1\nlet texto: String? = nil\nprint(texto ?? \"vacío\")         // línea 2\nlet n = Int(\"abc\")!             // línea 3",
+    "options": [
+     "Línea 3",
+     "Línea 1",
+     "Línea 2",
+     "Ninguna"
+    ],
+    "correctIndex": 0,
+    "explanation": "Int(\"abc\") devuelve nil, y el force unwrap (!) de nil produce 'Unexpectedly found nil while unwrapping an Optional value'. En la línea 1, first es 10 porque el array no está vacío; en la línea 2, ?? proporciona el valor por defecto 'vacío'."
+   },
+   {
+    "id": 20,
+    "question": "¿Cuál de los siguientes es un error de sintaxis/compilación (detectado ANTES de ejecutar) y no de runtime?",
+    "options": [
+     "Acceder a un índice inexistente de un array",
+     "Dividir un Int entre cero",
+     "Force unwrap de un Optional que es nil",
+     "Olvidar cerrar la llave } de una función"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los errores de sintaxis y de tipos los rechaza el compilador y la app ni siquiera corre; Xcode los muestra en rojo. Un índice inválido, la división entera entre cero y el force unwrap de nil solo se manifiestan mientras la app se ejecuta y provocan un crash."
+   }
+  ]
+ },
+ {
+  "id": "exam-10",
+  "title": "Simulacro: SwiftUI Esencial",
+  "description": "Vistas y modifiers, stacks, manejo de estado, navegación, listas, formularios, animaciones, sheets, previews y accesibilidad en SwiftUI.",
+  "category": "SwiftUI",
+  "timeLimitMinutes": 30,
+  "questions": [
+   {
+    "id": 1,
+    "question": "¿Qué código produce un texto con fondo azul que también cubre el espacio (padding) alrededor del texto?",
+    "options": [
+     "Text(\"Hola\").padding().background(.blue)",
+     "Text(\"Hola\").background(.blue).padding()",
+     "Text(\"Hola\").background(.blue).frame(width: 0)",
+     "Text(\"Hola\").foregroundStyle(.blue)"
+    ],
+    "correctIndex": 0,
+    "explanation": "El orden de los modifiers importa: cada uno envuelve la vista resultante del anterior. padding() primero agranda el área y luego background la rellena, incluido el padding. Con background antes, el azul cubre solo el texto y el padding queda transparente. foregroundStyle cambia el color del texto, no el fondo."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué significa el tipo de retorno 'some View' en la propiedad body?",
+    "options": [
+     "Cualquier View, distinta en cada ejecución",
+     "Un tipo opaco: body devuelve un único tipo concreto de View, elegido por el compilador, sin exponerlo",
+     "Un Optional de View",
+     "Una clase base llamada View de la que heredan todas las vistas"
+    ],
+    "correctIndex": 1,
+    "explanation": "'some' declara un tipo de retorno opaco: el tipo concreto es fijo y conocido por el compilador pero oculto para quien llama, lo que permite optimizaciones. Por eso un body no puede devolver tipos distintos en ramas de if sin @ViewBuilder. View es un protocolo, no una clase, y some View no es un Optional."
+   },
+   {
+    "id": 3,
+    "question": "En 'VStack(alignment: .leading, spacing: 8) { ... }', ¿qué controla cada argumento?",
+    "options": [
+     "alignment centra verticalmente; spacing define el ancho",
+     "alignment define el tamaño de fuente; spacing el color",
+     "alignment alinea los hijos horizontalmente al borde inicial; spacing es la distancia vertical de 8 puntos entre ellos",
+     "Ambos afectan solo a la primera vista"
+    ],
+    "correctIndex": 2,
+    "explanation": "En un VStack, alignment recibe un HorizontalAlignment (leading, center, trailing) y spacing es el espacio entre hijos consecutivos en el eje vertical. No controlan fuente, color ni ancho, y se aplican a todos los hijos."
+   },
+   {
+    "id": 4,
+    "question": "En 'HStack { Text(\"A\"); Spacer(); Text(\"B\") }', ¿dónde quedan A y B?",
+    "options": [
+     "Ambos centrados y juntos",
+     "B en el borde inicial y A en el final",
+     "A en el borde inicial y B en el borde final, porque Spacer ocupa todo el espacio restante",
+     "Un error de compilación, pues Spacer solo funciona en VStack"
+    ],
+    "correctIndex": 2,
+    "explanation": "Spacer es una vista flexible que se expande para consumir el espacio disponible en el eje del stack y empuja a A y B hacia los extremos. Funciona en HStack y VStack; el orden es el declarado, así que A queda al inicio."
+   },
+   {
+    "id": 5,
+    "question": "¿Qué property wrapper es adecuado para un valor simple (como un Bool de 'mostrando detalles') que pertenece a una vista y, al cambiar, vuelve a dibujar su cuerpo?",
+    "options": [
+     "@State",
+     "@Binding",
+     "@Environment",
+     "@AppStorage solo para datos en la nube"
+    ],
+    "correctIndex": 0,
+    "explanation": "@State hace que la vista posea el almacenamiento de un valor local e invalida el body cuando cambia; suele ser private. @Binding solo referencia un valor de otra vista, @Environment lee valores del sistema/ancestros y @AppStorage persiste en UserDefaults (no en la nube)."
+   },
+   {
+    "id": 6,
+    "question": "Una vista padre tiene '@State private var encendido = false'. ¿Cómo se lo pasas a un Toggle para que pueda modificarlo? Toggle(\"Wi-Fi\", isOn: ___)",
+    "options": [
+     "encendido",
+     "&encendido",
+     "$encendido",
+     "@encendido"
+    ],
+    "correctIndex": 2,
+    "explanation": "El prefijo $ accede al projectedValue de @State, que es un Binding<Bool> de lectura y escritura. Pasar 'encendido' entrega un Bool simple, no un Binding, y & y @ no son sintaxis válida aquí."
+   },
+   {
+    "id": 7,
+    "question": "Con Observation (Swift 5.9+), ¿cuál es la forma recomendada de que una vista cree y posea un modelo?\n@Observable class Carrito { var items: [String] = [] }",
+    "options": [
+     "@ObservedObject var carrito = Carrito()",
+     "@Published var carrito = Carrito()",
+     "@State private var carrito = Carrito()",
+     "var carrito = Carrito() sin wrapper, pues @Observable crea el almacenamiento"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las clases @Observable no necesitan ObservableObject/@Published; una vista que crea el modelo debe guardarlo en @State para que la instancia sobreviva a las reconstrucciones de la vista. Sin wrapper, el modelo se recrearía cada vez que se reevalúa el body, y @Published/@ObservedObject pertenecen al modelo antiguo."
+   },
+   {
+    "id": 8,
+    "question": "Una vista recibe un modelo @Observable por parámetro y necesita bindings a sus propiedades (por ejemplo TextField(\"Nombre\", text: $modelo.nombre)). ¿Qué debes agregar?",
+    "options": [
+     "Declararlo con @Binding",
+     "Declarar 'var modelo: Perfil' con @Bindable",
+     "Declararlo con @StateObject",
+     "Nada: $modelo.nombre ya funciona en cualquier let"
+    ],
+    "correctIndex": 1,
+    "explanation": "@Bindable habilita la sintaxis $ y los bindings a propiedades de un objeto @Observable que la vista no posee. @Binding espera un valor proveniente del @State de un padre, @StateObject es la API antigua y una propiedad común no proyecta bindings."
+   },
+   {
+    "id": 9,
+    "question": "Dentro de una pantalla presentada con .sheet, ¿cómo cerrarla con un botón 'Listo' usando el entorno?",
+    "options": [
+     "@Environment(\\.dismiss) private var dismiss y llamar a dismiss()",
+     "@Environment(\\.close) var close",
+     "@State var isPresented y llamar a isPresented.toggle() en el hijo",
+     "self.removeFromSuperview()"
+    ],
+    "correctIndex": 0,
+    "explanation": "La clave \\.dismiss del entorno devuelve una acción (DismissAction) que cierra la presentación actual: sheet, vista apilada en NavigationStack, etc. \\.close no existe, un nuevo @State en el hijo no controla al padre y removeFromSuperview es de UIKit."
+   },
+   {
+    "id": 10,
+    "question": "¿Qué se necesita para usar 'ForEach(tareas) { tarea in ... }' sin el parámetro id?",
+    "options": [
+     "Los elementos deben ser Strings",
+     "El tipo de los elementos debe conformar Identifiable",
+     "El array debe tener como máximo 10 elementos",
+     "Los elementos deben ser clases"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sin id explícito, ForEach usa la propiedad id de Identifiable para distinguir elementos entre actualizaciones. Si el tipo no es Identifiable, pasa un key path estable como 'id: \\.self' (para valores Hashable únicos). No hay límite de elementos ni requisito de String o clase."
+   },
+   {
+    "id": 11,
+    "question": "¿Qué par de APIs implementa la navegación basada en valores en un NavigationStack?",
+    "options": [
+     "NavigationLink(destination:) y .sheet",
+     "Button y .present(_:)",
+     "TabView y .tabItem",
+     "NavigationLink(value:) y .navigationDestination(for:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "NavigationLink(value:) empuja un valor Hashable y .navigationDestination(for: Tipo.self) define la vista de destino para ese tipo, desacoplando enlace y destino. Las demás combinaciones pertenecen a otros mecanismos (sheet, UIKit, pestañas)."
+   },
+   {
+    "id": 12,
+    "question": "Usas 'NavigationStack(path: $camino)' con '@State private var camino = NavigationPath()'. ¿Cómo vuelves a la pantalla raíz desde el código?",
+    "options": [
+     "camino = NavigationPath()  (o camino.removeLast(camino.count))",
+     "camino.append(nil)",
+     "dismiss(animated: true)",
+     "navigationController.popToRootViewController()"
+    ],
+    "correctIndex": 0,
+    "explanation": "El path representa la pila de destinos; vaciarlo hace que el NavigationStack quite todas las pantallas apiladas y muestre la raíz. append agrega pantallas, y dismiss(animated:) y navigationController son conceptos de UIKit."
+   },
+   {
+    "id": 13,
+    "question": "Usando la API clásica de TabView, ¿qué modifier define el ícono y el título de cada pestaña en una vista hija?",
+    "options": [
+     ".navigationTitle(\"Inicio\")",
+     ".badge(\"Inicio\")",
+     ".toolbar { Text(\"Inicio\") }",
+     ".tabItem { Label(\"Inicio\", systemImage: \"house\") }"
+    ],
+    "correctIndex": 3,
+    "explanation": "En la forma clásica, cada hijo de TabView recibe .tabItem con el contenido de la pestaña (normalmente un Label). En versiones recientes también existe el inicializador Tab(\"Inicio\", systemImage:) { ... }. navigationTitle titula la barra de navegación, badge muestra un contador y toolbar no crea pestañas."
+   },
+   {
+    "id": 14,
+    "question": "El código siguiente no compila. ¿Cuál es el problema?\n@State private var volume = 5\nSlider(value: $volume, in: 0...10)",
+    "options": [
+     "@State no puede ser private",
+     "El rango 0...10 es inválido",
+     "Slider solo funciona dentro de un Form",
+     "Slider exige un Binding de un tipo de punto flotante; volume es Int, así que debería ser 5.0 o Double"
+    ],
+    "correctIndex": 3,
+    "explanation": "Slider requiere un Binding<V> donde V sea BinaryFloatingPoint (Double, Float, CGFloat). Con el literal 5, volume se infiere como Int. Declara 'var volume: Double = 5'. Usar private en @State es buena práctica, el rango es válido y Slider funciona fuera de Form."
+   },
+   {
+    "id": 15,
+    "question": "¿Para qué es más adecuado el contenedor Form con Section?",
+    "options": [
+     "Dibujar gráficos en tiempo real",
+     "Pantallas de ajustes o captura de datos con filas agrupadas y controles",
+     "Colocar vistas en capas una sobre otra",
+     "Mostrar millones de elementos con carga diferida y sin estilo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Form organiza controles (Toggle, Picker, TextField) en filas agrupadas con el estilo estándar de la plataforma, con Section para encabezados y pies. Las capas son tarea de ZStack, y los gráficos requieren Canvas o Swift Charts."
+   },
+   {
+    "id": 16,
+    "question": "¿Qué declaración de Picker es correcta para elegir entre los colores de un enum 'Tono: String, CaseIterable, Identifiable' con @State var eleccion: Tono",
+    "options": [
+     "Picker(\"Tono\", selection: $eleccion) { ForEach(Tono.allCases) { Text($0.rawValue).tag($0) } }",
+     "Picker(\"Tono\", selection: eleccion) { ... } sin $",
+     "Picker(\"Tono\") { ... }.onSelect(eleccion)",
+     "Picker(Tono.allCases, selection: $eleccion)"
+    ],
+    "correctIndex": 0,
+    "explanation": "Picker necesita un Binding para la selección ($eleccion) y opciones con .tag cuyos valores coincidan con el tipo de la selección (aquí, Tono). La versión sin $ pasa un valor, no un binding; onSelect no existe y Picker no recibe un array directamente."
+   },
+   {
+    "id": 17,
+    "question": "¿Por qué el modifier '.animation(.easeInOut, value: expandido)' exige el parámetro value?",
+    "options": [
+     "Para elegir la duración de la animación",
+     "Para desactivar la animación",
+     "La animación solo se aplica cuando cambia el valor observado, evitando animar cambios no relacionados",
+     "Porque value define el color final"
+    ],
+    "correctIndex": 2,
+    "explanation": "El parámetro value vincula la animación a un cambio concreto; la versión sin value (implícita y amplia) se deprecó por animar efectos inesperados. La duración viene de la curva/animación en sí, y value no desactiva nada ni define un color. Alternativa explícita: withAnimation { ... }."
+   },
+   {
+    "id": 18,
+    "question": "¿Qué código hace que un Text aparezca con una transición de deslizamiento cuando 'mostrar' pasa a true?",
+    "options": [
+     "Text(\"Hola\").transition(.slide) sin if ni animación",
+     "Text(\"Hola\").opacity(mostrar)",
+     "withAnimation { mostrar.toggle() } con if mostrar { Text(\"Hola\").transition(.slide) }",
+     "Text(\"Hola\").onChange(of: mostrar) { .slide }"
+    ],
+    "correctIndex": 2,
+    "explanation": ".transition define cómo se inserta/quita una vista, lo que exige que entre o salga de la jerarquía (por ejemplo con if) dentro de una animación (withAnimation o .animation). Sin el if ni la animación no ocurre nada; opacity recibe un Double, no un Bool, y onChange no define transiciones."
+   },
+   {
+    "id": 19,
+    "question": "¿Cuál es la diferencia entre .sheet(isPresented:) y .sheet(item:)?",
+    "options": [
+     "item: solo funciona en iPad",
+     "isPresented: exige un Identifiable",
+     "Ninguna: son alias",
+     "item: presenta cuando el Optional Identifiable deja de ser nil y entrega el valor al contenido"
+    ],
+    "correctIndex": 3,
+    "explanation": ".sheet(item: $seleccionado) presenta la hoja cuando el binding obtiene un valor (tipo Identifiable) y lo pasa al closure, ideal para los detalles de un elemento. isPresented usa un Bool y no lleva datos. Ambos funcionan en iPhone y iPad."
+   },
+   {
+    "id": 20,
+    "question": "En una alerta de confirmación de borrado, ¿qué hace 'Button(\"Eliminar\", role: .destructive) { ... }'?",
+    "options": [
+     "Impide que se pueda tocar el botón",
+     "Marca la acción como destructiva y el sistema la resalta (en rojo)",
+     "Cierra todas las alertas de la app",
+     "Convierte el botón en un enlace de navegación"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los roles dan significado semántico: .destructive lo resalta el sistema (rojo), .cancel recibe la ubicación de cancelar. El botón sigue siendo tocable, solo cierra su propia alerta al activarse y no se convierte en un NavigationLink."
+   },
+   {
+    "id": 21,
+    "question": "¿Para qué sirve el macro #Preview { ContentView() }?",
+    "options": [
+     "Publica la vista en la App Store",
+     "Crea una prueba automatizada de UI",
+     "Cambia ContentView por otra vista en producción",
+     "Renderiza la vista en el canvas de Xcode sin necesidad de ejecutar la app en el simulador"
+    ],
+    "correctIndex": 3,
+    "explanation": "#Preview define una vista previa mostrada en el canvas, lo que permite iterar rápido (también con variaciones como .preferredColorScheme(.dark)). Es código de desarrollo: no publica nada, no es una prueba y no cambia la app en producción."
+   },
+   {
+    "id": 22,
+    "question": "Un botón solo tiene un ícono: Button { agregar() } label: { Image(systemName: \"plus\") }. ¿Qué modifier mejora la experiencia con VoiceOver?",
+    "options": [
+     ".accessibilityLabel(\"Agregar elemento\")",
+     ".accessibilityHidden(true)",
+     ".opacity(0)",
+     ".font(.largeTitle)"
+    ],
+    "correctIndex": 0,
+    "explanation": "accessibilityLabel proporciona el texto que lee VoiceOver; sin él, el lector podría anunciar solo 'plus'. accessibilityHidden ocultaría el botón a quienes usan VoiceOver, opacity(0) lo haría invisible y font no afecta cómo se lee una imagen."
+   },
+   {
+    "id": 23,
+    "question": "Para que el texto respete el tamaño de fuente preferido del usuario (Dynamic Type), ¿qué enfoque es correcto?",
+    "options": [
+     "Usar .font(.system(size: 14)) con tamaño fijo en todo el texto",
+     "Usar estilos semánticos como .font(.body) o .title",
+     "Desactivar la accesibilidad del sistema",
+     "Usar Image en lugar de Text"
+    ],
+    "correctIndex": 1,
+    "explanation": "Los estilos de texto semánticos (.body, .headline, .title) escalan automáticamente con Dynamic Type. Los tamaños fijos no siguen la preferencia del usuario (salvo que usen escala relativa) y reemplazar Text por Image perjudica la accesibilidad."
+   },
+   {
+    "id": 24,
+    "question": "Una fila de lista tiene un ícono, un título y un subtítulo en Texts separados. ¿Cómo hacer que VoiceOver los trate como un solo elemento?",
+    "options": [
+     ".accessibilityElement(children: .combine)",
+     ".accessibilityHidden(true) en cada uno",
+     ".accessibilityElement(children: .ignore) sin label",
+     ".disabled(true)"
+    ],
+    "correctIndex": 0,
+    "explanation": ".combine une los elementos hijos en un único elemento de accesibilidad, leyendo el contenido en secuencia. Ocultarlos todos haría desaparecer la fila para VoiceOver, .ignore sin label dejaría un elemento sin descripción y disabled solo desactiva la interacción."
+   },
+   {
+    "id": 25,
+    "question": "¿Qué error reporta el compilador aquí?\nstruct Contador: View {\n    var total = 0\n    var body: some View {\n        Button(\"+1\") { total += 1 }\n    }\n}",
+    "options": [
+     "Missing return in body",
+     "Button no acepta closures",
+     "total debería ser let",
+     "Left side of mutating operator isn't mutable: 'self' is immutable; la solución es declarar total con @State"
+    ],
+    "correctIndex": 3,
+    "explanation": "body es una propiedad no mutante de una struct, así que no puede cambiar 'total' directamente. @State mueve el almacenamiento fuera de la struct inmutable, permitiendo la mutación y el redibujado. 'return' es opcional en un body de una sola expresión, Button acepta un closure de acción y let impediría cualquier cambio."
+   }
+  ]
+ },
+ {
+  "id": "exam-11",
+  "title": "Simulacro: Datos, Red y Seguridad",
+  "description": "Persistencia con UserDefaults, archivos, Codable, SwiftData y Core Data, red con URLSession, CloudKit, Keychain, ATS y privacidad.",
+  "category": "Dados e Rede",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "¿Qué dato es buen candidato para guardar en UserDefaults?",
+    "options": [
+     "La contraseña de la cuenta",
+     "Una base de 50 mil registros",
+     "La preferencia de tema (claro/oscuro) elegida por el usuario",
+     "Un video de 200 MB grabado en la app"
+    ],
+    "correctIndex": 2,
+    "explanation": "UserDefaults sirve para pequeñas preferencias y ajustes. Las contraseñas pertenecen al Keychain, los grandes volúmenes de datos a SwiftData/Core Data/archivos y los videos al sistema de archivos."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué hace '@AppStorage(\"nombre\") private var nombre = \"\"' en una vista SwiftUI?",
+    "options": [
+     "Lee y escribe la clave \"nombre\" en UserDefaults y actualiza la vista cuando el valor cambia",
+     "Guarda el valor cifrado en el Keychain",
+     "Sincroniza automáticamente con iCloud",
+     "Crea una tabla en SwiftData"
+    ],
+    "correctIndex": 0,
+    "explanation": "@AppStorage es un wrapper sobre UserDefaults: el valor persiste entre ejecuciones y dispara la actualización de la vista. No usa Keychain, no sincroniza con iCloud por sí mismo y no usa SwiftData."
+   },
+   {
+    "id": 3,
+    "question": "¿Cuál de estas declaraciones NO es compatible directamente con @AppStorage?\n(Perfil es una struct Codable con varios campos)",
+    "options": [
+     "@AppStorage(\"perfil\") var perfil = Perfil()",
+     "@AppStorage(\"puntos\") var puntos = 0",
+     "@AppStorage(\"sesion\") var sesion = false",
+     "@AppStorage(\"ultimoSitio\") var url = URL(string: \"https://apple.com\")!"
+    ],
+    "correctIndex": 0,
+    "explanation": "@AppStorage admite Bool, Int, Double, String, URL, Data y enums RawRepresentable (Int/String). Una struct personalizada no es compatible: hay que codificarla a Data (con JSONEncoder) o usar otra capa de persistencia."
+   },
+   {
+    "id": 4,
+    "question": "Necesitas guardar archivos temporales de caché que el sistema puede borrar cuando falta espacio. ¿Qué directorio usas con FileManager?",
+    "options": [
+     "El directorio Documents (.documentDirectory)",
+     "El directorio Caches (.cachesDirectory)",
+     "El bundle de la app (Bundle.main)",
+     "El directorio raíz / del dispositivo"
+    ],
+    "correctIndex": 1,
+    "explanation": "Caches es para datos que se pueden recrear y que el sistema puede eliminar. Documents es para datos del usuario que deben persistir, el bundle es de solo lectura y la app no puede acceder al directorio raíz por el sandbox."
+   },
+   {
+    "id": 5,
+    "question": "El JSON de la API trae la clave \"first_name\", pero tu struct tiene 'let firstName: String'. ¿Qué haces para decodificar correctamente?",
+    "options": [
+     "Renombrar la propiedad a first_name es obligatorio",
+     "Definir CodingKeys que mapee firstName a \"first_name\" o usar keyDecodingStrategy = .convertFromSnakeCase",
+     "Usar try! para ignorar el error",
+     "Convertir el JSON a String antes de decodificar"
+    ],
+    "correctIndex": 1,
+    "explanation": "Por defecto el nombre de la propiedad debe coincidir con la clave. Un enum CodingKeys (case firstName = \"first_name\") o la estrategia convertFromSnakeCase de JSONDecoder lo resuelve. Renombrar no es obligatorio, try! solo cerraría la app y convertir a String no ayuda."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué ocurre?\nstruct Usuario: Codable { let nombre: String; let edad: Int }\nlet json = #\"{\"nombre\":\"Ana\"}\"#\nlet u = try JSONDecoder().decode(Usuario.self, from: Data(json.utf8))",
+    "options": [
+     "Decodifica con edad igual a 0",
+     "Lanza DecodingError.keyNotFound porque la clave \"edad\" no está en el JSON; hacerla Int? lo soluciona",
+     "Decodifica con edad igual a nil",
+     "Error de compilación por Data(json.utf8)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Las propiedades no opcionales exigen la clave en el JSON; su ausencia lanza keyNotFound. No hay valor por defecto automático. Declarar 'let edad: Int?' convierte la ausencia en nil. Data(json.utf8) es una forma válida de obtener Data desde un String."
+   },
+   {
+    "id": 7,
+    "question": "¿Qué práctica de privacidad es la más adecuada al solicitar acceso a la ubicación del usuario?",
+    "options": [
+     "Solicitar el permiso en el momento en que se necesite la función, explicando el motivo en la usage description, y recolectar solo lo necesario",
+     "Pedir todos los permisos en el primer inicio de la app",
+     "Recolectar ubicación en segundo plano 'por si acaso'",
+     "Omitir la explicación para no asustar al usuario"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las buenas prácticas y las guías de Apple piden minimización de datos, permiso en contexto y una justificación clara (como NSLocationWhenInUseUsageDescription). Pedir todo al inicio o recolectar sin necesidad reduce la confianza y puede causar el rechazo en App Review."
+   },
+   {
+    "id": 8,
+    "question": "¿Cuál es la forma correcta de descargar datos con async/await usando URLSession?",
+    "options": [
+     "let data = URLSession.shared.data(from: url)",
+     "let (data, response) = await URLSession.shared.data(from: url)  // sin try",
+     "let data = try URLSession.shared.dataTask(url)",
+     "let (data, response) = try await URLSession.shared.data(from: url)"
+    ],
+    "correctIndex": 3,
+    "explanation": "data(from:) es una función async que además puede lanzar error, por lo que necesita try await y devuelve una tupla (Data, URLResponse). Sin await o sin try el código no compila, y dataTask es la API basada en closures y no devuelve Data directamente."
+   },
+   {
+    "id": 9,
+    "question": "El servidor responde 404 y llamaste 'try await URLSession.shared.data(from: url)'. ¿Qué ocurre?",
+    "options": [
+     "La llamada lanza URLError automáticamente",
+     "La app se cierra con un Fatal error",
+     "La llamada se reintenta hasta devolver 200",
+     "No se lanza ningún error: recibes la respuesta y debes revisar response.statusCode"
+    ],
+    "correctIndex": 3,
+    "explanation": "URLSession solo lanza error ante fallas de transporte (sin red, timeout, DNS). Un 404 es una respuesta HTTP válida, por lo que debes validar (response as? HTTPURLResponse)?.statusCode, por ejemplo en 200...299. Tampoco hay reintento ni crash automáticos."
+   },
+   {
+    "id": 10,
+    "question": "¿Qué conjunto de códigos HTTP indica un error del lado del SERVIDOR (y normalmente conviene reintentar más tarde)?",
+    "options": [
+     "500 a 599, como 500 y 503",
+     "400 a 499, como 401 y 404",
+     "200 a 299, como 200 y 201",
+     "300 a 399, como 301"
+    ],
+    "correctIndex": 0,
+    "explanation": "El rango 5xx indica fallas del servidor (500 Internal Server Error, 503 Service Unavailable). Los 4xx son errores del cliente (401 no autenticado, 404 no encontrado), los 2xx éxito y los 3xx redirecciones."
+   },
+   {
+    "id": 11,
+    "question": "Creaste '@Model class Libro { var titulo: String }' pero la app se cierra al insertar datos indicando que no hay contenedor. ¿Qué falta?",
+    "options": [
+     "Importar CoreData",
+     "Hacer que Libro sea una struct",
+     "Aplicar .modelContainer(for: Libro.self) en la escena o en la vista raíz",
+     "Agregar @Query a la clase Libro"
+    ],
+    "correctIndex": 2,
+    "explanation": "El ModelContainer configura el almacenamiento de SwiftData y deja el ModelContext disponible en el entorno; se crea con el modifier .modelContainer(for:) en WindowGroup/App. @Model exige una clase (no struct), CoreData no es necesario y @Query se usa en vistas, no en el modelo."
+   },
+   {
+    "id": 12,
+    "question": "¿Para qué sirve '@Query(sort: \\Libro.titulo) var libros: [Libro]' en una vista?",
+    "options": [
+     "Hace una petición de red al servidor",
+     "Define el orden de renderizado de las vistas",
+     "Obtiene los Libros de SwiftData, ordenados por título, y actualiza la vista automáticamente cuando cambian los datos",
+     "Ejecuta una consulta SQL manual una sola vez"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Query lee el ModelContext del entorno, aplica orden/filtros y mantiene el resultado actualizado, redibujando la vista ante inserciones, cambios o eliminaciones. No hace peticiones de red, no requiere SQL y no tiene relación con el orden de renderizado."
+   },
+   {
+    "id": 13,
+    "question": "¿Cómo insertar y eliminar un objeto en SwiftData dentro de una vista?",
+    "options": [
+     "Libro.save() y Libro.remove()",
+     "@Environment(\\.modelContext) var context; context.insert(libro); context.delete(libro)",
+     "array.append(libro) en un @State",
+     "UserDefaults.standard.set(libro)"
+    ],
+    "correctIndex": 1,
+    "explanation": "El ModelContext es el 'borrador' que rastrea los objetos: insert y delete registran los cambios, que se guardan automáticamente (o con try context.save()). Libro no tiene save/remove por defecto, un array en @State no persiste y UserDefaults no es para modelos."
+   },
+   {
+    "id": 14,
+    "question": "Dado:\n@Model class Autor { @Relationship(deleteRule: .cascade, inverse: \\Libro.autor) var libros: [Libro] = [] }\n¿Qué ocurre al eliminar un Autor?",
+    "options": [
+     "Los Libros quedan con autor nil y permanecen",
+     "También se eliminan todos sus Libros",
+     "La eliminación se bloquea mientras haya libros",
+     "Nada: la regla solo vale para lecturas"
+    ],
+    "correctIndex": 1,
+    "explanation": "deleteRule .cascade propaga la eliminación a los objetos relacionados. Dejar los libros con autor nil usaría .nullify (el valor por defecto) y .deny bloquearía la eliminación. La regla se aplica a eliminaciones, no a lecturas."
+   },
+   {
+    "id": 15,
+    "question": "En Core Data, modificaste propiedades de un NSManagedObject. ¿Qué se necesita para persistir los cambios?",
+    "options": [
+     "Nada: se escribe de inmediato en cada asignación",
+     "Llamar a NSPersistentContainer.delete()",
+     "Llamar a try context.save() en el NSManagedObjectContext",
+     "Reiniciar la app"
+    ],
+    "correctIndex": 2,
+    "explanation": "El NSManagedObjectContext es un borrador: los cambios permanecen en memoria hasta llamar a save(), que los escribe en el almacén persistente mediante el coordinator. No es inmediato, delete() no es una API del container y reiniciar la app perdería los cambios sin guardar."
+   },
+   {
+    "id": 16,
+    "question": "Para sincronizar datos de SwiftData entre los dispositivos del mismo usuario mediante iCloud, ¿qué se necesita en el proyecto?",
+    "options": [
+     "Solo una conexión a internet",
+     "Una cuenta de servidor propia",
+     "La capability Keychain Sharing",
+     "La capability iCloud con CloudKit (con un container) y Background Modes con Remote notifications"
+    ],
+    "correctIndex": 3,
+    "explanation": "La sincronización usa CloudKit: agrega la capability iCloud con CloudKit, elige un container y activa Remote notifications en Background Modes. Además, el modelo debe ser compatible (propiedades opcionales o con valor por defecto, sin restricciones de unicidad). Keychain Sharing no sincroniza modelos y no hace falta un servidor propio."
+   },
+   {
+    "id": 17,
+    "question": "En CloudKit, ¿qué base de datos almacena datos personales de un usuario, cuenta contra su cuota de iCloud y es invisible para otros usuarios?",
+    "options": [
+     "Private database",
+     "Public database",
+     "Shared database sin autenticación",
+     "Base local en el servidor de Apple"
+    ],
+    "correctIndex": 0,
+    "explanation": "La private database guarda datos del usuario en su cuenta iCloud y usa su cuota. La public database es visible para todos los usuarios de la app y cuenta contra la cuota del desarrollador. La shared database contiene registros compartidos por otros usuarios; el último nombre no existe en CloudKit."
+   },
+   {
+    "id": 18,
+    "question": "Tu app necesita guardar el token de autenticación del usuario. ¿Dónde debe almacenarse?",
+    "options": [
+     "En UserDefaults, como texto plano",
+     "En un archivo .txt en Documents",
+     "En una constante en el código fuente",
+     "En el Keychain (Keychain Services), que está cifrado y protegido por el sistema"
+    ],
+    "correctIndex": 3,
+    "explanation": "El Keychain está diseñado para secretos como contraseñas y tokens: los elementos se cifran, los protege el sistema y pueden exigir que el dispositivo esté desbloqueado. UserDefaults y los archivos comunes son legibles en backups o con acceso al dispositivo, y las constantes en el código pueden extraerse del binario."
+   },
+   {
+    "id": 19,
+    "question": "Tu app llama a 'http://api.ejemplo.com/datos' y la petición falla con un error de App Transport Security. ¿Cuál es la mejor solución?",
+    "options": [
+     "Desactivar ATS globalmente con NSAllowsArbitraryLoads",
+     "Cambiar URLSession por otra librería",
+     "Servir la API por HTTPS (https://) con TLS válido",
+     "Agregar try! a la llamada"
+    ],
+    "correctIndex": 2,
+    "explanation": "ATS exige conexiones seguras (HTTPS/TLS) por defecto. La solución correcta es usar HTTPS; las excepciones en Info.plist deben ser mínimas y justificadas (y pueden cuestionarse en App Review). Cambiar de librería no esquiva ATS y try! solo cerraría la app."
+   },
+   {
+    "id": 20,
+    "question": "Tu app abre la cámara, pero el Info.plist no tiene la clave NSCameraUsageDescription. ¿Qué ocurre al acceder a la cámara?",
+    "options": [
+     "iOS muestra el permiso con un texto genérico",
+     "La cámara funciona con normalidad",
+     "Xcode agrega la clave automáticamente en tiempo de ejecución",
+     "El sistema cierra la app, con un error que señala la clave de privacidad ausente"
+    ],
+    "correctIndex": 3,
+    "explanation": "Para recursos protegidos (cámara, fotos, ubicación, micrófono...), el Info.plist debe contener una usage description; sin ella, la app se termina al intentar acceder al recurso y App Review también puede rechazarla. El sistema no inventa texto y Xcode no edita el plist en runtime."
+   }
+  ]
+ },
+ {
+  "id": "exam-13",
+  "title": "Simulacro: Distribución y App Store",
+  "description": "Firma, certificados y provisioning, capabilities, archive, TestFlight, App Store Connect, guías de revisión, privacidad, versionado y compras dentro de la app.",
+  "category": "Distribuição",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "¿Cuál es la función principal de la firma de código (code signing) en apps iOS?",
+    "options": [
+     "Comprimir el binario para reducir su tamaño",
+     "Identificar al desarrollador y garantizar que la app no fue alterada después de firmarse",
+     "Traducir la app a otros idiomas",
+     "Acelerar la compilación en Xcode"
+    ],
+    "correctIndex": 1,
+    "explanation": "La firma usa un certificado para demostrar quién creó la app y permite al sistema detectar cualquier modificación del código posterior a la firma. No comprime, no localiza ni acelera las compilaciones."
+   },
+   {
+    "id": 2,
+    "question": "¿Qué certificado se usa para firmar una app que se enviará a la App Store?",
+    "options": [
+     "Apple Development",
+     "Un certificado SSL de tu sitio web",
+     "Developer ID Installer",
+     "Apple Distribution"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los builds para App Store y TestFlight se firman con el certificado Apple Distribution. Apple Development sirve para ejecutar en dispositivos durante el desarrollo, SSL es para servidores web y Developer ID es para distribuir apps de macOS fuera de la Mac App Store."
+   },
+   {
+    "id": 3,
+    "question": "¿Qué asocia un provisioning profile?",
+    "options": [
+     "Solo el nombre y el ícono de la app",
+     "El App ID, los certificados de firma, los entitlements y (en perfiles de desarrollo/Ad Hoc) los dispositivos autorizados",
+     "El código fuente y el repositorio Git",
+     "El número de build y la versión de marketing"
+    ],
+    "correctIndex": 1,
+    "explanation": "El provisioning profile es el documento que une App ID, certificados, entitlements y, cuando corresponde, la lista de UDIDs de dispositivos, autorizando a la app a ejecutarse o distribuirse. Nombre, ícono, versión y Git no forman parte de él."
+   },
+   {
+    "id": 4,
+    "question": "Al compilar para un iPhone físico, Xcode muestra 'Signing for \"MiApp\" requires a development team'. ¿Cuál es la solución?",
+    "options": [
+     "Reinstalar macOS",
+     "Cambiar el nombre del proyecto",
+     "Seleccionar un Team en Signing & Capabilities del target (y mantener 'Automatically manage signing')",
+     "Desactivar el iPhone y usar solo el Simulator para siempre"
+    ],
+    "correctIndex": 2,
+    "explanation": "Para firmar, el target debe estar asociado a un Team (una cuenta de desarrollador, incluso un Personal Team gratuito) en Signing & Capabilities; con la opción automática, Xcode crea los certificados y perfiles. Las demás acciones no resuelven la falta de equipo (el Simulator no requiere firma, pero esa no es la solución)."
+   },
+   {
+    "id": 5,
+    "question": "Quieres agregar notificaciones push a la app. ¿Cuál es el flujo correcto en Xcode?",
+    "options": [
+     "Editar manualmente el binario después de compilar",
+     "En Signing & Capabilities, hacer clic en + Capability y agregar Push Notifications",
+     "Agregar la librería UserNotifications al Podfile",
+     "Crear un nuevo certificado SSL"
+    ],
+    "correctIndex": 1,
+    "explanation": "Agregar la capability en Signing & Capabilities incluye el entitlement correspondiente y actualiza el App ID y el provisioning profile (con firma automática). Editar el binario rompería la firma, y el framework UserNotifications viene con el SDK y no reemplaza la capability."
+   },
+   {
+    "id": 6,
+    "question": "¿Qué afirmación sobre el Bundle Identifier de una app es correcta?",
+    "options": [
+     "Se puede cambiar libremente después de publicar manteniendo la misma app",
+     "Usa formato de dominio inverso (com.empresa.app), debe ser único y es la base del App ID y del registro en App Store Connect",
+     "Debe ser igual al nombre que se muestra en la pantalla de inicio",
+     "Lo elige Apple y el desarrollador no puede definirlo"
+    ],
+    "correctIndex": 1,
+    "explanation": "El bundle ID, como com.empresa.MiApp, identifica la app de forma única, debe coincidir con el App ID y el registro de la app en App Store Connect y no puede cambiar tras la publicación sin crear una app nueva. El nombre mostrado es otro campo (Display Name)."
+   },
+   {
+    "id": 7,
+    "question": "El comando Product > Archive está deshabilitado (gris) en Xcode. ¿Cuál es la causa más común?",
+    "options": [
+     "El proyecto tiene más de un archivo Swift",
+     "La app no tiene ícono",
+     "Xcode está en modo oscuro",
+     "El destino seleccionado es un Simulator en lugar de 'Any iOS Device' o un dispositivo real"
+    ],
+    "correctIndex": 3,
+    "explanation": "Archive genera un build de distribución para dispositivos, por lo que requiere como destino 'Any iOS Device (arm64)' o un equipo conectado; con un Simulator seleccionado, la opción no está disponible. La cantidad de archivos, el ícono o el tema de Xcode no bloquean el comando."
+   },
+   {
+    "id": 8,
+    "question": "Después de Product > Archive, ¿dónde validas y envías el build a App Store Connect?",
+    "options": [
+     "En Instruments",
+     "En el Xcode Organizer (Window > Organizer), con el botón Distribute App",
+     "En el Simulator",
+     "En Interface Builder"
+    ],
+    "correctIndex": 1,
+    "explanation": "El Organizer lista los archives y ofrece Validate App y Distribute App (App Store Connect/TestFlight, Ad Hoc, Development). Instruments es para profiling, el Simulator para ejecutar la app e Interface Builder para editar interfaces."
+   },
+   {
+    "id": 9,
+    "question": "¿Cuál es la diferencia entre testers internos y externos en TestFlight?",
+    "options": [
+     "Los internos pueden ser hasta 10.000 y los externos solo 100",
+     "Los externos reciben builds sin ninguna revisión y los internos pasan por revisión completa",
+     "No hay diferencia: ambos exigen Beta App Review",
+     "Los internos son miembros de tu equipo en App Store Connect y reciben builds sin Beta App Review; los externos pueden invitarse por correo o enlace y el primer build exige Beta App Review"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los testers internos (hasta 100) deben tener un rol en App Store Connect y pueden probar apenas se procesa el build. Los testers externos (hasta 10.000) se invitan por correo o enlace público y el primer build de cada versión pasa por Beta App Review. Las otras opciones invierten o ignoran estas reglas."
+   },
+   {
+    "id": 10,
+    "question": "¿Por cuánto tiempo está disponible un build de TestFlight para los testers tras la carga?",
+    "options": [
+     "7 días",
+     "1 año",
+     "Para siempre",
+     "90 días"
+    ],
+    "correctIndex": 3,
+    "explanation": "Los builds de TestFlight caducan 90 días después de la carga; luego hay que subir un nuevo build. No existe una ventana de 7 días ni una validez indefinida."
+   },
+   {
+    "id": 11,
+    "question": "En App Store Connect, ¿cuál de los siguientes elementos es obligatorio para enviar una versión a revisión?",
+    "options": [
+     "Un video de 5 minutos sobre el equipo",
+     "El código fuente completo de la app",
+     "Capturas de pantalla, descripción, URL de soporte e información de privacidad (incluida la URL de la política de privacidad)",
+     "Una carta de recomendación de Apple"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los metadatos obligatorios incluyen capturas de pantalla, descripción, palabras clave, URL de soporte, categoría, clasificación por edad y la URL de la política de privacidad (además de las respuestas de App Privacy). Un video del equipo, el código fuente o cartas no son requisitos."
+   },
+   {
+    "id": 12,
+    "question": "Tu app fue rechazada bajo la Guideline 2.1 (App Completeness). ¿Cuál de estos es un motivo típico?",
+    "options": [
+     "La app se cierra, tiene errores evidentes, enlaces rotos o contenido de relleno durante la revisión",
+     "El ícono usa el color azul",
+     "La app tiene más de 3 pantallas",
+     "El nombre de la app tiene 12 letras"
+    ],
+    "correctIndex": 0,
+    "explanation": "La Guideline 2.1 exige que la app enviada sea final y funcional: cierres inesperados, errores, contenido de relleno, enlaces rotos o falta de credenciales de demostración llevan al rechazo. El color del ícono, el número de pantallas y la longitud del nombre no son el criterio."
+   },
+   {
+    "id": 13,
+    "question": "Tu app permite crear una cuenta dentro de la app. Según las App Review Guidelines (5.1.1), ¿qué más se exige?",
+    "options": [
+     "Cobrar una tarifa por eliminar la cuenta",
+     "Permitir la eliminación solo escribiendo a soporte",
+     "Ofrecer una forma de iniciar la eliminación de la cuenta dentro de la propia app",
+     "Nada: las cuentas pueden conservarse para siempre"
+    ],
+    "correctIndex": 2,
+    "explanation": "Las apps que permiten crear cuentas deben dejar que el usuario inicie la eliminación de la cuenta y de los datos dentro de la app, sin exigir contacto externo ni cobros. Esto se suma a la política de privacidad y al consentimiento de recolección de datos."
+   },
+   {
+    "id": 14,
+    "question": "Quieres vender el desbloqueo de funciones premium dentro de la app a usuarios de la App Store. ¿Qué enfoque esperan las guías (3.1.1)?",
+    "options": [
+     "Usar compras dentro de la app (In-App Purchase) con StoreKit",
+     "Pedir el número de tarjeta de crédito en un formulario propio",
+     "Redirigir a un sitio de pagos sin ninguna excepción",
+     "Vender el desbloqueo con una clave gratuita en el código"
+    ],
+    "correctIndex": 0,
+    "explanation": "En general, el contenido digital y las funciones desbloqueadas dentro de la app deben usar In-App Purchase. Los formularios de tarjeta propios o las redirecciones para pagar funciones digitales infringen la guía, salvo excepciones regionales específicas previstas por Apple."
+   },
+   {
+    "id": 15,
+    "question": "¿Qué son las 'Privacy Nutrition Labels' (App Privacy) que se muestran en la página de la app?",
+    "options": [
+     "Un resumen, completado por el desarrollador en App Store Connect, de los datos que recopila la app (y sus SDKs de terceros), si se vinculan al usuario y si se usan para rastreo",
+     "Una calificación que Apple da al código de la app",
+     "Una lista de permisos que el usuario ya concedió",
+     "Una insignia automática generada por Xcode sin intervención"
+    ],
+    "correctIndex": 0,
+    "explanation": "Las etiquetas las declaras tú y deben reflejar la recopilación real, incluida la de SDKs de terceros. No son una calificación de Apple, no listan los permisos concedidos por cada usuario y Xcode no las genera automáticamente."
+   },
+   {
+    "id": 16,
+    "question": "Subiste el build 1.2.0 (5) y quieres subir una corrección de la misma versión. App Store Connect rechaza la carga con 'build already exists'. ¿Qué debes hacer?",
+    "options": [
+     "Incrementar el número de build (CFBundleVersion), por ejemplo a 6, manteniendo la versión 1.2.0",
+     "Cambiar el Bundle ID",
+     "Bajar la versión de marketing a 1.1.0",
+     "Eliminar la app y crearla de nuevo"
+    ],
+    "correctIndex": 0,
+    "explanation": "Para cada versión de marketing (CFBundleShortVersionString, como 1.2.0), cada build subido necesita un CFBundleVersion único y creciente. Cambiar el bundle ID crea otra app y bajar la versión no está permitido una vez subidas versiones mayores."
+   },
+   {
+    "id": 17,
+    "question": "Vendes el desbloqueo vitalicio 'Pro', comprado una sola vez y que debe poder restaurarse en otros dispositivos. ¿Qué tipo de producto de In-App Purchase usas?",
+    "options": [
+     "Consumable (consumible)",
+     "Auto-renewable subscription",
+     "Non-consumable (no consumible)",
+     "Non-renewing subscription"
+    ],
+    "correctIndex": 2,
+    "explanation": "Los elementos no consumibles se compran una vez y siguen disponibles, incluso mediante restauración. Los consumibles (monedas, vidas) pueden comprarse repetidamente, y las suscripciones cobran de forma recurrente o por un período limitado."
+   },
+   {
+    "id": 18,
+    "question": "Con StoreKit 2, 'let result = try await product.purchase()' devuelve .success(let verification). ¿Qué haces a continuación?",
+    "options": [
+     "Liberar el contenido sin verificar, pues .success ya lo garantiza todo",
+     "Llamar de nuevo a product.purchase()",
+     "Verificar el resultado (VerificationResult), liberar el contenido y llamar a await transaction.finish()",
+     "Ignorar la transacción"
+    ],
+    "correctIndex": 2,
+    "explanation": ".success trae un VerificationResult: verifícalo (case .verified) para confirmar que la transacción es auténtica, libera el contenido y completa la transacción con finish(). Liberar sin verificar abre la puerta al fraude, repetir la compra cobraría de nuevo e ignorar la transacción deja el flujo pendiente."
+   },
+   {
+    "id": 19,
+    "question": "¿Cómo probar compras en el simulador durante el desarrollo, sin depender de productos ya aprobados en App Store Connect?",
+    "options": [
+     "Crear un archivo StoreKit Configuration en Xcode y seleccionarlo en el scheme",
+     "Publicar primero la app en la App Store",
+     "Usar tarjetas de crédito reales",
+     "Modificar el código para simular la compra sin usar StoreKit"
+    ],
+    "correctIndex": 0,
+    "explanation": "El archivo de configuración de StoreKit permite definir productos localmente y probar compras, suscripciones y restauraciones con Xcode, sin cargos reales. Publicar antes no es necesario, las tarjetas reales serían inseguras y simular en el código no prueba el flujo real."
+   },
+   {
+    "id": 20,
+    "question": "Tu app tiene compras no consumibles. Un usuario cambia de iPhone y quiere recuperar lo que compró. ¿Qué debe ofrecer la app?",
+    "options": [
+     "Pedir al usuario que compre de nuevo",
+     "Enviar el desbloqueo por correo",
+     "Nada: no es responsabilidad de la app",
+     "Un botón 'Restaurar compras' que use AppStore.sync() y/o lea Transaction.currentEntitlements"
+    ],
+    "correctIndex": 3,
+    "explanation": "Las apps con compras no consumibles o suscripciones deben permitir restaurarlas. En StoreKit 2, los derechos vigentes están en Transaction.currentEntitlements y AppStore.sync() fuerza la sincronización con la App Store. Cobrar de nuevo o enviar correos no cumple con las guías."
+   }
+  ]
+ }
+]

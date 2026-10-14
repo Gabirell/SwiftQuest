@@ -1,0 +1,1127 @@
+[
+ {
+  "id": 54,
+  "title": "UserDefaults, @AppStorage e FileManager",
+  "theory": "'UserDefaults' é um pequeno banco de pares chave-valor para preferências do usuário, como tema, idioma ou se o onboarding já foi visto; ele guarda tipos simples (Bool, Int, Double, String, Data, Array, Dictionary, Date, URL) e deve ficar com poucos KB, nunca com dados grandes. Use 'UserDefaults.standard.set(valor, forKey:)' para gravar e 'string(forKey:)', 'bool(forKey:)' ou 'integer(forKey:)' para ler; leituras de chaves inexistentes devolvem nil, false ou 0, e 'register(defaults:)' define valores padrão iniciais. No SwiftUI, '@AppStorage(\"chave\")' liga uma propriedade a uma chave do UserDefaults e reexecuta a View quando o valor muda, enquanto '@SceneStorage' guarda o estado de interface de cada cena (aba selecionada, rascunho) para restauração. Para arquivos, o 'FileManager' acessa o sandbox do app: 'Documents' guarda dados do usuário, 'Library/Application Support' guarda dados internos do app, 'Library/Caches' guarda o que pode ser recriado e o sistema pode apagar, e 'tmp' guarda temporários. Você obtém essas pastas com 'FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)' e manipula caminhos com 'URL' ('appendingPathComponent'). 'Data' tem 'write(to:)' e 'Data(contentsOf:)', e junto com 'JSONEncoder' e 'JSONDecoder' (tipos 'Codable') você salva e carrega modelos como arquivos JSON. Recursos empacotados no app (imagens, JSON inicial) ficam no 'Bundle.main' e são somente leitura, diferentes dos dados do usuário gravados no sandbox. Erro comum: usar UserDefaults para senhas, tokens (o certo é o Keychain) ou listas grandes (o certo é arquivo, SwiftData ou Core Data), porque ele não é criptografado para segredos e é carregado inteiro na memória.",
+  "appleDocUrl": "https://developer.apple.com/documentation/foundation/userdefaults",
+  "category": "Dados e Rede",
+  "corporateCase": "Em um app de banco de investimentos, o tema escuro e a moeda preferida ficam em '@AppStorage', o extrato em PDF baixado vai para 'Caches' (pode ser baixado de novo) e o token de login vai para o Keychain, nunca para o UserDefaults. Um relatório exportado pelo usuário é gravado em 'Documents' como JSON via 'Codable'.",
+  "gameCase": "Em um jogo, volume da música e dificuldade ficam em UserDefaults e o último nível visto em '@SceneStorage'. O progresso completo do jogador (inventário, conquistas) é codificado em JSON e salvo em 'Application Support', enquanto as texturas empacotadas ficam no Bundle.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Acesse a instância compartilhada do UserDefaults e grave o nome do usuário",
+    "codeSnippet": "UserDefaults.___.set(\"Ana\", forKey: \"nome\")",
+    "correctAnswer": "standard",
+    "hint": "A instância padrão compartilhada se chama 'standard'."
+   },
+   {
+    "id": 2,
+    "question": "Leia de volta a String guardada na chave \"nome\"",
+    "codeSnippet": "let nome = UserDefaults.standard.___(forKey: \"nome\")",
+    "correctAnswer": "string",
+    "hint": "O método de leitura tem o mesmo nome do tipo retornado, em minúsculas."
+   },
+   {
+    "id": 3,
+    "question": "Ligue a propriedade de uma View do SwiftUI a uma chave do UserDefaults",
+    "codeSnippet": "___(\"tema\") var tema = \"claro\"",
+    "correctAnswer": "@AppStorage",
+    "hint": "É um property wrapper que começa com @ e cujo nome contém 'Storage' precedido de 'App'."
+   },
+   {
+    "id": 4,
+    "question": "Obtenha a URL da pasta Documents no domínio do usuário",
+    "codeSnippet": "let docs = FileManager.default.urls(for: .documentDirectory, in: .___)",
+    "correctAnswer": "userDomainMask",
+    "hint": "O domínio que representa a pasta home do usuário (sandbox do app) é '.userDomainMask'."
+   },
+   {
+    "id": 5,
+    "question": "Grave o Data no arquivo apontado pela URL",
+    "codeSnippet": "try dados.___(to: url)",
+    "correctAnswer": "write",
+    "hint": "O método de Data que escreve em disco chama-se 'write(to:)'."
+   },
+   {
+    "id": 6,
+    "question": "Codifique um modelo Codable para JSON usando o tipo encoder correto",
+    "codeSnippet": "let dados = try ___().encode(perfil)",
+    "correctAnswer": "JSONEncoder",
+    "hint": "O tipo que converte Encodable em JSON é 'JSONEncoder'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual dado é a pior escolha para guardar em UserDefaults?",
+    "options": [
+     "Tema claro ou escuro",
+     "Token de autenticação e senha do usuário",
+     "Se o tutorial já foi exibido",
+     "Último idioma escolhido"
+    ],
+    "correctIndex": 1,
+    "explanation": "UserDefaults não é um armazenamento seguro: o plist fica no sandbox sem proteção própria de segredos. Credenciais devem ir para o Keychain. Os outros itens são preferências simples, o uso ideal."
+   },
+   {
+    "id": 2,
+    "question": "Qual pasta do sandbox é apropriada para arquivos que podem ser recriados e que o sistema pode apagar quando faltar espaço?",
+    "options": [
+     "Documents",
+     "Bundle.main",
+     "O próprio UserDefaults",
+     "Library/Caches"
+    ],
+    "correctIndex": 3,
+    "explanation": "Caches é para dados reproduzíveis (ex.: imagens baixadas). Documents é para dados criados pelo usuário e entra no backup; o Bundle é somente leitura."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece ao ler 'UserDefaults.standard.integer(forKey: \"pontos\")' se a chave nunca foi gravada?",
+    "options": [
+     "Retorna 0",
+     "Retorna nil",
+     "Lança um erro",
+     "O app trava"
+    ],
+    "correctIndex": 0,
+    "explanation": "Os métodos 'integer', 'bool' e 'double' devolvem 0/false quando a chave não existe; 'object(forKey:)', 'string(forKey:)' e outros métodos que devolvem objetos devolvem nil. Use 'register(defaults:)' para outro padrão."
+   },
+   {
+    "id": 4,
+    "question": "Qual o efeito de '@AppStorage(\"som\") var som = true' em uma View?",
+    "options": [
+     "Salva o valor no Keychain",
+     "Cria um arquivo JSON em Documents",
+     "Lê e grava a chave 'som' no UserDefaults e atualiza a View quando ela muda",
+     "Torna a propriedade constante"
+    ],
+    "correctIndex": 2,
+    "explanation": "@AppStorage é um wrapper sobre UserDefaults: o valor inicial 'true' serve de padrão e qualquer mudança dispara nova renderização da View."
+   },
+   {
+    "id": 5,
+    "question": "Qual API devolve a URL da pasta Application Support do app?",
+    "options": [
+     "Bundle.main.url(forResource: \"AppSupport\", withExtension: nil)",
+     "UserDefaults.standard.url(forKey: \"support\")",
+     "URL(string: \"/support\")",
+     "FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)"
+    ],
+    "correctIndex": 3,
+    "explanation": "As pastas do sandbox são obtidas pelo FileManager com um SearchPathDirectory. O Bundle contém os recursos empacotados, não as pastas graváveis."
+   },
+   {
+    "id": 6,
+    "question": "Por que não guardar 50 MB de imagens em UserDefaults?",
+    "options": [
+     "Porque UserDefaults só aceita String",
+     "O plist inteiro é carregado em memória e não foi feito para dados grandes; use arquivos no sandbox",
+     "Porque exige conexão com a internet",
+     "Porque o App Store proíbe"
+    ],
+    "correctIndex": 1,
+    "explanation": "UserDefaults é para dados pequenos. Dados grandes devem ir para arquivos (FileManager), SwiftData ou Core Data."
+   },
+   {
+    "id": 7,
+    "question": "Qual par de chamadas salva e carrega um struct Codable como arquivo JSON?",
+    "options": [
+     "UserDefaults.set + UserDefaults.get",
+     "Bundle.main.write + Bundle.main.read",
+     "JSONEncoder().encode + Data.write(to:), depois Data(contentsOf:) + JSONDecoder().decode",
+     "String.save + String.load"
+    ],
+    "correctIndex": 2,
+    "explanation": "O fluxo é: encode para Data, write(to: url); para ler, Data(contentsOf: url) e decode(Tipo.self, from:). O tipo precisa ser Codable."
+   },
+   {
+    "id": 8,
+    "question": "Qual a diferença entre '@AppStorage' e '@SceneStorage'?",
+    "options": [
+     "AppStorage usa UserDefaults (global do app); SceneStorage guarda o estado de cada cena para restauração",
+     "São idênticos",
+     "SceneStorage grava no Keychain",
+     "AppStorage só funciona em UIKit"
+    ],
+    "correctIndex": 0,
+    "explanation": "@SceneStorage é por cena e voltado a restaurar estado de UI (aba, rascunho); @AppStorage guarda preferências compartilhadas por todo o app."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Você tem um JSON inicial de categorias dentro do app, que o usuário pode customizar. Qual abordagem é melhor?",
+    "options": [
+     "Editar o arquivo do Bundle diretamente",
+     "Guardar tudo em UserDefaults",
+     "Ler o JSON do Bundle na primeira execução e copiar/salvar a versão editável em Application Support",
+     "Gravar no tmp para sempre"
+    ],
+    "correctIndex": 2,
+    "explanation": "O Bundle é somente leitura e assinado. Copie o recurso inicial para o sandbox gravável e trabalhe com a cópia."
+   },
+   {
+    "id": 2,
+    "question": "O que o trecho faz? 'UserDefaults.standard.register(defaults: [\"fonte\": 14])'",
+    "options": [
+     "Define 14 como valor padrão da chave 'fonte' enquanto ela não tiver sido gravada",
+     "Grava 14 permanentemente",
+     "Apaga a chave",
+     "Cria um arquivo"
+    ],
+    "correctIndex": 0,
+    "explanation": "register(defaults:) só vale como valor de fallback em tempo de execução e não é persistido; um set posterior o sobrepõe."
+   },
+   {
+    "id": 3,
+    "question": "Qual pasta entra no backup do iCloud/iTunes e guarda arquivos criados pelo usuário?",
+    "options": [
+     "Caches",
+     "tmp",
+     "Bundle.main",
+     "Documents"
+    ],
+    "correctIndex": 3,
+    "explanation": "Documents é incluída no backup e é onde ficam os dados do usuário. Caches e tmp podem ser limpos e não devem guardar dados insubstituíveis."
+   },
+   {
+    "id": 4,
+    "question": "Como montar o caminho de um arquivo 'notas.json' dentro de uma pasta já obtida (URL 'base')?",
+    "options": [
+     "base + \"notas.json\"",
+     "base.appendingPathComponent(\"notas.json\")",
+     "base.add(\"notas.json\")",
+     "URL(base, \"notas.json\")"
+    ],
+    "correctIndex": 1,
+    "explanation": "URL tem 'appendingPathComponent' para criar a URL filha; operadores como + não existem para URL."
+   },
+   {
+    "id": 5,
+    "question": "Qual tipo de dado NÃO é um tipo de lista de propriedades aceito diretamente pelo UserDefaults?",
+    "options": [
+     "Um struct customizado sem conversão",
+     "Bool",
+     "String",
+     "Data"
+    ],
+    "correctIndex": 0,
+    "explanation": "Struct próprio não é um tipo de property list; codifique com JSONEncoder para Data antes de gravar (ou use outro armazenamento)."
+   },
+   {
+    "id": 6,
+    "question": "Num app com 5 mil registros editáveis pelo usuário e buscas frequentes, o melhor armazenamento é:",
+    "options": [
+     "UserDefaults",
+     "@AppStorage",
+     "SwiftData ou Core Data",
+     "SceneStorage"
+    ],
+    "correctIndex": 2,
+    "explanation": "Grande volume, consultas e relacionamentos pedem um banco de dados de objetos. Os wrappers de storage são para valores pequenos de preferência."
+   }
+  ]
+ },
+ {
+  "id": 55,
+  "title": "SwiftData: Relacionamentos, Consultas e Edição",
+  "theory": "SwiftData é o framework de persistência moderno da Apple, baseado em Swift. A macro '@Model' transforma uma classe em um modelo persistente: suas propriedades armazenadas viram atributos, e tipos como String, Int, Date e Codable são suportados. Relacionamentos são propriedades que apontam para outros modelos: uma propriedade '[Tarefa]' forma um um-para-muitos, e '[Tag]' dos dois lados forma um muitos-para-muitos. '@Relationship(deleteRule:, inverse:)' configura a regra de exclusão: '.cascade' apaga os filhos junto, '.nullify' (padrão) apenas zera a referência, '.deny' impede apagar enquanto houver relacionados e '.noAction' não faz nada; 'inverse' informa o lado oposto. '@Attribute(.unique)' exige valor único e faz um insert com a mesma chave atualizar o registro existente (upsert). Você configura o armazenamento com 'ModelContainer', normalmente via '.modelContainer(for: Tarefa.self)' na cena ou na View raiz, que injeta o 'modelContext' no ambiente. Com '@Environment(\\.modelContext)' você chama 'insert', 'delete' e 'save'; o autosave grava mudanças automaticamente em momentos adequados, mas 'try context.save()' força a gravação. '@Query' busca os objetos e atualiza a View sozinho, aceitando 'sort:' com 'SortDescriptor' e 'filter:' com '#Predicate' (ex.: '#Predicate<Tarefa> { !$0.concluida }'). Para editar, uma View recebe o modelo com '@Bindable' e liga campos de formulário a ele ('TextField(\"Título\", text: $tarefa.titulo)'), pois '@Model' já é Observable. Em previews, use um 'ModelContainer' com 'ModelConfiguration(isStoredInMemoryOnly: true)' para dados descartáveis. Ao mudar o schema em apps publicados, lembre da migração: mudanças simples são leves, mas as complexas exigem 'VersionedSchema' e 'SchemaMigrationPlan'.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftdata",
+  "category": "Dados e Rede",
+  "corporateCase": "Em um app de gestão de projetos, 'Projeto' tem muitas 'Tarefa' com '@Relationship(deleteRule: .cascade)', então excluir o projeto limpa suas tarefas. A lista usa '@Query' com '#Predicate' para mostrar só tarefas pendentes, ordenadas por data, e o formulário de edição usa '@Bindable'.",
+  "gameCase": "Em um RPG, 'Personagem' possui muitos 'Item' em um-para-muitos, e 'Missao' e 'Personagem' formam um muitos-para-muitos. O jogo usa '.unique' no identificador do personagem e um container em memória nos previews para testar telas sem poluir o save real.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Marque a classe como um modelo persistente do SwiftData",
+    "codeSnippet": "___ class Tarefa { var titulo: String; init(titulo: String) { self.titulo = titulo } }",
+    "correctAnswer": "@Model",
+    "hint": "É uma macro que começa com @ e tem o nome do conceito: 'Model'."
+   },
+   {
+    "id": 2,
+    "question": "Configure a regra de exclusão em cascata em uma propriedade de relacionamento",
+    "codeSnippet": "@___(deleteRule: .cascade) var tarefas: [Tarefa] = []",
+    "correctAnswer": "Relationship",
+    "hint": "A macro que descreve a relação entre modelos é '@Relationship'."
+   },
+   {
+    "id": 3,
+    "question": "Torne o e-mail único entre os registros",
+    "codeSnippet": "@Attribute(.___) var email: String",
+    "correctAnswer": "unique",
+    "hint": "A opção do @Attribute que exige valor único se chama 'unique'."
+   },
+   {
+    "id": 4,
+    "question": "Crie o container de armazenamento para o modelo Tarefa na cena",
+    "codeSnippet": "WindowGroup { ContentView() }.modelContainer(for: ___.self)",
+    "correctAnswer": "Tarefa",
+    "hint": "Informe o tipo do modelo seguido de '.self'."
+   },
+   {
+    "id": 5,
+    "question": "Busque as tarefas ordenadas por título e atualize a View automaticamente",
+    "codeSnippet": "@___(sort: \\Tarefa.titulo) var tarefas: [Tarefa]",
+    "correctAnswer": "Query",
+    "hint": "É o property wrapper de consulta do SwiftData."
+   },
+   {
+    "id": 6,
+    "question": "Adicione um novo objeto ao contexto",
+    "codeSnippet": "contexto.___(novaTarefa)",
+    "correctAnswer": "insert",
+    "hint": "O método de ModelContext que insere um modelo novo é 'insert'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "O que faz a macro '@Model' em uma classe?",
+    "options": [
+     "Apenas a torna Codable",
+     "Converte a classe em struct",
+     "Torna a classe persistente e observável pelo SwiftData",
+     "Cria uma View automaticamente"
+    ],
+    "correctIndex": 2,
+    "explanation": "@Model gera o suporte de persistência e observação. Sem ela a classe não é salva pelo SwiftData e as Views não reagem às mudanças."
+   },
+   {
+    "id": 2,
+    "question": "Qual regra de exclusão apaga também os objetos relacionados?",
+    "options": [
+     "'.cascade'",
+     "'.nullify'",
+     "'.deny'",
+     "'.noAction'"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.cascade' propaga a exclusão aos filhos. '.nullify' só zera a referência, '.deny' impede a exclusão se houver relacionados e '.noAction' não faz nada."
+   },
+   {
+    "id": 3,
+    "question": "Um 'Aluno' pode ter várias 'Disciplina' e cada 'Disciplina' vários 'Aluno'. Que relacionamento é esse?",
+    "options": [
+     "Um-para-um",
+     "Um-para-muitos apenas",
+     "Não é possível no SwiftData",
+     "Muitos-para-muitos, com array dos dois lados"
+    ],
+    "correctIndex": 3,
+    "explanation": "Arrays dos dois lados formam muitos-para-muitos; declare o 'inverse' em um deles para manter os lados sincronizados."
+   },
+   {
+    "id": 4,
+    "question": "O que '@Attribute(.unique)' garante?",
+    "options": [
+     "Que o valor seja criptografado",
+     "Que não haja dois registros com o mesmo valor; inserir um igual atualiza o existente",
+     "Que a propriedade seja opcional",
+     "Que a propriedade nunca mude"
+    ],
+    "correctIndex": 1,
+    "explanation": "Com .unique o SwiftData faz upsert: um novo objeto com o mesmo valor substitui o existente em vez de duplicar."
+   },
+   {
+    "id": 5,
+    "question": "Onde se injeta o container para todas as Views de um app?",
+    "options": [
+     "No Info.plist",
+     "Em cada View com UserDefaults",
+     "Com '.modelContainer(for:)' na cena ou na View raiz",
+     "Dentro do @Model"
+    ],
+    "correctIndex": 2,
+    "explanation": "O modificador cria o ModelContainer e coloca o modelContext no ambiente de toda a hierarquia."
+   },
+   {
+    "id": 6,
+    "question": "Qual trecho filtra apenas as tarefas não concluídas?",
+    "options": [
+     "'@Query(filter: #Predicate<Tarefa> { !$0.concluida }) var tarefas: [Tarefa]'",
+     "'@Query(filter: tarefas.concluida == false)'",
+     "'@Query { !concluida }'",
+     "'@Query(.nao_concluidas)'"
+    ],
+    "correctIndex": 0,
+    "explanation": "O filtro é um #Predicate tipado; o closure recebe cada modelo ($0) e retorna Bool. As demais sintaxes não existem."
+   },
+   {
+    "id": 7,
+    "question": "Para editar um modelo em um formulário, a View deve declarar:",
+    "options": [
+     "'@State var tarefa: Tarefa' sempre",
+     "'let tarefa' e atribuir direto",
+     "'@Query var tarefa'",
+     "'@Bindable var tarefa: Tarefa' para criar bindings como '$tarefa.titulo'"
+    ],
+    "correctIndex": 3,
+    "explanation": "Modelos são Observable, então @Bindable fornece os bindings para TextField e Toggle e as edições são gravadas no objeto gerenciado."
+   },
+   {
+    "id": 8,
+    "question": "Como obter dados descartáveis em uma preview do SwiftUI?",
+    "options": [
+     "Apagar o app do simulador",
+     "Criar ModelContainer com 'ModelConfiguration(isStoredInMemoryOnly: true)'",
+     "Usar o banco de produção",
+     "Usar UserDefaults"
+    ],
+    "correctIndex": 1,
+    "explanation": "Um container em memória não grava em disco, o que mantém previews rápidas, isoladas e repetíveis."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Você apagou um 'Projeto' com a regra '.deny' e ele ainda tem 'Tarefa' relacionadas. O que ocorre?",
+    "options": [
+     "A exclusão é impedida/falha ao salvar",
+     "As tarefas são apagadas",
+     "As tarefas ficam com referência nil",
+     "O projeto é duplicado"
+    ],
+    "correctIndex": 0,
+    "explanation": "'.deny' protege a integridade: o projeto não pode ser excluído enquanto houver relacionados."
+   },
+   {
+    "id": 2,
+    "question": "Qual a regra de exclusão padrão de um '@Relationship' sem 'deleteRule'?",
+    "options": [
+     "'.cascade'",
+     "'.deny'",
+     "'.unique'",
+     "'.nullify'"
+    ],
+    "correctIndex": 3,
+    "explanation": "O padrão é nullify: apagar o objeto apenas remove a referência nos relacionados."
+   },
+   {
+    "id": 3,
+    "question": "O que o autosave do ModelContext faz?",
+    "options": [
+     "Envia dados ao iCloud",
+     "Grava as mudanças pendentes automaticamente em momentos oportunos, sem 'save()' manual obrigatório",
+     "Apaga dados antigos",
+     "Cria backups em Documents"
+    ],
+    "correctIndex": 1,
+    "explanation": "O autosave persiste insert/delete/edições; ainda é possível chamar 'try context.save()' para garantir a gravação em um momento específico."
+   },
+   {
+    "id": 4,
+    "question": "Em '@Query(sort: \\Tarefa.data, order: .reverse)', como vêm os resultados?",
+    "options": [
+     "Em ordem alfabética",
+     "Sem ordem definida",
+     "Da data mais recente para a mais antiga",
+     "Apenas o primeiro item"
+    ],
+    "correctIndex": 2,
+    "explanation": "order: .reverse inverte a ordem crescente padrão; é o mesmo que SortDescriptor(\\Tarefa.data, order: .reverse)."
+   },
+   {
+    "id": 5,
+    "question": "Ao publicar uma versão que renomeia uma propriedade de um @Model já em produção, o que deve fazer?",
+    "options": [
+     "Nada, o SwiftData adivinha",
+     "Apagar o app",
+     "Trocar para UserDefaults",
+     "Planejar a migração com VersionedSchema/SchemaMigrationPlan ou @Attribute(originalName:)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Mudanças de schema podem perder dados se não forem declaradas; originalName e planos de migração dizem ao SwiftData como mapear os dados antigos."
+   },
+   {
+    "id": 6,
+    "question": "Onde você acessa o contexto para chamar 'delete' em uma View?",
+    "options": [
+     "'@Environment(\\.modelContext) var contexto'",
+     "'@State var contexto'",
+     "'UserDefaults.standard.context'",
+     "'@AppStorage(\"contexto\")'"
+    ],
+    "correctIndex": 0,
+    "explanation": "O container injeta o modelContext no Environment; a View o lê com @Environment e chama insert/delete."
+   }
+  ]
+ },
+ {
+  "id": 56,
+  "title": "Core Data (e comparação com SwiftData)",
+  "theory": "Core Data é o framework de grafo de objetos e persistência da Apple, anterior ao SwiftData (que é construído sobre ele). O 'NSPersistentContainer' encapsula o modelo, o armazenamento (normalmente SQLite) e os contextos: você o cria com 'NSPersistentContainer(name: \"Modelo\")' (nome do arquivo .xcdatamodeld) e chama 'loadPersistentStores'. No editor de modelo do Xcode você define entidades, atributos e relacionamentos (com regras de exclusão e inversos), e o Xcode gera subclasses de 'NSManagedObject' para elas. Todo objeto vive em um 'NSManagedObjectContext', um rascunho que só vai ao disco com 'try context.save()'; o 'viewContext' roda na thread principal e serve para a UI, enquanto 'newBackgroundContext()' ou 'performBackgroundTask' servem para trabalho pesado fora da main thread, e objetos nunca devem cruzar contextos diretamente. Para buscar dados, monte um 'NSFetchRequest<Entidade>' com 'NSPredicate' (ex.: 'NSPredicate(format: \"idade >= %d\", 18)') e 'NSSortDescriptor'; no SwiftUI, '@FetchRequest' faz isso e atualiza a View. As 'mergePolicy' (como 'NSMergeByPropertyObjectTrumpMergePolicy') definem como resolver conflitos de gravação, e 'automaticallyMergesChangesFromParent' propaga alterações de contextos de fundo ao viewContext. Mudanças simples de modelo (adicionar atributo, renomear com 'renaming identifier') usam migração leve automática, ativada por padrão com NSPersistentContainer. Compare: SwiftData tem sintaxe mais enxuta, com macros e Swift puro, ideal para apps novos; Core Data é mais maduro, com mais controle (NSFetchedResultsController, batch operations, compartilhamento CloudKit refinado) e suporta iOS mais antigos, sendo a escolha para bases existentes.",
+  "appleDocUrl": "https://developer.apple.com/documentation/coredata/nspersistentcontainer",
+  "category": "Dados e Rede",
+  "corporateCase": "Um app de logística com cinco anos de vida já usa Core Data. Os pedidos são sincronizados em um 'newBackgroundContext', mesclados no 'viewContext' com 'automaticallyMergesChangesFromParent', e a nova versão do modelo usa migração leve para adicionar o atributo 'prioridade' sem perder dados.",
+  "gameCase": "Em um jogo de cartas colecionáveis, 'Carta' e 'Deck' são entidades Core Data com relacionamento muitos-para-muitos. O download de um pacote de 5 mil cartas é gravado em contexto de fundo, para que a tela do menu fique fluida.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Crie o container informando o nome do modelo (.xcdatamodeld)",
+    "codeSnippet": "let container = NSPersistentContainer(___: \"Modelo\")",
+    "correctAnswer": "name",
+    "hint": "O parâmetro nomeado do inicializador se chama 'name'."
+   },
+   {
+    "id": 2,
+    "question": "Acesse o contexto principal, ligado à UI, a partir do container",
+    "codeSnippet": "let contexto = container.___",
+    "correctAnswer": "viewContext",
+    "hint": "A propriedade do container para a UI se chama 'viewContext'."
+   },
+   {
+    "id": 3,
+    "question": "Crie uma requisição de busca informando o nome da entidade",
+    "codeSnippet": "let req = NSFetchRequest<Pessoa>(___: \"Pessoa\")",
+    "correctAnswer": "entityName",
+    "hint": "O parâmetro do NSFetchRequest que recebe a entidade é 'entityName'."
+   },
+   {
+    "id": 4,
+    "question": "Crie um predicado com string de formato",
+    "codeSnippet": "req.predicate = NSPredicate(___: \"idade >= %d\", 18)",
+    "correctAnswer": "format",
+    "hint": "O primeiro rótulo do inicializador do NSPredicate é 'format'."
+   },
+   {
+    "id": 5,
+    "question": "Busque entidades na View SwiftUI com o wrapper do Core Data",
+    "codeSnippet": "@___(sortDescriptors: []) var pessoas: FetchedResults<Pessoa>",
+    "correctAnswer": "FetchRequest",
+    "hint": "O property wrapper chama-se '@FetchRequest'."
+   },
+   {
+    "id": 6,
+    "question": "Persista no disco as mudanças pendentes do contexto",
+    "codeSnippet": "try contexto.___()",
+    "correctAnswer": "save",
+    "hint": "O método de NSManagedObjectContext que grava é 'save'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é o papel do 'NSPersistentContainer'?",
+    "options": [
+     "Apenas desenhar a interface",
+     "Substituir o NSManagedObject",
+     "Fazer chamadas de rede",
+     "Encapsular o modelo, o armazenamento e os contextos do Core Data"
+    ],
+    "correctIndex": 3,
+    "explanation": "O container monta a pilha do Core Data (modelo, coordinator, store) e expõe o viewContext."
+   },
+   {
+    "id": 2,
+    "question": "Qual contexto deve ser usado para importar milhares de registros sem travar a UI?",
+    "options": [
+     "O viewContext",
+     "Um contexto de fundo (newBackgroundContext / performBackgroundTask)",
+     "Qualquer contexto em qualquer thread",
+     "Um contexto criado dentro de uma View"
+    ],
+    "correctIndex": 1,
+    "explanation": "Trabalho pesado no viewContext bloqueia a thread principal. Contextos de fundo rodam em fila própria; depois as mudanças são mescladas."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece se você modificar um NSManagedObject e nunca chamar 'save()' no contexto?",
+    "options": [
+     "As mudanças ficam só na memória e se perdem",
+     "São gravadas automaticamente sempre",
+     "O app falha ao iniciar",
+     "O objeto vira struct"
+    ],
+    "correctIndex": 0,
+    "explanation": "O contexto é um rascunho: sem save() as alterações não chegam ao armazenamento persistente."
+   },
+   {
+    "id": 4,
+    "question": "Qual é a forma correta de criar um filtro 'idade >= 18'?",
+    "options": [
+     "NSPredicate(\"idade >= 18\")",
+     "NSFilter(idade: 18)",
+     "NSPredicate(format: \"idade >= %d\", 18)",
+     "NSSort(\"idade\")"
+    ],
+    "correctIndex": 2,
+    "explanation": "NSPredicate usa a linguagem de formato com argumentos (%d, %@). NSSortDescriptor é para ordenação."
+   },
+   {
+    "id": 5,
+    "question": "Qual ferramenta do Xcode define entidades, atributos e relacionamentos do Core Data?",
+    "options": [
+     "O Interface Builder",
+     "O editor de modelo (.xcdatamodeld)",
+     "O Instruments",
+     "O Asset Catalog"
+    ],
+    "correctIndex": 1,
+    "explanation": "O arquivo .xcdatamodeld abre o editor de modelo com entidades, atributos, relacionamentos e geração de código."
+   },
+   {
+    "id": 6,
+    "question": "Para que serve uma 'mergePolicy'?",
+    "options": [
+     "Ordenar resultados",
+     "Criptografar o armazenamento",
+     "Definir a cor do app",
+     "Resolver conflitos quando duas mudanças afetam o mesmo objeto ao salvar"
+    ],
+    "correctIndex": 3,
+    "explanation": "Políticas como NSMergeByPropertyObjectTrumpMergePolicy definem quem vence em um conflito de gravação."
+   },
+   {
+    "id": 7,
+    "question": "Em qual cenário a migração leve (lightweight) funciona automaticamente?",
+    "options": [
+     "Adicionar um atributo opcional ou com valor padrão ao modelo",
+     "Trocar o banco por outro motor",
+     "Fundir duas entidades com lógica customizada",
+     "Mudar o tipo de String para um relacionamento"
+    ],
+    "correctIndex": 0,
+    "explanation": "Mudanças simples e inferíveis (novo atributo, renomear com identifier) são migradas automaticamente; transformações complexas exigem mapping model."
+   },
+   {
+    "id": 8,
+    "question": "Quando escolher Core Data em vez de SwiftData?",
+    "options": [
+     "Sempre, em qualquer app novo",
+     "Nunca",
+     "Quando o app já usa Core Data ou precisa de recursos maduros/controle fino ou de iOS antigos",
+     "Só para dados menores que 1 KB"
+    ],
+    "correctIndex": 2,
+    "explanation": "SwiftData é a opção recomendada para apps novos com iOS recente, mas Core Data segue válido para bases existentes e necessidades avançadas."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que é o 'viewContext'?",
+    "options": [
+     "Um contexto de fundo",
+     "Um NSManagedObjectContext ligado à thread principal, usado pela UI",
+     "O arquivo SQLite",
+     "Uma View do SwiftUI"
+    ],
+    "correctIndex": 1,
+    "explanation": "viewContext opera na fila principal; use-o para ler e atualizar dados mostrados na interface."
+   },
+   {
+    "id": 2,
+    "question": "Em SwiftUI, como se injeta o contexto do Core Data para @FetchRequest funcionar?",
+    "options": [
+     "'.environment(\\.modelContext, ...)'",
+     "'@State var ctx'",
+     "'.environment(\\.managedObjectContext, container.viewContext)'",
+     "'UserDefaults.standard'"
+    ],
+    "correctIndex": 2,
+    "explanation": "@FetchRequest lê o managedObjectContext do Environment. 'modelContext' é do SwiftData."
+   },
+   {
+    "id": 3,
+    "question": "Qual a principal diferença de sintaxe entre SwiftData e Core Data?",
+    "options": [
+     "SwiftData usa macros e classes Swift puras (@Model); Core Data usa .xcdatamodeld e NSManagedObject",
+     "Não há diferença",
+     "Core Data usa structs",
+     "SwiftData exige Objective-C"
+    ],
+    "correctIndex": 0,
+    "explanation": "O SwiftData reduz o boilerplate: o modelo é declarado no código. O Core Data usa um editor de modelo e subclasses de NSManagedObject."
+   },
+   {
+    "id": 4,
+    "question": "Um NSManagedObject criado no contexto A pode ser usado diretamente no contexto B?",
+    "options": [
+     "Sim, sempre",
+     "Sim, se for uma struct",
+     "Só no viewContext",
+     "Não; deve-se passar o NSManagedObjectID e recarregar no outro contexto"
+    ],
+    "correctIndex": 3,
+    "explanation": "Objetos pertencem ao contexto/fila em que foram criados. Passe o objectID e busque o objeto no outro contexto."
+   },
+   {
+    "id": 5,
+    "question": "Qual classe ordena os resultados de um NSFetchRequest?",
+    "options": [
+     "NSPredicate",
+     "NSEntityDescription",
+     "NSSortDescriptor",
+     "NSMergePolicy"
+    ],
+    "correctIndex": 2,
+    "explanation": "NSSortDescriptor define a chave e a direção da ordenação (sortDescriptors da requisição)."
+   },
+   {
+    "id": 6,
+    "question": "Qual propriedade faz o viewContext absorver automaticamente mudanças salvas em contextos de fundo?",
+    "options": [
+     "shouldMerge",
+     "automaticallyMergesChangesFromParent",
+     "autoSave",
+     "mergeNow"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ao ativar automaticallyMergesChangesFromParent no viewContext, as alterações gravadas pelo store são refletidas na UI."
+   }
+  ]
+ },
+ {
+  "id": 57,
+  "title": "CloudKit e Sincronização com iCloud",
+  "theory": "CloudKit é o serviço da Apple para guardar e sincronizar dados do app na nuvem, usando a conta iCloud do usuário. Para usá-lo, adicione a capability 'iCloud' (marcando CloudKit) no alvo do app em Signing & Capabilities, o que cria um 'CKContainer' (ex.: iCloud.com.empresa.app). Cada container tem três bancos: o 'private' (dados do próprio usuário, contam na cota de iCloud dele), o 'shared' (dados compartilhados com outros usuários) e o 'public' (visível a todos, cota do desenvolvedor). Os dados são 'CKRecord' (um registro com campos e um tipo de registro), organizados em 'CKRecordZone' e buscados com 'CKQuery'; quem usa a API direta trabalha com operações assíncronas. O caminho mais simples é deixar o SwiftData ou o Core Data (via 'NSPersistentCloudKitContainer') sincronizar: com SwiftData basta ativar a capability, e ele usa o banco privado. Há requisitos importantes: todas as propriedades devem ser opcionais ou ter valor padrão, e não se pode usar '@Attribute(.unique)'; relacionamentos devem ser opcionais. Para pequenos valores de preferência, 'NSUbiquitousKeyValueStore' sincroniza chave-valor (limite de cerca de 1 MB) entre dispositivos. Conflitos de edição simultânea são resolvidos por regras do sistema (em geral, a última gravação vence), e você deve tratar o status da conta ('CKContainer.accountStatus()': conta ausente, restrita, sem iCloud) e funcionar offline, pois as mudanças sincronizam depois. Teste em dispositivos reais ou simuladores com o mesmo Apple ID, use o CloudKit Dashboard para inspecionar os dados e lembre de promover o schema para Production antes de publicar. Privacidade: dados no banco privado só o usuário acessa; avise o que é sincronizado e trate dados públicos como visíveis a qualquer pessoa.",
+  "appleDocUrl": "https://developer.apple.com/documentation/cloudkit",
+  "category": "Dados e Rede",
+  "corporateCase": "Um app de notas corporativo ativa a capability iCloud e usa SwiftData com CloudKit: as notas aparecem no iPhone e no iPad do mesmo usuário sem servidor próprio. O app verifica o accountStatus e avisa quando o usuário está sem iCloud, mantendo o trabalho local até a conexão voltar.",
+  "gameCase": "Um jogo guarda o progresso no banco privado via CloudKit, e o jogador continua do ponto em que parou em outro aparelho. O ranking global usa o banco público, enquanto as configurações leves (volume) sincronizam com NSUbiquitousKeyValueStore.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Acesse o armazenamento chave-valor do iCloud compartilhado",
+    "codeSnippet": "NSUbiquitousKeyValueStore.___.set(\"azul\", forKey: \"tema\")",
+    "correctAnswer": "default",
+    "hint": "A instância compartilhada se chama 'default'."
+   },
+   {
+    "id": 2,
+    "question": "Obtenha o banco privado do container padrão",
+    "codeSnippet": "let banco = CKContainer.default().___CloudDatabase",
+    "correctAnswer": "private",
+    "hint": "A propriedade 'privateCloudDatabase' começa com a palavra que indica o banco do próprio usuário."
+   },
+   {
+    "id": 3,
+    "question": "Crie um registro do tipo \"Nota\" para salvar no CloudKit",
+    "codeSnippet": "let registro = ___(recordType: \"Nota\")",
+    "correctAnswer": "CKRecord",
+    "hint": "O tipo que representa um registro CloudKit começa com CK e termina com Record."
+   },
+   {
+    "id": 4,
+    "question": "Monte uma consulta que usa um NSPredicate",
+    "codeSnippet": "let consulta = CKQuery(recordType: \"Nota\", ___: NSPredicate(value: true))",
+    "correctAnswer": "predicate",
+    "hint": "O segundo parâmetro de CKQuery se chama 'predicate'."
+   },
+   {
+    "id": 5,
+    "question": "Consulte se o usuário tem conta iCloud disponível",
+    "codeSnippet": "let status = try await CKContainer.default().___()",
+    "correctAnswer": "accountStatus",
+    "hint": "O método assíncrono do CKContainer que retorna o estado da conta chama-se 'accountStatus'."
+   },
+   {
+    "id": 6,
+    "question": "Faça o SwiftData escolher o banco CloudKit configurado no app",
+    "codeSnippet": "ModelConfiguration(cloudKitDatabase: .___)",
+    "correctAnswer": "automatic",
+    "hint": "O valor que deixa o sistema decidir o container chama-se 'automatic'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual banco do CloudKit guarda dados do próprio usuário e usa a cota de iCloud dele?",
+    "options": [
+     "Private",
+     "Public",
+     "Shared",
+     "Local"
+    ],
+    "correctIndex": 0,
+    "explanation": "O banco privado é visível só ao usuário e consome o armazenamento dele; o público usa a cota do desenvolvedor e é acessível a todos."
+   },
+   {
+    "id": 2,
+    "question": "Qual é o primeiro passo para usar CloudKit em um app?",
+    "options": [
+     "Criar um servidor próprio",
+     "Instalar um pod",
+     "Adicionar a capability iCloud (CloudKit) em Signing & Capabilities",
+     "Pedir permissão de localização"
+    ],
+    "correctIndex": 2,
+    "explanation": "A capability cria/associa o CKContainer e ajusta os entitlements; sem ela as chamadas falham."
+   },
+   {
+    "id": 3,
+    "question": "Qual destes é um requisito para sincronizar modelos SwiftData com CloudKit?",
+    "options": [
+     "Todas as propriedades obrigatórias e únicas",
+     "Propriedades opcionais ou com valor padrão e sem '.unique'",
+     "Usar apenas Strings",
+     "Usar UserDefaults"
+    ],
+    "correctIndex": 1,
+    "explanation": "O CloudKit não impõe unicidade e precisa tolerar registros parciais; por isso o schema deve ser permissivo."
+   },
+   {
+    "id": 4,
+    "question": "Para sincronizar uma preferência simples (como o tema) entre dispositivos com pouquíssimos dados, o ideal é:",
+    "options": [
+     "Uma query pública no CloudKit",
+     "Um arquivo no Bundle",
+     "Um banco SQLite próprio",
+     "NSUbiquitousKeyValueStore"
+    ],
+    "correctIndex": 3,
+    "explanation": "É o equivalente do UserDefaults sincronizado pelo iCloud, com limite de cerca de 1 MB no total."
+   },
+   {
+    "id": 5,
+    "question": "O usuário editou a mesma nota em dois aparelhos offline. O que normalmente acontece ao sincronizar?",
+    "options": [
+     "O sistema resolve o conflito, em geral prevalecendo a gravação mais recente",
+     "Os dois aparelhos travam",
+     "Os dados são apagados",
+     "O iCloud pergunta ao desenvolvedor"
+    ],
+    "correctIndex": 0,
+    "explanation": "O CloudKit/SwiftData usam uma política de resolução (normalmente a última alteração vence); com a API direta você pode tratar serverRecordChanged."
+   },
+   {
+    "id": 6,
+    "question": "Como o app deve reagir quando 'accountStatus' retorna 'noAccount'?",
+    "options": [
+     "Fechar o app",
+     "Apagar os dados",
+     "Informar o usuário e continuar funcionando localmente",
+     "Ignorar e sobrescrever a nuvem"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sem conta iCloud não há sincronização; o app deve degradar com elegância e manter os dados locais."
+   },
+   {
+    "id": 7,
+    "question": "O que é um 'CKRecord'?",
+    "options": [
+     "Uma tela do app",
+     "Um tipo de erro",
+     "Um certificado",
+     "Um registro com campos tipados, de um record type, guardado em uma zona"
+    ],
+    "correctIndex": 3,
+    "explanation": "CKRecord é a unidade de dado do CloudKit, organizada por tipo e zona (CKRecordZone)."
+   },
+   {
+    "id": 8,
+    "question": "Antes de publicar na App Store, o que se deve fazer com o schema de CloudKit criado em desenvolvimento?",
+    "options": [
+     "Nada, é automático",
+     "Promovê-lo para o ambiente Production no CloudKit Dashboard",
+     "Apagá-lo",
+     "Enviá-lo por e-mail"
+    ],
+    "correctIndex": 1,
+    "explanation": "O ambiente de desenvolvimento é separado do de produção; sem promover o schema, usuários reais não conseguem sincronizar."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "Qual banco do CloudKit é acessível a qualquer pessoa, mesmo sem login iCloud para leitura?",
+    "options": [
+     "Private",
+     "Shared apenas",
+     "Nenhum",
+     "Public"
+    ],
+    "correctIndex": 3,
+    "explanation": "O banco público permite leitura de dados por qualquer usuário; por isso não deve conter informações pessoais."
+   },
+   {
+    "id": 2,
+    "question": "Qual classe do Core Data adiciona sincronização com CloudKit?",
+    "options": [
+     "NSPersistentContainer apenas",
+     "NSPersistentCloudKitContainer",
+     "NSCloudStore",
+     "CKDatabaseContainer"
+    ],
+    "correctIndex": 1,
+    "explanation": "NSPersistentCloudKitContainer estende NSPersistentContainer e espelha o armazenamento no CloudKit."
+   },
+   {
+    "id": 3,
+    "question": "Como testar a sincronização na prática?",
+    "options": [
+     "Apenas lendo o código",
+     "Rodando só no Mac sem login",
+     "Usando dois dispositivos/simuladores com o mesmo Apple ID e conferindo o CloudKit Dashboard",
+     "Desativando o iCloud"
+    ],
+    "correctIndex": 2,
+    "explanation": "A sincronização depende de contas e rede reais; o Dashboard permite verificar registros e schema."
+   },
+   {
+    "id": 4,
+    "question": "Qual dado NÃO deve ser colocado no banco público do CloudKit?",
+    "options": [
+     "Dados pessoais e sensíveis do usuário",
+     "Um ranking de pontuações",
+     "Conteúdo de catálogo do app",
+     "Textos de ajuda"
+    ],
+    "correctIndex": 0,
+    "explanation": "O banco público é legível por todos; dados pessoais devem ficar no privado (e protegidos), respeitando a privacidade."
+   },
+   {
+    "id": 5,
+    "question": "O que acontece com a sincronização quando o dispositivo está offline?",
+    "options": [
+     "Nada é salvo",
+     "As mudanças ficam locais e sincronizam quando a conexão voltar",
+     "O app é encerrado",
+     "Os dados vão para o banco público"
+    ],
+    "correctIndex": 1,
+    "explanation": "O app deve ser 'offline-first': grava localmente e o sistema envia depois."
+   },
+   {
+    "id": 6,
+    "question": "Qual das opções representa o compartilhamento de dados entre usuários distintos no CloudKit?",
+    "options": [
+     "O banco private sozinho",
+     "NSUbiquitousKeyValueStore",
+     "UserDefaults",
+     "O banco shared (CKShare)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Compartilhamentos usam CKShare e aparecem no banco shared dos convidados."
+   }
+  ]
+ },
+ {
+  "id": 58,
+  "title": "Keychain e Armazenamento Seguro",
+  "theory": "O Keychain é o cofre criptografado do sistema para segredos pequenos: senhas, tokens de acesso, chaves de API do usuário e certificados. Ao contrário de UserDefaults ou arquivos comuns, seus itens são criptografados, em alguns casos sobrevivem à reinstalação e podem ser protegidos por biometria. A API 'Keychain Services' usa dicionários de consulta com chaves como 'kSecClass' (por exemplo 'kSecClassGenericPassword'), 'kSecAttrAccount' e 'kSecValueData', e quatro funções: 'SecItemAdd' (gravar), 'SecItemCopyMatching' (ler), 'SecItemUpdate' (atualizar) e 'SecItemDelete' (apagar), todas devolvendo um 'OSStatus' que deve ser comparado com 'errSecSuccess'. Adicionar um item já existente retorna 'errSecDuplicateItem', então o padrão é atualizar ou apagar antes. O atributo 'kSecAttrAccessible' define a classe de proteção de dados, como 'kSecAttrAccessibleWhenUnlocked' (só com o aparelho desbloqueado) ou '...AfterFirstUnlock' (para tarefas em segundo plano), e as variantes 'ThisDeviceOnly' impedem a migração para outros aparelhos. Para exigir Face ID ou Touch ID, use 'LocalAuthentication': crie um 'LAContext', chame 'canEvaluatePolicy' e 'evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason:)', e adicione a chave 'NSFaceIDUsageDescription' ao Info.plist, senão o Face ID falha. A biometria autentica a pessoa, mas não substitui guardar o segredo no Keychain. Na rede, o App Transport Security (ATS) exige HTTPS por padrão: não o desative globalmente; o 'certificate pinning' (fixar o certificado ou a chave pública esperados) é uma proteção extra contra ataques man-in-the-middle. Regra de ouro: nunca deixe segredos no código-fonte ou no repositório, porque o binário pode ser inspecionado; peça a credencial ao usuário ou use um servidor. Checklist de código seguro: validar entradas, usar HTTPS, minimizar os dados coletados e as permissões pedidas, proteger dados sensíveis em repouso e não registrar segredos em logs. O exame de certificação espera que você saiba como dados sensíveis podem ser protegidos ou comprometidos.",
+  "appleDocUrl": "https://developer.apple.com/documentation/security/keychain-services",
+  "category": "Dados e Rede",
+  "corporateCase": "Um app de banco guarda o refresh token no Keychain com 'kSecAttrAccessibleWhenUnlockedThisDeviceOnly' e exige Face ID antes de mostrar o saldo. Todas as chamadas usam HTTPS com ATS, e a chave de API do servidor fica no backend, não dentro do app.",
+  "gameCase": "Um jogo online guarda o token de sessão do jogador no Keychain, de modo que ele não precise logar de novo, e nunca grava a senha em UserDefaults. O app não coloca chaves de serviços de pagamento no código, pois qualquer pessoa poderia extraí-las do binário.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Defina a classe do item como senha genérica",
+    "codeSnippet": "let query: [String: Any] = [kSecClass as String: ___, kSecAttrAccount as String: \"ana\"]",
+    "correctAnswer": "kSecClassGenericPassword",
+    "hint": "A constante começa com 'kSecClass' e termina em 'GenericPassword'."
+   },
+   {
+    "id": 2,
+    "question": "Grave um novo item no Keychain",
+    "codeSnippet": "let status = ___(query as CFDictionary, nil)",
+    "correctAnswer": "SecItemAdd",
+    "hint": "A função que adiciona um item é 'SecItemAdd'."
+   },
+   {
+    "id": 3,
+    "question": "Complete o nome da função que lê itens que correspondem à consulta",
+    "codeSnippet": "let status = SecItemCopy___(query as CFDictionary, &item)",
+    "correctAnswer": "Matching",
+    "hint": "A função de leitura chama-se SecItemCopyMatching."
+   },
+   {
+    "id": 4,
+    "question": "Crie o objeto de autenticação local usado para Face ID/Touch ID",
+    "codeSnippet": "let contexto = ___()",
+    "correctAnswer": "LAContext",
+    "hint": "O tipo do framework LocalAuthentication começa com LA e termina com Context."
+   },
+   {
+    "id": 5,
+    "question": "Informe o texto que explica ao usuário por que a biometria é pedida",
+    "codeSnippet": "contexto.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, ___: \"Entrar no app\") { ok, erro in }",
+    "correctAnswer": "localizedReason",
+    "hint": "O parâmetro nomeado do evaluatePolicy é 'localizedReason'."
+   },
+   {
+    "id": 6,
+    "question": "Verifique se a operação do Keychain terminou com sucesso",
+    "codeSnippet": "if status == ___ { print(\"Salvo\") }",
+    "correctAnswer": "errSecSuccess",
+    "hint": "A constante OSStatus de sucesso é 'errSecSuccess'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "Qual é o lugar correto para guardar um token de acesso do usuário?",
+    "options": [
+     "UserDefaults",
+     "Keychain",
+     "Um arquivo de texto em Documents",
+     "Uma constante no código"
+    ],
+    "correctIndex": 1,
+    "explanation": "O Keychain é criptografado e protegido pelo sistema. UserDefaults e arquivos comuns não foram feitos para segredos, e uma constante no código pode ser extraída do binário."
+   },
+   {
+    "id": 2,
+    "question": "Qual função do Keychain Services lê um item?",
+    "options": [
+     "SecItemCopyMatching",
+     "SecItemAdd",
+     "SecItemRead",
+     "SecItemFetch"
+    ],
+    "correctIndex": 0,
+    "explanation": "SecItemCopyMatching recebe uma consulta e devolve o item correspondente; SecItemRead e SecItemFetch não existem."
+   },
+   {
+    "id": 3,
+    "question": "O que acontece ao chamar SecItemAdd com um item que já existe?",
+    "options": [
+     "Atualiza o valor automaticamente",
+     "Apaga o item antigo",
+     "Retorna errSecDuplicateItem",
+     "Trava o app"
+    ],
+    "correctIndex": 2,
+    "explanation": "O Add não faz upsert no Keychain: trate errSecDuplicateItem usando SecItemUpdate (ou apagando antes)."
+   },
+   {
+    "id": 4,
+    "question": "O que significa 'kSecAttrAccessibleWhenUnlockedThisDeviceOnly'?",
+    "options": [
+     "Item público",
+     "Item acessível sem senha",
+     "Item apagado ao desbloquear",
+     "Item acessível só com o aparelho desbloqueado e que não migra para outros aparelhos"
+    ],
+    "correctIndex": 3,
+    "explanation": "A classe de proteção controla quando o item pode ser lido; 'ThisDeviceOnly' impede que ele vá para backups/aparelhos novos."
+   },
+   {
+    "id": 5,
+    "question": "Qual chave do Info.plist é necessária para usar Face ID?",
+    "options": [
+     "NSCameraUsageDescription",
+     "NSBiometricsKey",
+     "NSFaceIDUsageDescription",
+     "UIFaceIDMode"
+    ],
+    "correctIndex": 2,
+    "explanation": "Sem NSFaceIDUsageDescription o sistema não permite o uso de Face ID pelo app; Touch ID não exige essa chave."
+   },
+   {
+    "id": 6,
+    "question": "Qual framework apresenta o prompt de Face ID/Touch ID?",
+    "options": [
+     "Somente AuthenticationServices",
+     "LocalAuthentication",
+     "CryptoKit",
+     "Security Core"
+    ],
+    "correctIndex": 1,
+    "explanation": "LAContext, do LocalAuthentication, avalia a política biométrica; ele autentica a pessoa, mas não guarda o segredo."
+   },
+   {
+    "id": 7,
+    "question": "Sobre o App Transport Security (ATS), qual é a boa prática?",
+    "options": [
+     "Manter o padrão (HTTPS obrigatório) e abrir exceções só quando necessário e específicas",
+     "Desativar tudo com NSAllowsArbitraryLoads",
+     "Usar sempre HTTP",
+     "Ignorar certificados inválidos"
+    ],
+    "correctIndex": 0,
+    "explanation": "O ATS força conexões seguras. Desativá-lo globalmente expõe o tráfego; se preciso, limite a exceção a um domínio."
+   },
+   {
+    "id": 8,
+    "question": "Por que não colocar uma chave de API secreta direto no código do app?",
+    "options": [
+     "Porque aumenta o tamanho do app",
+     "Porque o Swift não aceita Strings longas",
+     "Porque o Xcode bloqueia",
+     "Porque qualquer pessoa pode extraí-la do binário ou do repositório"
+    ],
+    "correctIndex": 3,
+    "explanation": "Segredos embutidos não são secretos. Mantenha-os no servidor ou obtenha-os com autenticação do usuário."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "O que é 'certificate pinning'?",
+    "options": [
+     "Aceitar só o certificado ou a chave pública esperados do servidor",
+     "Instalar o certificado no Keychain do usuário",
+     "Desativar o HTTPS",
+     "Gerar um certificado no app"
+    ],
+    "correctIndex": 0,
+    "explanation": "Fixar o certificado reduz o risco de ataques man-in-the-middle, mas exige planejar a renovação dos certificados."
+   },
+   {
+    "id": 2,
+    "question": "Para um app que precisa ler o token do Keychain em tarefas de segundo plano depois do primeiro desbloqueio, qual classe de proteção usar?",
+    "options": [
+     "kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly sempre",
+     "Nenhuma, é impossível",
+     "kSecAttrAccessibleAfterFirstUnlock",
+     "kSecAttrAccessibleWhenUnlocked sempre"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tarefas em background podem rodar com o aparelho bloqueado; AfterFirstUnlock permite o acesso após o primeiro desbloqueio desde o boot."
+   },
+   {
+    "id": 3,
+    "question": "Um app mostra o saldo só depois do Face ID. Se o usuário não tiver biometria cadastrada, o que fazer?",
+    "options": [
+     "Mostrar o saldo sem proteção",
+     "Verificar com canEvaluatePolicy e oferecer um fallback (como a senha do aparelho)",
+     "Travar o app",
+     "Imprimir a senha em texto no log"
+    ],
+    "correctIndex": 1,
+    "explanation": "canEvaluatePolicy informa se a biometria está disponível; um bom app oferece alternativa e não bloqueia o usuário."
+   },
+   {
+    "id": 4,
+    "question": "Qual destes é um item de um checklist de código seguro?",
+    "options": [
+     "Salvar senhas em UserDefaults",
+     "Usar HTTP por simplicidade",
+     "Reutilizar a mesma chave em todos os apps",
+     "Não registrar senhas e tokens em logs"
+    ],
+    "correctIndex": 3,
+    "explanation": "Logs podem vazar dados. Os outros itens são práticas inseguras."
+   },
+   {
+    "id": 5,
+    "question": "O que a biometria (Face ID) faz em relação aos dados?",
+    "options": [
+     "Criptografa todos os arquivos do app",
+     "Substitui o Keychain",
+     "Autentica a pessoa, mas não criptografa nem guarda o segredo por si só",
+     "Envia o rosto ao servidor"
+    ],
+    "correctIndex": 2,
+    "explanation": "Para proteger o dado use o Keychain (opcionalmente com controle de acesso biométrico); o Face ID só confirma quem está usando."
+   },
+   {
+    "id": 6,
+    "question": "Como atualizar a senha de um item existente no Keychain?",
+    "options": [
+     "SecItemUpdate com a consulta e os novos atributos",
+     "SecItemAdd repetido",
+     "UserDefaults.set",
+     "SecItemCopyMatching"
+    ],
+    "correctIndex": 0,
+    "explanation": "SecItemUpdate recebe a consulta do item e um dicionário com os atributos a alterar."
+   }
+  ]
+ }
+]
