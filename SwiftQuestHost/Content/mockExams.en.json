@@ -1,0 +1,278 @@
+[
+ {
+  "id": "exam-1",
+  "title": "Swift Mock Exam: Fundamentals",
+  "description": "45 minutes focused entirely on the foundations of the language (Variables, Optionals, Collections, Functions, ARC, Value vs Reference Types).",
+  "category": "Fundamentos",
+  "timeLimitMinutes": 45,
+  "questions": [
+   {
+    "id": 1,
+    "question": "When you pass a Struct as a parameter to a function in Swift, what happens by default?",
+    "options": [
+     "It is passed by reference.",
+     "It is passed by value, with a constant copy (let) being made.",
+     "It can be freely modified inside the function.",
+     "The compiler requires the use of unsafe pointers."
+    ],
+    "correctIndex": 1,
+    "explanation": "Structs are Value Types and, by default, function parameters are constants."
+   },
+   {
+    "id": 2,
+    "question": "What is the correct way to safely unwrap multiple Optionals at once?",
+    "options": [
+     "if let a = optA, let b = optB { }",
+     "if let a = optA && let b = optB { }",
+     "guard let a = optA, b = optB else { }",
+     "if optA != nil, optB != nil { let a = optA!, let b = optB! }"
+    ],
+    "correctIndex": 0,
+    "explanation": "Swift lets you chain Optional Bindings with commas."
+   },
+   {
+    "id": 3,
+    "question": "What does the mutating keyword allow in a Struct?",
+    "options": [
+     "It allows it to inherit from a Class.",
+     "It allows its methods to modify the Struct's own properties.",
+     "It turns the Struct into a Class at compile time.",
+     "It marks the Struct for the Garbage Collector."
+    ],
+    "correctIndex": 1,
+    "explanation": "Since Structs are immutable by default, methods that modify their values must be marked as mutating."
+   },
+   {
+    "id": 4,
+    "question": "What is the classic retain cycle created in closures, and how do you prevent it?",
+    "options": [
+     "Closures do not create retain cycles in Swift.",
+     "It occurs when an object holds a strong reference to a closure, which in turn captures \"self\" strongly. It is resolved with [weak self].",
+     "It occurs with chained Structs. It is resolved with [unowned self].",
+     "It occurs in the delegate. It is resolved using \"lazy\"."
+    ],
+    "correctIndex": 1,
+    "explanation": "Closures are Reference Types and capture external variables strongly by default."
+   },
+   {
+    "id": 5,
+    "question": "In what scenario will a defer block be executed?",
+    "options": [
+     "Right before the current scope exits (before the return takes effect).",
+     "Only if an error occurs and a catch is triggered.",
+     "As soon as it is declared.",
+     "On a secondary (background) thread."
+    ],
+    "correctIndex": 0,
+    "explanation": "The defer block guarantees execution at the exact moment the scope is exited, which is ideal for cleaning up resources."
+   }
+  ]
+ },
+ {
+  "id": "exam-2",
+  "title": "Apple Dev Mock Exam: iOS & Architecture",
+  "description": "Focused on the UIKit and SwiftUI ecosystem and state management (MVVM). 10 questions, 30 minutes.",
+  "category": "iOS e iPadOS",
+  "timeLimitMinutes": 30,
+  "questions": [
+   {
+    "id": 1,
+    "question": "In SwiftUI, how do you propagate changes in a state object (Reference Type) to update all connected Views?",
+    "options": [
+     "By marking the object as @StateObject and using didSet.",
+     "By adopting ObservableObject in the class and using @Published on the properties.",
+     "By issuing a NotificationCenter.default.post().",
+     "By calling view.setNeedsDisplay()."
+    ],
+    "correctIndex": 1,
+    "explanation": "Classes must be ObservableObject, and properties that trigger rendering must be @Published."
+   },
+   {
+    "id": 2,
+    "question": "Which lifecycle modifier replaces UIKit's old viewDidAppear in SwiftUI?",
+    "options": [
+     ".onAppear",
+     ".onLoad",
+     ".onReady",
+     ".task"
+    ],
+    "correctIndex": 0,
+    "explanation": ".onAppear runs the closure when the View appears on screen."
+   },
+   {
+    "id": 3,
+    "question": "When dealing with concurrency (async/await), what does @MainActor guarantee?",
+    "options": [
+     "That the task will run in the background.",
+     "That the function or type will always operate on the Main Thread (the UI's main thread).",
+     "That the function will never cause a Data Race.",
+     "That the API will not block."
+    ],
+    "correctIndex": 1,
+    "explanation": "All user interface operations must happen on the Main Thread; @MainActor enforces this behavior."
+   },
+   {
+    "id": 4,
+    "question": "When injecting data deep into the View hierarchy (SwiftUI), what is the best approach?",
+    "options": [
+     "Passing it as a parameter in each View's init, View by View.",
+     "Using Global Variables (Singletons).",
+     "Using .environmentObject() or @Environment()",
+     "Saving to UserDefaults and reading it in every view."
+    ],
+    "correctIndex": 2,
+    "explanation": "Environment is designed precisely for deep dependency injection without \"prop drilling\"."
+   },
+   {
+    "id": 5,
+    "question": "In UIKit, when adding a subview programmatically using Auto Layout, what must NEVER be forgotten?",
+    "options": [
+     "Calling view.layoutIfNeeded() immediately.",
+     "Setting translatesAutoresizingMaskIntoConstraints = false",
+     "Setting the background color to transparent.",
+     "Making the view inherit from a UIButton."
+    ],
+    "correctIndex": 1,
+    "explanation": "If this is not done, the manually created constraints will conflict with the automatic constraints converted from the old frame (autoresizing mask)."
+   }
+  ]
+ },
+ {
+  "id": "exam-3",
+  "title": "iOSLab Challenge (Apple Academy - Brazil)",
+  "description": "Mock exam focused on the entrance exams of Apple Academies in Brazil. Tests reasoning, basic Swift logic and the ecosystem (5 questions, 15 minutes).",
+  "category": "Fundamentos",
+  "timeLimitMinutes": 15,
+  "questions": [
+   {
+    "id": 1,
+    "question": "In Swift, what is the main difference between let and var?",
+    "options": [
+     "let declares a free variable, var declares a strict constant.",
+     "let declares a constant whose value cannot be changed, var declares a mutable variable.",
+     "let can only be used for numbers (Integers/Doubles), var for Strings.",
+     "let allocates on the Heap, var allocates on the Stack."
+    ],
+    "correctIndex": 1,
+    "explanation": "The `let` keyword creates immutable constants, while `var` creates variables whose values can be changed during execution."
+   },
+   {
+    "id": 2,
+    "question": "If you try to force unwrap an Optional using ! and the value is nil, what happens?",
+    "options": [
+     "The value will be automatically converted to 0 or an empty string.",
+     "The compiler will emit a warning, but will skip the line.",
+     "The app will \"crash\" (a fatal runtime error).",
+     "The variable will be removed from memory."
+    ],
+    "correctIndex": 2,
+    "explanation": "Force unwrapping (`!`) a nil value causes a crash (Fatal Error: unexpectedly found nil). That is why we should always use if let or guard let."
+   },
+   {
+    "id": 3,
+    "question": "Which of the following types in Swift is a Reference Type?",
+    "options": [
+     "Struct",
+     "Enum",
+     "Tuple",
+     "Class"
+    ],
+    "correctIndex": 3,
+    "explanation": "Classes are Reference Types. Structs, Enums and Tuples are Value Types in Swift."
+   },
+   {
+    "id": 4,
+    "question": "What does the \"Delegate\" pattern (Delegation) most commonly allow in the Apple ecosystem?",
+    "options": [
+     "Running very heavy network tasks in the background.",
+     "Letting one object hand off responsibilities and events to another object (e.g., button or cell taps).",
+     "Drawing user interfaces declaratively.",
+     "Replacing the use of Struct inheritance."
+    ],
+    "correctIndex": 1,
+    "explanation": "Delegation is a Design Pattern that lets one object delegate the responsibility of performing an action to another, common in UIKit (such as UITableViewDelegate)."
+   },
+   {
+    "id": 5,
+    "question": "In Swift programming logic, what does the .count property return when called on an Array [1, 2, 3] after an .append(4)?",
+    "options": [
+     "3",
+     "4",
+     "[1, 2, 3, 4]",
+     "nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "The .append(4) method adds one element, increasing the array's total from 3 to 4 elements."
+   }
+  ]
+ },
+ {
+  "id": "exam-4",
+  "title": "Senior iOS Dev Interview (Latin America)",
+  "description": "Advanced mock exam aimed at Mid-level/Senior roles. Explores MVVM, Memory Management (ARC), Concurrency and lifecycle. (5 questions, 25 minutes).",
+  "category": "Full-Stack Apple",
+  "timeLimitMinutes": 25,
+  "questions": [
+   {
+    "id": 1,
+    "question": "When working with closures that run asynchronous tasks and capture \"self\", why do we often use [weak self]?",
+    "options": [
+     "To make sure the closure runs faster on the Main Thread.",
+     "To avoid memory leaks caused by retain cycles (Retain Cycles).",
+     "Because the Swift 5 compiler requires weak in all escaping closures.",
+     "To temporarily turn the class into a value type."
+    ],
+    "correctIndex": 1,
+    "explanation": "If an object holds a strong reference to a closure, and the closure captures the object strongly, a Retain Cycle occurs and neither is ever deallocated from memory."
+   },
+   {
+    "id": 2,
+    "question": "What is the main responsibility of the ViewModel layer in the MVVM architecture?",
+    "options": [
+     "Drawing the interface (UI) programmatically using SwiftUI or UIKit.",
+     "Strictly holding the serialized data of the local database.",
+     "Mediating between the Model and the View, abstracting presentation logic and managing visual state.",
+     "Exclusively handling flow routing (Routing) between screens."
+    ],
+    "correctIndex": 2,
+    "explanation": "The ViewModel processes data from the Model and formats it into observable properties so the View can react (Data Binding), taking that complexity out of the Views (or ViewControllers)."
+   },
+   {
+    "id": 3,
+    "question": "With the introduction of Swift Concurrency, what does the \"await\" keyword indicate?",
+    "options": [
+     "It blocks the current thread indefinitely until the task finishes.",
+     "It marks a suspension point, where the thread can be freed for other work while waiting for the result.",
+     "It forces the immediate start of a task on a serial GCD queue.",
+     "It merely injects a completion handler asynchronously."
+    ],
+    "correctIndex": 1,
+    "explanation": "`await` indicates a Suspension Point. The system can suspend that function's execution and use the current thread for something else until the asynchronous result arrives."
+   },
+   {
+    "id": 4,
+    "question": "When persisting structured data locally in an enterprise iOS app, which of the options below is NOT a primary (native) Apple mechanism?",
+    "options": [
+     "Core Data",
+     "SwiftData",
+     "Realm",
+     "UserDefaults"
+    ],
+    "correctIndex": 2,
+    "explanation": "Realm is a powerful database widely used in the industry, but it is third-party (maintained by MongoDB). Core Data and SwiftData are Apple's native persistence frameworks."
+   },
+   {
+    "id": 5,
+    "question": "In the lifecycle of a UIViewController (UIKit), which method is called immediately after the subviews have had their sizes adjusted and Auto Layout has been applied?",
+    "options": [
+     "viewDidLoad()",
+     "viewWillAppear()",
+     "viewDidAppear()",
+     "viewDidLayoutSubviews()"
+    ],
+    "correctIndex": 3,
+    "explanation": "`viewDidLayoutSubviews` is called after the layout system adjusts the bounds/frames of the child views. It is the ideal place to get real dimensions and draw gradients, for example."
+   }
+  ]
+ }
+]

@@ -1,0 +1,48 @@
+name: SwiftQuestXcode
+options:
+  bundleIdPrefix: com.gabrielnetto
+  deploymentTarget:
+    macOS: "14.0"
+targets:
+  SwiftQuest:
+    type: application
+    platform: macOS
+    sources:
+      - path: SwiftQuestHost
+      - path: Shared
+    info:
+      path: SwiftQuestHost/Info.plist
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.gabrielnetto.SwiftQuest
+      CODE_SIGN_STYLE: Manual
+      CODE_SIGN_IDENTITY: "-"
+      CODE_SIGNING_REQUIRED: YES
+      SWIFT_VERSION: 6.0
+      ALWAYS_SEARCH_USER_PATHS: NO
+    dependencies:
+      - target: SwiftQuestExtension
+        embed: true
+  SwiftQuestExtension:
+    type: xcode-extension
+    platform: macOS
+    sources:
+      - path: SwiftQuestExtension
+    info:
+      path: SwiftQuestExtension/Info.plist
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.gabrielnetto.SwiftQuest.XcodeExtension
+      CODE_SIGN_STYLE: Manual
+      CODE_SIGN_IDENTITY: "-"
+      CODE_SIGNING_REQUIRED: YES
+      SWIFT_VERSION: 6.0
+      ALWAYS_SEARCH_USER_PATHS: NO
+      APPLICATION_EXTENSION_API_ONLY: YES
+      ENABLE_APP_SANDBOX: YES
+schemes:
+  SwiftQuest:
+    build:
+      targets:
+        SwiftQuest: all
+        SwiftQuestExtension: all
+    run:
+      config: Debug

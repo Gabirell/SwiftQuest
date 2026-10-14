@@ -1,0 +1,1482 @@
+[
+ {
+  "id": 1,
+  "title": "Variables and Constants",
+  "theory": "In Swift, safety and clarity are priorities. We use 'let' to define constants (values that never change after the first assignment) and 'var' for variables (values that can be changed). Apple's official recommendation is: use 'let' by default whenever possible. Switch to 'var' only if the compiler requires it or if you are sure the value will need to change.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Constants-and-Variables",
+  "corporateCase": "In a banking app, the 'Transaction ID' or the 'User's CPF' are declared with 'let', since they should never change. The 'Current Balance', on the other hand, is declared with 'var', since it changes with every transaction.",
+  "gameCase": "In a platformer game, gravity ('let gravity = 9.8') and the maximum health limit ('let maxHealth = 100') are constants. The character's current position ('var positionY') and current health ('var currentHealth') are variables.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare a constant named 'pi' with the value 3.1415",
+    "codeSnippet": "___ pi = 3.1415",
+    "correctAnswer": "let",
+    "hint": "The value of pi is universal and never changes."
+   },
+   {
+    "id": 2,
+    "question": "Declare a variable for the player's score, which starts at 0",
+    "codeSnippet": "___ score = 0",
+    "correctAnswer": "var",
+    "hint": "The score will increase as the game progresses."
+   },
+   {
+    "id": 3,
+    "question": "Define the app's name, which will not change",
+    "codeSnippet": "___ appName = \"SwiftEdu\"",
+    "correctAnswer": "let",
+    "hint": "App names are set once."
+   },
+   {
+    "id": 4,
+    "question": "Create a counter for a repeat loop",
+    "codeSnippet": "___ contador = 1",
+    "correctAnswer": "var",
+    "hint": "A counter needs to be incremented."
+   },
+   {
+    "id": 5,
+    "question": "Store the user's date of birth",
+    "codeSnippet": "___ dataNascimento = \"10/05/1990\"",
+    "correctAnswer": "let",
+    "hint": "A person's date of birth does not change."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is Apple's official recommendation about using let and var?",
+    "options": [
+     "Use var for everything to avoid compile errors",
+     "Use let by default and switch to var only when necessary",
+     "Use let only for numbers and var for text",
+     "There is no official recommendation"
+    ],
+    "correctIndex": 1,
+    "explanation": "Apple recommends 'let' by default to ensure immutability, which makes code safer, more predictable and optimized by the compiler."
+   },
+   {
+    "id": 2,
+    "question": "What happens if you try to change the value of a constant (let)?",
+    "options": [
+     "The value is changed normally",
+     "The app quits silently",
+     "The compiler raises an error saying that 'let' cannot be reassigned",
+     "The old value is erased from memory"
+    ],
+    "correctIndex": 2,
+    "explanation": "The Swift compiler prevents reassignment of constants, ensuring safety at compile time."
+   },
+   {
+    "id": 3,
+    "question": "Why does the Swift compiler prefer constants (let)?",
+    "options": [
+     "Because they take up fewer lines of code",
+     "Because they enable memory and performance optimizations",
+     "Because they are easier to read",
+     "Because Swift does not support global variables"
+    ],
+    "correctIndex": 1,
+    "explanation": "Knowing that a value will not change allows the compiler to optimize memory usage and execution speed."
+   },
+   {
+    "id": 4,
+    "question": "Which of the options below MUST be a variable (var)?",
+    "options": [
+     "The base URL of an API",
+     "The maximum number of login attempts allowed",
+     "The text currently typed into a search field",
+     "A device's unique identifier (UUID)"
+    ],
+    "correctIndex": 2,
+    "explanation": "The search text changes with every key the user presses, so it must be mutable."
+   },
+   {
+    "id": 5,
+    "question": "How does Swift handle typing when using let or var without explicitly declaring the type?",
+    "options": [
+     "It assigns the type 'Any'",
+     "It raises an error requiring the type",
+     "It infers the type based on the assigned value",
+     "It assumes it is a String"
+    ],
+    "correctIndex": 2,
+    "explanation": "Swift has Type Inference, automatically deducing the type from the initial value."
+   }
+  ],
+  "extraQuiz": [
+   {
+    "id": 1,
+    "question": "What is the main advantage of using 'let' in multithreaded environments?",
+    "options": [
+     "None, 'let' does not work in multithreaded code",
+     "It ensures the value will not be changed simultaneously by different threads (Thread Safety)",
+     "It increases CPU usage",
+     "It lets several threads change the value faster"
+    ],
+    "correctIndex": 1,
+    "explanation": "Constants are immutable, so they are safe to be read by multiple threads simultaneously with no risk of race conditions."
+   },
+   {
+    "id": 2,
+    "question": "How do you declare multiple constants on the same line?",
+    "options": [
+     "let x = 1; let y = 2",
+     "let x = 1, y = 2",
+     "let x, y = 1, 2",
+     "let x = 1 and y = 2"
+    ],
+    "correctIndex": 1,
+    "explanation": "You can declare multiple constants or variables on the same line by separating them with commas."
+   },
+   {
+    "id": 3,
+    "question": "Can you declare a constant without an initial value and assign it later?",
+    "options": [
+     "No, constants must be initialized at declaration",
+     "Yes, as long as the type is explicitly declared and the value is assigned exactly once before use",
+     "Yes, but only inside loops",
+     "Yes, and it can be reassigned later"
+    ],
+    "correctIndex": 1,
+    "explanation": "Swift allows late initialization of constants, as long as the compiler can prove it will receive a value before first use and will never be changed afterward."
+   },
+   {
+    "id": 4,
+    "question": "What does the word 'var' mean in Swift?",
+    "options": [
+     "Variable",
+     "Variant",
+     "Various",
+     "Varnish"
+    ],
+    "correctIndex": 0,
+    "explanation": "'var' is short for Variable, indicating a value that can vary/change."
+   },
+   {
+    "id": 5,
+    "question": "What is the recommended naming convention for variables and constants in Swift?",
+    "options": [
+     "snake_case",
+     "PascalCase",
+     "camelCase",
+     "kebab-case"
+    ],
+    "correctIndex": 2,
+    "explanation": "Apple recommends camelCase (e.g., myVariable) for properties, variables and constants."
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "title": "Optionals",
+  "theory": "Optionals are one of Swift's most powerful features. They represent two possibilities: either a value exists (Some) or there is no value at all (nil). They are declared by adding a '?' after the type. Swift's golden rule is: avoid using 'force unwrap' (!) unless you are 100% sure the value is not nil, since this will crash the app.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optionals",
+  "corporateCase": "In an e-commerce sign-up form, the address 'Complement' field is optional. In code, it is represented as 'var complemento: String?'. If the user does not fill it in, the value will be 'nil'.",
+  "gameCase": "In an RPG, the player may or may not have a weapon equipped. This is modeled as 'var armaEquipada: Arma?'. If it is 'nil', the player attacks bare-handed.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare an optional String variable named 'apelido'",
+    "codeSnippet": "var apelido: String___",
+    "correctAnswer": "?",
+    "hint": "Use the symbol that means 'may or may not have a value'."
+   },
+   {
+    "id": 2,
+    "question": "Assign the absence value to an Optional",
+    "codeSnippet": "var erro: Error? = ___",
+    "correctAnswer": "nil",
+    "hint": "In Swift, the absence of a value is represented by a 3-letter word."
+   },
+   {
+    "id": 3,
+    "question": "Declare the age of a user who may prefer not to provide it",
+    "codeSnippet": "var idade: ___?",
+    "correctAnswer": "Int",
+    "hint": "Age is a whole number."
+   },
+   {
+    "id": 4,
+    "question": "Which operator should we NEVER use without absolute certainty?",
+    "codeSnippet": "let nomeForcado = nomeOpcional___",
+    "correctAnswer": "!",
+    "hint": "It is the Force Unwrap operator."
+   },
+   {
+    "id": 5,
+    "question": "Declare an optional URL constant",
+    "codeSnippet": "let site: URL___ = URL(string: \"https://apple.com\")",
+    "correctAnswer": "?",
+    "hint": "Initializing a URL from a String can fail, returning an Optional."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is an Optional in Swift?",
+    "options": [
+     "A kind of variable that can change type",
+     "A container that can hold a value or be nil",
+     "A function that can be ignored",
+     "A compile error"
+    ],
+    "correctIndex": 1,
+    "explanation": "An Optional is essentially an Enum with two cases: .some(Wrapped) and .none (nil)."
+   },
+   {
+    "id": 2,
+    "question": "What happens if you use force unwrap (!) on an Optional that contains 'nil'?",
+    "options": [
+     "The value becomes 0 or an empty string",
+     "The compiler warns, but it runs",
+     "The app crashes (Fatal Error)",
+     "Swift ignores the line of code"
+    ],
+    "correctIndex": 2,
+    "explanation": "Force unwrap tries to extract the value by force. If there is no value (nil), the program breaks immediately."
+   },
+   {
+    "id": 3,
+    "question": "Why does Swift use Optionals instead of allowing any variable to be null (as in Objective-C or Java)?",
+    "options": [
+     "To make the code more complex",
+     "To force the developer to explicitly deal with the absence of a value, increasing safety",
+     "To save memory",
+     "For C++ compatibility"
+    ],
+    "correctIndex": 1,
+    "explanation": "By making nullability explicit in the type system, Swift forces the programmer to handle the 'nil' case, eliminating most NullPointerExceptions."
+   },
+   {
+    "id": 4,
+    "question": "What is the default value of an Optional variable declared as 'var nome: String?' if no value is assigned?",
+    "options": [
+     "\"\"",
+     "0",
+     "nil",
+     "Undefined"
+    ],
+    "correctIndex": 2,
+    "explanation": "Optional variables (var) are automatically initialized with 'nil' if no value is provided."
+   },
+   {
+    "id": 5,
+    "question": "How does Swift represent an Optional internally?",
+    "options": [
+     "As a null pointer",
+     "As a generic Enum with .some and .none cases",
+     "As a special Struct",
+     "As a base Class"
+    ],
+    "correctIndex": 1,
+    "explanation": "Optional is an enum in the Swift standard library: enum Optional<Wrapped> { case none, case some(Wrapped) }."
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "title": "Unwrapping",
+  "theory": "To safely use the value inside an Optional, we need to 'unwrap' it. 'if let' creates a new temporary constant available only inside the if block. 'guard let' does the opposite: it checks whether there is a value, and if there is not, it forces an exit from the function (early exit with return). The big advantage of 'guard let' is that the unwrapped variable stays available in the rest of the function's scope, avoiding excessive nesting (pyramid of doom).",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Optional-Binding",
+  "corporateCase": "When processing login, we use 'guard let token = response.token else { showError(); return }'. If the token exists, we continue the normal login flow without nesting the code.",
+  "gameCase": "Before applying damage, we check: 'guard let alvo = inimigoAtual else { return }'. If no enemy is selected, the attack function is interrupted immediately.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Use the control structure to safely unwrap within a closed scope",
+    "codeSnippet": "___ let nomeSeguro = nomeOpcional { print(nomeSeguro) }",
+    "correctAnswer": "if",
+    "hint": "Used to run a block of code only if the value exists."
+   },
+   {
+    "id": 2,
+    "question": "Use the structure for early exit",
+    "codeSnippet": "___ let usuario = sessaoAtual else { return }",
+    "correctAnswer": "guard",
+    "hint": "Protects the function, requiring the condition to be true in order to continue."
+   },
+   {
+    "id": 3,
+    "question": "Complete the guard let with the keyword needed to exit the function",
+    "codeSnippet": "guard let id = userId else { ___ }",
+    "correctAnswer": "return",
+    "hint": "You must exit the current scope if the guard fails."
+   },
+   {
+    "id": 4,
+    "question": "Unwrap multiple variables in the same if let (separator)",
+    "codeSnippet": "if let x = opX ___ let y = opY { }",
+    "correctAnswer": ",",
+    "hint": "Use a comma to separate multiple unwrapping conditions."
+   },
+   {
+    "id": 5,
+    "question": "Which word goes with guard let to define the failure block?",
+    "codeSnippet": "guard let dado = apiData ___ { return }",
+    "correctAnswer": "else",
+    "hint": "It means 'otherwise'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the main scope difference between 'if let' and 'guard let'?",
+    "options": [
+     "There is no difference",
+     "The 'if let' variable is available outside the block, the 'guard let' one is not",
+     "The 'guard let' variable is available in the outer scope after the declaration, the 'if let' one is restricted to the block",
+     "Both are restricted to their blocks"
+    ],
+    "correctIndex": 2,
+    "explanation": "'guard let' is designed for the 'happy path', making the unwrapped variable available for the rest of the function."
+   },
+   {
+    "id": 2,
+    "question": "What is required inside the 'else' block of a 'guard let'?",
+    "options": [
+     "A print()",
+     "A control transfer that exits the current scope (return, break, continue, throw)",
+     "A reassignment of the variable",
+     "Calling the super() function"
+    ],
+    "correctIndex": 1,
+    "explanation": "The compiler requires the guard's else block to stop the current flow, ensuring the code below does not run with invalid data."
+   },
+   {
+    "id": 3,
+    "question": "What is the problem known as the 'Pyramid of Doom'?",
+    "options": [
+     "A complex compile error",
+     "Multiple nested 'if let' statements that push the code far to the right, making it hard to read",
+     "An infinite loop",
+     "A memory leak in Optionals"
+    ],
+    "correctIndex": 1,
+    "explanation": "Excessive nesting of 'if let' creates a pyramid-shaped structure. 'guard let' solves this by keeping the code left-aligned."
+   },
+   {
+    "id": 4,
+    "question": "Is it possible to use 'guard let' outside of a function or loop?",
+    "options": [
+     "Yes, anywhere",
+     "No, it requires a context it can 'exit' from (such as a function, loop or closure)",
+     "Yes, but only in Playgrounds",
+     "No, only inside classes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Since guard requires a 'return', 'break', etc., it must be inside a scope that supports those exit statements."
+   },
+   {
+    "id": 5,
+    "question": "How do you unwrap an Optional and check a boolean condition at the same time?",
+    "options": [
+     "if let x = opcional && x > 0",
+     "if let x = opcional, x > 0",
+     "if opcional != nil && opcional > 0",
+     "guard opcional > 0 let x = opcional"
+    ],
+    "correctIndex": 1,
+    "explanation": "In Swift, you can combine Optional Binding (if let) with boolean conditions by separating them with commas."
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "title": "Type Inference",
+  "theory": "Swift is smart enough to deduce (infer) the type of a variable or constant based on the initial value you assign to it. This means you do not need to write the type explicitly most of the time. For example, 'let numero = 42' is automatically inferred as 'Int'. An explicit type annotation (e.g., 'let numero: Double = 42') is only needed when you do not provide an initial value, when the inferred type is not what you want, or to speed up compilation in very complex expressions.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference",
+  "corporateCase": "When decoding JSON from a financial API, we use type inference to keep the code clean: 'let taxaJuros = 12.5' (inferred as Double).",
+  "gameCase": "When initializing the game state: 'let isGameOver = false' (inferred as Bool), 'let playerName = \"Hero\"' (inferred as String).",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "What is the inferred type for: let vidas = 3",
+    "codeSnippet": "___",
+    "correctAnswer": "Int",
+    "hint": "It is a whole number."
+   },
+   {
+    "id": 2,
+    "question": "What is the inferred type for: let preco = 19.99",
+    "codeSnippet": "___",
+    "correctAnswer": "Double",
+    "hint": "Floating-point numbers are inferred as Double by default in Swift."
+   },
+   {
+    "id": 3,
+    "question": "Provide the explicit type annotation to force a Float",
+    "codeSnippet": "let gravidade: ___ = 9.8",
+    "correctAnswer": "Float",
+    "hint": "The 32-bit floating-point type."
+   },
+   {
+    "id": 4,
+    "question": "What is the inferred type for: let mensagem = \"Olá\"",
+    "codeSnippet": "___",
+    "correctAnswer": "String",
+    "hint": "Text between double quotes."
+   },
+   {
+    "id": 5,
+    "question": "What is the inferred type for: let ativo = true",
+    "codeSnippet": "___",
+    "correctAnswer": "Bool",
+    "hint": "True or false."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is Type Inference in Swift?",
+    "options": [
+     "The automatic conversion from String to Int",
+     "The compiler's ability to deduce a variable's type from its initial value",
+     "A typing error",
+     "The requirement to declare types"
+    ],
+    "correctIndex": 1,
+    "explanation": "The compiler analyzes the value provided at initialization and sets the variable's type automatically."
+   },
+   {
+    "id": 2,
+    "question": "If you declare 'let valor = 42.0', what type will Swift infer?",
+    "options": [
+     "Float",
+     "Int",
+     "Double",
+     "CGFloat"
+    ],
+    "correctIndex": 2,
+    "explanation": "In Swift, any numeric literal with a decimal point is inferred as Double by default, since it offers greater precision."
+   },
+   {
+    "id": 3,
+    "question": "When is an explicit type annotation (e.g., var nome: String) REQUIRED?",
+    "options": [
+     "Whenever you use var",
+     "When the variable is declared without an initial value",
+     "Only inside classes",
+     "It is never required"
+    ],
+    "correctIndex": 1,
+    "explanation": "If there is no initial value, the compiler has no way to guess the type, so you must specify it."
+   },
+   {
+    "id": 4,
+    "question": "Does Swift allow changing a variable's type after it has been inferred? (e.g., var x = 10; x = \"Olá\")",
+    "options": [
+     "Yes, Swift is dynamically typed",
+     "No, Swift is strongly typed (Type-Safe)",
+     "Only if you use the word 'mutating'",
+     "Yes, but it raises a warning"
+    ],
+    "correctIndex": 1,
+    "explanation": "Swift is Type-Safe. Once the type is set (inferred or explicit), it cannot be changed."
+   },
+   {
+    "id": 5,
+    "question": "What is the advantage of Type Inference?",
+    "options": [
+     "It makes the code cleaner and less verbose without losing the safety of strong typing",
+     "It makes the app run faster",
+     "It lets you mix types freely",
+     "It avoids the use of Optionals"
+    ],
+    "correctIndex": 0,
+    "explanation": "You write less code (without cluttering it with obvious types), but the compiler still ensures that all type rules are followed."
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "title": "Value vs Reference Types",
+  "theory": "In Swift, types are divided into two categories. Value Types, such as Structs, Enums, Int, String and Array, are copied when assigned to a new variable or passed to a function. Each copy is independent. Reference Types, such as Classes, share the same instance in memory. If you change the copy, the original changes too. Apple strongly recommends using Structs (Value Types) to model data, since they avoid shared-state bugs.",
+  "appleDocUrl": "https://developer.apple.com/swift/blog/?id=10",
+  "corporateCase": "The user profile (UserProfile) is a Struct. If you pass the profile to the edit screen, a copy is made. If the user cancels the edit, the original profile in the local database remains intact.",
+  "gameCase": "An enemy's coordinates (Position) are a Struct. The game's level manager (LevelManager), which controls global state and needs to be accessed by several systems, is a Class.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which keyword creates a Value Type to model complex data?",
+    "codeSnippet": "___ Produto { var nome: String }",
+    "correctAnswer": "struct",
+    "hint": "Apple's preferred data structure."
+   },
+   {
+    "id": 2,
+    "question": "Which keyword creates a Reference Type?",
+    "codeSnippet": "___ GerenciadorDeRede { }",
+    "correctAnswer": "class",
+    "hint": "Used when you need shared identity."
+   },
+   {
+    "id": 3,
+    "question": "In Swift, are Arrays and Dictionaries Value Types or Reference Types?",
+    "codeSnippet": "___ Types",
+    "correctAnswer": "Value",
+    "hint": "They are implemented as Structs in the standard library."
+   },
+   {
+    "id": 4,
+    "question": "To modify a property inside a method of a Struct, which keyword is needed before 'func'?",
+    "codeSnippet": "___ func atualizar() { }",
+    "correctAnswer": "mutating",
+    "hint": "Structs are immutable by default in their methods."
+   },
+   {
+    "id": 5,
+    "question": "If 'A' is a class, and we do 'let B = A', is B a copy or a ___?",
+    "codeSnippet": "___",
+    "correctAnswer": "reference",
+    "hint": "It points to the same location in memory."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What happens when you assign an instance of a Struct to a new variable?",
+    "options": [
+     "Both variables point to the same memory space",
+     "An independent, complete copy of the instance is created",
+     "A compile error occurs",
+     "The original instance is destroyed"
+    ],
+    "correctIndex": 1,
+    "explanation": "Structs are Value Types. Assignment creates an exact copy, and changes to the copy do not affect the original."
+   },
+   {
+    "id": 2,
+    "question": "What is Apple's main recommendation about using Structs and Classes?",
+    "options": [
+     "Use Classes for everything",
+     "Use Structs by default and Classes only when you need inheritance or shared identity",
+     "Use Structs only for math and Classes for UI",
+     "Do not use Structs in Swift"
+    ],
+    "correctIndex": 1,
+    "explanation": "Structs are safer (no accidental shared state) and more performant (allocated on the Stack)."
+   },
+   {
+    "id": 3,
+    "question": "If you have a 'let' that stores a Class, can you change that class's internal properties (var)?",
+    "options": [
+     "No, because the instance was declared with let",
+     "Yes, because 'let' on reference types protects only the memory reference, not the object's contents",
+     "Only if you use the word mutating",
+     "The compiler raises an error"
+    ],
+    "correctIndex": 1,
+    "explanation": "With Reference Types, 'let' means you cannot point to ANOTHER instance, but you can modify the internal properties of the current instance."
+   },
+   {
+    "id": 4,
+    "question": "If you have a 'let' that stores a Struct, can you change that Struct's internal properties (var)?",
+    "options": [
+     "Yes, normally",
+     "No, because the entire Struct becomes immutable",
+     "Yes, using mutating",
+     "Only if the Struct inherits from NSObject"
+    ],
+    "correctIndex": 1,
+    "explanation": "With Value Types, if the instance is 'let', all of its properties also become immutable, even if they were declared as 'var' in the Struct's definition."
+   },
+   {
+    "id": 5,
+    "question": "How does Swift optimize copying large Value Types, such as Arrays with thousands of items?",
+    "options": [
+     "It does not optimize, copying is always slow",
+     "It converts to a Class automatically",
+     "It uses the Copy-on-Write (CoW) technique, copying the memory only if the array is modified",
+     "It limits the size of the Array"
+    ],
+    "correctIndex": 2,
+    "explanation": "Copy-on-Write ensures that copying collections is extremely fast, since actual duplication in memory only happens at the moment one of the copies is changed."
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "title": "Nil Coalescing and Optional Chaining",
+  "theory": "The Nil Coalescing operator (??) lets you provide a default value in case an Optional is nil, safely unwrapping it in a single line. Optional Chaining (?.) lets you safely access properties, methods or subscripts of an Optional. If the Optional is nil, the call fails silently and returns nil, instead of causing a crash. Together, they make Swift code extremely concise and safe.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/optionalchaining/",
+  "corporateCase": "When loading the profile picture: 'let urlImagem = usuario.fotoPerfil?.url ?? urlPadrao'. If the user has no photo, we use the system's default image.",
+  "gameCase": "When trying to play the equipped weapon's sound: 'player.armaEquipada?.tocarSomDeTiro()'. If the player is unarmed (armaEquipada is nil), nothing happens and the game does not break.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Provide the default value \"Anonymous\" in case the name is nil",
+    "codeSnippet": "let nomeExibicao = nome ___ \"Anonymous\"",
+    "correctAnswer": "??",
+    "hint": "Nil coalescing operator."
+   },
+   {
+    "id": 2,
+    "question": "Safely access the 'rua' property of the optional address",
+    "codeSnippet": "let rua = usuario.endereco___.rua",
+    "correctAnswer": "?",
+    "hint": "Optional Chaining."
+   },
+   {
+    "id": 3,
+    "question": "Call the 'atacar()' method only if the enemy exists",
+    "codeSnippet": "inimigo___.atacar()",
+    "correctAnswer": "?",
+    "hint": "Optional Chaining on methods."
+   },
+   {
+    "id": 4,
+    "question": "Set the balance to 0.0 if it is nil",
+    "codeSnippet": "let saldoFinal = saldoAtual ___ 0.0",
+    "correctAnswer": "??",
+    "hint": "Two question marks."
+   },
+   {
+    "id": 5,
+    "question": "Chain the access: empresa -> ceo -> nome",
+    "codeSnippet": "let nomeCeo = empresa___.ceo___.nome",
+    "correctAnswer": "?",
+    "hint": "You can chain multiple optionals."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does the Nil Coalescing operator (??) do?",
+    "options": [
+     "Forces the unwrapping of an Optional",
+     "Checks whether two Optionals are equal",
+     "Unwraps an Optional if it has a value, or returns a default value if it is nil",
+     "Creates an infinite loop"
+    ],
+    "correctIndex": 2,
+    "explanation": "It is an elegant way of saying 'use this value, but if it is nil, use this other default value'."
+   },
+   {
+    "id": 2,
+    "question": "What is the return type of an expression that uses Optional Chaining (?.)?",
+    "options": [
+     "Always the original non-optional type",
+     "Always an Optional, even if the accessed property is not optional",
+     "Always nil",
+     "An Any type"
+    ],
+    "correctIndex": 1,
+    "explanation": "Since the chain can fail at any point and return nil, the final result of an Optional Chaining is always wrapped in an Optional."
+   },
+   {
+    "id": 3,
+    "question": "What happens on the line 'let x = obj?.metodoQueRetornaInt() ?? 0' if 'obj' is nil?",
+    "options": [
+     "The app crashes",
+     "The method is called and returns 0",
+     "The method call is ignored and 'x' receives 0",
+     "The compiler reports an error"
+    ],
+    "correctIndex": 2,
+    "explanation": "Optional Chaining fails silently, returning nil. Nil Coalescing catches that nil and supplies the default value 0."
+   },
+   {
+    "id": 4,
+    "question": "Is it possible to chain multiple Optional Chainings? (e.g., a?.b?.c?.d)",
+    "options": [
+     "No, the limit is one per line",
+     "Yes, and if any one of them is nil, the entire expression immediately returns nil",
+     "Yes, but it causes a memory leak",
+     "Only in Classes, not in Structs"
+    ],
+    "correctIndex": 1,
+    "explanation": "Multiple chaining is one of Swift's biggest advantages, allowing you to safely navigate complex data hierarchies."
+   },
+   {
+    "id": 5,
+    "question": "What is the difference between '??' and '!'?",
+    "options": [
+     "None, they do the same thing",
+     "'??' provides a safe fallback, '!' forces extraction and crashes if nil",
+     "'!' is faster",
+     "'??' only works with Strings"
+    ],
+    "correctIndex": 1,
+    "explanation": "'??' is the safe, recommended alternative for dealing with missing values when you have an acceptable default value."
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "title": "Enums (Associated Values)",
+  "theory": "Enums (Enumerations) in Swift are first-class types. Unlike other languages where enums are just integers in disguise, in Swift they can have methods, computed properties and, most importantly, Associated Values. This allows each enum case to carry additional data of different types, making them perfect for modeling complex states.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/",
+  "corporateCase": "Modeling network results: 'enum Result { case success(Data), case failure(Error) }'. The success case carries the actual data, the failure case carries the error.",
+  "gameCase": "States of an NPC: 'enum NPCState { case idle, case walking(destination: Point), case attacking(target: Player, damage: Int) }'. The attacking state carries who the target is and how much damage it does.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Declare the keyword to create an enumeration",
+    "codeSnippet": "___ Direcao { case norte, sul, leste, oeste }",
+    "correctAnswer": "enum",
+    "hint": "Short for enumeration."
+   },
+   {
+    "id": 2,
+    "question": "Add an associated value of type String to the 'erro' case",
+    "codeSnippet": "case erro(mensagem: ___)",
+    "correctAnswer": "String",
+    "hint": "The data type for text."
+   },
+   {
+    "id": 3,
+    "question": "Which control structure is most used to evaluate Enums in Swift?",
+    "codeSnippet": "___ estadoAtual { case .idle: break }",
+    "correctAnswer": "switch",
+    "hint": "Swift requires this structure to be exhaustive."
+   },
+   {
+    "id": 4,
+    "question": "Extract the associated value in a switch case using let",
+    "codeSnippet": "case .success(___ dados): print(dados)",
+    "correctAnswer": "let",
+    "hint": "You 'bind' the associated value to a constant."
+   },
+   {
+    "id": 5,
+    "question": "How do you access an Enum case when the type is already inferred?",
+    "codeSnippet": "var estado: Estado = ___sucesso",
+    "correctAnswer": ".",
+    "hint": "Use the dot (dot syntax)."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What makes Enums in Swift more powerful than in languages like C?",
+    "options": [
+     "They are faster",
+     "They can have Associated Values, methods and computed properties",
+     "They do not need braces {}",
+     "They replace Classes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Enums in Swift are complex types that can encapsulate logic and data specific to each case."
+   },
+   {
+    "id": 2,
+    "question": "What is an 'Associated Value' in an Enum?",
+    "options": [
+     "An integer that represents the case",
+     "Extra information of any type that is attached to a specific enum case at creation time",
+     "A comment in the documentation",
+     "A global variable"
+    ],
+    "correctIndex": 1,
+    "explanation": "Associated values let the enum carry the 'context' of the current state, such as the error code in a failure case."
+   },
+   {
+    "id": 3,
+    "question": "What does the Swift compiler require when using a 'switch' with an Enum?",
+    "options": [
+     "The switch must have at most 3 cases",
+     "The switch must be exhaustive, that is, cover all possible cases of the Enum",
+     "The switch must return a value",
+     "The switch cannot use the word 'default'"
+    ],
+    "correctIndex": 1,
+    "explanation": "Exhaustiveness ensures you never forget to handle a new case added to the Enum in the future, preventing bugs."
+   },
+   {
+    "id": 4,
+    "question": "Are Enums in Swift Value Types or Reference Types?",
+    "options": [
+     "Value Types",
+     "Reference Types",
+     "Neither",
+     "It depends on whether they have methods"
+    ],
+    "correctIndex": 0,
+    "explanation": "Just like Structs, Enums are Value Types and are copied by value."
+   },
+   {
+    "id": 5,
+    "question": "What is the difference between Raw Values and Associated Values in Enums?",
+    "options": [
+     "They are the same thing",
+     "Raw Values are predefined and the same for all instances of that case; Associated Values are defined when the instance is created and can vary",
+     "Raw Values only accept Int, Associated Values only accept String",
+     "Raw Values are obsolete"
+    ],
+    "correctIndex": 1,
+    "explanation": "Raw Values (e.g., case norte = \"N\") are static constants. Associated Values (e.g., case erro(codigo: 404)) are dynamic."
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "title": "Closures and Defer",
+  "theory": "Closures are self-contained blocks of code that can be passed around and used in your code (similar to lambdas in other languages). They capture and store references to variables from the context where they were created. If a closure is called after the function that created it returns (as in asynchronous requests), it must be marked with '@escaping'. 'defer' is a statement that postpones the execution of a block of code until the exact moment before the current scope exits, making it ideal for resource cleanup.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/closures/",
+  "corporateCase": "In API calls: 'api.fetchData { result in ... }'. The closure handles the asynchronous response. We use 'defer { stopLoadingAnimation() }' at the start of the function to make sure the spinner stops spinning, no matter whether the function ends in success or error.",
+  "gameCase": "When starting an attack animation: 'animator.play(anim) { onAttackComplete() }'. The closure is the callback. We use 'defer { isAttacking = false }' to make sure the player's state is reset even if the function is interrupted early.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which keyword postpones the execution of a block until the end of the scope?",
+    "codeSnippet": "___ { print(\"Fim da função\") }",
+    "correctAnswer": "defer",
+    "hint": "It means 'to postpone'."
+   },
+   {
+    "id": 2,
+    "question": "How do you mark a closure that outlives the end of the function (e.g., asynchronous)?",
+    "codeSnippet": "func buscar(completion: ___ () -> Void)",
+    "correctAnswer": "@escaping",
+    "hint": "The closure 'escapes' the function's scope."
+   },
+   {
+    "id": 3,
+    "question": "What is the syntax for separating the parameters from the closure body?",
+    "codeSnippet": "{ (x, y) ___ x + y }",
+    "correctAnswer": "in",
+    "hint": "Keyword that marks the start of the closure body."
+   },
+   {
+    "id": 4,
+    "question": "How do you refer to the first implicit parameter of a short closure?",
+    "codeSnippet": "array.map { ___ * 2 }",
+    "correctAnswer": "$0",
+    "hint": "Dollar sign followed by zero."
+   },
+   {
+    "id": 5,
+    "question": "To avoid Retain Cycles (memory leaks) when capturing 'self' in closures, we use [___ self]",
+    "codeSnippet": "[___ self]",
+    "correctAnswer": "weak",
+    "hint": "It creates a weak reference."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is a Closure in Swift?",
+    "options": [
+     "An anonymous class",
+     "A block of code that can be passed around like a variable and captures values from its context",
+     "A type of loop",
+     "A memory error"
+    ],
+    "correctIndex": 1,
+    "explanation": "Closures are functional blocks that capture the surrounding environment, enabling callbacks and asynchronous programming."
+   },
+   {
+    "id": 2,
+    "question": "When is the block of code inside a 'defer' executed?",
+    "options": [
+     "Immediately after it is declared",
+     "Only if an error occurs (throw)",
+     "At the exact moment before execution leaves the current scope (function, loop, if)",
+     "On a background thread"
+    ],
+    "correctIndex": 2,
+    "explanation": "defer guarantees that cleanup code (closing files, resetting states) runs regardless of how the function ends (return, throw, or natural end)."
+   },
+   {
+    "id": 3,
+    "question": "Why do we need to use '@escaping' on some closures passed as parameters?",
+    "options": [
+     "To make the closure run faster",
+     "To tell the compiler that the closure will be stored and executed AFTER the function returns, requiring care with memory (self)",
+     "To allow the closure to modify variables",
+     "To ignore errors"
+    ],
+    "correctIndex": 1,
+    "explanation": "Non-escaping closures (the default) are destroyed when the function ends. Escaping closures outlive the function, which can cause memory leaks if they capture 'self' strongly."
+   },
+   {
+    "id": 4,
+    "question": "What does the '$0' syntax mean in a closure?",
+    "options": [
+     "The closure's return value",
+     "The first parameter passed to the closure (Shorthand Argument Name)",
+     "A global variable",
+     "A syntax error"
+    ],
+    "correctIndex": 1,
+    "explanation": "Swift provides shorthand argument names ($0, $1, $2...) for inline closures, allowing you to omit the explicit declaration of the parameters."
+   },
+   {
+    "id": 5,
+    "question": "If you have multiple 'defer' blocks in the same function, in what order are they executed?",
+    "options": [
+     "In the order they were written (Top-to-Bottom)",
+     "In the reverse order they were written (Bottom-to-Top / LIFO)",
+     "Randomly",
+     "Only the last one is executed"
+    ],
+    "correctIndex": 1,
+    "explanation": "defer blocks work like a stack (Stack). The last defer declared is the first to run when exiting the scope."
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "title": "Architecture Patterns (MVVM)",
+  "theory": "The MVVM (Model-View-ViewModel) pattern is widely adopted in the Apple ecosystem, especially with SwiftUI. It separates business logic and state (ViewModel) from the user interface (View) and the data (Model). This makes testing, maintenance and code reuse easier. The View only observes the ViewModel and reacts to state changes, while the ViewModel processes user intents and updates the Model.",
+  "appleDocUrl": "https://developer.apple.com/documentation/swiftui/managing-model-data-in-your-app",
+  "isAdvanced": true,
+  "corporateCase": "In a banking app, the 'ExtratoView' only displays the list of transactions. The 'ExtratoViewModel' is responsible for fetching data from the API, formatting dates and monetary values, and exposing a ready-made list for the View to consume.",
+  "gameCase": "In a card game, the 'CardView' shows the card. The 'GameViewModel' manages the game rules, whose turn it is, and updates the score. The View simply reflects the ViewModel's current state.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which layer in MVVM is responsible for formatting data for display?",
+    "codeSnippet": "___",
+    "correctAnswer": "ViewModel",
+    "hint": "It sits between the Model and the View."
+   },
+   {
+    "id": 2,
+    "question": "In SwiftUI, which property wrapper is commonly used in the ViewModel to notify the View about changes?",
+    "codeSnippet": "@___ var score = 0",
+    "correctAnswer": "Published",
+    "hint": "It publishes the changes."
+   },
+   {
+    "id": 3,
+    "question": "Should the View contain complex business logic?",
+    "codeSnippet": "___",
+    "correctAnswer": "No",
+    "hint": "The View should be as 'dumb' as possible."
+   },
+   {
+    "id": 4,
+    "question": "Which protocol does the ViewModel usually adopt in SwiftUI to be observable?",
+    "codeSnippet": "class MeuViewModel: ___ { }",
+    "correctAnswer": "ObservableObject",
+    "hint": "It lets objects be observed."
+   },
+   {
+    "id": 5,
+    "question": "Should the Model import the UIKit or SwiftUI framework?",
+    "codeSnippet": "___",
+    "correctAnswer": "No",
+    "hint": "The Model should be independent of UI."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the main advantage of the MVVM pattern?",
+    "options": [
+     "It makes the code faster",
+     "It separates presentation logic from the interface, making testing and maintenance easier",
+     "It reduces the app's size",
+     "It is the only pattern supported by Apple"
+    ],
+    "correctIndex": 1,
+    "explanation": "Separation of concerns lets you test the ViewModel without having to instantiate the View."
+   },
+   {
+    "id": 2,
+    "question": "In MVVM, who 'owns' the ViewModel?",
+    "options": [
+     "The Model",
+     "The AppDelegate",
+     "The View",
+     "The Database"
+    ],
+    "correctIndex": 2,
+    "explanation": "The View owns and observes the ViewModel. The ViewModel does not know who the View is."
+   },
+   {
+    "id": 3,
+    "question": "What does the ViewModel do when the Model's data changes?",
+    "options": [
+     "It updates the View directly by calling the View's methods",
+     "It notifies observers (such as the View) that the state has changed",
+     "It saves to the database",
+     "It crashes the app"
+    ],
+    "correctIndex": 1,
+    "explanation": "The ViewModel uses data binding (such as @Published in Combine/SwiftUI) to notify the View reactively."
+   },
+   {
+    "id": 4,
+    "question": "Which Apple framework is often used together with MVVM for reactive data binding?",
+    "options": [
+     "Core Data",
+     "Combine",
+     "SpriteKit",
+     "ARKit"
+    ],
+    "correctIndex": 1,
+    "explanation": "Combine provides a declarative API for processing values over time, perfect for connecting ViewModels and Views."
+   },
+   {
+    "id": 5,
+    "question": "In an MVVM app, where would you make a network call (API)?",
+    "options": [
+     "In the View",
+     "In the AppDelegate",
+     "In the ViewModel (or in a Service called by the ViewModel)",
+     "In the Model"
+    ],
+    "correctIndex": 2,
+    "explanation": "The ViewModel orchestrates business logic, delegating network calls to services and updating its state with the result."
+   }
+  ]
+ },
+ {
+  "id": 10,
+  "title": "Concurrency (async/await)",
+  "theory": "Structured concurrency in Swift (introduced in Swift 5.5) uses 'async' and 'await' to write asynchronous code that is as easy to read as synchronous code. This replaces nested callbacks and improves safety and performance. 'Task' is used to start an asynchronous context from synchronous code. 'Actors' protect mutable state against data races in concurrent environments.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/",
+  "isAdvanced": true,
+  "corporateCase": "When logging in, we use 'let user = await api.login(credenciais)'. The code pauses on that line without freezing the interface (main thread) until the response arrives.",
+  "gameCase": "When loading the assets of a heavy level: 'await loadTextures()'. A loading screen is displayed while the main thread stays free to animate the loading.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which keyword marks a function as asynchronous?",
+    "codeSnippet": "func buscarDados() ___ { }",
+    "correctAnswer": "async",
+    "hint": "It comes before the return type."
+   },
+   {
+    "id": 2,
+    "question": "Which keyword is used to pause execution until an asynchronous function finishes?",
+    "codeSnippet": "let dados = ___ buscarDados()",
+    "correctAnswer": "await",
+    "hint": "It means 'to wait'."
+   },
+   {
+    "id": 3,
+    "question": "How do you start an asynchronous block of code from a synchronous context (such as viewDidLoad)?",
+    "codeSnippet": "___ { await carregar() }",
+    "correctAnswer": "Task",
+    "hint": "It represents a unit of asynchronous work."
+   },
+   {
+    "id": 4,
+    "question": "Which reference type protects its internal state against concurrent access (data races)?",
+    "codeSnippet": "___ ContadorSeguro { var count = 0 }",
+    "correctAnswer": "actor",
+    "hint": "Similar to a class, but safe for concurrency."
+   },
+   {
+    "id": 5,
+    "question": "If an asynchronous function can fail (throw errors), how do we call it?",
+    "codeSnippet": "let resultado = try ___ buscarComErro()",
+    "correctAnswer": "await",
+    "hint": "The order is 'try await'."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the main benefit of async/await compared to completion closures?",
+    "options": [
+     "It runs code faster",
+     "It avoids the 'pyramid of doom' (nested callbacks) and makes the control flow more linear and readable",
+     "It uses less battery",
+     "It does not need an internet connection"
+    ],
+    "correctIndex": 1,
+    "explanation": "Asynchronous code looks synchronous, making it easier to use try/catch and traditional loops."
+   },
+   {
+    "id": 2,
+    "question": "What happens to the current thread when the code reaches an 'await'?",
+    "options": [
+     "The thread is blocked (frozen) until the operation finishes",
+     "The thread is suspended and freed to run other work while it waits for the result",
+     "The thread is destroyed",
+     "The app crashes"
+    ],
+    "correctIndex": 1,
+    "explanation": "This is called 'suspension'. The thread does not sit idle; it can be used by other system tasks."
+   },
+   {
+    "id": 3,
+    "question": "What is an Actor in Swift?",
+    "options": [
+     "A UI element for animations",
+     "A reference type that isolates its state, ensuring that only one task accesses its data at a time, preventing data races",
+     "A protocol for testing",
+     "A global function"
+    ],
+    "correctIndex": 1,
+    "explanation": "Actors provide built-in synchronization, replacing the need for manual locks or GCD serial queues."
+   },
+   {
+    "id": 4,
+    "question": "Where should the User Interface (UI) update code run?",
+    "options": [
+     "On any thread",
+     "On the Main Thread (MainActor)",
+     "On a background thread",
+     "Inside a custom Actor"
+    ],
+    "correctIndex": 1,
+    "explanation": "All UI updates on Apple platforms must happen on the main thread. @MainActor ensures this in modern Swift."
+   },
+   {
+    "id": 5,
+    "question": "How do you run multiple asynchronous tasks in parallel and wait for all of them to finish?",
+    "options": [
+     "Using multiple awaits in sequence",
+     "Using async let or TaskGroup",
+     "Using a regular for loop",
+     "It is not possible"
+    ],
+    "correctIndex": 1,
+    "explanation": "'async let' lets you start several tasks concurrently and wait for their results together."
+   }
+  ]
+ },
+ {
+  "id": 11,
+  "title": "Memory Management (ARC)",
+  "theory": "Swift uses Automatic Reference Counting (ARC) to manage the app's memory. ARC tracks how many strong references exist for each class instance. When the count reaches zero, the memory is freed. The biggest danger is 'Retain Cycles', where two objects hold strong references to each other, preventing the count from reaching zero and causing a memory leak. We use 'weak' or 'unowned' to break these cycles.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/",
+  "isAdvanced": true,
+  "corporateCase": "A 'ViewController' has a strong reference to a 'ViewModel'. If the ViewModel has a closure that captures the ViewController strongly, we have a Retain Cycle. We solve it by capturing '[weak self]' in the closure.",
+  "gameCase": "A 'Player' has a strong reference to its 'Weapon'. The 'Weapon' needs to know who its owner is, but uses a 'weak var owner: Player?' reference so as not to create a cycle.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "What is the mechanism Swift uses to manage memory?",
+    "codeSnippet": "___",
+    "correctAnswer": "ARC",
+    "hint": "Automatic Reference Counting."
+   },
+   {
+    "id": 2,
+    "question": "Which keyword creates a weak reference that can become nil?",
+    "codeSnippet": "___ var delegate: MeuDelegate?",
+    "correctAnswer": "weak",
+    "hint": "The opposite of strong."
+   },
+   {
+    "id": 3,
+    "question": "Which keyword creates a weak reference that is NOT an Optional (it is assumed it will never be nil during use)?",
+    "codeSnippet": "___ var dono: Pessoa",
+    "correctAnswer": "unowned",
+    "hint": "It means 'without an owner'."
+   },
+   {
+    "id": 4,
+    "question": "How do you capture 'self' weakly inside a closure?",
+    "codeSnippet": "api.fetch { [___ self] in }",
+    "correctAnswer": "weak",
+    "hint": "It avoids retain cycles in closures."
+   },
+   {
+    "id": 5,
+    "question": "By default, are references in Swift strong or weak?",
+    "codeSnippet": "___",
+    "correctAnswer": "strong",
+    "hint": "They increase the retain count."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is a Retain Cycle?",
+    "options": [
+     "An infinite loop in the code",
+     "When two objects hold strong references to each other, preventing ARC from freeing them from memory",
+     "A View's lifecycle",
+     "A compiler failure"
+    ],
+    "correctIndex": 1,
+    "explanation": "Since both have a retain count of at least 1, ARC never destroys them, causing a Memory Leak."
+   },
+   {
+    "id": 2,
+    "question": "What is the difference between 'weak' and 'unowned'?",
+    "options": [
+     "None",
+     "'weak' is for Structs, 'unowned' for Classes",
+     "'weak' creates an Optional that becomes nil when the object is destroyed. 'unowned' is not an Optional and crashes if accessed after the object is destroyed",
+     "'unowned' is safer than 'weak'"
+    ],
+    "correctIndex": 2,
+    "explanation": "Use 'weak' when the referenced object may have a shorter lifetime. Use 'unowned' when you are sure the referenced object will always exist as long as the reference exists."
+   },
+   {
+    "id": 3,
+    "question": "Does ARC apply to Structs and Enums?",
+    "options": [
+     "Yes, to all types",
+     "No, ARC manages only instances of Classes (Reference Types)",
+     "Only to Structs",
+     "Only when used with closures"
+    ],
+    "correctIndex": 1,
+    "explanation": "Value Types (Structs, Enums) are allocated on the Stack or inline and do not need reference counting, since they are copied."
+   },
+   {
+    "id": 4,
+    "question": "What happens if you access an 'unowned' reference after the object has been deallocated?",
+    "options": [
+     "It returns nil",
+     "The app crashes (Fatal Error)",
+     "The object is recreated",
+     "The compiler warns"
+    ],
+    "correctIndex": 1,
+    "explanation": "Similar to force unwrap (!), accessing an invalid unowned reference breaks the app."
+   },
+   {
+    "id": 5,
+    "question": "What is the common delegation pattern (Delegate Pattern) with regard to memory?",
+    "options": [
+     "The delegate is always a strong reference",
+     "The delegate must be a Struct",
+     "The 'delegate' property is usually declared as 'weak' to avoid retain cycles",
+     "Delegates do not use memory"
+    ],
+    "correctIndex": 2,
+    "explanation": "Since object A (e.g., TableView) belongs to object B (e.g., ViewController), if A has a strong delegate to B, a cycle forms. That is why delegates are 'weak'."
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "title": "Protocol-Oriented Programming (POP)",
+  "theory": "Swift was designed as a protocol-oriented language. Instead of inheriting behaviors from a superclass (OOP), you adopt protocols. This solves multiple inheritance problems and tight coupling. Protocol Extensions let you provide default implementations, bringing superpowers to Structs and Enums.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/",
+  "isAdvanced": true,
+  "category": "Swift Avançado",
+  "corporateCase": "We have a banking app with several 'Error' views. Instead of inheriting from a BaseErrorViewController, we create an 'ErrorPresentable' protocol with a default extension that shows the alert, applicable to any ViewController.",
+  "gameCase": "Characters and Enemies can attack. Instead of a 'Combatant' class, we use 'Attackable' and 'Damageable' protocols. An explosive barrel can be 'Damageable' without being an enemy.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "What lets you give a protocol a default behavior?",
+    "codeSnippet": "___ MeuProtocolo { func fazAlgo() { print(\"Default\") } }",
+    "correctAnswer": "extension",
+    "hint": "Extension."
+   },
+   {
+    "id": 2,
+    "question": "Can Structs inherit from classes?",
+    "codeSnippet": "struct MinhaStruct: ___ {}",
+    "correctAnswer": "Protocol",
+    "hint": "They only adopt protocols."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the main advantage of Protocol-Oriented Programming over classic inheritance?",
+    "options": [
+     "Faster performance",
+     "It allows inheritance from multiple sources via composition and works with Value Types",
+     "It completely replaces Classes",
+     "It is the only way to use SwiftUI"
+    ],
+    "correctIndex": 1,
+    "explanation": "POP allows flexible composition and works perfectly with Structs, avoiding the problems of deep class inheritance."
+   }
+  ]
+ },
+ {
+  "id": 13,
+  "title": "Generics",
+  "theory": "Generics let you write flexible, reusable code that works with any type, while keeping type safety (Type Safety). Instead of writing separate functions for Int, String and Float, you write one function with a placeholder '<T>'. Arrays and Optionals in Swift are built using Generics under the hood.",
+  "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/",
+  "isAdvanced": true,
+  "category": "Swift Avançado",
+  "corporateCase": "An API service 'NetworkManager' that fetches and decodes data. Instead of having 'fetchUser' and 'fetchTransaction', we use 'func fetch<T: Decodable>(type: T.Type) -> T'.",
+  "gameCase": "An inventory system that needs to store weapons, potions or armor. We use a generic 'struct Inventory<Element>' to store and organize any type of game item.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "How do we define a generic function in Swift?",
+    "codeSnippet": "func swapTwoValues___(_ a: inout T, _ b: inout T)",
+    "correctAnswer": "<T>",
+    "hint": "Between less-than and greater-than signs."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the purpose of the 'T: Equatable' constraint in a Generic?",
+    "options": [
+     "To say that T is a number",
+     "To ensure that elements of type T can be compared with '=='",
+     "To make T optional",
+     "To ensure that T is not nil"
+    ],
+    "correctIndex": 1,
+    "explanation": "Constraints in generics ensure the type passed in meets certain requirements, such as protocol conformance (e.g., Equatable)."
+   }
+  ]
+ },
+ {
+  "id": 14,
+  "title": "Lifecycle (UIKit vs SwiftUI)",
+  "theory": "An app's lifecycle defines how it starts, goes to the background and comes back. In the past, the AppDelegate managed everything. Later, the SceneDelegate appeared for multiple windows (iPadOS). In SwiftUI, we use the 'App' struct and the @main wrapper. Understanding these states is essential for saving data, pausing audio and saving battery.",
+  "appleDocUrl": "https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle",
+  "isAdvanced": true,
+  "category": "iOS e iPadOS",
+  "corporateCase": "A finance app hides the balance and shows a bank logo (blur) as soon as the app enters 'background', to prevent the information from leaking in the iOS multitasking screen.",
+  "gameCase": "A game automatically pauses and saves the player's progress when they receive a phone call, triggering the 'sceneWillResignActive' state.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "In SwiftUI, which modifier detects changes in the app's state?",
+    "codeSnippet": ".onReceive(NotificationCenter.default.publisher(for: UIApplication.___))",
+    "correctAnswer": "didEnterBackgroundNotification",
+    "hint": "When it goes to the background."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the difference between 'willResignActive' and 'didEnterBackground'?",
+    "options": [
+     "None, they are the same state",
+     "willResignActive is when the app is permanently closed",
+     "willResignActive happens when an interruption arises (e.g., a phone call), but the app is still on screen. didEnterBackground is when it disappears completely",
+     "didEnterBackground only exists on the Mac"
+    ],
+    "correctIndex": 2,
+    "explanation": "willResignActive is a transitional (inactive) state, whereas didEnterBackground means the app is running in the background (invisible)."
+   }
+  ]
+ },
+ {
+  "id": 15,
+  "title": "SwiftUI and UIKit Interoperability",
+  "theory": "Although SwiftUI is the future, many apps have UIKit codebases. To use a SwiftUI View in UIKit, you use 'UIHostingController'. To use a UIKit view in SwiftUI, we create a struct that adopts 'UIViewRepresentable' or 'UIViewControllerRepresentable'.",
+  "appleDocUrl": "https://developer.apple.com/tutorials/swiftui/interfacing-with-uikit",
+  "isAdvanced": true,
+  "category": "iOS e iPadOS",
+  "corporateCase": "A company has had a complex QR Code reader built in UIKit for 5 years. They build the new screen in SwiftUI, but use a UIViewControllerRepresentable to wrap the old reader and save months of refactoring.",
+  "gameCase": "A main menu built entirely and quickly in SwiftUI, which, when 'Play' is tapped, presents the heavy engine running in a UIViewController based on Metal or SpriteKit.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which protocol wraps a native UIView for SwiftUI?",
+    "codeSnippet": "struct Mapa: ___ { }",
+    "correctAnswer": "UIViewRepresentable",
+    "hint": "Representable as a UIView."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What does the 'Coordinator' do in UIViewRepresentable?",
+    "options": [
+     "Syncs data with CoreData",
+     "Communicates UIKit delegates and events back to SwiftUI",
+     "Controls the screen's animations",
+     "Clears the View's memory"
+    ],
+    "correctIndex": 1,
+    "explanation": "The Coordinator acts as a bridge, adopting UIKit delegate protocols to update state in SwiftUI."
+   }
+  ]
+ },
+ {
+  "id": 16,
+  "title": "watchOS & HealthKit",
+  "theory": "watchOS demands fast designs and short interactions (glances), and focuses on health. watchOS apps today are independent. HealthKit is the central framework that consolidates the user's health data (with strict permissions) and lets apps read/write workouts, heart rate, etc.",
+  "appleDocUrl": "https://developer.apple.com/documentation/watchos-apps",
+  "isAdvanced": true,
+  "category": "watchOS",
+  "corporateCase": "A telemedicine app reads the user's average heart rate via HealthKit on the Apple Watch and alerts the doctor if it detects severe anomalies during the week.",
+  "gameCase": "An RPG-style game ('Zombies, Run!') uses pedometer data from HealthKit via Apple Watch to advance the narrative and flee from monsters in the virtual game.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "What must the app request before reading HealthKit data?",
+    "codeSnippet": "healthStore.request___(toShare: ..., read: ...)",
+    "correctAnswer": "Authorization",
+    "hint": "Permission/Authorization."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is the best UI practice on watchOS?",
+    "options": [
+     "Deep navigation screens",
+     "Long texts to read and small buttons",
+     "Direct information, high contrast, quick actions and complications on the watch face",
+     "Always require the iPhone to be connected"
+    ],
+    "correctIndex": 2,
+    "explanation": "Interactions on the Watch should last seconds. The focus is on legibility and immediate access to the main action."
+   }
+  ]
+ },
+ {
+  "id": 17,
+  "title": "macOS (AppKit and SwiftUI)",
+  "theory": "macOS has a different paradigm: multiple floating windows, a menu bar, trackpad vs mouse, deep keyboard shortcuts. AppKit was the historical standard, but SwiftUI now unifies development, allowing you to build the iOS app for Mac (via Mac Catalyst or a Native Destination).",
+  "appleDocUrl": "https://developer.apple.com/design/human-interface-guidelines/macos",
+  "isAdvanced": true,
+  "category": "macOS",
+  "corporateCase": "A code editor on the Mac uses 'Menu Bar' commands for main actions and global shortcuts, offering a native macOS multi-tab preferences window.",
+  "gameCase": "On macOS, a game converts touch controls (virtual joysticks) to keyboard (WASD) and mouse click, actively handling window resizing by the user.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which traditional framework builds interfaces on the Mac?",
+    "codeSnippet": "import ___",
+    "correctAnswer": "AppKit",
+    "hint": "Not UIKit."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "In SwiftUI for macOS, how do you create a top command bar?",
+    "options": [
+     "In the AppDelegate",
+     "Using the .commands modifier and CommandMenu inside the App block",
+     "Using UITabBar",
+     "The command bar is automatic"
+    ],
+    "correctIndex": 1,
+    "explanation": "The @main declaration provides the 'WindowGroup' scene, to which you attach '.commands { CommandMenu(\"Menu\") { ... } }' to inject global commands on the Mac."
+   }
+  ]
+ },
+ {
+  "id": 18,
+  "title": "visionOS & Spatial Computing",
+  "theory": "visionOS ushers in Spatial Computing (Apple Vision Pro). It introduces the Z-axis (depth), Windows (2D/3D windows), Volumes (3D objects bounded in a box) and Immersive Spaces (full VR). SwiftUI is the foundation for the 2D/3D UI, and RealityKit is used to render immersive 3D scenes and anchor entities in the real world.",
+  "appleDocUrl": "https://developer.apple.com/visionos/",
+  "isAdvanced": true,
+  "category": "visionOS",
+  "corporateCase": "An interior design app uses an 'Immersive Space' to project a 3D sofa in the center of the user's real room using RealityKit, measuring collisions with the real walls.",
+  "gameCase": "A chess game on visionOS floats a 3D 'Volume' in the middle of the user's room. It uses Hand Tracking so the player can physically grab and move the pieces.",
+  "exercises": [
+   {
+    "id": 1,
+    "question": "Which Apple framework primarily handles physics rendering and 3D objects on visionOS?",
+    "codeSnippet": "import ___",
+    "correctAnswer": "RealityKit",
+    "hint": "Reality Kit."
+   }
+  ],
+  "quiz": [
+   {
+    "id": 1,
+    "question": "What is a 'Volume' in visionOS?",
+    "options": [
+     "The device's physical volume-up button",
+     "A purely 2D SwiftUI view",
+     "A bounded 3D container (bounding box) that coexists with other apps and objects in the user's room",
+     "A mode that turns off camera Pass-through"
+    ],
+    "correctIndex": 2,
+    "explanation": "Unlike a full Immersive Space, the Volume lets you render 3D models that share the user's physical space with other apps (shared windows)."
+   }
+  ]
+ }
+]

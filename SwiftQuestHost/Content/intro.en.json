@@ -1,0 +1,336 @@
+{
+  "glossary" : {
+    "@Published / ObservableObject" : "Lets a class publish changes so SwiftUI views update.",
+    "@State" : "View-local state. Changing it re-renders the view.",
+    "Closure ($0)" : "A closure is an inline function. `$0` is the first argument shorthand.",
+    "Force unwrap (!)" : "`!` force-unwraps an optional and crashes if it is nil.",
+    "Optional (?)" : "A `?` means a value might be nil. `??` supplies a default.",
+    "Stacks" : "Arrange child views vertically, horizontally or layered.",
+    "View / body" : "A SwiftUI view: a struct whose `body` describes the UI.",
+    "class" : "A reference type: variables share one instance.",
+    "enum" : "A fixed set of cases, optionally carrying data.",
+    "extension" : "Adds functionality to an existing type.",
+    "for-in" : "Loops over each element of a sequence or range.",
+    "func" : "Declares a function. `->` gives its return type.",
+    "guard" : "Checks a condition and must exit the scope in `else` if it fails. Often paired with `let` to unwrap optionals.",
+    "if let" : "Unwraps an optional; the block runs only when it has a value.",
+    "let" : "Declares a constant that cannot be reassigned.",
+    "map/filter/reduce" : "Higher-order functions that transform, select or combine elements using closures.",
+    "protocol" : "Defines requirements a type can adopt, like an interface.",
+    "struct" : "A value type: copies are independent. The default way to model data in Swift.",
+    "switch" : "Matches a value against cases and must be exhaustive.",
+    "var" : "Declares a variable whose value can change."
+  },
+  "lessons" : [
+    {
+      "exercise" : "In a Swift file in Xcode, declare a constant for your name and a variable for your age. Print a sentence using both with interpolation, then try reassigning the constant and read the compiler error.",
+      "icon" : "equal.circle.fill",
+      "id" : "values",
+      "quiz" : [
+        {
+          "answer" : 1,
+          "choices" : [
+            "var",
+            "let",
+            "const",
+            "static"
+          ],
+          "explanation" : "`let` declares a constant. Swift has no `const` keyword.",
+          "id" : "values-1",
+          "prompt" : "Which keyword declares a value that can never be reassigned?"
+        },
+        {
+          "answer" : 2,
+          "choices" : [
+            "Int",
+            "Float",
+            "Double",
+            "Decimal"
+          ],
+          "explanation" : "Floating-point literals default to `Double`.",
+          "id" : "values-2",
+          "prompt" : "What type does Swift infer for `let x = 2.5`?"
+        },
+        {
+          "answer" : 1,
+          "choices" : [
+            "print(\"Hi \" + name)",
+            "print(\"Hi \\(name)\")",
+            "print(\"Hi $name\")",
+            "print(\"Hi {name}\")"
+          ],
+          "explanation" : "Interpolation uses `\\(expression)` inside the string. (`+` also works, but option 1 isn't the interpolation form.)",
+          "id" : "values-3",
+          "prompt" : "Which prints `Hi Ada`?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "`let` creates a constant: once set it never changes. `var` creates a variable you can change later. Prefer `let` by default; Swift will warn you when a `var` is never mutated.",
+          "code" : "let playerName = \"Ada\"\nvar score = 0\nscore += 10   // fine\n// playerName = \"Bob\"  // error: cannot assign to a let",
+          "heading" : "let vs var"
+        },
+        {
+          "body" : "Swift works out types from the value you assign. You can also state a type explicitly with a colon.",
+          "code" : "let lives = 3            // Int\nlet speed = 2.5          // Double\nlet title: String = \"Quest\"\nlet isAlive = true       // Bool",
+          "heading" : "Type inference"
+        },
+        {
+          "body" : "Put a value inside a string with `\\( )`.",
+          "code" : "print(\"\\(playerName) has \\(score) points\")",
+          "heading" : "String interpolation"
+        }
+      ],
+      "summary" : "Store values with let and var, and let Swift infer types.",
+      "title" : "1. Constants & Variables"
+    },
+    {
+      "exercise" : "Write a function that takes `Int?` and returns the number doubled, or 0 when nil. Do it once with `guard let` and once with `??`.",
+      "icon" : "questionmark.circle.fill",
+      "id" : "optionals",
+      "quiz" : [
+        {
+          "answer" : 2,
+          "choices" : [
+            "Returns 0",
+            "Returns an empty value",
+            "The app crashes at runtime",
+            "A compile error"
+          ],
+          "explanation" : "Force-unwrapping nil is a runtime trap. Prefer `if let`, `guard let` or `??`.",
+          "id" : "opt-1",
+          "prompt" : "What happens when you force-unwrap (`!`) a nil optional?"
+        },
+        {
+          "answer" : 0,
+          "choices" : [
+            "Unwraps y into x for the rest of the scope, or returns",
+            "Always returns",
+            "Unwraps only inside an else block",
+            "Creates a new optional"
+          ],
+          "explanation" : "`guard let` makes `x` available after the guard and requires the else branch to exit the scope.",
+          "id" : "opt-2",
+          "prompt" : "What does `guard let x = y else { return }` do?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "A type followed by `?` can hold a value or `nil`. The compiler forces you to deal with the missing case, which prevents a whole class of crashes.",
+          "code" : "var nickname: String? = nil\nnickname = \"Ace\"",
+          "heading" : "What is an optional?"
+        },
+        {
+          "body" : "`if let` unwraps for use inside a block. `guard let` unwraps for the rest of the function and exits early otherwise.",
+          "code" : "func greet(_ name: String?) {\n    guard let name else {\n        print(\"Hello, stranger\")\n        return\n    }\n    print(\"Hello, \\(name)\")\n}",
+          "heading" : "if let and guard let"
+        },
+        {
+          "body" : "`??` supplies a default. `!` force-unwraps and crashes on nil, so avoid it unless you are certain.",
+          "code" : "let display = nickname ?? \"Player\"",
+          "heading" : "Nil-coalescing and force unwrap"
+        }
+      ],
+      "summary" : "Represent 'maybe no value' safely and unwrap it.",
+      "title" : "2. Optionals"
+    },
+    {
+      "exercise" : "Write `func damage(base: Int, multiplier: Double = 1.0) -> Int` and call it with and without the multiplier.",
+      "icon" : "function",
+      "id" : "functions",
+      "quiz" : [
+        {
+          "answer" : 1,
+          "choices" : [
+            "The parameter list",
+            "The return type",
+            "A closure",
+            "An error type"
+          ],
+          "explanation" : "`-> Type` declares what the function returns.",
+          "id" : "fn-1",
+          "prompt" : "What does `->` in a function declaration introduce?"
+        },
+        {
+          "answer" : 2,
+          "choices" : [
+            "Makes it optional",
+            "Makes it private",
+            "Removes the argument label at the call site",
+            "Makes it inout"
+          ],
+          "explanation" : "`func f(_ x: Int)` is called as `f(1)` without a label.",
+          "id" : "fn-2",
+          "prompt" : "What does `_` before a parameter name do?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "Use `func`, list parameters, and give a return type after `->`.",
+          "code" : "func add(_ a: Int, to b: Int) -> Int {\n    a + b\n}\nlet total = add(2, to: 3)",
+          "heading" : "Declaring a function"
+        },
+        {
+          "body" : "Each parameter has an external label (used by the caller) and an internal name. `_` removes the label. Good labels make call sites read like sentences.",
+          "heading" : "Argument labels"
+        },
+        {
+          "body" : "Parameters can have defaults, so callers may omit them.",
+          "code" : "func heal(_ amount: Int = 10) -> Int { amount }",
+          "heading" : "Default values"
+        }
+      ],
+      "summary" : "Parameters, argument labels and return values.",
+      "title" : "3. Functions"
+    },
+    {
+      "exercise" : "Create a `struct Enemy` and a `class Level`. Copy an Enemy and a Level into new variables, mutate the copies, and observe which original changes.",
+      "icon" : "square.stack.3d.up.fill",
+      "id" : "types",
+      "quiz" : [
+        {
+          "answer" : 1,
+          "choices" : [
+            "It changes too",
+            "It is unchanged",
+            "Compile error",
+            "It becomes nil"
+          ],
+          "explanation" : "Structs are value types: each variable has its own copy.",
+          "id" : "ty-1",
+          "prompt" : "You assign a struct to a new variable and change the copy. What happens to the original?"
+        },
+        {
+          "answer" : 2,
+          "choices" : [
+            "struct",
+            "enum",
+            "class",
+            "tuple"
+          ],
+          "explanation" : "Classes are reference types; assignment shares the same instance.",
+          "id" : "ty-2",
+          "prompt" : "Which type is shared by reference?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "Copying a struct copies its data. Structs get a free memberwise initializer and are the default choice in Swift and SwiftUI.",
+          "code" : "struct Player {\n    var name: String\n    var score = 0\n}\nvar a = Player(name: \"Ada\")\nvar b = a\nb.score = 5   // a.score is still 0",
+          "heading" : "Structs are value types"
+        },
+        {
+          "body" : "Variables share one instance. Use classes for shared identity, inheritance, or when an API (like ObservableObject) requires it.",
+          "code" : "final class Game {\n    var level = 1\n}",
+          "heading" : "Classes are reference types"
+        },
+        {
+          "body" : "An enum models a fixed set of cases and can carry data. `switch` must handle every case.",
+          "code" : "enum State { case idle, running(speed: Double), finished }\nfunc describe(_ s: State) -> String {\n    switch s {\n    case .idle: \"Idle\"\n    case .running(let speed): \"Running at \\(speed)\"\n    case .finished: \"Done\"\n    }\n}",
+          "heading" : "Enums"
+        }
+      ],
+      "summary" : "Model your data and choose between value and reference types.",
+      "title" : "4. Structs, Classes & Enums"
+    },
+    {
+      "exercise" : "Given `[3, 8, 1, 9]`, use filter to keep numbers greater than 2, map to square them, and reduce to sum the result.",
+      "icon" : "list.bullet.rectangle.fill",
+      "id" : "collections",
+      "quiz" : [
+        {
+          "answer" : 1,
+          "choices" : [
+            "Int",
+            "Int?",
+            "String",
+            "Any"
+          ],
+          "explanation" : "The key may be missing, so the lookup returns an optional.",
+          "id" : "co-1",
+          "prompt" : "What type does `dict[\"key\"]` return for a `[String: Int]`?"
+        },
+        {
+          "answer" : 2,
+          "choices" : [
+            "0, 1, 2, 3",
+            "1, 2, 3",
+            "0, 1, 2",
+            "0, 3"
+          ],
+          "explanation" : "The half-open range `..<` excludes the upper bound.",
+          "id" : "co-2",
+          "prompt" : "`0..<3` produces which values?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "An array is an ordered list; a dictionary maps keys to values (a lookup returns an optional).",
+          "code" : "var scores = [10, 20, 30]\nscores.append(40)\nlet levels = [\"easy\": 1, \"hard\": 3]\nlet hard = levels[\"hard\"]   // Int?",
+          "heading" : "Arrays and dictionaries"
+        },
+        {
+          "body" : "`for-in` walks a sequence, including ranges.",
+          "code" : "for score in scores { print(score) }\nfor i in 0..<3 { print(i) }",
+          "heading" : "Looping"
+        },
+        {
+          "body" : "Transform collections with closures instead of manual loops.",
+          "code" : "let doubled = scores.map { $0 * 2 }\nlet big = scores.filter { $0 > 15 }\nlet sum = scores.reduce(0, +)",
+          "heading" : "map, filter, reduce"
+        }
+      ],
+      "summary" : "Arrays, dictionaries, for-in, map and filter.",
+      "title" : "5. Collections & Loops"
+    },
+    {
+      "exercise" : "Build a view with a TextField bound to an `@State` string and a Text that shows what you typed.",
+      "icon" : "macwindow",
+      "id" : "swiftui",
+      "quiz" : [
+        {
+          "answer" : 1,
+          "choices" : [
+            "Nothing until restart",
+            "SwiftUI re-evaluates the view's body",
+            "The app crashes",
+            "A new window opens"
+          ],
+          "explanation" : "State changes invalidate the view and SwiftUI recomputes `body`.",
+          "id" : "ui-1",
+          "prompt" : "What happens when an `@State` property changes?"
+        },
+        {
+          "answer" : 2,
+          "choices" : [
+            "VStack",
+            "ZStack",
+            "HStack",
+            "List"
+          ],
+          "explanation" : "`HStack` lays children out left to right.",
+          "id" : "ui-2",
+          "prompt" : "Which arranges views horizontally?"
+        }
+      ],
+      "sections" : [
+        {
+          "body" : "A SwiftUI view is a struct with a `body` that describes the UI. Modifiers like `.font` return a new view.",
+          "code" : "struct Hello: View {\n    var body: some View {\n        Text(\"Hello\").font(.title)\n    }\n}",
+          "heading" : "Views are structs"
+        },
+        {
+          "body" : "`@State` stores view-local data. When it changes, SwiftUI re-renders the body.",
+          "code" : "struct Counter: View {\n    @State private var count = 0\n    var body: some View {\n        Button(\"Tapped \\(count)\") { count += 1 }\n    }\n}",
+          "heading" : "@State"
+        },
+        {
+          "body" : "`VStack`, `HStack` and `ZStack` arrange child views vertically, horizontally and layered.",
+          "heading" : "Stacks"
+        }
+      ],
+      "summary" : "Views, state and how the UI updates.",
+      "title" : "6. SwiftUI Basics"
+    }
+  ]
+}
