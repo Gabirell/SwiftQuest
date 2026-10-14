@@ -90,11 +90,26 @@ enum CourseData {
         return []
     }
 
+    /// Base pillars plus the new-content batches, with the extra exercises/quiz questions merged in.
+    static func loadPillars(_ language: AppLanguage) -> [Pillar] {
+        struct Plus: Decodable { let id: Int; let exercises: [CourseExercise]; let quiz: [CourseQuestion] }
+        var all: [Pillar] = load("pillars", language)
+        all += load("pillarsNewA", language) as [Pillar]
+        all += load("pillarsNewB", language) as [Pillar]
+        let plus: [Plus] = load("pillarsPlus", language)
+        return all.map { p in
+            guard let extra = plus.first(where: { $0.id == p.id }) else { return p }
+            return Pillar(id: p.id, title: p.title, theory: p.theory, appleDocUrl: p.appleDocUrl, category: p.category,
+                          corporateCase: p.corporateCase, gameCase: p.gameCase,
+                          exercises: p.exercises + extra.exercises, quiz: p.quiz + extra.quiz, extraQuiz: p.extraQuiz)
+        }
+    }
+
     // Language-independent reference data (ids, counts, XP) used by the progress rules.
-    static let pillars: [Pillar] = load("pillars", .pt)
+    static let pillars: [Pillar] = loadPillars(.pt)
     static let badges: [Badge] = load("badges", .pt)
 
-    static let categoryOrder = ["Fundamentos", "Swift Avançado", "iOS e iPadOS", "watchOS", "macOS", "visionOS"]
+    static let categoryOrder = ["Fundamentos", "Swift Avançado", "Swift Moderno", "Dados e Rede", "iOS e iPadOS", "watchOS", "macOS", "visionOS", "Projetos"]
     static let passingGrade = 0.7
 }
 
@@ -117,6 +132,9 @@ struct CourseSnapshot: Codable {
     var passedExams: [String] = []
     var savedTerms: [String] = []
     var seenBadges: [String] = []                  // badges the user has already been congratulated for
+    var wrongQuestions: [String] = []              // review queue: "p:<pillar>:<q>", "e:<exam>:<q>", "i:<lessonQ>"
+    var solvedChallenges: [String] = []            // playground challenges solved
+    var unlockedUpTo = 0                           // guided path: steps below this index are open (placement quiz)
 
     init() {}
 
@@ -127,6 +145,9 @@ struct CourseSnapshot: Codable {
         passedExams = try c.decodeIfPresent([String].self, forKey: .passedExams) ?? []
         savedTerms = try c.decodeIfPresent([String].self, forKey: .savedTerms) ?? []
         seenBadges = try c.decodeIfPresent([String].self, forKey: .seenBadges) ?? []
+        wrongQuestions = try c.decodeIfPresent([String].self, forKey: .wrongQuestions) ?? []
+        solvedChallenges = try c.decodeIfPresent([String].self, forKey: .solvedChallenges) ?? []
+        unlockedUpTo = try c.decodeIfPresent(Int.self, forKey: .unlockedUpTo) ?? 0
     }
 }
 
@@ -176,6 +197,7 @@ final class CourseProgress: ObservableObject {
             == exercise.correctAnswer.lowercased()
         if ok {
             snapshot.exerciseAnswers["\(pillar)-\(exercise.id)"] = answer
+            HabitStore.shared.recordActivity()
             persist()
         }
         return ok
@@ -184,11 +206,13 @@ final class CourseProgress: ObservableObject {
     func recordQuiz(pillar: Int, correct: Int) {
         if snapshot.quizScores[pillar] == nil || correct > (snapshot.quizScores[pillar] ?? 0) {
             snapshot.quizScores[pillar] = correct
+            HabitStore.shared.recordActivity()
             persist()
         }
     }
 
     func recordExam(id: String, passed: Bool) {
+        HabitStore.shared.recordActivity()
         if passed, !snapshot.passedExams.contains(id) {
             snapshot.passedExams.append(id)
             persist()
@@ -239,6 +263,35 @@ final class CourseProgress: ObservableObject {
         return PillarProgress(pillar: pillar, quizScore: score, exercisesDone: done, percentage: pct, status: status)
     }
 
+    // MARK: Review queue, playground, path
+
+    /// Records the outcome of a question; wrong answers enter the review queue, right ones leave it.
+    func markQuestion(_ key: String, correct: Bool) {
+        let isWrong = snapshot.wrongQuestions.contains(key)
+        if correct, isWrong {
+            snapshot.wrongQuestions.removeAll { $0 == key }
+        } else if !correct, !isWrong {
+            snapshot.wrongQuestions.append(key)
+        } else { return }
+        persist()
+    }
+
+    var reviewQueue: [String] { snapshot.wrongQuestions }
+
+    func isSolved(_ challenge: String) -> Bool { snapshot.solvedChallenges.contains(challenge) }
+
+    func markSolved(_ challenge: String) {
+        guard !isSolved(challenge) else { return }
+        snapshot.solvedChallenges.append(challenge)
+        HabitStore.shared.recordActivity()
+        persist()
+    }
+
+    func setUnlockedUpTo(_ n: Int) {
+        snapshot.unlockedUpTo = max(snapshot.unlockedUpTo, n)
+        persist()
+    }
+
     func isSaved(_ term: String) -> Bool { snapshot.savedTerms.contains(term) }
 
     // MARK: Gamification (ported from the original gamification.ts)
@@ -267,6 +320,7 @@ final class CourseProgress: ObservableObject {
             + s.quizScores.values.reduce(0, +) * 5
             + s.passedExams.count * 60
             + s.savedTerms.count * 3
+            + s.solvedChallenges.count * 20
 
         var unlocked = Set<String>()
         let ex = s.exerciseAnswers.count

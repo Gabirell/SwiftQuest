@@ -10,8 +10,13 @@ struct SwiftQuestHostApp: App {
     @StateObject private var course = CourseProgress()
     @StateObject private var loc = Localizer()
 
+    init() {
+        if SelfTest.requested { SelfTest.run() }
+    }
+
     var body: some Scene {
-        WindowGroup("SwiftQuest") {
+        // A single window: URLs sent from Xcode must reuse it instead of opening new ones.
+        Window("SwiftQuest", id: "main") {
             SwiftQuestHome()
                 .frame(minWidth: 900, minHeight: 580)
                 .environmentObject(route)
@@ -19,12 +24,14 @@ struct SwiftQuestHostApp: App {
                 .environmentObject(coach)
                 .environmentObject(course)
                 .environmentObject(loc)
+                .environmentObject(HabitStore.shared)
                 .onAppear { appDelegate.route = route }
         }
         Settings {
             AICoachSettingsView()
                 .environmentObject(coach)
                 .environmentObject(loc)
+                .environmentObject(HabitStore.shared)
         }
         .commands {
             CommandGroup(replacing: .appInfo) {
@@ -44,8 +51,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-enum SidebarItem: Hashable {
-    case learn, practice, explain, course, exams, dashboard, glossary, badges
+enum SidebarItem: String, Hashable {
+    case path, learn, practice, explain, course, exams, dashboard, glossary, badges
+    case review, flashcards, playground, mindmap, placement
 }
 
 /// Completion state of the built-in introductory lessons.
@@ -59,16 +67,30 @@ final class ProgressStore: ObservableObject {
     }
 
     func toggle(_ id: String) {
-        if completed.contains(id) { completed.remove(id) } else { completed.insert(id) }
+        if completed.contains(id) { completed.remove(id) } else { completed.insert(id); HabitStore.shared.recordActivity() }
         UserDefaults.standard.set(Array(completed), forKey: key)
     }
 }
 
 @MainActor
 final class SwiftQuestRoute: ObservableObject {
-    @Published var selection: SidebarItem? = .learn
+    @Published var selection: SidebarItem? = UserDefaults.standard.string(forKey: "startItem").flatMap(SidebarItem.init(rawValue:)) ?? .path
     @Published var source = ""
     @Published var fromXcode = false
+    @Published var mode: ExplainMode = .explain
+    @Published var banner: String?
+    @Published var lessonTarget: String?
+    @Published var pillarTarget: Int?
+
+    enum ExplainMode { case explain, exercise }
+
+    /// Opens the lesson or pillar behind a guided-path step.
+    func go(_ step: PathStep) {
+        switch step.kind {
+        case .lesson(let id): lessonTarget = id; selection = .learn
+        case .pillar(let id): pillarTarget = id; selection = .course
+        }
+    }
 
     func handle(url: URL) {
         guard url.scheme == "swiftquest" else { return }
@@ -79,6 +101,15 @@ final class SwiftQuestRoute: ObservableObject {
               let message = try? JSONDecoder().decode(SwiftQuestMessage.self, from: data) else { return }
         source = message.source
         fromXcode = true
+        mode = .explain
+        banner = nil
+        switch message.command {
+        case .flashcard:
+            banner = FlashcardStore.shared.add(code: message.source) ? "flash.saved" : "flash.exists"
+        case .exercise:
+            mode = .exercise
+        default: break
+        }
         selection = .explain
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -88,17 +119,25 @@ struct SwiftQuestHome: View {
     @EnvironmentObject var route: SwiftQuestRoute
     @EnvironmentObject var course: CourseProgress
     @EnvironmentObject var loc: Localizer
+    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: "onboardingDone")
 
     var body: some View {
         NavigationSplitView {
             List(selection: $route.selection) {
+                Section(loc.t("sidebar.today")) {
+                    Label(loc.t("nav.path"), systemImage: "map.fill").tag(SidebarItem.path)
+                    Label("\(loc.t("nav.review")) (\(course.reviewQueue.count))", systemImage: "arrow.triangle.2.circlepath").tag(SidebarItem.review)
+                    Label(loc.t("nav.flashcards"), systemImage: "rectangle.on.rectangle.angled").tag(SidebarItem.flashcards)
+                }
                 Section(loc.t("sidebar.intro")) {
                     Label(loc.t("nav.learn"), systemImage: "book.fill").tag(SidebarItem.learn)
                     Label(loc.t("nav.practice"), systemImage: "gamecontroller.fill").tag(SidebarItem.practice)
+                    Label(loc.t("nav.playground"), systemImage: "terminal.fill").tag(SidebarItem.playground)
                     Label(loc.t("nav.explain"), systemImage: "text.magnifyingglass").tag(SidebarItem.explain)
                 }
                 Section(loc.t("sidebar.course")) {
                     Label(loc.t("nav.course"), systemImage: "graduationcap.fill").tag(SidebarItem.course)
+                    Label(loc.t("nav.mindmap"), systemImage: "point.3.connected.trianglepath.dotted").tag(SidebarItem.mindmap)
                     Label(loc.t("nav.exams"), systemImage: "timer").tag(SidebarItem.exams)
                     Label(loc.t("nav.dashboard"), systemImage: "chart.pie.fill").tag(SidebarItem.dashboard)
                     Label(loc.t("nav.glossary"), systemImage: "character.book.closed.fill").tag(SidebarItem.glossary)
@@ -106,10 +145,11 @@ struct SwiftQuestHome: View {
                 }
             }
             .navigationTitle("SwiftQuest")
+            .navigationSplitViewColumnWidth(min: 220, ideal: 250, max: 320)
             .safeAreaInset(edge: .bottom) {
                 VStack(alignment: .leading, spacing: 6) {
                     let stats = course.stats
-                    Text("\(loc.t("level")) \(stats.level.level) · \(stats.points) XP").font(.caption.bold())
+                    Text("\(loc.t("level")) \(stats.level.level) · \(stats.points) XP · 🔥 \(HabitStore.shared.streak)").font(.caption.bold())
                     ProgressView(value: stats.level.progressPercent)
                     Picker(loc.t("language"), selection: $loc.language) {
                         ForEach(AppLanguage.allCases) { Text($0.displayName).tag($0) }
@@ -120,7 +160,13 @@ struct SwiftQuestHome: View {
                 .background(.bar)
             }
         } detail: {
-            switch route.selection ?? .learn {
+            switch route.selection ?? .path {
+            case .path: PathView()
+            case .review: ReviewView()
+            case .flashcards: FlashcardsView()
+            case .playground: PlaygroundView()
+            case .mindmap: MindMapView()
+            case .placement: PlacementView()
             case .learn: LearnView()
             case .practice: PracticeView()
             case .explain: ExplainView()
@@ -134,6 +180,13 @@ struct SwiftQuestHome: View {
         .sheet(item: $course.newlyUnlocked) { badge in
             BadgeUnlockedView(badge: badge) { course.dismissBadge() }
         }
+        .sheet(isPresented: $showOnboarding) {
+            OnboardingView {
+                UserDefaults.standard.set(true, forKey: "onboardingDone")
+                showOnboarding = false
+            }
+            .environmentObject(route).environmentObject(loc)
+        }
     }
 }
 
@@ -142,6 +195,7 @@ struct SwiftQuestHome: View {
 struct LearnView: View {
     @EnvironmentObject var progress: ProgressStore
     @EnvironmentObject var loc: Localizer
+    @EnvironmentObject var route: SwiftQuestRoute
     @State private var selectedID: String? = "values"
 
     var body: some View {
@@ -161,6 +215,8 @@ struct LearnView: View {
                 .tag(lesson.id)
             }
             .frame(width: 300)
+            .onAppear { if let t = route.lessonTarget { selectedID = t; route.lessonTarget = nil } }
+            .onChange(of: route.lessonTarget) { _, t in if let t { selectedID = t; route.lessonTarget = nil } }
             Divider()
             if let id = selectedID, let lesson = loc.lessons.first(where: { $0.id == id }) {
                 LessonDetail(lesson: lesson).id(lesson.id)
@@ -228,12 +284,16 @@ struct LessonDetail: View {
 
 struct IntroQuizCard: View {
     let question: QuizQuestion
+    @EnvironmentObject var course: CourseProgress
     @State private var picked: Int?
 
     var body: some View {
         QuestionView(question: CourseQuestion(id: 0, question: question.prompt, options: question.choices,
                                               correctIndex: question.answer, explanation: question.explanation),
-                     picked: $picked)
+                     picked: Binding(get: { picked }, set: { value in
+                         picked = value
+                         if let value { course.markQuestion("i:\(question.id)", correct: value == question.answer) }
+                     }))
     }
 }
 
@@ -279,6 +339,12 @@ struct ExplainView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 Text(route.fromXcode ? loc.t("explain.title.xcode") : loc.t("nav.explain")).font(.largeTitle.bold())
+                if let banner = route.banner {
+                    Label(loc.t(banner), systemImage: "checkmark.circle.fill").foregroundStyle(.green)
+                }
+                if route.mode == .exercise {
+                    CodeExerciseView(source: route.source).id(route.source)
+                }
                 if route.source.isEmpty {
                     Text(loc.t("explain.empty")).foregroundStyle(.secondary)
                 }
@@ -294,9 +360,13 @@ struct ExplainView: View {
                     GroupBox {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(entry.term).font(.headline.monospaced())
-                            Text(entry.meaning)
+                            Text(markdown(entry.meaning))
                             if let lesson = loc.lessons.first(where: { $0.id == entry.lessonID }) {
-                                Text("\(loc.t("learn.more")): \(lesson.title)").font(.caption).foregroundStyle(.secondary)
+                                Button("\(loc.t("learn.more")): \(lesson.title)") {
+                                    route.lessonTarget = lesson.id
+                                    route.selection = .learn
+                                }
+                                .buttonStyle(.link).font(.caption)
                             }
                         }
                         .padding(4)

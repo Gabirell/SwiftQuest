@@ -103,6 +103,21 @@ struct AICoachService: Sendable {
 struct AICoachSettingsView: View {
     @EnvironmentObject var settings: AICoachSettings
     @EnvironmentObject var loc: Localizer
+    @EnvironmentObject var habits: HabitStore
+
+    private var reminderTime: Binding<Date> {
+        Binding(
+            get: { Calendar.current.date(bySettingHour: habits.reminderMinutes / 60, minute: habits.reminderMinutes % 60, second: 0, of: Date()) ?? Date() },
+            set: { d in
+                let c = Calendar.current.dateComponents([.hour, .minute], from: d)
+                habits.reminderMinutes = (c.hour ?? 19) * 60 + (c.minute ?? 0)
+                refreshReminder()
+            })
+    }
+
+    private func refreshReminder() {
+        habits.updateReminder(title: loc.t("habit.notif.title"), body: loc.t("habit.notif.body"))
+    }
 
     var body: some View {
         Form {
@@ -111,6 +126,13 @@ struct AICoachSettingsView: View {
                 TextField(loc.t("ai.model"), text: $settings.model)
                 Text(loc.t("ai.privacy")).font(.footnote).foregroundStyle(.secondary)
             }
+            Section(loc.t("habit.settings")) {
+                Stepper("\(loc.t("onb.goal")): \(habits.dailyGoal)", value: $habits.dailyGoal, in: 1...10)
+                Toggle(loc.t("habit.reminder"), isOn: $habits.reminderEnabled)
+                DatePicker(loc.t("habit.reminder.time"), selection: reminderTime, displayedComponents: .hourAndMinute)
+                    .disabled(!habits.reminderEnabled)
+                if habits.notificationsDenied { Text(loc.t("habit.denied")).font(.footnote).foregroundStyle(.orange) }
+            }
             Section(loc.t("language")) {
                 Picker(loc.t("language"), selection: $loc.language) {
                     ForEach(AppLanguage.allCases) { Text($0.displayName).tag($0) }
@@ -118,7 +140,8 @@ struct AICoachSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 480, height: 340)
+        .frame(width: 480, height: 520)
+        .onChange(of: habits.reminderEnabled) { _, _ in refreshReminder() }
     }
 }
 

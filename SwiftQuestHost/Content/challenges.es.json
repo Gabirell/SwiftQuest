@@ -1,0 +1,92 @@
+[
+ {
+  "id": "hello",
+  "title": "¡Hola, Swift!",
+  "prompt": "Imprime exactamente el texto Hello, Swift! en la consola.",
+  "hint": "Usa print(\"...\").",
+  "starter": "// Print the text: Hello, Swift!\n",
+  "solution": "print(\"Hello, Swift!\")\n",
+  "expected": "Hello, Swift!"
+ },
+ {
+  "id": "sum",
+  "title": "Suma de 1 a 10",
+  "prompt": "Dado el array, imprime la suma de todos sus números.",
+  "hint": "Prueba reduce(0, +) o un bucle for-in con una var total.",
+  "starter": "let numbers = Array(1...10)\n// Print the sum of all numbers\n",
+  "solution": "let numbers = Array(1...10)\nprint(numbers.reduce(0, +))\n",
+  "expected": "55"
+ },
+ {
+  "id": "fizzbuzz",
+  "title": "FizzBuzz",
+  "prompt": "Del 1 al 15 imprime el número, pero Fizz para múltiplos de 3, Buzz para múltiplos de 5 y FizzBuzz para ambos.",
+  "hint": "Comprueba primero el múltiplo de 15. El operador de resto es %.",
+  "starter": "// For 1 through 15 print each number on its own line.\n// Multiples of 3 -> Fizz, multiples of 5 -> Buzz, both -> FizzBuzz\n",
+  "solution": "for i in 1...15 {\n    if i % 15 == 0 { print(\"FizzBuzz\") }\n    else if i % 3 == 0 { print(\"Fizz\") }\n    else if i % 5 == 0 { print(\"Buzz\") }\n    else { print(i) }\n}\n",
+  "expected": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz"
+ },
+ {
+  "id": "optional",
+  "title": "Saludo opcional",
+  "prompt": "Completa greet para usar el nombre si existe y usar stranger en caso contrario.",
+  "hint": "Prueba guard let, if let o el operador ??.",
+  "starter": "func greet(_ name: String?) -> String {\n    // Return \"Hello, <name>\" or \"Hello, stranger\" when name is nil\n    return \"\"\n}\n\nprint(greet(\"Ada\"))\nprint(greet(nil))\n",
+  "solution": "func greet(_ name: String?) -> String {\n    guard let name else { return \"Hello, stranger\" }\n    return \"Hello, \\(name)\"\n}\n\nprint(greet(\"Ada\"))\nprint(greet(nil))\n",
+  "expected": "Hello, Ada\nHello, stranger"
+ },
+ {
+  "id": "struct",
+  "title": "Crea una struct Player",
+  "prompt": "Define Player para que el código de abajo imprima Ada: 15.",
+  "hint": "Los métodos que cambian propiedades de una struct deben marcarse como mutating.",
+  "starter": "struct Player {\n    // Add a name, a score that starts at 0 and a mutating func addScore(_ points: Int)\n}\n\nvar player = Player(name: \"Ada\")\nplayer.addScore(5)\nplayer.addScore(10)\nprint(\"\\(player.name): \\(player.score)\")\n",
+  "solution": "struct Player {\n    var name: String\n    var score = 0\n    mutating func addScore(_ points: Int) { score += points }\n}\n\nvar player = Player(name: \"Ada\")\nplayer.addScore(5)\nplayer.addScore(10)\nprint(\"\\(player.name): \\(player.score)\")\n",
+  "expected": "Ada: 15"
+ },
+ {
+  "id": "mapfilter",
+  "title": "Cuadrados de los pares",
+  "prompt": "Imprime un array con los cuadrados solo de los números pares.",
+  "hint": "Encadena filter y map.",
+  "starter": "let numbers = [1, 2, 3, 4, 5, 6]\n// Print the squares of the even numbers as an array\n",
+  "solution": "let numbers = [1, 2, 3, 4, 5, 6]\nprint(numbers.filter { $0 % 2 == 0 }.map { $0 * $0 })\n",
+  "expected": "[4, 16, 36]"
+ },
+ {
+  "id": "enum",
+  "title": "Switch sobre un enum",
+  "prompt": "Completa describe usando un switch que lea el valor asociado.",
+  "hint": "Usa case .running(let speed).",
+  "starter": "enum State {\n    case running(speed: Double)\n    case finished\n}\n\nfunc describe(_ state: State) -> String {\n    // Return \"Running at <speed>\" or \"Done\"\n    return \"\"\n}\n\nprint(describe(.running(speed: 2.5)))\nprint(describe(.finished))\n",
+  "solution": "enum State {\n    case running(speed: Double)\n    case finished\n}\n\nfunc describe(_ state: State) -> String {\n    switch state {\n    case .running(let speed): return \"Running at \\(speed)\"\n    case .finished: return \"Done\"\n    }\n}\n\nprint(describe(.running(speed: 2.5)))\nprint(describe(.finished))\n",
+  "expected": "Running at 2.5\nDone"
+ },
+ {
+  "id": "sorted",
+  "title": "Orden descendente",
+  "prompt": "Imprime el array ordenado de mayor a menor.",
+  "hint": "sorted(by:) recibe un closure; > también es una función.",
+  "starter": "let numbers = [3, 1, 4, 5, 2]\n// Print the numbers sorted from largest to smallest\n",
+  "solution": "let numbers = [3, 1, 4, 5, 2]\nprint(numbers.sorted(by: >))\n",
+  "expected": "[5, 4, 3, 2, 1]"
+ },
+ {
+  "id": "errors",
+  "title": "Lanza un error",
+  "prompt": "Haz que divide lance divisionByZero en lugar de fallar.",
+  "hint": "guard b != 0 else { throw ... }.",
+  "starter": "enum MathError: Error { case divisionByZero }\n\nfunc divide(_ a: Int, _ b: Int) throws -> Int {\n    // Throw MathError.divisionByZero when b is 0\n    return a / b\n}\n\nfor b in [2, 0] {\n    do {\n        print(\"Result: \\(try divide(10, b))\")\n    } catch {\n        print(\"Error: \\(error)\")\n    }\n}\n",
+  "solution": "enum MathError: Error { case divisionByZero }\n\nfunc divide(_ a: Int, _ b: Int) throws -> Int {\n    guard b != 0 else { throw MathError.divisionByZero }\n    return a / b\n}\n\nfor b in [2, 0] {\n    do {\n        print(\"Result: \\(try divide(10, b))\")\n    } catch {\n        print(\"Error: \\(error)\")\n    }\n}\n",
+  "expected": "Result: 5\nError: divisionByZero"
+ },
+ {
+  "id": "protocol",
+  "title": "Adopta un protocolo",
+  "prompt": "Crea Dog y Cat para que el bucle imprima Woof y luego Meow.",
+  "hint": "Un tipo adopta un protocolo con dos puntos: struct Dog: Animal.",
+  "starter": "protocol Animal {\n    func sound() -> String\n}\n\n// Create struct Dog and struct Cat that conform to Animal (Woof / Meow)\n\nlet animals: [Animal] = [Dog(), Cat()]\nfor animal in animals { print(animal.sound()) }\n",
+  "solution": "protocol Animal {\n    func sound() -> String\n}\n\nstruct Dog: Animal { func sound() -> String { \"Woof\" } }\nstruct Cat: Animal { func sound() -> String { \"Meow\" } }\n\nlet animals: [Animal] = [Dog(), Cat()]\nfor animal in animals { print(animal.sound()) }\n",
+  "expected": "Woof\nMeow"
+ }
+]

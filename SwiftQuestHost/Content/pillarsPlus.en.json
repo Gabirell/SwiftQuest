@@ -1,0 +1,576 @@
+[
+  {
+    "id": 12,
+    "exercises": [
+      {
+        "id": 3,
+        "question": "Declare a protocol named 'Drawable' with the requirement 'draw()'",
+        "codeSnippet": "___ Drawable { func draw() }",
+        "correctAnswer": "protocol",
+        "hint": "The keyword that declares a contract of methods and properties."
+      },
+      {
+        "id": 4,
+        "question": "Extend only collections whose elements are 'Equatable' (conditional extension)",
+        "codeSnippet": "extension Collection ___ Element: Equatable { }",
+        "correctAnswer": "where",
+        "hint": "The clause that adds a constraint to the extension."
+      },
+      {
+        "id": 5,
+        "question": "In Swift 6, how do you write the existential type of a protocol in a heterogeneous array?",
+        "codeSnippet": "let shapes: [___ Drawable] = [Circle(), Square()]",
+        "correctAnswer": "any",
+        "hint": "The keyword that explicitly marks an existential (dynamic box)."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "A method is implemented in a protocol 'extension' but is NOT declared as a protocol requirement. A variable of type 'any Protocol' calls it. What happens?",
+        "options": [
+          "It always runs the concrete type's version via dynamic dispatch",
+          "It runs the extension's implementation (static dispatch), ignoring the concrete type's version",
+          "It causes a compile error",
+          "It calls the superclass method"
+        ],
+        "correctIndex": 1,
+        "explanation": "Only requirements declared in the protocol use the protocol witness table (dynamic dispatch). Methods that exist only in the extension are dispatched statically. Declare the method in the protocol to allow customization."
+      },
+      {
+        "id": 3,
+        "question": "What is an 'associatedtype' in a protocol for?",
+        "options": [
+          "To declare a placeholder type that each conforming type defines",
+          "To create a subclass of the protocol",
+          "To make the protocol optional",
+          "To prevent structs from adopting the protocol"
+        ],
+        "correctIndex": 0,
+        "explanation": "'associatedtype' is a protocol-level generic type (e.g. 'Element' in 'Sequence'). Each conforming type picks the concrete type, keeping type safety without making the protocol a generic class."
+      },
+      {
+        "id": 4,
+        "question": "How do you restrict a protocol so only classes (reference types) can adopt it?",
+        "options": [
+          "protocol P: Class",
+          "protocol P: AnyObject",
+          "protocol P: Reference",
+          "class protocol P"
+        ],
+        "correctIndex": 1,
+        "explanation": "Inheriting from 'AnyObject' limits the protocol to classes. This is useful for delegates with 'weak' references, since 'weak' only works with reference types."
+      },
+      {
+        "id": 5,
+        "question": "What is the main difference between 'some Protocol' and 'any Protocol'?",
+        "options": [
+          "None, they are synonyms",
+          "'some' only works with classes",
+          "'some' is slower because it uses a dynamic box",
+          "'some' hides one fixed concrete type (opaque); 'any' allows different types at runtime (existential)"
+        ],
+        "correctIndex": 3,
+        "explanation": "'some' preserves type identity and enables compile-time optimization (used in 'some View'). 'any' uses an existential box and allows mixing different types, at the cost of dynamic dispatch."
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Declare a generic struct 'Stack' with the placeholder 'Element'",
+        "codeSnippet": "struct Stack___ { var items: [Element] = [] }",
+        "correctAnswer": "<Element>",
+        "hint": "Between angle brackets, right after the type name."
+      },
+      {
+        "id": 3,
+        "question": "Constrain 'T' so the '>' operator can be used",
+        "codeSnippet": "func largest<T: ___>(_ a: T, _ b: T) -> T { a > b ? a : b }",
+        "correctAnswer": "Comparable",
+        "hint": "The protocol that provides <, >, <= and >=."
+      },
+      {
+        "id": 4,
+        "question": "Add a 'where' clause requiring elements to be comparable for equality",
+        "codeSnippet": "func allEqual<C: Collection>(_ c: C) -> Bool where C.Element: ___",
+        "correctAnswer": "Equatable",
+        "hint": "The protocol that provides the '==' operator."
+      },
+      {
+        "id": 5,
+        "question": "Declare the associated type 'Item' in a container protocol",
+        "codeSnippet": "protocol Container { ___ Item; mutating func append(_ i: Item) }",
+        "correctAnswer": "associatedtype",
+        "hint": "The keyword that creates a type placeholder in protocols."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "Why use Generics instead of 'Any' for a reusable container?",
+        "options": [
+          "Generics preserve the concrete type at compile time, avoiding casts and runtime errors",
+          "'Any' does not exist in Swift",
+          "Generics only work with numbers",
+          "Generics are always slower"
+        ],
+        "correctIndex": 0,
+        "explanation": "With 'Any' you lose type information and need 'as?' to recover it. With generics, 'Stack<Int>' guarantees only 'Int' goes in and out, verified by the compiler."
+      },
+      {
+        "id": 3,
+        "question": "What happens when you use '>' in 'func f<T>(_ a: T, _ b: T)' with no constraint?",
+        "options": [
+          "It works for any type",
+          "Runtime crash",
+          "Compile error: T does not guarantee the operator is supported",
+          "The compiler infers 'Int'"
+        ],
+        "correctIndex": 2,
+        "explanation": "Inside a generic function, the compiler only knows what the constraints guarantee. Without 'Comparable', 'T' offers no '>'. This is compile-time checking, not runtime."
+      },
+      {
+        "id": 4,
+        "question": "What does 'extension Array: Equatable where Element: Equatable' mean?",
+        "options": [
+          "Every Array is always Equatable",
+          "Array<T> is Equatable only when T is Equatable (conditional conformance)",
+          "Array must be a class",
+          "It removes Array's conformance"
+        ],
+        "correctIndex": 1,
+        "explanation": "Conditional conformance lets a generic type inherit capabilities from its parameters. '[Int]' can be compared with '==', but '[() -> Void]' cannot."
+      },
+      {
+        "id": 5,
+        "question": "In 'func fetch<T: Decodable>(_ type: T.Type) async throws -> T', how does the compiler know which T to use?",
+        "options": [
+          "From the metatype argument, e.g. 'fetch(User.self)', or from the annotated result type",
+          "It always defaults to 'String'",
+          "It asks the user at runtime",
+          "It cannot be inferred; a cast is required"
+        ],
+        "correctIndex": 0,
+        "explanation": "Swift infers 'T' from the arguments or the return context. Passing 'T.self' (a metatype) is the pattern used by APIs like 'JSONDecoder.decode(_:from:)'."
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Read the current SwiftUI scene phase via the Environment",
+        "codeSnippet": "@Environment(\\.___) private var scenePhase",
+        "correctAnswer": "scenePhase",
+        "hint": "The property name is the ScenePhase type with a lowercase first letter."
+      },
+      {
+        "id": 3,
+        "question": "Save data when the app goes to the background",
+        "codeSnippet": ".onChange(of: scenePhase) { _, newPhase in if newPhase == .___ { save() } }",
+        "correctAnswer": "background",
+        "hint": "It is one of the ScenePhase cases: active, inactive and ..."
+      },
+      {
+        "id": 4,
+        "question": "Declare the entry point of a SwiftUI app",
+        "codeSnippet": "@main struct MyApp: ___ { var body: some Scene { WindowGroup { ContentView() } } }",
+        "correctAnswer": "App",
+        "hint": "The protocol whose 'body' returns a Scene."
+      },
+      {
+        "id": 5,
+        "question": "Run async work tied to the view lifecycle (cancelled when it disappears)",
+        "codeSnippet": "Text(\"Olá\").___ { await load() }",
+        "correctAnswer": "task",
+        "hint": "A modifier that accepts an async closure, a modern alternative to onAppear."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "What are the 'ScenePhase' values in SwiftUI?",
+        "options": [
+          ".launching, .running, .terminated",
+          ".active, .paused, .stopped",
+          ".foreground, .background, .suspended",
+          ".active, .inactive, .background"
+        ],
+        "correctIndex": 3,
+        "explanation": "'.active' is the foreground, interactive scene; '.inactive' is transitional (e.g. app switcher, phone call); '.background' is not visible to the user."
+      },
+      {
+        "id": 3,
+        "question": "In UIKit, what is the difference between 'viewDidLoad' and 'viewWillAppear'?",
+        "options": [
+          "'viewDidLoad' runs once when the view loads; 'viewWillAppear' runs every time it is about to appear",
+          "They are identical",
+          "'viewDidLoad' runs every time the screen appears",
+          "'viewWillAppear' only runs on the app's first launch"
+        ],
+        "correctIndex": 0,
+        "explanation": "One-time setup (outlets, subviews) goes in 'viewDidLoad'. Updates that must repeat each time the screen returns (e.g. reloading data after popping back) go in 'viewWillAppear'."
+      },
+      {
+        "id": 4,
+        "question": "How do you use an AppDelegate in a SwiftUI app that needs callbacks such as push notifications?",
+        "options": [
+          "Not possible; SwiftUI forbids AppDelegate",
+          "By replacing @main with @UIApplicationMain on the App struct",
+          "With '@UIApplicationDelegateAdaptor(MyAppDelegate.self)' inside the App struct",
+          "By creating a UIWindow manually"
+        ],
+        "correctIndex": 2,
+        "explanation": "'@UIApplicationDelegateAdaptor' connects a class adopting 'UIApplicationDelegate' to the SwiftUI lifecycle, letting you receive system callbacks that have no native equivalent yet."
+      },
+      {
+        "id": 5,
+        "question": "What advantage does the '.task' modifier have over '.onAppear' for loading async data?",
+        "options": [
+          "It runs only once per install",
+          "It accepts 'await' directly and the Task is cancelled automatically when the view disappears",
+          "It must run on a background thread",
+          "There is no difference"
+        ],
+        "correctIndex": 1,
+        "explanation": "'.task' creates a structured Task tied to the view lifecycle: it cancels when the view disappears and can restart with '.task(id:)'. With '.onAppear' you would have to create and cancel the Task manually."
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Which UIViewRepresentable method updates the UIView when SwiftUI state changes?",
+        "codeSnippet": "func ___(_ uiView: UILabel, context: Context) { uiView.text = text }",
+        "correctAnswer": "updateUIView",
+        "hint": "Name: update + UIView."
+      },
+      {
+        "id": 3,
+        "question": "Present a SwiftUI view inside UIKit",
+        "codeSnippet": "let host = ___(rootView: ContentView())",
+        "correctAnswer": "UIHostingController",
+        "hint": "It is a UIViewController that hosts SwiftUI content."
+      },
+      {
+        "id": 4,
+        "question": "Create the object that bridges UIKit delegates to SwiftUI",
+        "codeSnippet": "func makeCoordinator() -> ___ { Coordinator(self) }",
+        "correctAnswer": "Coordinator",
+        "hint": "The same name as the nested type you create inside the struct."
+      },
+      {
+        "id": 5,
+        "question": "Share the text bidirectionally between SwiftUI and the UITextField",
+        "codeSnippet": "struct MyField: UIViewRepresentable { @___ var text: String }",
+        "correctAnswer": "Binding",
+        "hint": "The property wrapper that references state owned by another view."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "When does SwiftUI call 'makeUIView' on a UIViewRepresentable?",
+        "options": [
+          "On every state change",
+          "Once, to create the UIView; later changes go through 'updateUIView'",
+          "Never; the UIView comes from the Storyboard",
+          "Only when the app closes"
+        ],
+        "correctIndex": 1,
+        "explanation": "The UIView is created once per SwiftUI view identity. Afterwards, whenever relevant state changes, SwiftUI calls 'updateUIView' to sync. That is why expensive creation belongs in 'makeUIView'."
+      },
+      {
+        "id": 3,
+        "question": "How do you include an entire UIKit screen (UIViewController) in SwiftUI?",
+        "options": [
+          "With UIHostingController",
+          "With 'UIViewControllerRepresentable' and 'makeUIViewController'",
+          "With NSViewRepresentable",
+          "It is not possible"
+        ],
+        "correctIndex": 1,
+        "explanation": "'UIViewControllerRepresentable' is the equivalent for controllers (camera, PHPicker, SFSafariViewController). 'UIHostingController' does the reverse: SwiftUI inside UIKit."
+      },
+      {
+        "id": 4,
+        "question": "How do you show a SwiftUI view inside a UITableView/UICollectionView cell (iOS 16+)?",
+        "options": [
+          "With 'cell.contentConfiguration = UIHostingConfiguration { ... }'",
+          "By manually adding a UIHostingController per cell",
+          "Using a Storyboard",
+          "It is not supported"
+        ],
+        "correctIndex": 0,
+        "explanation": "'UIHostingConfiguration' integrates SwiftUI with cell reuse without manually managing child view controllers, letting you migrate list screens gradually."
+      },
+      {
+        "id": 5,
+        "question": "Why does a UIViewRepresentable's Coordinator usually inherit from 'NSObject'?",
+        "options": [
+          "Because SwiftUI requires it",
+          "To access Core Data",
+          "To be a struct",
+          "Because UIKit delegates (e.g. UITextFieldDelegate) are Objective-C protocols that require an NSObject class"
+        ],
+        "correctIndex": 3,
+        "explanation": "Many UIKit delegate protocols inherit from 'NSObjectProtocol', so the adopter must be an NSObject class. The Coordinator holds the 'Binding' to feed events back into SwiftUI."
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Check whether HealthKit is available on the device",
+        "codeSnippet": "if HKHealthStore.___() { /* ok */ }",
+        "correctAnswer": "isHealthDataAvailable",
+        "hint": "Static method 'isHealthData...'."
+      },
+      {
+        "id": 3,
+        "question": "Define the heart rate data type",
+        "codeSnippet": "let type = HKQuantityType(.___)",
+        "correctAnswer": "heartRate",
+        "hint": "In English, it is 'heart rate' in camelCase."
+      },
+      {
+        "id": 4,
+        "question": "Configure a running workout",
+        "codeSnippet": "let config = HKWorkoutConfiguration(); config.activityType = .___",
+        "correctAnswer": "running",
+        "hint": "The HKWorkoutActivityType case for running."
+      },
+      {
+        "id": 5,
+        "question": "Which Info.plist key tells the user why the app READS health data?",
+        "codeSnippet": "<key>___</key><string>Usamos seus dados para o treino.</string>",
+        "correctAnswer": "NSHealthShareUsageDescription",
+        "hint": "'Share' refers to reading; the write key uses 'Update'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "The user denied READ access to heart rate. What does HealthKit tell the app when querying that data?",
+        "options": [
+          "It throws a 'permissionDenied' error",
+          "It returns empty results, without revealing whether data exists, for privacy",
+          "It closes the app",
+          "It returns encrypted data"
+        ],
+        "correctIndex": 1,
+        "explanation": "For privacy, the app cannot distinguish 'no permission' from 'no data' for reads. Design the UI to handle empty results. Write status, however, can be checked with 'authorizationStatus(for:)'."
+      },
+      {
+        "id": 3,
+        "question": "What is the current mechanism for showing app information on the Apple Watch face?",
+        "options": [
+          "ClockKit with CLKComplicationDataSource only",
+          "WidgetKit (complications are widgets)",
+          "UIKit with UILabel",
+          "It is not possible"
+        ],
+        "correctIndex": 1,
+        "explanation": "Since watchOS 9, complications are built with WidgetKit and SwiftUI (families such as '.accessoryCircular'). ClockKit has been deprecated."
+      },
+      {
+        "id": 4,
+        "question": "What is an 'HKWorkoutSession' for in a workout app on Apple Watch?",
+        "options": [
+          "To draw charts",
+          "To sync with iCloud",
+          "To keep the app running in the background and collect sensors during the workout",
+          "To disable HealthKit"
+        ],
+        "correctIndex": 2,
+        "explanation": "A workout session keeps the app running with the screen dimmed and raises sensor sampling. Combined with 'HKLiveWorkoutBuilder', it collects data and saves the workout to Health."
+      },
+      {
+        "id": 5,
+        "question": "Which HealthKit query is ideal for summing a day's steps?",
+        "options": [
+          "HKStatisticsQuery (or HKStatisticsCollectionQuery) with '.cumulativeSum'",
+          "HKObserverQuery",
+          "HKCorrelationQuery",
+          "HKSourceQuery"
+        ],
+        "correctIndex": 0,
+        "explanation": "Statistics queries aggregate samples (sum, average, min/max), already de-duplicating sources like iPhone and Watch. 'HKSampleQuery' returns individual samples."
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Declare the app's Settings scene on macOS (opens with Cmd+,)",
+        "codeSnippet": "___ { SettingsView() }",
+        "correctAnswer": "Settings",
+        "hint": "The scene is named after the preferences window."
+      },
+      {
+        "id": 3,
+        "question": "Which protocol wraps an AppKit NSView for use in SwiftUI?",
+        "codeSnippet": "struct Editor: ___ { }",
+        "correctAnswer": "NSViewRepresentable",
+        "hint": "The macOS equivalent of UIViewRepresentable."
+      },
+      {
+        "id": 4,
+        "question": "Bind the Cmd+N shortcut to a button",
+        "codeSnippet": "Button(\"Novo\") { } .keyboardShortcut(\"n\", modifiers: ___)",
+        "correctAnswer": ".command",
+        "hint": "The Cmd modifier key, written as an EventModifiers value."
+      },
+      {
+        "id": 5,
+        "question": "Create an item in the system menu bar (icon at the top right)",
+        "codeSnippet": "___(\"Timer\", systemImage: \"timer\") { Text(\"Oi\") }",
+        "correctAnswer": "MenuBarExtra",
+        "hint": "SwiftUI scene for menu bar extras, available since macOS 13."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "What does the SwiftUI 'Settings' scene do automatically on macOS?",
+        "options": [
+          "It creates a desktop widget",
+          "It adds the 'Settings...' item to the app menu with the Cmd+, shortcut and opens the preferences window",
+          "It saves data to iCloud",
+          "It enables the App Sandbox"
+        ],
+        "correctIndex": 1,
+        "explanation": "Following macOS conventions is part of the platform: the 'Settings' scene wires the preferences window to the menu and the standard shortcut with no extra code."
+      },
+      {
+        "id": 3,
+        "question": "What is the App Sandbox for in a macOS app?",
+        "options": [
+          "Speeding up compilation",
+          "Restricting the app's access to files, network and hardware, requiring explicit entitlements",
+          "Letting the app run on iOS",
+          "Creating floating windows"
+        ],
+        "correctIndex": 1,
+        "explanation": "The sandbox is mandatory on the Mac App Store. For example, accessing a user-selected file requires the 'com.apple.security.files.user-selected.read-only' entitlement."
+      },
+      {
+        "id": 4,
+        "question": "What is the difference between Mac Catalyst and a native macOS target in SwiftUI?",
+        "options": [
+          "Catalyst uses pure AppKit",
+          "There is no difference",
+          "Catalyst adapts a UIKit app for the Mac; the native target builds SwiftUI/AppKit with macOS-specific idioms and APIs",
+          "Catalyst only runs on Apple Silicon"
+        ],
+        "correctIndex": 2,
+        "explanation": "Catalyst reuses UIKit code with minimal effort but can feel less 'Mac-like'. A native SwiftUI target gives full access to MenuBarExtra, multiple windows and AppKit."
+      },
+      {
+        "id": 5,
+        "question": "How do you use an NSApplicationDelegate in a SwiftUI macOS app?",
+        "options": [
+          "With '@NSApplicationDelegateAdaptor(MyDelegate.self)' in the App struct",
+          "With '@main' on the delegate class",
+          "It is not possible",
+          "With UIApplicationDelegateAdaptor"
+        ],
+        "correctIndex": 0,
+        "explanation": "It is the macOS counterpart of the iOS adaptor: useful for handling 'applicationShouldTerminateAfterLastWindowClosed', Dock events and other AppKit callbacks."
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "exercises": [
+      {
+        "id": 2,
+        "question": "Declare a fully immersive space in visionOS",
+        "codeSnippet": "___(id: \"room\") { RealityView { _ in } }",
+        "correctAnswer": "ImmersiveSpace",
+        "hint": "A SwiftUI scene whose name describes the type of space."
+      },
+      {
+        "id": 3,
+        "question": "Get the Environment action for opening an immersive space",
+        "codeSnippet": "@Environment(\\.___) var openImmersiveSpace",
+        "correctAnswer": "openImmersiveSpace",
+        "hint": "The Environment key has the same name as the property."
+      },
+      {
+        "id": 4,
+        "question": "Turn a window into a 3D Volume",
+        "codeSnippet": "WindowGroup { Globe() }.windowStyle(.___)",
+        "correctAnswer": "volumetric",
+        "hint": "The window style with volume (width, height and depth)."
+      },
+      {
+        "id": 5,
+        "question": "Define the collision shape of a RealityKit entity",
+        "codeSnippet": "entity.components.set(___(shapes: [.generateBox(size: 0.1)]))",
+        "correctAnswer": "CollisionComponent",
+        "hint": "The component that provides a physical shape for hit-testing and collisions."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 2,
+        "question": "Can an app know exactly where the user is looking on Vision Pro?",
+        "options": [
+          "Yes, via an eye-tracking API with no permission",
+          "Yes, always",
+          "No; for privacy, the system applies the hover effect and only delivers the position when the user performs the select gesture",
+          "Only in Volumes"
+        ],
+        "correctIndex": 2,
+        "explanation": "Gaze is sensitive data. Use '.hoverEffect' for visual feedback handled by the system; the app only receives the event when the user pinches."
+      },
+      {
+        "id": 3,
+        "question": "What does RealityKit's 'Entity Component System' (ECS) pattern mean?",
+        "options": [
+          "Entities are view subclasses",
+          "Entities are empty containers; behavior comes from components (e.g. ModelComponent, CollisionComponent) and systems",
+          "Each entity must have its own thread",
+          "It only works in 2D"
+        ],
+        "correctIndex": 1,
+        "explanation": "ECS favors composition over inheritance (the same philosophy as POP): you build objects by combining components, and 'Systems' process every entity that has them each frame."
+      },
+      {
+        "id": 4,
+        "question": "What is the simplest way to show a 3D model (USDZ) inside a 2D window in visionOS?",
+        "options": [
+          "Using UIImageView",
+          "Using WKWebView",
+          "Using RealityKit's 'Model3D(named:)' view",
+          "Always opening an ImmersiveSpace"
+        ],
+        "correctIndex": 2,
+        "explanation": "'Model3D' loads and displays a model asynchronously like any SwiftUI view. For interactive scenes with entities and components, use 'RealityView'."
+      },
+      {
+        "id": 5,
+        "question": "What does an app need to use hand tracking (ARKit) on visionOS?",
+        "options": [
+          "Just importing ARKit",
+          "Running in a regular Window",
+          "Being in an open Immersive Space, running an 'ARKitSession' and having user authorization (NSHandsTrackingUsageDescription)",
+          "A connected physical controller"
+        ],
+        "correctIndex": 2,
+        "explanation": "Data such as hands and the environment is sensitive: it is only available in an Immersive Space with explicit permission. Hand joint anchors come from 'HandTrackingProvider'."
+      }
+    ]
+  }
+]

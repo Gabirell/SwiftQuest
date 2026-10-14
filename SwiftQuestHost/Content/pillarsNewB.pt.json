@@ -1,0 +1,512 @@
+[
+  {
+    "id": 23,
+    "title": "Tratamento de Erros: throws, try e Result",
+    "theory": "Em Swift, erros são valores que adotam o protocolo 'Error' (geralmente um 'enum'). Uma função que pode falhar é marcada com 'throws' e quem a chama precisa usar 'try'. Para sinalizar a falha, use 'throw'. Para reagir, use 'do { try ... } catch { ... }': dentro do bloco 'catch' existe automaticamente a constante 'error'. Variações: 'try?' converte o resultado em Optional (nil se falhar) e 'try!' assume que nunca falha (trava o app se falhar, use com cuidado). 'rethrows' marca funções que só lançam erro se o closure recebido lançar, como 'map'. 'defer' agenda código para rodar ao sair do escopo, inclusive quando um erro é lançado, ideal para fechar arquivos e liberar recursos. O tipo 'Result<Success, Failure>' representa sucesso ou falha como valor ('.success' / '.failure') e é útil para guardar ou passar o resultado adiante; 'try result.get()' o converte de volta em throws. A partir do Swift 6 também existem 'typed throws' ('throws(MeuErro)'), que declaram exatamente qual erro é lançado. Em código assíncrono moderno, prefira 'async throws' com 'try await'.",
+    "appleDocUrl": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/errorhandling/",
+    "category": "Swift Moderno",
+    "corporateCase": "Em um app de banco, 'sacar(valor)' é 'throws' e lança 'ErroSaque.saldoInsuficiente' ou 'ErroSaque.limiteExcedido'. A tela usa 'do/catch' para mostrar uma mensagem clara ao usuário em vez de travar. Chamadas de rede costumam devolver 'Result' para que a camada de interface trate sucesso e falha no mesmo ponto.",
+    "gameCase": "Em um jogo, carregar o arquivo de save é uma operação 'throws': se o arquivo estiver corrompido, o 'catch' inicia uma nova partida. Um 'defer' garante que o arquivo seja fechado e a tela de loading escondida mesmo quando o carregamento falha.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Marque a função como capaz de lançar erros.",
+        "codeSnippet": "func carregarArquivo() ___ -> String { return \"dados\" }",
+        "correctAnswer": "throws",
+        "hint": "Palavra-chave colocada antes do '->' que indica que a função pode falhar."
+      },
+      {
+        "id": 2,
+        "question": "Chame a função que pode falhar dentro do bloco 'do'.",
+        "codeSnippet": "do { let d = ___ carregarArquivo(); print(d) } catch { print(error) }",
+        "correctAnswer": "try",
+        "hint": "Toda chamada a uma função 'throws' precisa dessa palavra antes."
+      },
+      {
+        "id": 3,
+        "question": "Trate o erro lançado pelo bloco 'do'.",
+        "codeSnippet": "do { try sacar(500) } ___ { print(\"Falhou: \\(error)\") }",
+        "correctAnswer": "catch",
+        "hint": "Depois de 'do { }' vem o bloco que captura o erro."
+      },
+      {
+        "id": 4,
+        "question": "Faça o enum ser um tipo de erro válido.",
+        "codeSnippet": "enum ErroSaque: ___ { case saldoInsuficiente }",
+        "correctAnswer": "Error",
+        "hint": "É o protocolo da biblioteca padrão que todo erro adota."
+      },
+      {
+        "id": 5,
+        "question": "Lance o erro quando a idade for negativa.",
+        "codeSnippet": "guard idade >= 0 else { ___ ErroIdade.negativa }",
+        "correctAnswer": "throw",
+        "hint": "Verbo (em inglês) que dispara um erro, diferente de 'throws'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "O que a palavra 'throws' em uma função indica?",
+        "options": [
+          "Que a função sempre falha",
+          "Que a função roda em outra thread",
+          "Que a função pode lançar um erro e quem chama precisa usar 'try'",
+          "Que a função retorna um Optional"
+        ],
+        "correctIndex": 2,
+        "explanation": "'throws' faz parte da assinatura da função. O compilador obriga o chamador a usar 'try' e a tratar (do/catch) ou propagar o erro."
+      },
+      {
+        "id": 2,
+        "question": "Qual é o resultado de 'try?' quando a função lança um erro?",
+        "options": [
+          "O app trava",
+          "nil, pois o resultado vira um Optional",
+          "O erro é ignorado e retorna 0",
+          "Um valor 'Result.failure'"
+        ],
+        "correctIndex": 1,
+        "explanation": "'try?' converte o resultado em Optional: o valor em caso de sucesso e nil em caso de erro. Você perde a informação do erro, mas ganha simplicidade."
+      },
+      {
+        "id": 3,
+        "question": "O que acontece se uma chamada com 'try!' lançar um erro?",
+        "options": [
+          "O erro é capturado pelo próximo catch",
+          "Retorna nil",
+          "O compilador avisa e continua",
+          "O app encerra com um erro em tempo de execução"
+        ],
+        "correctIndex": 3,
+        "explanation": "'try!' afirma que o erro é impossível. Se acontecer, ocorre um crash. Use apenas quando você tem certeza, por exemplo, ao carregar um recurso embutido no app."
+      },
+      {
+        "id": 4,
+        "question": "O que um tipo precisa fazer para poder ser lançado com 'throw'?",
+        "options": [
+          "Adotar o protocolo Error",
+          "Ser uma classe",
+          "Herdar de NSError",
+          "Ter um método description"
+        ],
+        "correctIndex": 0,
+        "explanation": "Qualquer tipo que adote 'Error' pode ser lançado. Enums são ótimos porque cada caso descreve uma falha diferente e pode carregar valores associados."
+      },
+      {
+        "id": 5,
+        "question": "Quando o bloco 'defer' dentro de uma função é executado?",
+        "options": [
+          "Imediatamente na linha onde foi escrito",
+          "Somente se não houver erro",
+          "Ao sair do escopo, mesmo se um erro for lançado",
+          "Antes da primeira linha da função"
+        ],
+        "correctIndex": 2,
+        "explanation": "'defer' roda quando o escopo termina, por 'return', fim normal ou 'throw'. Por isso é ideal para limpeza de recursos."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "O que são os casos de 'Result<Success, Failure>'?",
+        "options": [
+          "'.some' e '.none'",
+          "'.success(valor)' e '.failure(erro)'",
+          "'.ok' e '.error'",
+          "'.true' e '.false'"
+        ],
+        "correctIndex": 1,
+        "explanation": "'Result' é um enum com dois casos: '.success' carrega o valor e '.failure' carrega um erro que adota 'Error'. Você o trata com 'switch'."
+      },
+      {
+        "id": 2,
+        "question": "O que significa 'rethrows' em uma função como 'map'?",
+        "options": [
+          "Ela sempre relança todos os erros",
+          "Ela captura os erros e os esconde",
+          "Ela só lança erro se o closure recebido lançar",
+          "Ela só funciona com 'try!'"
+        ],
+        "correctIndex": 2,
+        "explanation": "'rethrows' propaga os erros do closure parâmetro. Se você passar um closure que não lança, não precisa usar 'try'."
+      },
+      {
+        "id": 3,
+        "question": "Em uma função que NÃO é 'throws', como usar 'try' com segurança?",
+        "options": [
+          "Dentro de um 'do/catch' que trate todos os erros possíveis",
+          "Basta escrever 'try' antes da chamada",
+          "Usar 'throw' no lugar de 'try'",
+          "Não é possível"
+        ],
+        "correctIndex": 0,
+        "explanation": "Um erro não pode escapar de uma função que não é 'throws'. Então o 'try' precisa estar dentro de 'do/catch' exaustivo (com um 'catch' genérico), ou usar 'try?'."
+      },
+      {
+        "id": 4,
+        "question": "O que faz 'try resultado.get()' em um 'Result'?",
+        "options": [
+          "Sempre retorna nil",
+          "Retorna o valor de sucesso ou lança o erro de falha",
+          "Converte o Result em String",
+          "Força um crash se for sucesso"
+        ],
+        "correctIndex": 1,
+        "explanation": "'get()' é throws: devolve o valor em '.success' e lança o erro em '.failure', permitindo voltar ao estilo 'do/catch'."
+      },
+      {
+        "id": 5,
+        "question": "O que a sintaxe 'throws(MeuErro)' (typed throws, Swift 6) permite?",
+        "options": [
+          "Lançar qualquer tipo, até Int",
+          "Evitar usar 'try'",
+          "Fazer a função rodar sem erros",
+          "Declarar exatamente qual tipo de erro a função lança"
+        ],
+        "correctIndex": 3,
+        "explanation": "Com typed throws, o 'error' dentro do 'catch' já tem o tipo 'MeuErro', sem necessidade de cast. Sem a anotação, o erro é 'any Error'."
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Projeto: Jogo de Adivinhar o Número (passo a passo)",
+    "theory": "Vamos construir, em 6 passos, um jogo em SwiftUI: o app sorteia um número de 1 a 100 e você tenta adivinhar.\n\nPasso 1 - Estado do jogo. Toda informação que muda e atualiza a tela vira '@State':\n`@State private var alvo = Int.random(in: 1...100)`\n`@State private var palpite = \"\"`\n`@State private var tentativas = 0`\n`@State private var mensagem = \"Adivinhe de 1 a 100\"`\n\nPasso 2 - Campo de entrada. O 'TextField' precisa de um Binding, criado com '$':\n`TextField(\"Seu palpite\", text: $palpite)`\n`.keyboardType(.numberPad)`\n\nPasso 3 - Botão que chama a lógica:\n`Button(\"Chutar\") { verificar() }`\n\nPasso 4 - Converter o texto em número. 'Int(texto)' retorna um Optional, pois o texto pode não ser número:\n`guard let n = Int(palpite) else { mensagem = \"Digite um número\"; return }`\n\nPasso 5 - Comparar e dar feedback, contando a tentativa:\n`tentativas += 1`\n`if n < alvo { mensagem = \"Maior!\" } else if n > alvo { mensagem = \"Menor!\" } else { mensagem = \"Acertou em \\(tentativas)!\" }`\n\nPasso 6 - Reiniciar. Basta atribuir novos valores ao estado e a tela se atualiza sozinha:\n`alvo = Int.random(in: 1...100)`\n`tentativas = 0`\n`palpite = \"\"`\n\nNo corpo da view, junte tudo em um 'VStack' com 'Text(mensagem)', o 'TextField', o botão 'Chutar' e o botão 'Novo jogo'. Desafio: limite o número de tentativas.",
+    "appleDocUrl": "https://developer.apple.com/documentation/swiftui/state",
+    "category": "Projetos",
+    "corporateCase": "O mesmo padrão aparece em um app de banco: um formulário de PIN ou valor guarda o texto digitado em '@State', valida a entrada convertendo com 'Int' ou 'Decimal' e mostra uma mensagem de feedback. Contar tentativas é exatamente como bloquear o cartão após 3 senhas erradas.",
+    "gameCase": "Em um jogo real, o estado (pontos, vidas, tentativas) fica em variáveis observadas pela interface, o jogador faz uma jogada, o código compara com a regra do jogo e mostra o resultado. O botão 'Novo jogo' é o reset de partida que sorteia um novo cenário.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Complete a declaração da propriedade que guarda o número de tentativas e atualiza a tela quando muda.",
+        "codeSnippet": "___ private var tentativas = 0",
+        "correctAnswer": "@State",
+        "hint": "Property wrapper do SwiftUI para estado local de uma view."
+      },
+      {
+        "id": 2,
+        "question": "Sorteie o número secreto entre 1 e 100.",
+        "codeSnippet": "@State private var alvo = Int.___(in: 1...100)",
+        "correctAnswer": "random",
+        "hint": "Método estático de Int que gera um valor aleatório em um intervalo."
+      },
+      {
+        "id": 3,
+        "question": "Ligue o campo de texto à variável 'palpite' com um Binding.",
+        "codeSnippet": "TextField(\"Seu palpite\", text: ___palpite)",
+        "correctAnswer": "$",
+        "hint": "O símbolo que cria um Binding a partir de uma propriedade de estado."
+      },
+      {
+        "id": 4,
+        "question": "Converta o texto digitado para número inteiro.",
+        "codeSnippet": "guard let n = ___(palpite) else { return }",
+        "correctAnswer": "Int",
+        "hint": "Inicializador do tipo inteiro, retorna Optional."
+      },
+      {
+        "id": 5,
+        "question": "Complete o 'guard' para sair da função se o texto não for um número.",
+        "codeSnippet": "guard let n = Int(palpite) ___ { return }",
+        "correctAnswer": "else",
+        "hint": "Todo 'guard' termina com essa palavra-chave."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "Por que as variáveis do jogo usam '@State'?",
+        "options": [
+          "Porque mudar seu valor faz o SwiftUI recalcular o corpo da view e atualizar a tela",
+          "Porque deixa o código mais rápido",
+          "Porque salva o valor em disco",
+          "Porque impede qualquer mudança no valor"
+        ],
+        "correctIndex": 0,
+        "explanation": "'@State' guarda o valor fora da struct (que é recriada a cada atualização) e avisa o SwiftUI quando ele muda, disparando uma nova renderização."
+      },
+      {
+        "id": 2,
+        "question": "Por que 'Int(palpite)' retorna 'Int?' (Optional)?",
+        "options": [
+          "Porque Int pode ser nulo",
+          "Porque o texto digitado pode não ser um número válido",
+          "Porque o TextField retorna Optional",
+          "Porque palpite é uma constante"
+        ],
+        "correctIndex": 1,
+        "explanation": "'Int(\"abc\")' falha e devolve nil. Por isso usamos 'guard let' para tratar o caso de entrada inválida com uma mensagem amigável."
+      },
+      {
+        "id": 3,
+        "question": "Por que o número secreto é um '@State' e não uma propriedade computada?",
+        "options": [
+          "Computadas não aceitam Int",
+          "Computadas são mais lentas",
+          "Uma propriedade computada sortearia um novo número a cada atualização da tela",
+          "'@State' é obrigatório para todo Int"
+        ],
+        "correctIndex": 2,
+        "explanation": "O corpo da view roda várias vezes. Se o número fosse sorteado ali, mudaria sem parar. Guardado em '@State', ele só muda quando você decide."
+      },
+      {
+        "id": 4,
+        "question": "Qual é a função do 'private' em '@State private var'?",
+        "options": [
+          "Indicar que o estado pertence somente a essa view",
+          "Esconder o valor do usuário",
+          "Impedir que o valor seja alterado",
+          "Salvar o valor com segurança"
+        ],
+        "correctIndex": 0,
+        "explanation": "A Apple recomenda marcar '@State' como 'private', pois o estado é de propriedade da view. Para compartilhar com views filhas, use '@Binding'."
+      },
+      {
+        "id": 5,
+        "question": "Como reiniciar o jogo?",
+        "options": [
+          "Chamar 'reloadData()'",
+          "Recriar a view manualmente",
+          "Fechar e abrir o app",
+          "Atribuir novos valores às variáveis de estado, e a tela atualiza automaticamente"
+        ],
+        "correctIndex": 3,
+        "explanation": "No SwiftUI a interface é uma função do estado. Ao redefinir 'alvo', 'tentativas' e 'palpite', o corpo é recalculado com os novos valores."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "O que significa o intervalo '1...100'?",
+        "options": [
+          "Todos os inteiros de 1 até 100, incluindo os dois extremos",
+          "De 1 até 99",
+          "De 2 até 100",
+          "Somente 1 e 100"
+        ],
+        "correctIndex": 0,
+        "explanation": "'...' é o operador de intervalo fechado. Já '1..<100' exclui o 100. Por isso 'Int.random(in: 1...100)' pode retornar 100."
+      },
+      {
+        "id": 2,
+        "question": "Para que serve '.keyboardType(.numberPad)' no TextField?",
+        "options": [
+          "Limitar o valor a 100",
+          "Mostrar um teclado numérico no iOS",
+          "Converter o texto em Int",
+          "Esconder o teclado"
+        ],
+        "correctIndex": 1,
+        "explanation": "É só uma dica de teclado. O usuário ainda pode colar texto, então a validação com 'Int(palpite)' continua necessária."
+      },
+      {
+        "id": 3,
+        "question": "Em qual momento devemos fazer 'tentativas += 1'?",
+        "options": [
+          "Antes de criar a view",
+          "Somente quando o jogador acerta",
+          "Depois de confirmar que o palpite é um número válido",
+          "A cada letra digitada"
+        ],
+        "correctIndex": 2,
+        "explanation": "Contamos apenas jogadas válidas. Por isso o incremento vem depois do 'guard let' e antes da comparação."
+      },
+      {
+        "id": 4,
+        "question": "Qual sequência cobre todos os casos da comparação?",
+        "options": [
+          "if n < alvo, if n > alvo",
+          "if n < alvo, else if n > alvo, else (acertou)",
+          "if n == alvo, else if n == alvo",
+          "if n <= alvo, else if n >= alvo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Há três resultados possíveis: menor, maior ou igual. O 'else' final representa a igualdade, sem precisar de outra condição."
+      },
+      {
+        "id": 5,
+        "question": "O que faz '.disabled(Int(palpite) == nil)' em um botão?",
+        "options": [
+          "Desativa o botão enquanto o texto não for um número válido",
+          "Esconde o botão",
+          "Apaga o texto",
+          "Mostra um alerta de erro"
+        ],
+        "correctIndex": 0,
+        "explanation": "O modificador recebe um Bool: a condição é verdadeira quando a conversão falha, então o botão fica inativo até haver uma entrada válida."
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Projeto: App de Tarefas em SwiftUI (passo a passo)",
+    "theory": "Vamos construir, em 6 passos, um app de tarefas com SwiftUI.\n\nPasso 1 - Modelo. Uma struct 'Identifiable' dá a cada tarefa uma identidade única:\n`struct Tarefa: Identifiable { let id = UUID(); var titulo: String; var feita = false }`\n\nPasso 2 - Estado. A lista e o texto do campo ficam em '@State':\n`@State private var tarefas: [Tarefa] = []`\n`@State private var novoTitulo = \"\"`\n\nPasso 3 - Mostrar a lista com 'List' e 'ForEach':\n`List { ForEach(tarefas) { t in Text(t.titulo) } }`\n\nPasso 4 - Adicionar. Um 'TextField' com um botão:\n`TextField(\"Nova tarefa\", text: $novoTitulo)`\n`Button(\"Adicionar\") { tarefas.append(Tarefa(titulo: novoTitulo)); novoTitulo = \"\" }`\n\nPasso 5 - Marcar como feita e remover. Alterne o Bool com 'toggle()' e remova com 'onDelete':\n`tarefas[i].feita.toggle()`\n`.onDelete { tarefas.remove(atOffsets: $0) }`\n\nPasso 6 - Persistência. '@AppStorage' guarda valores simples (como um tema) no UserDefaults:\n`@AppStorage(\"tema\") private var tema = \"claro\"`\nPara guardar as tarefas em si, faça a struct adotar 'Codable' ou use SwiftData ('@Model' e '@Query'), que persiste o modelo automaticamente.\n\nDesafio: ignore títulos vazios antes de adicionar.",
+    "appleDocUrl": "https://developer.apple.com/documentation/swiftui/list",
+    "category": "Projetos",
+    "corporateCase": "Gerenciadores de tarefas, CRMs e apps de helpdesk seguem exatamente este padrão: um modelo 'Identifiable', uma lista na tela, um formulário para criar itens, swipe para apagar e persistência local ou em servidor. Preferências simples (tema, filtros) ficam em '@AppStorage'.",
+    "gameCase": "Em um jogo, o inventário ou a lista de missões funciona igual: cada item é um modelo com id, a lista aparece no menu, completar uma missão alterna o 'Bool' de concluída, descartar um item remove da lista, e o progresso é salvo para a próxima sessão.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Faça a struct adotar o protocolo que dá identidade única a cada tarefa.",
+        "codeSnippet": "struct Tarefa: ___ { let id = UUID(); var titulo: String; var feita = false }",
+        "correctAnswer": "Identifiable",
+        "hint": "Protocolo exigido pelo List/ForEach, tem a propriedade 'id'."
+      },
+      {
+        "id": 2,
+        "question": "Alterne o valor booleano de 'feita' (true vira false e vice-versa).",
+        "codeSnippet": "tarefas[i].feita.___()",
+        "correctAnswer": "toggle",
+        "hint": "Método de Bool que inverte o valor."
+      },
+      {
+        "id": 3,
+        "question": "Adicione o gesto de deslizar para apagar linhas do ForEach.",
+        "codeSnippet": "ForEach(tarefas) { t in Text(t.titulo) }.___(perform: remover)",
+        "correctAnswer": "onDelete",
+        "hint": "Modificador de ForEach que recebe um IndexSet."
+      },
+      {
+        "id": 4,
+        "question": "Adicione a nova tarefa ao final do array.",
+        "codeSnippet": "tarefas.___(Tarefa(titulo: novoTitulo))",
+        "correctAnswer": "append",
+        "hint": "Método de Array que insere ao final."
+      },
+      {
+        "id": 5,
+        "question": "Guarde a preferência de tema no UserDefaults com o property wrapper correto.",
+        "codeSnippet": "___(\"tema\") private var tema = \"claro\"",
+        "correctAnswer": "@AppStorage",
+        "hint": "Property wrapper do SwiftUI ligado ao UserDefaults, inclua o '@'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "Por que a struct 'Tarefa' adota 'Identifiable'?",
+        "options": [
+          "Para o SwiftUI identificar cada linha de forma única ao atualizar a lista",
+          "Para poder ser salva em disco",
+          "Para ser uma classe",
+          "Para ficar mais rápida"
+        ],
+        "correctIndex": 0,
+        "explanation": "Com 'id' único, 'ForEach' e 'List' sabem quais linhas foram adicionadas, removidas ou movidas e animam corretamente as mudanças."
+      },
+      {
+        "id": 2,
+        "question": "O que 'tarefas[i].feita.toggle()' faz?",
+        "options": [
+          "Remove a tarefa",
+          "Inverte o valor do Bool 'feita'",
+          "Define 'feita' como true",
+          "Cria uma nova tarefa"
+        ],
+        "correctIndex": 1,
+        "explanation": "'toggle()' é um método mutável de Bool. Como 'tarefas' é '@State', a mudança atualiza a tela."
+      },
+      {
+        "id": 3,
+        "question": "O que '.onDelete' entrega ao closure?",
+        "options": [
+          "O id da tarefa",
+          "A tarefa inteira",
+          "Um IndexSet com as posições das linhas a remover",
+          "Um Bool"
+        ],
+        "correctIndex": 2,
+        "explanation": "Por isso usamos 'tarefas.remove(atOffsets: indices)', que remove todas as posições do IndexSet de uma vez."
+      },
+      {
+        "id": 4,
+        "question": "Qual a melhor opção para '@AppStorage'?",
+        "options": [
+          "Valores simples, como tema, nome ou um contador",
+          "Grandes bancos de dados",
+          "Listas de milhares de modelos",
+          "Senhas e tokens"
+        ],
+        "correctIndex": 0,
+        "explanation": "'@AppStorage' usa UserDefaults, ótimo para preferências pequenas. Para modelos e listas grandes use SwiftData, e para senhas use o Keychain."
+      },
+      {
+        "id": 5,
+        "question": "O que SwiftData oferece neste app?",
+        "options": [
+          "Substituir o SwiftUI",
+          "Evitar o uso de structs",
+          "Guardar apenas Strings",
+          "Persistir o modelo com '@Model' e ler a lista com '@Query'"
+        ],
+        "correctIndex": 3,
+        "explanation": "Com SwiftData, a classe 'Tarefa' marcada com '@Model' é salva automaticamente e a view recebe os dados atualizados com '@Query'."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Por que o TextField usa '$novoTitulo'?",
+        "options": [
+          "Para tornar o texto privado",
+          "Ele precisa de um Binding para ler e escrever o texto no estado",
+          "Para converter em String",
+          "Para salvar em disco"
+        ],
+        "correctIndex": 1,
+        "explanation": "O prefixo '$' acessa o projectedValue de '@State', que é um Binding de leitura e escrita."
+      },
+      {
+        "id": 2,
+        "question": "Como evitar adicionar tarefas vazias?",
+        "options": [
+          "Verificar o texto sem espaços antes de chamar 'append'",
+          "Usar try!",
+          "Desativar o ForEach",
+          "Declarar o array com let"
+        ],
+        "correctIndex": 0,
+        "explanation": "'novoTitulo.trimmingCharacters(in: .whitespaces)' e depois checar 'isEmpty' evita itens em branco."
+      },
+      {
+        "id": 3,
+        "question": "O que 'ForEach($tarefas) { $t in ... }' permite?",
+        "options": [
+          "Ordenar o array",
+          "Apagar o array",
+          "Receber um Binding para cada elemento e editá-lo diretamente",
+          "Evitar o uso de id"
+        ],
+        "correctIndex": 2,
+        "explanation": "Com um Binding por elemento, você pode ligar 'Toggle(isOn: $t.feita)' sem precisar do índice."
+      },
+      {
+        "id": 4,
+        "question": "Qual protocolo a struct deve adotar para codificar em JSON?",
+        "options": [
+          "Codable",
+          "Equatable",
+          "Sendable",
+          "CustomStringConvertible"
+        ],
+        "correctIndex": 0,
+        "explanation": "'Codable' (Encodable + Decodable) permite usar 'JSONEncoder' para salvar as tarefas em arquivo ou UserDefaults."
+      },
+      {
+        "id": 5,
+        "question": "Por que usar 'List' em vez de apenas 'VStack' para muitas tarefas?",
+        "options": [
+          "VStack não aceita Text",
+          "List é obrigatória no SwiftUI",
+          "VStack não atualiza o estado",
+          "List reaproveita linhas e já traz recursos como swipe e edição"
+        ],
+        "correctIndex": 3,
+        "explanation": "'List' carrega linhas sob demanda e oferece o estilo da plataforma, swipe actions e 'onDelete' sem trabalho extra."
+      }
+    ]
+  }
+]

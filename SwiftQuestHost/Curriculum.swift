@@ -51,28 +51,7 @@ struct IntroContent: Codable, Sendable {
 
 enum Curriculum {
     // Language-independent detection rules; the explanation text comes from the localized JSON.
-    static let rules: [(term: String, pattern: String, lessonID: String)] = [
-        ("let", "\\blet\\b", "values"),
-        ("var", "\\bvar\\b", "values"),
-        ("func", "\\bfunc\\b", "functions"),
-        ("guard", "\\bguard\\b", "optionals"),
-        ("if let", "\\bif\\s+(let|var)\\b", "optionals"),
-        ("Optional (?)", "\\w\\?(\\s|\\)|,|=|\\.|$)|\\?\\?", "optionals"),
-        ("Force unwrap (!)", "\\w!(\\s|\\)|\\.|,|$)", "optionals"),
-        ("struct", "\\bstruct\\b", "types"),
-        ("class", "\\bclass\\b", "types"),
-        ("enum", "\\benum\\b", "types"),
-        ("switch", "\\bswitch\\b", "types"),
-        ("protocol", "\\bprotocol\\b", "types"),
-        ("extension", "\\bextension\\b", "types"),
-        ("for-in", "\\bfor\\b.+\\bin\\b", "collections"),
-        ("map/filter/reduce", "\\.(map|filter|reduce|compactMap|flatMap)\\b", "collections"),
-        ("Closure ($0)", "\\$\\d|\\{\\s*\\w+\\s+in\\b", "collections"),
-        ("View / body", ":\\s*View\\b|\\bvar\\s+body\\b", "swiftui"),
-        ("@State", "@State\\b", "swiftui"),
-        ("@Published / ObservableObject", "@Published\\b|ObservableObject\\b", "swiftui"),
-        ("Stacks", "\\b(VStack|HStack|ZStack)\\b", "swiftui")
-    ]
+    static var rules: [(term: String, pattern: String, lessonID: String)] { ExplainRules.rules }
 
     static func explain(_ source: String, glossary: [String: String]) -> [GlossaryEntry] {
         rules.compactMap { rule in

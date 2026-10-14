@@ -49,6 +49,7 @@ final class Localizer: ObservableObject {
     private(set) var glossary: [GlossaryTerm] = []
     private(set) var badges: [Badge] = []
     private(set) var studyBank: [CourseQuestion] = []
+    private(set) var challenges: [CodeChallenge] = []
 
     init() {
         let saved = UserDefaults.standard.string(forKey: "appLanguage").flatMap(AppLanguage.init(rawValue:))
@@ -60,7 +61,8 @@ final class Localizer: ObservableObject {
         let intro = IntroContent.load(language)
         lessons = intro.lessons
         introGlossary = intro.glossary
-        pillars = CourseData.load("pillars", language)
+        pillars = CourseData.loadPillars(language)
+        challenges = CourseData.load("challenges", language)
         exams = CourseData.load("mockExams", language)
         glossary = CourseData.load("glossary", language)
         badges = CourseData.load("badges", language)
@@ -76,8 +78,34 @@ final class Localizer: ObservableObject {
         studyBank = bank
     }
 
+    /// Resolves a review-queue key ("p:3:2", "e:exam-1:4", "i:values-1") to the question in the current language.
+    func question(forKey key: String) -> (title: String, question: CourseQuestion)? {
+        let parts = key.split(separator: ":", maxSplits: 2).map(String.init)
+        guard parts.count == 3 || (parts.count == 2 && parts[0] == "i") else { return nil }
+        switch parts[0] {
+        case "p":
+            guard let pid = Int(parts[1]), let qid = Int(parts[2]), let p = pillars.first(where: { $0.id == pid }),
+                  let q = p.quiz.first(where: { $0.id == qid }) else { return nil }
+            return (p.title, q)
+        case "e":
+            guard let qid = Int(parts[2]), let e = exams.first(where: { $0.id == parts[1] }),
+                  let q = e.questions.first(where: { $0.id == qid }) else { return nil }
+            return (e.title, q)
+        case "i":
+            let id = parts.dropFirst().joined(separator: ":")
+            for lesson in lessons {
+                if let q = lesson.quiz.first(where: { $0.id == id }) {
+                    return (lesson.title, CourseQuestion(id: 0, question: q.prompt, options: q.choices,
+                                                         correctIndex: q.answer, explanation: q.explanation))
+                }
+            }
+            return nil
+        default: return nil
+        }
+    }
+
     func t(_ key: String) -> String {
-        guard let row = Self.strings[key] else { return key }
+        guard let row = Self.allStrings[key] else { return key }
         let index = AppLanguage.allCases.firstIndex(of: language) ?? 0
         return index < row.count ? row[index] : row[0]
     }
@@ -93,6 +121,8 @@ final class Localizer: ObservableObject {
     }
 
     // Order of each row: English, Português (Brasil), Español — same as AppLanguage.allCases.
+    static let allStrings: [String: [String]] = strings.merging(featureStrings) { a, _ in a }
+
     static let strings: [String: [String]] = [
         "menu.about": ["About SwiftQuest", "Sobre o SwiftQuest", "Acerca de SwiftQuest"],
         "about.tagline": ["Learn Swift inside and alongside Xcode.", "Aprenda Swift dentro e ao lado do Xcode.", "Aprende Swift dentro y junto a Xcode."],

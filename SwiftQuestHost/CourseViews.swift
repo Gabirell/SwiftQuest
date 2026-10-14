@@ -42,7 +42,9 @@ struct QuestionView: View {
 
 struct QuizSet: View {
     let questions: [CourseQuestion]
+    var keyPrefix: String?          // when set, wrong answers go to the review queue as "<prefix>:<question id>"
     var onScore: ((Int) -> Void)?
+    @EnvironmentObject var course: CourseProgress
     @EnvironmentObject var loc: Localizer
     @State private var picks: [Int: Int] = [:]
 
@@ -51,7 +53,13 @@ struct QuizSet: View {
             ForEach(questions) { q in
                 QuestionView(question: q, picked: Binding(
                     get: { picks[q.id] },
-                    set: { picks[q.id] = $0; report() }))
+                    set: { value in
+                        picks[q.id] = value
+                        if let prefix = keyPrefix, let value {
+                            course.markQuestion("\(prefix):\(q.id)", correct: value == q.correctIndex)
+                        }
+                        report()
+                    }))
             }
             let correct = questions.filter { picks[$0.id] == $0.correctIndex }.count
             Text("\(loc.t("score")): \(correct) / \(questions.count)").font(.callout.bold())
@@ -69,6 +77,7 @@ struct QuizSet: View {
 struct CourseView: View {
     @EnvironmentObject var progress: CourseProgress
     @EnvironmentObject var loc: Localizer
+    @EnvironmentObject var route: SwiftQuestRoute
     @State private var selected: Int? = 1
 
     private var groups: [(String, [Pillar])] {
@@ -97,6 +106,8 @@ struct CourseView: View {
                 }
             }
             .frame(width: 300)
+            .onAppear { if let t = route.pillarTarget { selected = t; route.pillarTarget = nil } }
+            .onChange(of: route.pillarTarget) { _, t in if let t { selected = t; route.pillarTarget = nil } }
             Divider()
             if let id = selected, let p = loc.pillars.first(where: { $0.id == id }) {
                 PillarDetail(pillar: p).id("\(p.id)-\(loc.language.rawValue)")
@@ -131,7 +142,7 @@ struct PillarDetail: View {
                 Text(loc.t("exercises")).font(.title3.bold())
                 ForEach(pillar.exercises) { ExerciseRow(pillarID: pillar.id, exercise: $0) }
                 Text(loc.t("quiz")).font(.title3.bold())
-                QuizSet(questions: pillar.quiz) { progress.recordQuiz(pillar: pillar.id, correct: $0) }
+                QuizSet(questions: pillar.quiz, keyPrefix: "p:\(pillar.id)") { progress.recordQuiz(pillar: pillar.id, correct: $0) }
                 if let extra = pillar.extraQuiz, !extra.isEmpty {
                     if showExtra {
                         Text(loc.t("quiz.extra")).font(.title3.bold())
@@ -287,6 +298,9 @@ struct ExamRunner: View {
     private func finish() {
         guard !finished else { return }
         finished = true
+        for q in exam.questions {
+            progress.markQuestion("e:\(exam.id):\(q.id)", correct: picks[q.id] == q.correctIndex)
+        }
         progress.recordExam(id: exam.id, passed: passed)
     }
 }
@@ -323,6 +337,7 @@ struct GlossaryView: View {
                     }
                     .buttonStyle(.plain)
                     .help(loc.t("save.term"))
+                    .accessibilityLabel(loc.t("save.term"))
                 }
             }
         }
@@ -402,6 +417,7 @@ struct BadgeUnlockedView: View {
 // MARK: - Progress dashboard (ported from the original pillar progress chart)
 
 struct DashboardView: View {
+    @EnvironmentObject var lessons: ProgressStore
     @EnvironmentObject var progress: CourseProgress
     @EnvironmentObject var loc: Localizer
 
@@ -410,7 +426,18 @@ struct DashboardView: View {
         let average = rows.isEmpty ? 0 : rows.reduce(0) { $0 + $1.percentage } / rows.count
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                Text(loc.t("nav.dashboard")).font(.largeTitle.bold())
+                HStack {
+                    Text(loc.t("nav.dashboard")).font(.largeTitle.bold())
+                    Spacer()
+                    Menu {
+                        Button("Markdown") {
+                            ProgressExporter.save(ProgressExporter.markdown(loc: loc, course: progress, lessons: lessons), suggestedName: "SwiftQuest-progress.md")
+                        }
+                        Button("JSON") {
+                            ProgressExporter.save(ProgressExporter.json(loc: loc, course: progress, lessons: lessons), suggestedName: "SwiftQuest-progress.json")
+                        }
+                    } label: { Label(loc.t("export"), systemImage: "square.and.arrow.up") }
+                }
                 HStack(spacing: 24) {
                     ZStack {
                         Circle().stroke(.quaternary, lineWidth: 14)

@@ -1,0 +1,682 @@
+[
+  {
+    "id": 19,
+    "title": "Concorrência Avançada: Task, Actors e @MainActor",
+    "theory": "A concorrência moderna do Swift se baseia em 'async/await' e em tarefas gerenciadas pelo sistema. 'Task { }' cria uma tarefa não estruturada que herda o contexto do ator atual, 'async let' inicia trabalhos filhos em paralelo e 'withTaskGroup' permite criar um número dinâmico de tarefas filhas. Um 'actor' é um tipo de referência que isola o seu estado mutável: só uma tarefa por vez o acessa, e quem está de fora precisa usar 'await'. O '@MainActor' é um ator global que garante a execução na thread principal, essencial para atualizar a interface. O protocolo 'Sendable' marca tipos que podem cruzar com segurança as fronteiras entre domínios de isolamento. No modo de linguagem Swift 6, as data races deixam de ser bugs aleatórios em tempo de execução e viram erros de compilação.",
+    "appleDocUrl": "https://developer.apple.com/documentation/swift/concurrency",
+    "category": "Swift Moderno",
+    "corporateCase": "Em um app de e-commerce, a tela de produto carrega detalhes, avaliações e recomendações ao mesmo tempo com 'async let', reduzindo o tempo de carregamento. O carrinho de compras compartilhado entre várias telas é um 'actor', evitando que duas tarefas corrompam a lista de itens, e o ViewModel é '@MainActor' para atualizar a UI com segurança.",
+    "gameCase": "Em um jogo, o carregamento de texturas, sons e dados do mapa roda em um 'withTaskGroup', um recurso por tarefa filha. O placar global de pontos é um 'actor', para que vários inimigos derrotados ao mesmo tempo somem pontos sem condição de corrida.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Crie uma tarefa não estruturada que roda trabalho assíncrono a partir de código síncrono",
+        "codeSnippet": "___ { await baixarImagem() }",
+        "correctAnswer": "Task",
+        "hint": "Use o tipo que representa uma unidade de trabalho assíncrono."
+      },
+      {
+        "id": 2,
+        "question": "Inicie o download de uma foto em paralelo, aguardando o resultado só mais tarde",
+        "codeSnippet": "___ let foto = baixarFoto()",
+        "correctAnswer": "async",
+        "hint": "A combinação 'let' precedida da palavra que marca o início concorrente."
+      },
+      {
+        "id": 3,
+        "question": "Declare um tipo que protege seu estado mutável contra data races",
+        "codeSnippet": "___ Contador { var valor = 0 }",
+        "correctAnswer": "actor",
+        "hint": "Não é class nem struct: é um tipo de referência isolado."
+      },
+      {
+        "id": 4,
+        "question": "Garanta que todo o ViewModel seja executado na thread principal",
+        "codeSnippet": "___ final class TelaViewModel { var titulo = \"\" }",
+        "correctAnswer": "@MainActor",
+        "hint": "É um atributo que começa com @ e nomeia o ator da UI."
+      },
+      {
+        "id": 5,
+        "question": "Marque a struct como segura para ser enviada entre tarefas e atores",
+        "codeSnippet": "struct Usuario: ___ { let id: Int }",
+        "correctAnswer": "Sendable",
+        "hint": "O protocolo cujo nome significa 'enviável'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "O que faz 'async let' em Swift?",
+        "options": [
+          "Torna a variável imutável e global",
+          "Inicia uma tarefa filha que roda em paralelo; o resultado é obtido depois com 'await'",
+          "Bloqueia a thread até o valor ficar pronto",
+          "Cria uma nova thread do sistema operacional manualmente"
+        ],
+        "correctIndex": 1,
+        "explanation": "'async let' dispara o trabalho imediatamente como tarefa filha e só suspende quando você escreve 'await' sobre a variável, permitindo paralelismo estruturado."
+      },
+      {
+        "id": 2,
+        "question": "Qual garantia um 'actor' oferece?",
+        "options": [
+          "Todas as suas propriedades são constantes",
+          "Seus métodos sempre rodam na thread principal",
+          "Ele nunca precisa de await",
+          "Apenas uma tarefa por vez acessa seu estado mutável isolado"
+        ],
+        "correctIndex": 3,
+        "explanation": "O actor serializa o acesso ao seu estado. De fora dele, chamar seus métodos exige 'await', pois a tarefa pode precisar esperar a vez."
+      },
+      {
+        "id": 3,
+        "question": "Para que serve '@MainActor'?",
+        "options": [
+          "Garantir que o código rode no ator principal (thread principal), onde a UI deve ser atualizada",
+          "Executar o código em uma thread de fundo de alta prioridade",
+          "Cancelar tarefas automaticamente",
+          "Tornar o tipo Sendable"
+        ],
+        "correctIndex": 0,
+        "explanation": "Atualizações de interface precisam ocorrer na thread principal. '@MainActor' faz o compilador verificar isso, e o 'await' é exigido ao chamar esse código de fora."
+      },
+      {
+        "id": 4,
+        "question": "O que significa conformar um tipo a 'Sendable'?",
+        "options": [
+          "Que o tipo pode ser enviado por rede",
+          "Que o tipo é um Codable",
+          "Que seus valores podem ser transferidos com segurança entre domínios de concorrência",
+          "Que o tipo é executado na main thread"
+        ],
+        "correctIndex": 2,
+        "explanation": "'Sendable' informa ao compilador que compartilhar o valor entre tarefas e atores não causa data races, por exemplo tipos imutáveis ou isolados."
+      },
+      {
+        "id": 5,
+        "question": "Quando usar 'withTaskGroup' em vez de vários 'async let'?",
+        "options": [
+          "Quando se quer evitar o uso de await",
+          "Quando o número de tarefas filhas só é conhecido em tempo de execução",
+          "Quando todas as tarefas precisam rodar na main thread",
+          "Nunca, pois ele foi descontinuado"
+        ],
+        "correctIndex": 1,
+        "explanation": "'async let' funciona para uma quantidade fixa de tarefas. Com uma lista dinâmica (ex.: baixar N imagens), 'withTaskGroup' adiciona tarefas em um laço e coleta os resultados."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Qual a diferença entre 'Task { }' e 'Task.detached { }'?",
+        "options": [
+          "'Task' é síncrona e 'detached' é assíncrona",
+          "'detached' sempre roda na main thread",
+          "'Task' herda o contexto do ator e a prioridade atuais; 'detached' não herda nada",
+          "Não há diferença prática"
+        ],
+        "correctIndex": 2,
+        "explanation": "Uma 'Task' normal criada em um '@MainActor' continua nesse ator. 'Task.detached' roda independente, sem herdar ator, prioridade ou valores de task-local."
+      },
+      {
+        "id": 2,
+        "question": "O que muda ao habilitar o modo de linguagem Swift 6?",
+        "options": [
+          "Violações de segurança contra data races passam a ser erros de compilação",
+          "O código passa a rodar mais rápido automaticamente",
+          "async/await deixa de ser necessário",
+          "Classes deixam de existir"
+        ],
+        "correctIndex": 0,
+        "explanation": "O Swift 6 aplica verificação completa de concorrência em tempo de compilação, transformando possíveis data races em erros que você corrige antes de executar."
+      },
+      {
+        "id": 3,
+        "question": "Como funciona o cancelamento de uma Task?",
+        "options": [
+          "A thread é morta imediatamente pelo sistema",
+          "O cancelamento é ignorado pelo Swift",
+          "Só funciona com actors",
+          "É cooperativo: o código precisa verificar, por exemplo, 'Task.isCancelled' ou chamar 'try Task.checkCancellation()'"
+        ],
+        "correctIndex": 3,
+        "explanation": "Chamar 'cancel()' apenas marca a tarefa como cancelada. Cabe ao código checar o estado em pontos adequados e encerrar o trabalho de forma limpa."
+      },
+      {
+        "id": 4,
+        "question": "Qual tipo é naturalmente seguro para ser 'Sendable'?",
+        "options": [
+          "Uma class com propriedades 'var' sem proteção",
+          "Uma struct cujas propriedades são todas 'let' de tipos Sendable, como String e Int",
+          "Uma closure que captura uma variável mutável",
+          "Um array de referências a classes mutáveis"
+        ],
+        "correctIndex": 1,
+        "explanation": "Valores imutáveis ou copiados por valor não geram data races. Classes com estado mutável não protegido não podem ser Sendable com segurança."
+      },
+      {
+        "id": 5,
+        "question": "Por que chamar um método de um actor, de fora dele, exige 'await'?",
+        "options": [
+          "Porque o método sempre demora vários segundos",
+          "Porque actors só funcionam com rede",
+          "Porque a chamada é um ponto de suspensão: a tarefa pode esperar o actor ficar livre",
+          "Porque o compilador ignora métodos sem await"
+        ],
+        "correctIndex": 2,
+        "explanation": "O 'await' sinaliza que a execução pode ser suspensa enquanto outra tarefa usa o actor, e que outras tarefas podem rodar nesse intervalo."
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Testes: XCTest e Swift Testing",
+    "theory": "Testes automatizados garantem que o comportamento do código não quebra quando ele evolui. O XCTest é o framework clássico: você cria uma subclasse de 'XCTestCase', escreve métodos que começam com 'test' e valida resultados com asserções como 'XCTAssertEqual' e 'XCTAssertTrue'. O Swift Testing, mais novo, usa o atributo '@Test' em funções comuns (sem prefixo obrigatório) e o macro '#expect' para qualquer expressão booleana, mostrando os valores envolvidos quando falha. Ambos suportam testes assíncronos: basta marcar a função como 'async' e usar 'await'. Um bom teste segue o padrão Arrange-Act-Assert: preparar os dados, executar a ação e verificar o resultado. Para o código ser testável, injete dependências por protocolos, de modo que rede e banco possam ser trocados por versões falsas nos testes.",
+    "appleDocUrl": "https://developer.apple.com/documentation/testing",
+    "category": "Swift Moderno",
+    "corporateCase": "Em um app de banco, a regra que calcula juros é isolada em uma função pura com testes '@Test' cobrindo vários cenários. A camada de rede é acessada por um protocolo, e nos testes entra um serviço falso que devolve respostas fixas, rodando em milissegundos no CI antes de cada merge.",
+    "gameCase": "Em um jogo, a função que calcula o dano de um golpe crítico tem testes que verificam valores esperados para cada tipo de arma. Assim, ao balancear o jogo, uma alteração acidental na fórmula é detectada na hora, sem precisar jogar a fase inteira.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Crie uma classe de testes no framework clássico da Apple",
+        "codeSnippet": "final class CalculadoraTests: ___ { }",
+        "correctAnswer": "XCTestCase",
+        "hint": "Ela herda de uma classe do XCTest cujo nome termina em 'Case'."
+      },
+      {
+        "id": 2,
+        "question": "Verifique que o resultado de soma(2, 3) é igual a 5 usando o XCTest",
+        "codeSnippet": "___(soma(2, 3), 5)",
+        "correctAnswer": "XCTAssertEqual",
+        "hint": "A asserção começa com XCTAssert e compara dois valores iguais."
+      },
+      {
+        "id": 3,
+        "question": "Marque a função como um teste do Swift Testing",
+        "codeSnippet": "___ func somaDoisNumeros() { }",
+        "correctAnswer": "@Test",
+        "hint": "É um atributo, escrito com @, de nome curto e direto."
+      },
+      {
+        "id": 4,
+        "question": "Valide a condição com o macro do Swift Testing",
+        "codeSnippet": "___(soma(2, 3) == 5)",
+        "correctAnswer": "#expect",
+        "hint": "O macro começa com # e 'espera' que a condição seja verdadeira."
+      },
+      {
+        "id": 5,
+        "question": "Torne o teste capaz de usar 'await' para chamar código assíncrono",
+        "codeSnippet": "func testBuscaUsuario() ___ throws { }",
+        "correctAnswer": "async",
+        "hint": "Palavra-chave que vem antes de 'throws' na assinatura."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "Como o XCTest identifica automaticamente os métodos de teste em uma XCTestCase?",
+        "options": [
+          "Métodos sem parâmetros e sem retorno cujo nome começa com 'test'",
+          "Métodos marcados com '@Test'",
+          "Métodos privados",
+          "Métodos cujo nome termina com 'Tests'"
+        ],
+        "correctIndex": 0,
+        "explanation": "No XCTest, a convenção do prefixo 'test' é obrigatória: 'func testSomaRetornaCinco()'. No Swift Testing, em vez disso, usa-se o atributo '@Test'."
+      },
+      {
+        "id": 2,
+        "question": "O que significa o padrão Arrange-Act-Assert?",
+        "options": [
+          "Compilar, executar e publicar",
+          "Criar a UI, tocar e capturar a tela",
+          "Preparar os dados, executar a ação testada e verificar o resultado",
+          "Declarar, atribuir e imprimir"
+        ],
+        "correctIndex": 2,
+        "explanation": "Separar as três etapas deixa o teste legível: o que está sendo preparado, qual comportamento é exercitado e qual resultado se espera."
+      },
+      {
+        "id": 3,
+        "question": "Qual é uma característica do Swift Testing em relação ao XCTest?",
+        "options": [
+          "Só funciona com testes de interface",
+          "Usa '@Test' e '#expect', e a função não precisa começar com 'test'",
+          "Exige herdar de XCTestCase",
+          "Não suporta código assíncrono"
+        ],
+        "correctIndex": 1,
+        "explanation": "O Swift Testing usa macros e atributos modernos, aceita funções livres ou métodos em structs e dispensa a herança de XCTestCase."
+      },
+      {
+        "id": 4,
+        "question": "Qual a vantagem de '#expect' sobre as várias funções XCTAssert?",
+        "options": [
+          "É mais lento, porém mais seguro",
+          "Funciona apenas com inteiros",
+          "Para o app inteiro ao falhar",
+          "Aceita qualquer expressão booleana e, ao falhar, mostra os valores de cada parte da expressão"
+        ],
+        "correctIndex": 3,
+        "explanation": "Com '#expect(a == b)', o relatório de falha exibe o valor de 'a' e de 'b', e você não precisa decorar um conjunto de funções de asserção."
+      },
+      {
+        "id": 5,
+        "question": "Como testar uma função assíncrona?",
+        "options": [
+          "Usar sleep(5) e torcer para terminar",
+          "Marcar o teste como 'async' e usar 'await' dentro dele",
+          "Não é possível testar código assíncrono",
+          "Chamar a função em uma thread separada sem aguardar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tanto o XCTest moderno quanto o Swift Testing aceitam testes 'async', que aguardam o resultado de forma natural, sem esperas fixas."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Para que serve '#require' no Swift Testing?",
+        "options": [
+          "Importar um módulo para os testes",
+          "Marcar o teste como lento",
+          "Pular o teste no CI",
+          "Exigir uma condição ou desembrulhar um opcional, interrompendo o teste se falhar"
+        ],
+        "correctIndex": 3,
+        "explanation": "'try #require(valor)' desembrulha o opcional e encerra o teste imediatamente se for nil, evitando falhas em cascata nas linhas seguintes."
+      },
+      {
+        "id": 2,
+        "question": "Como tornar uma classe que acessa a rede fácil de testar?",
+        "options": [
+          "Fazer a classe acessar um singleton global",
+          "Chamar a internet real em todo teste",
+          "Injetar a dependência por um protocolo e usar uma implementação falsa nos testes",
+          "Escrever tudo em uma única função grande"
+        ],
+        "correctIndex": 2,
+        "explanation": "Com injeção de dependência, o teste fornece um serviço falso e previsível, sem depender de rede, o que o deixa rápido e determinístico."
+      },
+      {
+        "id": 3,
+        "question": "Para que serve '@testable import MeuApp'?",
+        "options": [
+          "Permitir que os testes acessem símbolos 'internal' do módulo",
+          "Executar o app durante os testes",
+          "Deixar tudo público definitivamente",
+          "Desativar o compilador"
+        ],
+        "correctIndex": 0,
+        "explanation": "Por padrão, só símbolos 'public' são visíveis a outros módulos. '@testable' abre os 'internal' apenas para os testes, sem alterar o código de produção."
+      },
+      {
+        "id": 4,
+        "question": "Como o Swift Testing agrupa testes relacionados?",
+        "options": [
+          "Somente em arquivos separados",
+          "Em uma struct (ou class) opcionalmente marcada com '@Suite'; cada teste roda em uma nova instância",
+          "Com herança de XCTestCase",
+          "Não é possível agrupar"
+        ],
+        "correctIndex": 1,
+        "explanation": "Tipos que contêm funções '@Test' formam suítes. Como cada teste recebe uma instância nova, o estado não vaza de um teste para outro."
+      },
+      {
+        "id": 5,
+        "question": "Qual característica define um bom teste unitário?",
+        "options": [
+          "Depende da ordem de execução",
+          "Usa dados aleatórios sem controle",
+          "Rápido, determinístico e independente dos outros testes",
+          "Acessa servidores de produção"
+        ],
+        "correctIndex": 2,
+        "explanation": "Testes lentos ou instáveis (flaky) perdem a confiança do time. Testes independentes e previsíveis podem rodar em qualquer ordem e em paralelo."
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Redes e Codable com URLSession",
+    "theory": "Quase todo app conversa com servidores, e em Swift isso combina 'URLSession' com 'Codable'. 'Codable' é a união de 'Encodable' e 'Decodable' e permite converter JSON em structs com 'JSONDecoder' (e o inverso com 'JSONEncoder'). Quando os nomes das chaves do JSON diferem das propriedades, você define o enum 'CodingKeys' para mapeá-las. Com async/await, 'try await URLSession.shared.data(from: url)' devolve uma tupla '(Data, URLResponse)' sem bloquear a thread. Atenção: a URLSession só lança erro para falhas de conexão; um 404 ou 500 chega como resposta normal, então você deve converter para 'HTTPURLResponse' e validar o 'statusCode' (2xx = sucesso). Trate os erros com 'do/catch', distinguindo falhas de rede, status inválido e 'DecodingError'.",
+    "appleDocUrl": "https://developer.apple.com/documentation/foundation/urlsession",
+    "category": "Dados e Rede",
+    "corporateCase": "Um app de delivery consome a API de restaurantes: a resposta JSON é decodificada em 'struct Restaurante: Codable', com 'CodingKeys' convertendo 'nome_fantasia' em 'nomeFantasia'. Se o servidor devolver 503, o app verifica o 'statusCode' e mostra a mensagem 'Tente novamente', em vez de tentar decodificar uma página de erro.",
+    "gameCase": "Em um jogo, o ranking online é buscado com 'URLSession' e decodificado em uma lista de jogadores 'Codable'. Se a rede cair, o jogo captura o erro e exibe o último ranking salvo localmente, sem travar a tela.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Faça a struct poder ser convertida de/para JSON",
+        "codeSnippet": "struct Usuario: ___ { let id: Int }",
+        "correctAnswer": "Codable",
+        "hint": "Protocolo que combina Encodable e Decodable."
+      },
+      {
+        "id": 2,
+        "question": "Crie o objeto que transforma Data JSON em uma struct",
+        "codeSnippet": "let usuario = try ___().decode(Usuario.self, from: data)",
+        "correctAnswer": "JSONDecoder",
+        "hint": "O nome começa com 'JSON' e termina com 'Decoder'."
+      },
+      {
+        "id": 3,
+        "question": "Defina o enum que mapeia as chaves do JSON para as propriedades",
+        "codeSnippet": "enum ___: String, CodingKey { case nomeCompleto = \"nome_completo\" }",
+        "correctAnswer": "CodingKeys",
+        "hint": "Enum com nome no plural que conforma a CodingKey."
+      },
+      {
+        "id": 4,
+        "question": "Baixe os dados de uma URL com async/await",
+        "codeSnippet": "let (data, response) = try await URLSession.shared.___(from: url)",
+        "correctAnswer": "data",
+        "hint": "O método leva o nome do que ele devolve: os dados, mais a resposta."
+      },
+      {
+        "id": 5,
+        "question": "Converta a resposta para o tipo que expõe o statusCode HTTP",
+        "codeSnippet": "guard let http = response as? ___ else { return }",
+        "correctAnswer": "HTTPURLResponse",
+        "hint": "Subclasse de URLResponse com 'HTTP' no nome."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "O que é 'Codable' em Swift?",
+        "options": [
+          "Um tipo exclusivo para JSON",
+          "Uma classe base de modelos",
+          "Um typealias de 'Encodable & Decodable'",
+          "Um framework de banco de dados"
+        ],
+        "correctIndex": 2,
+        "explanation": "'Codable' combina os dois protocolos, permitindo codificar e decodificar um tipo em formatos como JSON ou property list."
+      },
+      {
+        "id": 2,
+        "question": "Qual é o papel do enum 'CodingKeys'?",
+        "options": [
+          "Mapear os nomes das chaves do JSON para as propriedades do tipo",
+          "Criptografar os dados",
+          "Definir a URL da requisição",
+          "Medir o tempo de resposta"
+        ],
+        "correctIndex": 0,
+        "explanation": "Quando o JSON usa 'nome_completo' e a propriedade é 'nomeCompleto', 'CodingKeys' define a correspondência, com raw values String."
+      },
+      {
+        "id": 3,
+        "question": "O que 'try await URLSession.shared.data(from: url)' retorna?",
+        "options": [
+          "Apenas uma String com o JSON",
+          "Um objeto já decodificado",
+          "Um Void",
+          "Uma tupla com os dados recebidos e o URLResponse"
+        ],
+        "correctIndex": 3,
+        "explanation": "O retorno é '(Data, URLResponse)'. Depois você faz o cast para 'HTTPURLResponse' e decodifica os 'Data' com 'JSONDecoder'."
+      },
+      {
+        "id": 4,
+        "question": "Uma API responde 404. O que acontece com 'URLSession.data(from:)'?",
+        "options": [
+          "Ele lança sempre um erro automaticamente",
+          "Nada é lançado; você deve checar o 'statusCode' da resposta",
+          "O app fecha",
+          "A requisição é refeita sozinha"
+        ],
+        "correctIndex": 1,
+        "explanation": "A URLSession só lança erro para falhas de transporte (sem conexão, timeout). Códigos HTTP de erro chegam como resposta válida e precisam ser validados."
+      },
+      {
+        "id": 5,
+        "question": "Como decodificar automaticamente chaves 'snake_case' para 'camelCase'?",
+        "options": [
+          "Usar 'try!' na decodificação",
+          "Trocar o tipo para Any",
+          "Definir 'decoder.keyDecodingStrategy = .convertFromSnakeCase'",
+          "Não é possível sem CodingKeys"
+        ],
+        "correctIndex": 2,
+        "explanation": "A estratégia converte 'data_nascimento' em 'dataNascimento' sem escrever 'CodingKeys' manualmente, desde que a convenção seja consistente."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Qual erro o JSONDecoder lança quando uma chave obrigatória não existe no JSON?",
+        "options": [
+          "URLError.badURL",
+          "DecodingError.keyNotFound",
+          "NSInvalidArgumentException",
+          "Nenhum, ele usa valor padrão"
+        ],
+        "correctIndex": 1,
+        "explanation": "'DecodingError' tem casos como 'keyNotFound', 'typeMismatch' e 'valueNotFound', que ajudam a descobrir exatamente o que falhou."
+      },
+      {
+        "id": 2,
+        "question": "Como modelar um campo que pode estar ausente no JSON?",
+        "options": [
+          "Usar 'let apelido: String!'",
+          "Usar Any",
+          "Ignorar o campo no JSON",
+          "Declarar a propriedade como opcional, por exemplo 'let apelido: String?'"
+        ],
+        "correctIndex": 3,
+        "explanation": "Propriedades opcionais são decodificadas com 'decodeIfPresent' de forma sintetizada: se a chave faltar, o valor fica nil."
+      },
+      {
+        "id": 3,
+        "question": "O que acontece com a thread quando uso 'await' em 'URLSession.data(from:)'?",
+        "options": [
+          "A tarefa é suspensa e a thread fica livre para outro trabalho",
+          "A thread principal fica bloqueada até a resposta",
+          "Uma nova thread é criada e a antiga é destruída",
+          "O app trava por padrão"
+        ],
+        "correctIndex": 0,
+        "explanation": "'await' suspende a função sem bloquear a thread, e é por isso que a interface continua responsiva durante a requisição."
+      },
+      {
+        "id": 4,
+        "question": "Como decodificar datas no formato ISO 8601?",
+        "options": [
+          "Usar String e converter à mão sempre",
+          "Não há suporte para datas",
+          "Definir 'decoder.dateDecodingStrategy = .iso8601'",
+          "Trocar o JSONDecoder por XMLParser"
+        ],
+        "correctIndex": 2,
+        "explanation": "Com a estratégia '.iso8601', campos 'Date' são lidos de strings como '2026-10-13T10:00:00Z' automaticamente."
+      },
+      {
+        "id": 5,
+        "question": "Por que 'URL(string:)' deve ser tratado com 'guard let'?",
+        "options": [
+          "Porque é assíncrono",
+          "Porque retorna opcional: se a string for inválida, o resultado é nil",
+          "Porque lança exceções de rede",
+          "Porque só funciona com HTTPS"
+        ],
+        "correctIndex": 1,
+        "explanation": "'URL(string:)' falha com texto mal formado. Use 'guard let url = URL(string: texto) else { ... }' para tratar o caso com segurança."
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Persistência com SwiftData",
+    "theory": "O SwiftData é o framework moderno da Apple para persistir dados, construído sobre macros e integrado ao SwiftUI. Você marca uma classe com '@Model' e suas propriedades armazenadas passam a ser persistidas e observáveis. O 'ModelContainer' configura o armazenamento (em SwiftUI, com '.modelContainer(for: Tarefa.self)'), e o 'ModelContext', acessível via '@Environment(\\.modelContext)', é o espaço de trabalho onde você usa 'insert' e 'delete'. Em uma View, '@Query' busca os modelos e atualiza a tela sozinha quando os dados mudam, aceitando ordenação e filtros. Filtros usam o macro '#Predicate', uma expressão tipada e verificada em tempo de compilação. Para relacionamentos, use '@Relationship', e para unicidade, '@Attribute(.unique)'.",
+    "appleDocUrl": "https://developer.apple.com/documentation/swiftdata",
+    "category": "Dados e Rede",
+    "corporateCase": "Um app de gestão de tarefas para equipes guarda projetos e tarefas com '@Model' e relacionamento em cascata: apagar um projeto remove suas tarefas. As telas usam '@Query' com '#Predicate' para exibir só as pendentes, e funcionam offline.",
+    "gameCase": "Um jogo salva o progresso do jogador (fase atual, moedas e itens) em modelos '@Model'. Ao abrir o app, '@Query' carrega o último save automaticamente e, ao coletar uma moeda, a mudança é persistida sem código extra de gravação.",
+    "exercises": [
+      {
+        "id": 1,
+        "question": "Faça a classe ser persistida pelo SwiftData",
+        "codeSnippet": "___ final class Tarefa { var titulo: String = \"\" }",
+        "correctAnswer": "@Model",
+        "hint": "É um macro aplicado antes da declaração da classe, com @."
+      },
+      {
+        "id": 2,
+        "question": "Crie o contêiner que gerencia o armazenamento do modelo Tarefa",
+        "codeSnippet": "let container = try ___(for: Tarefa.self)",
+        "correctAnswer": "ModelContainer",
+        "hint": "Tipo cujo nome une 'Model' e 'Container'."
+      },
+      {
+        "id": 3,
+        "question": "Busque as tarefas automaticamente em uma View e atualize a tela quando mudarem",
+        "codeSnippet": "___ var tarefas: [Tarefa]",
+        "correctAnswer": "@Query",
+        "hint": "Property wrapper que 'consulta' os dados."
+      },
+      {
+        "id": 4,
+        "question": "Salve um novo objeto no contexto",
+        "codeSnippet": "modelContext.___(novaTarefa)",
+        "correctAnswer": "insert",
+        "hint": "O verbo em inglês para 'inserir'."
+      },
+      {
+        "id": 5,
+        "question": "Escreva um filtro tipado para tarefas não concluídas",
+        "codeSnippet": "let filtro = #___<Tarefa> { $0.concluida == false }",
+        "correctAnswer": "Predicate",
+        "hint": "Macro cujo nome significa 'predicado'."
+      }
+    ],
+    "quiz": [
+      {
+        "id": 1,
+        "question": "O que o macro '@Model' faz?",
+        "options": [
+          "Cria uma View de lista automaticamente",
+          "Envia os dados para o iCloud sempre",
+          "Converte a classe em struct",
+          "Transforma uma classe em um modelo persistível e observável pelo SwiftData"
+        ],
+        "correctIndex": 3,
+        "explanation": "'@Model' gera o código necessário para armazenar as propriedades e observar mudanças. Ele se aplica a classes, não a structs."
+      },
+      {
+        "id": 2,
+        "question": "Qual é a função do 'ModelContainer'?",
+        "options": [
+          "Desenhar a interface",
+          "Gerenciar o schema e o armazenamento dos modelos",
+          "Executar requisições HTTP",
+          "Controlar o ciclo de vida das Views"
+        ],
+        "correctIndex": 1,
+        "explanation": "O container define quais modelos existem e onde são salvos. Em SwiftUI, é injetado com '.modelContainer(for:)' na cena ou na View."
+      },
+      {
+        "id": 3,
+        "question": "O que '@Query' faz em uma View SwiftUI?",
+        "options": [
+          "Apaga todos os registros",
+          "Cria um servidor local",
+          "Busca os modelos e atualiza a View automaticamente quando os dados mudam",
+          "Só funciona fora do SwiftUI"
+        ],
+        "correctIndex": 2,
+        "explanation": "'@Query var tarefas: [Tarefa]' mantém a lista sincronizada com o armazenamento, aceitando 'sort' e filtros com '#Predicate'."
+      },
+      {
+        "id": 4,
+        "question": "Como remover um objeto persistido?",
+        "options": [
+          "Chamar 'modelContext.delete(objeto)'",
+          "Atribuir nil à variável",
+          "Usar 'modelContext.remove(at:)' apenas",
+          "Reiniciar o app"
+        ],
+        "correctIndex": 0,
+        "explanation": "Remoções são feitas no ModelContext com 'delete'. O contexto salva automaticamente em momentos oportunos, e também pode ser chamado 'try modelContext.save()'."
+      },
+      {
+        "id": 5,
+        "question": "Qual a vantagem de '#Predicate' em relação a filtrar um array com 'filter'?",
+        "options": [
+          "É mais fácil porque aceita qualquer texto",
+          "Não precisa do tipo do modelo",
+          "É uma expressão tipada que o SwiftData traduz para uma consulta no armazenamento",
+          "Funciona apenas com Strings"
+        ],
+        "correctIndex": 2,
+        "explanation": "Como a condição é convertida em consulta de banco, não é preciso carregar tudo para a memória, e erros de tipo aparecem na compilação."
+      }
+    ],
+    "extraQuiz": [
+      {
+        "id": 1,
+        "question": "Como garantir que um campo, como e-mail, não se repita?",
+        "options": [
+          "Usar 'let' em vez de 'var'",
+          "Usar '@Attribute(.unique)' na propriedade",
+          "Usar '@Query' no campo",
+          "Não é possível"
+        ],
+        "correctIndex": 1,
+        "explanation": "A restrição de unicidade faz o SwiftData atualizar o registro existente em vez de criar duplicatas com o mesmo valor."
+      },
+      {
+        "id": 2,
+        "question": "O que a regra '.cascade' em '@Relationship(deleteRule: .cascade)' faz?",
+        "options": [
+          "Apaga também os objetos relacionados quando o objeto principal é apagado",
+          "Impede a exclusão do objeto principal",
+          "Duplica os objetos relacionados",
+          "Move os relacionados para outro modelo"
+        ],
+        "correctIndex": 0,
+        "explanation": "Com '.cascade', excluir um Projeto também exclui suas Tarefas. Outras regras: '.nullify' (padrão), '.deny' e '.noAction'."
+      },
+      {
+        "id": 3,
+        "question": "Como buscar dados fora de uma View, por exemplo em um serviço?",
+        "options": [
+          "Usar '@Query' dentro de qualquer função",
+          "Ler o arquivo do banco manualmente",
+          "Usar 'UserDefaults' obrigatoriamente",
+          "Criar um 'FetchDescriptor' e chamar 'try modelContext.fetch(descriptor)'"
+        ],
+        "correctIndex": 3,
+        "explanation": "O 'FetchDescriptor' reúne predicate, ordenação e limites, e o 'fetch' do contexto devolve o array de modelos."
+      },
+      {
+        "id": 4,
+        "question": "Como usar o SwiftData em testes sem gravar no disco?",
+        "options": [
+          "Apagar o simulador antes de cada teste",
+          "Usar sempre o banco de produção",
+          "Criar um 'ModelConfiguration' com 'isStoredInMemoryOnly: true'",
+          "Mockar a classe String"
+        ],
+        "correctIndex": 2,
+        "explanation": "O armazenamento em memória cria um banco novo e descartável por teste, mantendo-os rápidos e isolados."
+      },
+      {
+        "id": 5,
+        "question": "Qual tipo pode receber '@Model'?",
+        "options": [
+          "Uma struct",
+          "Uma class",
+          "Um enum",
+          "Um protocolo"
+        ],
+        "correctIndex": 1,
+        "explanation": "Modelos do SwiftData são classes, pois representam entidades com identidade, observadas e rastreadas pelo contexto."
+      }
+    ]
+  }
+]

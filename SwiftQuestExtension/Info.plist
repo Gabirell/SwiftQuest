@@ -17,6 +17,18 @@
 <key>XCSourceEditorCommandClassName</key><string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 <key>XCSourceEditorCommandIdentifier</key><string>com.gabrielnetto.SwiftQuest.explain</string>
 <key>XCSourceEditorCommandName</key><string>Explain This Swift</string>
+</dict><dict>
+<key>XCSourceEditorCommandClassName</key><string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+<key>XCSourceEditorCommandIdentifier</key><string>com.gabrielnetto.SwiftQuest.flashcard</string>
+<key>XCSourceEditorCommandName</key><string>Save as Flashcard</string>
+</dict><dict>
+<key>XCSourceEditorCommandClassName</key><string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+<key>XCSourceEditorCommandIdentifier</key><string>com.gabrielnetto.SwiftQuest.exercise</string>
+<key>XCSourceEditorCommandName</key><string>Turn Into Exercise</string>
+</dict><dict>
+<key>XCSourceEditorCommandClassName</key><string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+<key>XCSourceEditorCommandIdentifier</key><string>com.gabrielnetto.SwiftQuest.comment</string>
+<key>XCSourceEditorCommandName</key><string>Explain in Comment</string>
 </dict></array>
 </dict>
 </dict>
