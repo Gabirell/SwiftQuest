@@ -107,11 +107,20 @@ enum CourseData {
         struct Plus: Decodable { let id: Int; let exercises: [CourseExercise]?; let quiz: [CourseQuestion]?; let extraQuiz: [CourseQuestion]? }
         var all: [Pillar] = load("pillars", language)
         all += loadAll(prefix: "pillarsNew", language) as [Pillar]
+        struct TheoryPlus: Decodable { let id: Int; let theoryMore: String }
         let plus: [Plus] = loadAll(prefix: "pillarsPlus", language) + loadAll(prefix: "pillarsMore", language)
+        let theoryPlus: [TheoryPlus] = loadAll(prefix: "pillarsTheory", language)
         return all.map { p in
             let extras = plus.filter { $0.id == p.id }
-            guard !extras.isEmpty else { return p }
-            return Pillar(id: p.id, title: p.title, theory: p.theory, appleDocUrl: p.appleDocUrl, category: p.category,
+            // Concepts used by the extra questions are explained in `theoryMore`, appended to the theory.
+            let more = theoryPlus.filter { $0.id == p.id }.map(\.theoryMore).joined(separator: "\n\n")
+            let theory = more.isEmpty ? p.theory : p.theory + "\n\n" + more
+            guard !extras.isEmpty else {
+                return more.isEmpty ? p : Pillar(id: p.id, title: p.title, theory: theory, appleDocUrl: p.appleDocUrl, category: p.category,
+                                                 corporateCase: p.corporateCase, gameCase: p.gameCase, exercises: p.exercises,
+                                                 quiz: p.quiz, extraQuiz: p.extraQuiz)
+            }
+            return Pillar(id: p.id, title: p.title, theory: theory, appleDocUrl: p.appleDocUrl, category: p.category,
                           corporateCase: p.corporateCase, gameCase: p.gameCase,
                           exercises: p.exercises + extras.flatMap { $0.exercises ?? [] },
                           quiz: p.quiz + extras.flatMap { $0.quiz ?? [] },

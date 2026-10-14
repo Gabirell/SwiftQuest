@@ -1,0 +1,583 @@
+[
+ {
+  "id": "debugging-ui",
+  "category": "debug",
+  "title": "Depurar con la interfaz de Xcode",
+  "summary": "Vas a pausar tu app en una línea, mirar los valores de sus variables y recorrer el código paso a paso. Depurar (debug) es la forma más rápida de entender por qué la app no hace lo que esperas.",
+  "steps": [
+   {
+    "text": "Abre un archivo .swift y haz clic en el número de una línea de código, en la franja gris a la izquierda del editor (esa franja se llama gutter, la 'canaleta' junto al código). Aparece una flecha azul: es un breakpoint, un punto de parada que le indica a la app que se pause al llegar a esa línea. Con el cursor en la línea, el menú Debug > Breakpoints > Create Breakpoint at Current Line (⌘\\) hace lo mismo."
+   },
+   {
+    "text": "Haz clic una vez en la flecha azul: se aclara y el breakpoint queda desactivado (disabled), pero sigue ahí. Para apagarlos todos a la vez sin borrar ninguno, usa Debug > Deactivate Breakpoints (⌘Y); el mismo ítem pasa a llamarse Activate Breakpoints y los vuelve a encender. Para borrar un breakpoint, arrastra su flecha fuera del gutter.",
+    "shortcut": "⌘Y"
+   },
+   {
+    "text": "Ejecuta la app con Product > Run (⌘R) y haz la acción que ejecuta esa línea. La app se congela, la línea se resalta en verde y Xcode abre el área de debug abajo. La línea verde es la próxima instrucción que va a correr; todavía no se ejecutó.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Mira la Variables view, el panel a la izquierda del área de debug: lista las variables y propiedades visibles en ese punto con sus valores actuales. Haz clic en el triángulo de un objeto para ver qué contiene. Pasa el mouse sobre una variable en el código para ver su valor en un globo."
+   },
+   {
+    "text": "En la barra de debug (la fila de botones sobre el panel de variables) usa Continue: deja que la app siga hasta el próximo breakpoint o hasta el final. En el menú es el ítem Debug > Pause (⌃⌘Y), que mientras la app está pausada se llama Continue. El mismo ítem pausa una app que está corriendo.",
+    "shortcut": "⌃⌘Y"
+   },
+   {
+    "text": "Avanza línea por línea con los tres botones de la barra de debug, que también están en el menú Debug. Step Over (tecla F6) ejecuta toda la línea actual y pasa a la siguiente. Step Into (F7) entra en la función llamada en la línea para que veas qué hace. Step Out (F8) termina la función actual y vuelve a quien la llamó. En Macs donde las teclas de función controlan brillo o volumen, mantén también fn."
+   },
+   {
+    "text": "Muestra la Console con View > Debug Area > Activate Console (⇧⌘C): es el área de texto a la derecha del área de debug, donde aparecen los print() y los mensajes del sistema. Con la app pausada, la consola muestra el prompt (lldb) (lldb es el depurador de Xcode). Escribe po nombreDeVariable y Enter: po significa 'print object' e imprime el valor, por ejemplo po usuario.nombre.",
+    "shortcut": "⇧⌘C"
+   },
+   {
+    "text": "Haz clic derecho (o Control-clic) en la flecha azul y elige Edit Breakpoint…. En Condition escribes una expresión de Swift como indice == 5: la app solo se pausa cuando es verdadera. En Ignore indicas cuántas pasadas saltar antes de pausar por primera vez. En Action agregas una acción, como imprimir un mensaje en la consola, y puedes marcar 'Automatically continue after evaluating actions' para que no se pause."
+   },
+   {
+    "text": "Cuando la app se cae sola, Xcode muestra una línea roja en el editor con un texto como 'Thread 1: Fatal error: Index out of range' (o 'Unexpectedly found nil while unwrapping an Optional value'). Thread 1 es la línea de ejecución principal de la app y Fatal error significa que Swift se detuvo a propósito porque ocurrió algo imposible. Lee el mensaje completo en la consola y mira la línea marcada en el código: indica dónde apareció el problema."
+   },
+   {
+    "text": "Abre el Breakpoint navigator con View > Navigators > Breakpoints (⌘8): lista todos los breakpoints del proyecto, y ahí puedes activar, desactivar y borrar varios a la vez. Haz clic en el + de la esquina inferior izquierda y elige Exception Breakpoint (o usa Debug > Breakpoints > Create Exception Breakpoint…): pausa la app en el momento exacto en que se lanza una excepción, en lugar de mostrar solo el crash final en AppDelegate. También existe Debug > Breakpoints > Create Swift Error Breakpoint para errores de Swift.",
+    "shortcut": "⌘8"
+   }
+  ],
+  "tips": [
+   "Pausar en una línea y mirar las variables suele ser más rápido que esparcir print() por el código.",
+   "Un breakpoint con Condition es excelente dentro de un bucle (for) con muchas vueltas: pausa solo en la vuelta que importa.",
+   "En la consola po sirve para casi todo, y p (sin la o) imprime una versión más cruda del valor.",
+   "Debug > Continue To Current Line (⌃⌘C) ejecuta la app hasta la línea donde está el cursor, sin crear un breakpoint.",
+   "Si un breakpoint no pausa, antes que nada revisa que Debug > Deactivate Breakpoints (⌘Y) no esté activado."
+  ],
+  "pitfalls": [
+   "Un breakpoint gris claro nunca pausa: o se desactivó con un clic o todos los breakpoints están desactivados con el ítem Deactivate Breakpoints. Haz clic en él o reactívalos.",
+   "Un breakpoint en código que nunca se ejecuta (una línea de comentario, una función que nadie llama) tampoco pausa. Confirma que hiciste la acción correcta en la app.",
+   "La app se compiló en Release en vez de Debug: los valores aparecen como 'optimized out'. Ejecuta con el scheme en modo Debug, que es el predeterminado.",
+   "La consola muestra '(lldb)' y la app parece trabada: está pausada, no rota. Presiona Continue."
+  ],
+  "links": [
+   {
+    "title": "Debugging",
+    "url": "https://developer.apple.com/documentation/xcode/debugging"
+   },
+   {
+    "title": "Setting breakpoints to pause your running app",
+    "url": "https://developer.apple.com/documentation/xcode/setting-breakpoints-to-pause-your-running-app"
+   },
+   {
+    "title": "Stepping through code and inspecting variables to isolate bugs",
+    "url": "https://developer.apple.com/documentation/xcode/stepping-through-code-and-inspecting-variables-to-isolate-bugs"
+   }
+  ],
+  "related": [
+   33,
+   20
+  ]
+ },
+ {
+  "id": "view-debugger-memory-graph",
+  "category": "debug",
+  "title": "View debugger, memory graph e Instruments",
+  "summary": "Vas a congelar la pantalla de tu app en capas 3D para encontrar vistas ocultas o cortadas, hallar objetos que pierden memoria y abrir Instruments para medir el rendimiento. Son las herramientas para problemas que el código por sí solo no explica.",
+  "steps": [
+   {
+    "text": "Ejecuta la app con Product > Run (⌘R) y navega hasta la pantalla que tiene el problema, por ejemplo un botón que no aparece. La app debe estar corriendo para poder inspeccionarla.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Con la app corriendo, elige Debug > View Debugging > Capture View Hierarchy. Xcode toma una 'radiografía' de la pantalla y muestra una maqueta: la view hierarchy es el árbol de vistas, cada una dentro de otra. También hay un botón con ese nombre (tres rectángulos apilados) en la barra de debug."
+   },
+   {
+    "text": "Arrastra en el canvas para girar la maqueta en 3D y ver las vistas como capas apiladas. Debajo del canvas hay dos controles deslizantes: uno separa las capas entre sí y el otro elige qué rango de capas se muestra. Así ves qué está delante de qué."
+   },
+   {
+    "text": "Encuentra vistas ocultas, cortadas o superpuestas: haz clic en una capa y verás el ítem correspondiente resaltado en la lista de la izquierda, que es el árbol de vistas. Una vista 'cortada' (clipped) es más grande que su padre y queda recortada; una vista 'superpuesta' está tapada por otra, y por eso puede parecer que no responde al toque. En el inspector de la derecha ves el frame (posición y tamaño), el color de fondo y si está hidden."
+   },
+   {
+    "text": "Para diagnosticar fugas (memory leaks: objetos que la app olvidó liberar y que quedan en memoria para siempre), ejecuta la app, úsala un rato y haz clic en el botón Debug Memory Graph de la barra de debug (icono de tres círculos unidos por líneas). Xcode pausa la app y muestra los objetos vivos."
+   },
+   {
+    "text": "En el Debug navigator de la izquierda, los objetos que se fugaron muestran una insignia de exclamación '!' (morada en las versiones actuales de Xcode). Haz clic en uno: el canvas dibuja un grafo de flechas que muestra quién todavía sostiene ese objeto. Un ciclo de flechas entre dos objetos (A guarda a B y B guarda a A, un retain cycle) es la causa clásica. Usa el filtro del pie para mostrar solo los objetos con fuga."
+   },
+   {
+    "text": "Abre el Debug navigator con View > Navigators > Debug (⌘7) mientras la app corre. Allí aparecen los medidores (gauges) de CPU, Memory, Disk y Network. Haz clic en el medidor de CPU o de Memory para ver un gráfico en el tiempo: si la memoria solo sube y nunca baja, sospecha una fuga; si la CPU queda alta en reposo, algo trabaja sin parar.",
+    "shortcut": "⌘7"
+   },
+   {
+    "text": "Para medir con más precisión usa Product > Profile (⌘I). Xcode compila la app en modo de medición y abre Instruments, un programa aparte (también en Xcode > Open Developer Tool > Instruments), que muestra una lista de plantillas. Elige una y haz clic en el botón rojo de grabar. En resumen: Time Profiler muestra qué funciones gastan más tiempo de CPU; Allocations muestra cuánta memoria usa cada tipo de objeto; Leaks busca objetos con fuga.",
+    "shortcut": "⌘I"
+   },
+   {
+    "text": "Abre el Issue navigator con View > Navigators > Issues (⌘5) y busca runtime issues, problemas detectados con la app en ejecución: un icono morado es un aviso de ejecución (por ejemplo, actualizar la interfaz fuera del hilo principal, o un problema de SwiftUI), mientras que el triángulo amarillo es un warning de compilación y el círculo rojo es un error. Haz clic en el ítem morado para ir a la línea implicada.",
+    "shortcut": "⌘5"
+   }
+  ],
+  "tips": [
+   "Si el View Debugger se ve todo aplastado, arrastra el control de separación para alejar las capas.",
+   "En el inspector del View Debugger, un tamaño de 0 x 0 o un alpha 0 explican muchas vistas 'invisibles'.",
+   "En Debug > View Debugging también está Show View Frames, que dibuja el contorno de cada vista en la pantalla del simulador.",
+   "Usa Allocations y Leaks después de repetir una acción varias veces (abrir y cerrar una pantalla, por ejemplo): una fuga se revela porque la memoria sube con cada repetición.",
+   "Xcode > Open Developer Tool > Instruments abre Instruments sin ejecutar tu app, para investigar otros programas."
+  ],
+  "pitfalls": [
+   "Capture View Hierarchy no se puede pulsar: la app no está corriendo. Ejecútala primero con ⌘R.",
+   "Product > Profile pide compilar de nuevo y tarda: es normal, usa la configuración Release, que es la que mide la velocidad real de la app.",
+   "El Memory Graph muestra pocos objetos '!' aunque haya una fuga: no toda fuga se detecta, así que combínalo con la plantilla Allocations de Instruments.",
+   "Juzgar el rendimiento solo en el simulador: el simulador usa la CPU y la memoria de tu Mac, y los números no valen para un iPhone real."
+  ],
+  "links": [
+   {
+    "title": "Diagnosing memory, thread, and crash issues early",
+    "url": "https://developer.apple.com/documentation/xcode/diagnosing-memory-thread-and-crash-issues-early"
+   },
+   {
+    "title": "Gathering information about memory use",
+    "url": "https://developer.apple.com/documentation/xcode/gathering-information-about-memory-use"
+   },
+   {
+    "title": "Improving your app's performance",
+    "url": "https://developer.apple.com/documentation/xcode/improving-your-app-s-performance"
+   }
+  ],
+  "related": [
+   66,
+   33
+  ]
+ },
+ {
+  "id": "xcode-settings",
+  "category": "help",
+  "title": "Xcode Settings: cuentas, temas, atajos y más",
+  "summary": "Vas a conocer la ventana de configuración de Xcode y saber qué pestaña usar para iniciar sesión con tu Apple ID, cambiar fuente y tema, mostrar números de línea, cambiar atajos y descargar simuladores. En versiones antiguas se llamaba Preferences; ahora es Settings.",
+  "steps": [
+   {
+    "text": "Abre Xcode > Settings… (⌘,). Aparece una ventana con pestañas arriba: General, Accounts, Behaviors, Navigation, Themes, Text Editing, Key Bindings, Source Control, Components, Locations y Advanced. Estos ajustes valen para todos tus proyectos, no solo para el abierto.",
+    "shortcut": "⌘,"
+   },
+   {
+    "text": "En la pestaña General eliges ajustes generales de Xcode, como lo que aparece al abrirlo y el comportamiento de ventanas y pestañas. Para un principiante los valores por defecto sirven; vuelve aquí solo si quieres cambiar cómo se abren los archivos o la apariencia general."
+   },
+   {
+    "text": "En la pestaña Accounts haz clic en + en la esquina inferior izquierda y elige Apple Account (o Apple ID, el mismo correo y contraseña que usas en la App Store). Después de entrar, apareces como Personal Team, un 'equipo' gratuito que te permite correr la app en tu iPhone. Esta pestaña es también donde agregas una cuenta de GitHub para el control de versiones. Para cuentas de pago muestra tu Team de desarrollador."
+   },
+   {
+    "text": "En la pestaña Text Editing, en Display, marca Line numbers para mostrar el número de cada línea a la izquierda del código (ayuda mucho a entender los mensajes de error). Aquí también hay opciones como Code folding ribbon y Wrap lines to editor width. La pestaña Indentation controla cuántos espacios usa cada nivel de sangría."
+   },
+   {
+    "text": "La pestaña Themes controla los colores y la fuente del editor. Elige un tema de la lista (como Default (Dark) o Midnight) y usa el nombre y el tamaño de la fuente para que el código sea más legible; también puedes elegir el tema en el menú Editor > Theme. Para agrandar rápido el texto, usa Editor > Font Size > Increase (⌘+), que es la forma más rápida.",
+    "shortcut": "⌘+"
+   },
+   {
+    "text": "En la pestaña Key Bindings ves todos los comandos y sus atajos. Usa el campo de búsqueda de arriba para encontrar el comando, haz doble clic en la columna del atajo y presiona la nueva combinación para cambiarla. Si tu teclado (ABNT2 o español latinoamericano, por ejemplo) necesita Shift u Option para escribir símbolos como [ ] o \\, atajos como ⌘[ se vuelven incómodos: cámbialos por otro. Para quitar un atajo, selecciónalo y bórralo. Aparece un aviso de conflicto si la combinación ya está en uso."
+   },
+   {
+    "text": "En la pestaña Components descargas plataformas y simuladores: haz clic en Get junto a, por ejemplo, iOS para instalar los simuladores de esa versión (los archivos son grandes, varios GB). También puedes abrir el panel de descargas con Window > Downloads (⇧⌘9). Sin un simulador descargado, Xcode no tiene dónde correr tu app."
+   },
+   {
+    "text": "En la pestaña Locations mira dónde guarda archivos Xcode. En Derived Data aparece la ruta de la carpeta de caché, es decir, donde Xcode guarda los resultados de compilación y los índices (por defecto ~/Library/Developer/Xcode/DerivedData). Haz clic en la flecha junto a la ruta para abrir la carpeta en el Finder; aquí borras la caché cuando Xcode se comporta de forma extraña."
+   },
+   {
+    "text": "La pestaña Behaviors define qué hace Xcode ante eventos como 'el build termina bien' o 'el build falla' (reproducir un sonido, mostrar una pestaña). La pestaña Navigation controla cómo los clics simples y dobles abren archivos (en la misma pestaña, en una pestaña nueva o en una ventana nueva). También puedes abrir Behaviors desde el menú Xcode > Behaviors > Edit Behaviors…."
+   },
+   {
+    "text": "La pestaña Source Control guarda tu nombre y correo usados en los commits de Git y activa o desactiva el control de versiones. La pestaña Advanced reúne ajustes avanzados; un principiante rara vez la necesita, así que déjala como está."
+   }
+  ],
+  "tips": [
+   "La pestaña Fonts & Colors de las versiones antiguas ahora se llama Themes.",
+   "En Themes puedes duplicar un tema y editarlo color por color sin estropear el original.",
+   "Los atajos del menú aparecen junto al nombre del comando; la pestaña Key Bindings es la lista completa, con búsqueda.",
+   "Si usas varias Macs, inicia sesión con el mismo Apple ID en ambas en Accounts para mantener iguales las cuentas de firma.",
+   "Algunas versiones de Xcode tienen pestañas extra (por ejemplo, relacionadas con inteligencia o asistente de código): si una pestaña no está en esta lista, ignórala al principio."
+  ],
+  "pitfalls": [
+   "Buscar Preferences en el menú Xcode: el nombre actual es Settings…. El atajo sigue siendo ⌘, (coma).",
+   "Cambiar un atajo y olvidarlo: al seguir un tutorial el atajo 'no funciona'. Revisa Key Bindings para ver si cambiaste algo y usa el botón de restaurar valores por defecto.",
+   "Borrar la carpeta Derived Data con Xcode abierto y compilando: cierra Xcode antes.",
+   "Descargar todos los simuladores: ocupan mucho espacio en disco. Descarga solo las versiones que necesitas y borra las antiguas en la pestaña Components."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Xcode overview",
+    "url": "https://developer.apple.com/xcode/"
+   },
+   {
+    "title": "Xcode release notes",
+    "url": "https://developer.apple.com/documentation/xcode-release-notes"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "documentation-help",
+  "category": "help",
+  "title": "Cómo obtener ayuda dentro de Xcode",
+  "summary": "Vas a aprender a leer la documentación de cualquier función o tipo sin salir del código: Quick Help, la ventana de documentación, el menú Help y fuentes externas. Saber buscar importa más que memorizar APIs.",
+  "steps": [
+   {
+    "text": "Mantén Option (⌥) y haz clic en una palabra del código (un tipo como Text, una función, una propiedad). El cursor se vuelve un signo de interrogación y aparece un globo llamado Quick Help (ayuda rápida), con el resumen de la documentación, la declaración y la disponibilidad. Otra forma es seleccionar el símbolo (symbol: el nombre de un tipo, función o variable) y usar Help > Show Quick Help for Selected Item (⌃⌘?).",
+    "shortcut": "⌃⌘?"
+   },
+   {
+    "text": "Para dejar la ayuda siempre a la vista, abre el inspector de la derecha con View > Inspectors > Show Inspector y haz clic en la pestaña Quick Help (icono de interrogación). Cada vez que mueves el cursor en el código, el panel muestra la explicación del símbolo bajo el cursor."
+   },
+   {
+    "text": "Para ver dónde se declaró un símbolo, usa Navigate > Jump to Definition (⌃⌘J). Xcode abre el archivo de origen (el tuyo o la interfaz del framework, que muestra la declaración y los comentarios). Usa Navigate > Show Previous Location in History para volver.",
+    "shortcut": "⌃⌘J"
+   },
+   {
+    "text": "Abre la ventana de documentación con Help > Developer Documentation (⇧⌘0; también aparece en Window). Es un navegador de documentación dentro de Xcode: el lateral izquierdo lista frameworks como Swift, SwiftUI y UIKit, y arriba hay un campo de búsqueda donde escribes nombres como Button o List.",
+    "shortcut": "⇧⌘0"
+   },
+   {
+    "text": "Para buscar directamente desde el código, selecciona una palabra y usa Help > Search Documentation for Selected Text (⌃⌥⌘/). La ventana de documentación se abre ya con el resultado.",
+    "shortcut": "⌃⌥⌘/"
+   },
+   {
+    "text": "Lee la página de una API (la página de un tipo o función). Arriba van el nombre y un resumen, y debajo la Availability (o disponibilidad: desde qué versión de iOS existe el recurso). La sección Declaration muestra la firma exacta de Swift. En Topics aparecen las funciones y propiedades agrupadas por tema, y en Overview o Discussion hay explicaciones y ejemplos de código para copiar."
+   },
+   {
+    "text": "Cuando Quick Help esté abierto, haz clic en el enlace Open in Developer Documentation al final para ir directo a la página completa del símbolo."
+   },
+   {
+    "text": "En el menú Help encuentra los demás recursos: Xcode Help (el manual del propio Xcode), What’s New in Xcode, Release Notes (la lista de novedades y problemas conocidos de cada versión), Human Interface Guidelines (las reglas de diseño de Apple), Swift Programming Language Book (el libro oficial del lenguaje), Provide Feedback… (enviar un reporte de error a Apple) y Show Keyboard Hints. La caja de búsqueda del menú Help encuentra cualquier ítem de menú por nombre."
+   },
+   {
+    "text": "Fuera de Xcode, usa la app Apple Developer (iPhone/iPad/Mac) para leer noticias y ver videos de la WWDC, la conferencia anual de Apple, que tienen subtítulos en varios idiomas. Los Apple Developer Forums sirven para preguntar: busca primero si alguien ya reportó el mismo error. El libro 'The Swift Programming Language' también está en docs.swift.org."
+   }
+  ],
+  "tips": [
+   "Editor > Structure > Add Documentation (⌥⌘/) hace que Xcode cree un comentario de documentación para una función; lo que escribas ahí aparecerá en tu propio Quick Help.",
+   "Cuando veas una función cuya firma no entiendes, lee primero la sección Declaration del Quick Help.",
+   "Para los videos de la WWDC, usa la búsqueda por palabra clave de la app Apple Developer o del sitio.",
+   "Si la documentación no lista el símbolo, puede que requiera otra versión de iOS; mira el campo Availability."
+  ],
+  "pitfalls": [
+   "Option-clic no hace nada: Xcode todavía está indexando o el código tiene errores graves. Espera a que termine el Indexing e inténtalo de nuevo.",
+   "Copiar código de un tutorial antiguo: una API puede estar marcada como deprecated (obsoleta). Busca el reemplazo recomendado en la página.",
+   "Creer que Quick Help lo muestra todo: es un resumen; para ejemplos y detalles abre la página completa."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Writing symbol documentation in your source files",
+    "url": "https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files"
+   },
+   {
+    "title": "Apple Developer Forums",
+    "url": "https://developer.apple.com/forums/"
+   },
+   {
+    "title": "Developer videos (WWDC)",
+    "url": "https://developer.apple.com/videos/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "shortcuts-cheatsheet",
+  "category": "help",
+  "title": "Los 30 atajos que vale la pena aprender primero",
+  "summary": "Una lista agrupada de los atajos de teclado que un principiante usa todos los días, todos verificados en los menús de Xcode 26. Apréndelos poco a poco: cada uno ahorra clics y te hace más rápido.",
+  "steps": [
+   {
+    "text": "Product > Run (⌘R): compila y ejecuta la app en el destino elegido (simulador, iPhone o Mac). Lo usarás mil veces al día.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Product > Stop (⌘.): detiene la app que está corriendo. El punto es el carácter punto final.",
+    "shortcut": "⌘."
+   },
+   {
+    "text": "Product > Build (⌘B): solo compila, sin ejecutar; sirve para encontrar errores de código rápidamente.",
+    "shortcut": "⌘B"
+   },
+   {
+    "text": "Product > Test (⌘U): ejecuta todas las pruebas automáticas del proyecto (programas pequeños que verifican si tu código funciona).",
+    "shortcut": "⌘U"
+   },
+   {
+    "text": "Product > Clean Build Folder… (⇧⌘K): borra los resultados de compilación anteriores; es el primer remedio cuando pasa algo extraño.",
+    "shortcut": "⇧⌘K"
+   },
+   {
+    "text": "Product > Profile (⌘I): compila y abre Instruments, la herramienta para medir rendimiento y memoria.",
+    "shortcut": "⌘I"
+   },
+   {
+    "text": "File > Open Quickly… (⇧⌘O): escribe parte del nombre de un archivo o símbolo y salta directo a él. Es el atajo que más tiempo ahorra.",
+    "shortcut": "⇧⌘O"
+   },
+   {
+    "text": "Find > Find in Workspace… (⇧⌘F): abre la búsqueda de texto en todos los archivos del proyecto (el Find navigator).",
+    "shortcut": "⇧⌘F"
+   },
+   {
+    "text": "Find > Find… (⌘F): busca texto solo en el archivo abierto, con la barra de búsqueda sobre el editor.",
+    "shortcut": "⌘F"
+   },
+   {
+    "text": "Editor > Structure > Comment Selection (⌘/): comenta o descomenta las líneas seleccionadas (un comentario es texto que Swift ignora).",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "Editor > Structure > Shift Left (⌘[): mueve las líneas seleccionadas un nivel de sangría a la izquierda.",
+    "shortcut": "⌘["
+   },
+   {
+    "text": "Editor > Structure > Shift Right (⌘]): mueve las líneas seleccionadas un nivel a la derecha.",
+    "shortcut": "⌘]"
+   },
+   {
+    "text": "Editor > Structure > Re-Indent (⌃I): arregla solo la sangría de las líneas seleccionadas, dejando el código alineado.",
+    "shortcut": "⌃I"
+   },
+   {
+    "text": "File > Save (⌘S): guarda el archivo actual. Xcode guarda al compilar, pero ayuda tener el hábito.",
+    "shortcut": "⌘S"
+   },
+   {
+    "text": "View > Navigators > Project (⌘1): muestra el Project navigator, la lista de archivos y carpetas del proyecto.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "View > Navigators > Find (⌘4): abre el Find navigator, donde están los resultados de la búsqueda en el proyecto.",
+    "shortcut": "⌘4"
+   },
+   {
+    "text": "View > Navigators > Issues (⌘5): muestra el Issue navigator, con todos los errores y avisos (warnings) del código.",
+    "shortcut": "⌘5"
+   },
+   {
+    "text": "View > Navigators > Debug (⌘7): muestra el Debug navigator, con los hilos y los medidores de CPU y memoria de la app en ejecución.",
+    "shortcut": "⌘7"
+   },
+   {
+    "text": "View > Navigators > Breakpoints (⌘8): lista los breakpoints (puntos de parada) del proyecto.",
+    "shortcut": "⌘8"
+   },
+   {
+    "text": "View > Debug Area > Show Debug Area (⇧⌘Y): muestra u oculta el área de debug bajo el editor, con variables y consola.",
+    "shortcut": "⇧⌘Y"
+   },
+   {
+    "text": "View > Debug Area > Activate Console (⇧⌘C): muestra el área de debug y pone el cursor en la consola, donde salen los print().",
+    "shortcut": "⇧⌘C"
+   },
+   {
+    "text": "View > Show Library (⇧⌘L): abre la biblioteca de elementos: vistas, modificadores y fragmentos de código (snippets) para arrastrar.",
+    "shortcut": "⇧⌘L"
+   },
+   {
+    "text": "Editor > Preview (⌥⌘↩, Option-Command-Return): muestra u oculta el canvas, la vista previa en vivo de SwiftUI junto al código. El menú muestra la tecla Return como un símbolo; revisa el menú Editor en tu Xcode.",
+    "shortcut": "⌥⌘↩"
+   },
+   {
+    "text": "Debug > Breakpoints > Create Breakpoint at Current Line (⌘\\): crea o quita un breakpoint en la línea del cursor, sin hacer clic en el gutter.",
+    "shortcut": "⌘\\"
+   },
+   {
+    "text": "Debug > Deactivate Breakpoints (⌘Y): enciende y apaga todos los breakpoints a la vez, sin borrarlos.",
+    "shortcut": "⌘Y"
+   },
+   {
+    "text": "Xcode > Settings… (⌘,): abre la ventana de configuración: cuentas, temas y atajos.",
+    "shortcut": "⌘,"
+   },
+   {
+    "text": "Navigate > Jump to Definition (⌃⌘J): va a donde se declaró el símbolo bajo el cursor.",
+    "shortcut": "⌃⌘J"
+   },
+   {
+    "text": "Navigate > Reveal in Project Navigator (⇧⌘J): resalta, en la lista de archivos, el archivo que estás editando.",
+    "shortcut": "⇧⌘J"
+   },
+   {
+    "text": "Navigate > Jump to… (⌘L): abre un campo pequeño: escribe un número y el cursor salta a esa línea del archivo.",
+    "shortcut": "⌘L"
+   },
+   {
+    "text": "Help > Developer Documentation (⇧⌘0): abre la ventana de documentación de Apple, con búsqueda.",
+    "shortcut": "⇧⌘0"
+   }
+  ],
+  "tips": [
+   "El atajo de cada comando aparece a la derecha de su nombre en el menú; abre el menú y mira antes de memorizar.",
+   "En Xcode > Settings… > Key Bindings puedes buscar cualquier comando por nombre y ver (o cambiar) su atajo.",
+   "Símbolos: ⌘ es Command, ⌥ es Option (Alt), ⌃ es Control, ⇧ es Shift. ⌘R significa mantener Command y presionar R.",
+   "Aprende por grupos: primero ⌘R, ⌘., ⌘B; luego ⇧⌘O y ⌘/; luego los navigators ⌘1 a ⌘9.",
+   "El campo de búsqueda de arriba en el menú Help encuentra cualquier ítem de menú por nombre y te lleva hasta él."
+  ],
+  "pitfalls": [
+   "Los tutoriales antiguos dicen que ⌘0 muestra u oculta el panel izquierdo. En Xcode 26, ⌘0 abre el Coding Assistant; los navigators van de ⌘1 a ⌘9 (⌘9 es Reports). Confía en el menú View > Navigators.",
+   "Algunos atajos usan teclas que dependen de la distribución del teclado (como [ ] \\ o /). Si no funcionan, busca el comando en el menú o cambia el atajo en Key Bindings.",
+   "Los atajos de menú solo funcionan con el foco en Xcode y, en algunos casos, solo con el editor o la consola enfocados; haz clic en el lugar correcto antes de presionar."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Xcode overview",
+    "url": "https://developer.apple.com/xcode/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "troubleshooting-faq",
+  "category": "help",
+  "title": "Errores comunes de Xcode y cómo resolverlos",
+  "summary": "Para cada error frecuente ves qué significa, la causa probable y qué hacer. El orden universal es: leer el primer error, limpiar el build, reiniciar Xcode y, por último, borrar Derived Data.",
+  "steps": [
+   {
+    "text": "Regla de oro: abre el Issue navigator con View > Navigators > Issues (⌘5) y lee el PRIMER error (el rojo que aparece más arriba). Muchos errores siguientes son consecuencia del primero, así que corregirlo hace desaparecer los demás. Un error (rojo) impide compilar; un warning (amarillo) es solo un aviso.",
+    "shortcut": "⌘5"
+   },
+   {
+    "text": "'No such module X' significa que el import X no encuentra esa biblioteca. Causas: el Swift Package no se agregó (File > Add Package Dependencies…), no está enlazado al target (haz clic en el proyecto, en el target, pestaña General, sección Frameworks, Libraries, and Embedded Content) o el nombre tiene un error de tipeo. Si el paquete ya se agregó, usa File > Packages > Resolve Package Versions o Reset Package Caches y compila de nuevo."
+   },
+   {
+    "text": "'Cannot find X in scope' significa que Swift no conoce el nombre X en ese punto. Causas: un error de tipeo (las mayúsculas importan), falta un import, el nombre se declaró dentro de otra función (fuera de su scope, la región donde existe) o el archivo no pertenece al target. Para lo último, selecciona el archivo, abre el File inspector a la derecha y marca el target en Target Membership."
+   },
+   {
+    "text": "'Command CodeSign failed', 'No signing certificate' y 'Failed to register bundle identifier' son errores de firma: Apple exige que toda app lleve una firma digital ligada a una cuenta. Haz clic en el proyecto, en el target, pestaña Signing & Capabilities, marca Automatically manage signing y elige tu Team (antes inicia sesión en Xcode > Settings… > Accounts). Si el error es 'Failed to register bundle identifier', el Bundle Identifier ya lo usa otra cuenta: cámbialo por algo único, como com.tunombre.MiApp."
+   },
+   {
+    "text": "'Developer Mode required' o un iPhone que no aparece en la lista de destinos: el iPhone debe estar conectado por cable, desbloqueado y con 'Confiar en esta computadora' aceptado. En el iPhone activa el Modo Desarrollador, en Ajustes > Privacidad y seguridad > Modo Desarrollador, y reinicia. Verifica que aparezca en Window > Devices and Simulators (⇧⌘2)."
+   },
+   {
+    "text": "'Build input file cannot be found' significa que un archivo del proyecto se movió o borró fuera de Xcode y la referencia quedó 'perdida' (su nombre aparece en rojo en el Project navigator). Selecciónalo, borra la referencia (Remove Reference) y agrega el archivo de nuevo con File > Add Files…. 'Multiple commands produce' significa que dos archivos con el mismo nombre terminan en el mismo lugar de la app (por ejemplo, dos imágenes o dos Info.plist). Abre el target, pestaña Build Phases, sección Copy Bundle Resources y quita el duplicado."
+   },
+   {
+    "text": "Un preview de SwiftUI que se cae o muestra 'Cannot preview in this file': haz clic en Diagnostics o en el botón Resume arriba del canvas para intentarlo de nuevo. El preview solo funciona si el proyecto compila, así que corrige antes los errores del Issue navigator. Si continúa, usa Product > Clean Build Folder… y abre el preview otra vez."
+   },
+   {
+    "text": "'Indexing' sin fin o 'Waiting to build': Indexing es Xcode leyendo tu código para ofrecer autocompletado y navegación (aparece arriba en Xcode). Espera unos minutos en proyectos grandes. Si se queda trabado, cierra Xcode y borra Derived Data (mira el último paso). Con 'Waiting to build', un build anterior está colgado: usa Product > Stop (⌘.) y ejecuta de nuevo."
+   },
+   {
+    "text": "El Simulator no arranca ('Unable to boot device' o pantalla negra): cierra el Simulator e inténtalo de nuevo. En la app Simulator usa Device > Erase All Content and Settings…, que devuelve el simulador al estado de fábrica. Revisa que haya espacio en disco y, si persiste, reinicia la Mac. En Window > Devices and Simulators (⇧⌘2) también puedes crear otro simulador."
+   },
+   {
+    "text": "Crash 'this class is not key value coding-compliant for the key X' con Storyboards: el storyboard está conectado a un outlet (el vínculo entre un elemento de la pantalla y una variable @IBOutlet) llamado X que ya no existe en el código, o la clase del View Controller es incorrecta. Abre el storyboard, selecciona el View Controller, ve al Connections inspector (la pestaña de la flecha), quita la conexión con el triángulo de advertencia y revisa el Custom Class en el Identity inspector."
+   },
+   {
+    "text": "Orden universal cuando un error parece no tener sentido: (1) lee el primer error; (2) Product > Clean Build Folder… (⇧⌘K); (3) cierra y vuelve a abrir Xcode; (4) cierra Xcode y borra Derived Data, la caché de compilación, en la carpeta que muestra Xcode > Settings… > Locations (por defecto ~/Library/Developer/Xcode/DerivedData). Se recrea sola en el próximo build.",
+    "shortcut": "⇧⌘K"
+   }
+  ],
+  "tips": [
+   "Copia el mensaje de error y búscalo completo: casi siempre alguien ya tuvo el mismo problema.",
+   "Si el error apareció después de cambiar una sola cosa, deshaz esa cosa primero (⌘Z) antes de medidas drásticas.",
+   "Product > Clean Build Folder… pide confirmación; Product > Clean Build Folder Immediately (⌥⇧⌘K) limpia directamente.",
+   "Borrar Derived Data es seguro: solo pierdes tiempo de compilación, nunca tu código."
+  ],
+  "pitfalls": [
+   "Resolver primero el último error de la lista: empieza por el primero, porque los demás suelen ser su consecuencia.",
+   "Presionar Run repetidamente cuando el error es de firma: repetir no sirve; ajusta el Team y el Bundle Identifier.",
+   "Borrar la carpeta del proyecto en lugar de Derived Data: son carpetas distintas; Derived Data está en ~/Library/Developer/Xcode/DerivedData y no dentro del proyecto."
+  ],
+  "links": [
+   {
+    "title": "Enabling Developer Mode on a device",
+    "url": "https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Apple Developer Forums",
+    "url": "https://developer.apple.com/forums/"
+   }
+  ],
+  "related": [
+   30,
+   68,
+   33
+  ]
+ },
+ {
+  "id": "source-control-ui",
+  "category": "concepts",
+  "title": "Control de versiones en Xcode: commit, branch y push",
+  "summary": "Vas a usar Git desde la interfaz de Xcode: ver qué cambió, guardar versiones (commits), crear ramas de trabajo (branches), enviar a GitHub y resolver conflictos. Git es un sistema que guarda el historial de tu proyecto, como un 'guardar partida' al que puedes volver en cualquier momento.",
+  "steps": [
+   {
+    "text": "Abre el Source Control navigator con View > Navigators > Source Control (⌘2). Muestra el repositorio (la carpeta del proyecto con el historial guardado por Git) en tres grupos: Branches (ramas), Tags y Remotes (copias del proyecto en servidores como GitHub). Si el proyecto no tiene repositorio, usa Integrate > New Git Repository….",
+    "shortcut": "⌘2"
+   },
+   {
+    "text": "Mira qué cambió: en el editor, una barra de color en el gutter, junto a las líneas alteradas, marca lo que tocaste desde el último commit. En el Project navigator, las letras junto a los archivos indican su estado: M (modified), A (added) y ? (untracked, que Git todavía no sigue). Usa Navigate > Jump to Next Change (⌃\\) para saltar de cambio en cambio.",
+    "shortcut": "⌃\\"
+   },
+   {
+    "text": "Abre Integrate > Commit… (⌥⌘C). Un commit es un 'punto de guardado': el conjunto de cambios que agrupas y registras en el historial. La ventana muestra a la izquierda los archivos modificados, con casillas (marcar un archivo es ponerlo en staging, el 'área de preparación' de lo que entra en el commit). A la derecha está el diff, la comparación lado a lado del antes y el después, con las líneas quitadas y agregadas.",
+    "shortcut": "⌥⌘C"
+   },
+   {
+    "text": "Escribe el mensaje del commit en el campo de texto de la ventana: una frase corta en imperativo que explique el porqué, como 'Agrega pantalla de login'. Luego haz clic en Commit. Los cambios quedan guardados y la barra de color del gutter desaparece."
+   },
+   {
+    "text": "Crea un branch (una línea paralela del historial, para probar una idea sin tocar el código principal). En el Source Control navigator, haz clic derecho en el branch actual (normalmente main) y elige la opción para crear un nuevo branch a partir de él; ponle un nombre como login-screen. Para cambiar de branch, haz clic derecho en el branch que quieres y elige Checkout. El nombre del branch actual también aparece cerca del nombre del proyecto en el Project navigator."
+   },
+   {
+    "text": "Para unir (merge, fusionar) un branch con otro: haz checkout del branch que recibirá los cambios (por ejemplo main), haz clic derecho en el otro branch y elige la opción Merge. Si Git puede hacerlo, crea solo el commit de merge."
+   },
+   {
+    "text": "Para hablar con un remote (como GitHub), primero inicia sesión con tu cuenta: Xcode > Settings… > Accounts, botón + y elige GitHub; Xcode puede pedir un personal access token (una contraseña especial que generas en el sitio de GitHub). Después, en el Source Control navigator, haz clic derecho en Remotes para agregar la dirección del repositorio."
+   },
+   {
+    "text": "Usa Integrate > Push… para enviar tus commits al remote e Integrate > Pull… (⌥⌘X) para traer los commits nuevos de allá. Integrate > Fetch Changes solo consulta el remote sin cambiar tus archivos. En un proyecto con otras personas, haz Pull antes de empezar a trabajar y Push al terminar. Integrate > Create Pull Request… abre la solicitud de revisión en GitHub.",
+    "shortcut": "⌥⌘X"
+   },
+   {
+    "text": "Para deshacer cambios que todavía no tienen commit, usa Integrate > Discard Changes in Selected Files… (solo los archivos seleccionados) o Integrate > Discard All Changes…. Cuidado: descartar es definitivo, Xcode no guarda una copia, así que asegúrate antes de confirmar."
+   },
+   {
+    "text": "Un merge conflict ocurre cuando dos branches cambiaron las mismas líneas y Git no sabe qué versión conservar. Xcode marca el archivo con <<<<<<< (inicio), ======= (separador) y >>>>>>> (fin): entre los dos primeros está tu versión y después la del otro branch. Edita el texto para dejar solo el código correcto, borra las tres líneas de marcas, guarda y usa Integrate > Mark as Resolved. Luego haz el commit."
+   },
+   {
+    "text": "Crea un archivo .gitignore en la raíz del proyecto para que Git ignore basura que no debe ir al repositorio. Es un archivo de texto con un patrón por línea; pon, por ejemplo: build/, DerivedData/, xcuserdata/ (ajustes personales de Xcode) y .DS_Store. Los archivos que empiezan con punto están ocultos en el Finder: presiona ⇧⌘. para verlos."
+   }
+  ],
+  "tips": [
+   "Haz commits pequeños y frecuentes, uno por idea: es más fácil de entender y de deshacer.",
+   "Integrate > Stash Changes… guarda temporalmente tus cambios sin commit, para que cambies de branch y los recuperes después.",
+   "Antes de Push, mira el historial en el Source Control navigator para confirmar qué va a subir.",
+   "Editor > Authors (⌃⇧⌘A) y Editor > Show Last Change for Line muestran quién cambió cada línea y cuándo."
+  ],
+  "pitfalls": [
+   "Hacer commit de la carpeta build o de xcuserdata: pesan y causan conflictos sin sentido. Ponlas en .gitignore. Si ya entraron a Git, el .gitignore solo no las quita del historial.",
+   "Hacer commit en el branch equivocado: revisa el nombre del branch actual antes de hacer commit.",
+   "Borrar incompletos los marcadores <<<<<<<: el código no compila mientras quede una línea de marca. Busca <<<<<<< con ⇧⌘F.",
+   "Push rechazado: alguien envió commits que tú no tienes. Haz Pull, resuelve los conflictos si los hay e inténtalo de nuevo."
+  ],
+  "links": [
+   {
+    "title": "Source control management",
+    "url": "https://developer.apple.com/documentation/xcode/source-control-management"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   }
+  ],
+  "related": [
+   32
+  ]
+ }
+]

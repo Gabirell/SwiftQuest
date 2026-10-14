@@ -206,7 +206,7 @@ struct XcodeWindowMap: View {
             case .navigator: "navigators"
             case .editor: "editor-layouts"
             case .inspector: "inspectors-libraries"
-            case .debug: "build-run-stop"
+            case .debug: "debugging-ui"
             }
         }
     }

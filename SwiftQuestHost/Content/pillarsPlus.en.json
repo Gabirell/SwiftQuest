@@ -18,7 +18,7 @@
    },
    {
     "id": 5,
-    "question": "In Swift 6, how do you write the existential type of a protocol in a heterogeneous array?",
+    "question": "How do you explicitly write the existential type of a protocol in a heterogeneous array?",
     "codeSnippet": "let shapes: [___ Drawable] = [Circle(), Square()]",
     "correctAnswer": "any",
     "hint": "The keyword that explicitly marks an existential (dynamic box)."

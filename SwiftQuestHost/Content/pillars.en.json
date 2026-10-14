@@ -556,7 +556,7 @@
      "Do not use Structs in Swift"
     ],
     "correctIndex": 1,
-    "explanation": "Structs are safer (no accidental shared state) and more performant (allocated on the Stack)."
+    "explanation": "Structs are safer (no accidental shared state) and more performant (usually cheaper to create and copy)."
    },
    {
     "id": 3,
@@ -1260,7 +1260,7 @@
    },
    {
     "id": 2,
-    "question": "Can Structs inherit from classes?",
+    "question": "A struct cannot inherit from a class. What can it adopt to gain shared behavior?",
     "codeSnippet": "struct MinhaStruct: ___ {}",
     "correctAnswer": "Protocol",
     "hint": "They only adopt protocols."

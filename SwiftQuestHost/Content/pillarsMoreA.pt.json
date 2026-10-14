@@ -764,7 +764,7 @@
    {
     "id": 8,
     "question": "Qual modificador cria uma propriedade do tipo (singleton) acessada por Config.compartilhada?",
-    "codeSnippet": "class Config {\n    ___ let compartilhada = Config()\n}",
+    "codeSnippet": "final class Config: Sendable {\n    ___ let compartilhada = Config()\n}",
     "correctAnswer": "static",
     "hint": "Pertence ao tipo, não à instância."
    },
@@ -1529,7 +1529,7 @@
    },
    {
     "id": 10,
-    "question": "Em Swift 6, qual palavra marca o tipo existencial de um protocolo injetado no ViewModel?",
+    "question": "Qual palavra marca explicitamente o tipo existencial de um protocolo injetado no ViewModel?",
     "codeSnippet": "init(repositorio: ___ Repositorio) {\n    self.repositorio = repositorio\n}",
     "correctAnswer": "any",
     "hint": "Três letras; contrasta com 'some'."

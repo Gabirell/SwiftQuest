@@ -409,7 +409,7 @@
      "menu"
     ],
     "correctIndex": 2,
-    "explanation": "'.pickerStyle(.segmented)' is ideal for 2 to 4 short options. In a Form, the default style on iOS is navigationLink (pushes a selection screen); outside a Form, the default is the menu."
+    "explanation": "'.pickerStyle(.segmented)' is ideal for 2 to 4 short options."
    },
    {
     "id": 4,

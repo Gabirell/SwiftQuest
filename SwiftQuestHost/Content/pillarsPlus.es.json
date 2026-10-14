@@ -18,7 +18,7 @@
    },
    {
     "id": 5,
-    "question": "En Swift 6, ¿cómo se escribe el tipo existencial de un protocolo en un array heterogéneo?",
+    "question": "¿Cómo se escribe explícitamente el tipo existencial de un protocolo en un array heterogéneo?",
     "codeSnippet": "let shapes: [___ Drawable] = [Circle(), Square()]",
     "correctAnswer": "any",
     "hint": "Palabra clave que marca explícitamente un existencial (caja dinámica)."
