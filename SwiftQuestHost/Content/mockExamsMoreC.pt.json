@@ -100,7 +100,7 @@
      "Shift + Command + Y."
     ],
     "correctIndex": 3,
-    "explanation": "Shift+Command+Y alterna a área de depuração. Command+0 alterna o Navigator, Option+Command+0 alterna os Inspectors e Shift+Command+O abre o Open Quickly para buscar arquivos e símbolos."
+    "explanation": "Shift+Command+Y alterna a área de depuração. No Xcode 26, Command+0 mostra o Coding Assistant, Option+Command+0 mostra as Coding Tools e Shift+Command+O abre o Open Quickly para buscar arquivos e símbolos."
    },
    {
     "id": 9,

@@ -50,6 +50,7 @@ final class Localizer: ObservableObject {
     private(set) var badges: [Badge] = []
     private(set) var studyBank: [CourseQuestion] = []
     private(set) var challenges: [CodeChallenge] = []
+    private(set) var guide: [GuideArticle] = []
 
     init() {
         let saved = UserDefaults.standard.string(forKey: "appLanguage").flatMap(AppLanguage.init(rawValue:))
@@ -62,6 +63,7 @@ final class Localizer: ObservableObject {
         lessons = intro.lessons
         introGlossary = intro.glossary
         pillars = CourseData.loadPillars(language)
+        guide = CourseData.loadAll(prefix: "xcodeGuide", language)
         challenges = CourseData.load("challenges", language) + CourseData.loadAll(prefix: "challengesMore", language)
         exams = CourseData.load("mockExams", language) + CourseData.loadAll(prefix: "mockExamsMore", language)
         glossary = CourseData.load("glossary", language) + CourseData.loadAll(prefix: "glossaryMore", language)

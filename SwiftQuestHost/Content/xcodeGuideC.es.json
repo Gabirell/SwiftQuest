@@ -1,0 +1,367 @@
+[
+ {
+  "id": "build-run-stop",
+  "category": "run",
+  "title": "Build, Run, Stop y Clean: qué hace realmente cada botón",
+  "summary": "Entiende la diferencia entre compilar (Build) y ejecutar (Run), qué hacen Stop, Clean Build Folder, Test, Profile y Analyze, y cómo leer el resultado de una compilación sin asustarte por las advertencias.",
+  "steps": [
+   {
+    "text": "Abre el menú Product. Ahí están todas las acciones de construcción: Run, Test, Profile, Analyze, Build, Clean Build Folder y Stop, cada una con su atajo a la derecha del nombre."
+   },
+   {
+    "text": "Elige Product > Build. Build significa traducir tu código Swift a un programa (la 'app') que la computadora entiende, sin abrirlo. Es como cocinar un plato sin llevarlo a la mesa: al final sabes si la receta funciona.",
+    "shortcut": "⌘B"
+   },
+   {
+    "text": "Elige Product > Run, o el botón de play (triángulo) en la barra de herramientas. Run hace un Build (si algo cambió) y luego instala y abre la app en el destino elegido (simulador, iPhone o Mac). Verás la app abrirse y el área de depuración aparecer abajo.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Para detener la app, usa Product > Stop o el botón cuadrado junto al play. Detener cierra la app en ejecución, pero no borra nada del proyecto; el botón de play vuelve a estar disponible.",
+    "shortcut": "⌘."
+   },
+   {
+    "text": "Mira el activity viewer, la franja en el centro de la barra de herramientas. Muestra el nombre del scheme, el destino y un mensaje como 'Build Succeeded', 'Build Failed' o una barra de progreso mientras compila."
+   },
+   {
+    "text": "Si algo parece roto sin motivo, usa Product > Clean Build Folder…. Borra los archivos intermedios de la compilación, como despejar la mesa antes de cocinar otra vez. Confirma en el diálogo; el siguiente Build será más lento porque rehace todo.",
+    "shortcut": "⇧⌘K"
+   },
+   {
+    "text": "Conoce a los parientes de Run: Product > Test (ejecuta tus pruebas), Product > Profile (abre Instruments para medir velocidad y memoria) y Product > Analyze (busca errores de lógica sin ejecutar la app). También compilan el proyecto antes de actuar."
+   }
+  ],
+  "tips": [
+   "Pulsa ⌘B con frecuencia para descubrir errores pronto; Run solo hace falta cuando quieres ver la app funcionando.",
+   "Product > Perform Action > Run Without Building (⌃⌘R) reabre la app sin recompilar, útil cuando nada cambió.",
+   "Haz clic en el icono de error/advertencia del activity viewer, o abre el navegador de Issues (⌘5), para ver la lista completa de problemas.",
+   "Product > Build For > Running (⇧⌘R) compila para ejecutar sin abrir la app; las entradas Testing y Profiling hacen lo mismo para pruebas e Instruments.",
+   "Xcode 26 también tiene Product > Clean Build Folder Immediately (⌥⇧⌘K), que limpia sin pedir confirmación."
+  ],
+  "pitfalls": [
+   "Un error (icono rojo) impide que el build termine; una advertencia (icono amarillo) no. Corrige primero los rojos; los amarillos suelen señalar algo sospechoso, pero la app igual corre.",
+   "Hacer Clean ante cada problema perjudica: no arregla errores de código y vuelve lento el siguiente build. Úsalo solo cuando Xcode se comporte raro o muestre errores sin sentido.",
+   "Creer que 'Build Succeeded' significa que la app es correcta. Un build solo demuestra que el código compila; los errores de lógica aparecen al ejecutar o probar.",
+   "Pulsar Stop no es lo mismo que cerrar la app con un gesto en el simulador o el iPhone. Si la app se cierra sola, Xcode también termina la sesión de depuración."
+  ],
+  "links": [
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   },
+   {
+    "title": "Build settings reference",
+    "url": "https://developer.apple.com/documentation/xcode/build-settings-reference"
+   },
+   {
+    "title": "Customizing the build schemes for a project",
+    "url": "https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project"
+   }
+  ],
+  "related": [
+   30,
+   33
+  ]
+ },
+ {
+  "id": "run-in-simulator",
+  "category": "run",
+  "title": "Prueba tu app en un simulador en tu computadora",
+  "summary": "Aprende a elegir un iPhone o iPad virtual, descargar versiones de iOS, usar los controles de la app Simulator y saber qué no puede imitar un simulador.",
+  "steps": [
+   {
+    "text": "Mira la barra de herramientas en la parte superior de Xcode: junto al nombre del scheme está el selector de destino (destination), el 'lugar' donde correrá la app. Haz clic para ver una lista de iPhones y iPads simulados, además de los dispositivos reales conectados."
+   },
+   {
+    "text": "Elige un modelo, por ejemplo un iPhone reciente. También puedes usar Product > Destination > Choose Destination o Show All Run Destinations para verlo todo. Cada simulador es un aparato virtual con su propia versión de iOS, como un teléfono de pruebas dentro de tu Mac.",
+    "shortcut": "⌃⇧0"
+   },
+   {
+    "text": "Si falta la versión de iOS que necesitas, abre Xcode > Settings… y busca la pestaña de componentes/plataformas (el nombre cambió entre versiones: Platforms en las anteriores, Components en Xcode 26). Ahí descargas runtimes de iOS, iPadOS y otros sistemas; la descarga es grande y puede tardar. También puedes seguirla en Window > Downloads."
+   },
+   {
+    "text": "Elige Product > Run. Xcode compila, abre la app Simulator (una aplicación aparte, accesible también desde Xcode > Open Developer Tool > Simulator) y lanza tu app en la pantalla del dispositivo virtual.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "En la app Simulator explora los menús Device y Features (los nombres exactos varían un poco entre versiones) y la barra junto al dispositivo: ahí puedes girar el aparato (Rotate Left/Right), ir a la pantalla de inicio (Home), bloquearlo (Lock), simular Shake, elegir una ubicación simulada y, en muchas versiones, alternar entre apariencia clara y oscura."
+   },
+   {
+    "text": "Para capturar la pantalla, busca el botón Screenshot en la barra junto al dispositivo o el comando Screenshot en los menús del Simulator. Por defecto la imagen va al Escritorio; es la forma más rápida de generar imágenes para documentación o la App Store."
+   },
+   {
+    "text": "Compara con la preview de SwiftUI: la preview (en el canvas junto al código) muestra una vista aislada, al instante, pero no la app completa. El Simulator ejecuta la app entera: navegación, datos guardados, red y ciclo de vida. Usa la preview para ajustar lo visual y el Simulator para validar el flujo."
+   }
+  ],
+  "tips": [
+   "Prueba en al menos un iPhone pequeño y uno grande, y en un iPad si tu app lo soporta; los layouts se rompen en tamaños distintos.",
+   "Window > Devices and Simulators (⇧⌘2) lista los simuladores instalados y permite crear nuevos con otro modelo o versión de iOS.",
+   "Alterna entre apariencia clara y oscura para comprobar que los colores de tu app funcionan en ambas.",
+   "Para volver al estado inicial de una app, bórrala desde la pantalla de inicio del simulador como en un iPhone real."
+  ],
+  "pitfalls": [
+   "El simulador no tiene cámara real, ni Face ID/Touch ID reales, ni sensores tipo giroscopio verdaderos, ni notificaciones push completas, ni Apple Pay completo. Los menús del Simulator tienen opciones para simular Face ID, pero prueba el resto en un iPhone.",
+   "El rendimiento del simulador no refleja el del iPhone: usa la CPU y la memoria de tu Mac. Una app rápida o lenta en el simulador puede comportarse distinto en el dispositivo.",
+   "Si la lista de destinos muestra 'Ineligible' o ningún simulador, falta descargar la plataforma o el target del proyecto exige una versión de iOS que no tienes instalada."
+  ],
+  "links": [
+   {
+    "title": "Downloading and installing additional Xcode components",
+    "url": "https://developer.apple.com/documentation/xcode/downloading-and-installing-additional-xcode-components"
+   },
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   }
+  ],
+  "related": [
+   30,
+   43
+  ]
+ },
+ {
+  "id": "run-on-iphone",
+  "category": "run",
+  "title": "Prueba tu app en tu propio iPhone, paso a paso",
+  "summary": "Mira cómo usar tu iPhone como destino: Apple ID, cable, Modo Desarrollador, firma del proyecto y los errores más comunes, incluso con una cuenta gratuita.",
+  "steps": [
+   {
+    "text": "Inicia sesión con tu Apple ID en Xcode: abre Xcode > Settings… (⌘,), ve a la pestaña Accounts y agrega tu cuenta. Una cuenta gratuita basta para pruebas personales; crea un 'Personal Team' que funciona como tu identidad de desarrollador.",
+    "shortcut": "⌘,"
+   },
+   {
+    "text": "Conecta el iPhone al Mac con un cable y desbloquéalo. En el iPhone toca 'Confiar' (Trust This Computer) e ingresa tu código. El iPhone debería aparecer en el selector de destino de la barra de herramientas."
+   },
+   {
+    "text": "Activa el Modo Desarrollador en el iPhone: Ajustes > Privacidad y seguridad > Modo Desarrollador (Developer Mode). Activa el interruptor, reinicia el dispositivo y confirma después del reinicio. La opción solo aparece después de conectar el iPhone a Xcode."
+   },
+   {
+    "text": "En Xcode, selecciona el proyecto en el navegador (⌘1), elige el target de la app y abre la pestaña Signing & Capabilities. En Team elige tu nombre (Personal Team) y escribe un Bundle Identifier único, por ejemplo con tu nombre o dominio. Firmar es como sellar la app con tu identidad para que el iPhone la acepte.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "Elige tu iPhone en el selector de destino (o Product > Destination > Choose Destination) y elige Product > Run.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "La primera vez, la app se instala pero puede no abrir y muestra 'Untrusted Developer'. En el iPhone ve a Ajustes > General > VPN y gestión de dispositivos, toca tu Apple ID y luego Confiar. Ejecuta de nuevo."
+   },
+   {
+    "text": "Para ejecutar sin cable, abre Window > Devices and Simulators (⇧⌘2), selecciona el iPhone y marca la opción 'Connect via network' (conectar por red). El iPhone y el Mac deben estar en la misma red Wi-Fi; la primera conexión aún requiere el cable.",
+    "shortcut": "⇧⌘2"
+   }
+  ],
+  "tips": [
+   "Las cuentas gratuitas limitan las capacidades: sin push notifications, iCloud ni otras funciones de pago. Las apps caducan a los 7 días y hay que reinstalarlas desde Xcode.",
+   "Un Bundle Identifier debe ser único en el mundo; si aparece un error de 'en uso', añade algo propio al final.",
+   "Mantén Xcode y el iOS del iPhone razonablemente actualizados; versiones muy distintas causan errores de soporte.",
+   "Si Window > Devices and Simulators muestra el iPhone con una advertencia, lee el mensaje: suele explicar qué falta."
+  ],
+  "pitfalls": [
+   "'El iPhone no aparece': desbloquea el dispositivo, cambia el cable o el puerto, confirma 'Confiar' y revisa que el destino no esté marcado como no disponible. Reinicia el iPhone si persiste.",
+   "'Developer Mode disabled': activa el Modo Desarrollador en el iPhone y reinicia. Si la opción no aparece, conecta antes el dispositivo a Xcode.",
+   "'Unable to install' o 'Failed to register bundle identifier': el identificador ya lo usa otro equipo; elige otro Bundle Identifier o revisa si la cuenta gratuita llegó a su límite de apps.",
+   "La app abre y se cierra enseguida o 'Untrusted Developer': falta confiar en el perfil en Ajustes > General > VPN y gestión de dispositivos."
+  ],
+  "links": [
+   {
+    "title": "Enabling Developer Mode on a device",
+    "url": "https://developer.apple.com/documentation/xcode/enabling-developer-mode-on-a-device"
+   },
+   {
+    "title": "Adding capabilities to your app",
+    "url": "https://developer.apple.com/documentation/xcode/adding-capabilities-to-your-app"
+   }
+  ],
+  "related": [
+   68,
+   33
+  ]
+ },
+ {
+  "id": "run-on-mac",
+  "category": "run",
+  "title": "Ejecuta tu app en tu Mac",
+  "summary": "Entiende los destinos 'My Mac', 'My Mac (Designed for iPad)' y Mac Catalyst, las diferencias de permisos y dónde guarda Xcode la app compilada.",
+  "steps": [
+   {
+    "text": "Abre el selector de destino en la barra de herramientas y elige My Mac. Este destino compila una versión nativa de la app para macOS (si el target es de macOS, multiplataforma o Catalyst). El menú Product > Destination muestra las mismas opciones, incluidas Mac y Any Mac (arm64, x86_64) en Build."
+   },
+   {
+    "text": "Elige Product > Run. La app se abre como cualquier programa de Mac, con ventanas redimensionables y barra de menús. Si es una app SwiftUI multiplataforma, verás el mismo código con aspecto de Mac.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Para una app solo de iPhone/iPad, busca el destino My Mac (Designed for iPad), cuando el proyecto lo ofrece. Ejecuta la versión de iPhone/iPad en un Mac con Apple Silicon sin cambiar el código. Algunas funciones de iOS (cámara, sensores) pueden no existir."
+   },
+   {
+    "text": "Si quieres una versión de Mac más natural a partir de una app de iPad, existe Mac Catalyst: en los ajustes del target se activa el soporte para Mac y Xcode genera una app con aspecto de Mac. Requiere más ajustes de interfaz."
+   },
+   {
+    "text": "Abre Signing & Capabilities en el target y revisa App Sandbox. El sandbox restringe el acceso de la app a archivos, red y hardware; si la app necesita abrir archivos del usuario o usar la red, marca los permisos correspondientes."
+   },
+   {
+    "text": "Para encontrar la app compilada, usa Product > Show Build Folder in Finder. También existe Product > Copy Build Folder Path. Dentro de la carpeta Products está el .app, que puedes abrir con doble clic."
+   },
+   {
+    "text": "Entiende la diferencia entre Run y Archive: Run genera un build de desarrollo para que pruebes. Product > Archive genera una versión de distribución, firmada para subir a la App Store o exportar."
+   }
+  ],
+  "tips": [
+   "Ejecutar en el Mac suele ser la forma más rápida de probar la lógica, sin esperar a que arranque el simulador.",
+   "En una app macOS con sandbox, los fallos silenciosos de archivos o red casi siempre son falta de un permiso en Signing & Capabilities.",
+   "La app dentro de Products en la carpeta de build es de desarrollo; no la repartas a otras personas.",
+   "Las versiones de macOS y del SDK deben ser compatibles: revisa Minimum Deployments del target."
+  ],
+  "pitfalls": [
+   "El destino My Mac no aparece: el target puede no soportar macOS. Abre General del target y revisa Supported Destinations; agrega Mac si hace falta.",
+   "Las funciones de iOS (cámara trasera, hápticos, ARKit) no existen en el Mac: la app corre, pero ese código necesita un plan B.",
+   "Confundir 'Designed for iPad' con Catalyst: el primero ejecuta la app de iOS sin cambiar la interfaz; el segundo recompila para Mac y permite adaptar la interfaz.",
+   "La app funciona en Xcode pero no en otro Mac: el build de desarrollo está firmado para ti; para distribuir hay que archivar y notarizar."
+  ],
+  "links": [
+   {
+    "title": "Configuring the macOS App Sandbox",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-the-macos-app-sandbox"
+   },
+   {
+    "title": "Configuring a multiplatform app target",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-a-multiplatform-app-target"
+   },
+   {
+    "title": "Adding capabilities to your app",
+    "url": "https://developer.apple.com/documentation/xcode/adding-capabilities-to-your-app"
+   }
+  ],
+  "related": [
+   68,
+   31
+  ]
+ },
+ {
+  "id": "testing-in-xcode",
+  "category": "run",
+  "title": "Ejecuta pruebas: unitarias, de interfaz y el navegador Test",
+  "summary": "Aprende a correr todas las pruebas o solo una, leer los resultados en el Test navigator y el Report navigator, y ver la cobertura de código.",
+  "steps": [
+   {
+    "text": "Abre el navegador de pruebas con View > Navigators > Tests (⌘6). Lista cada target de pruebas, clase y función de prueba del proyecto en forma de árbol.",
+    "shortcut": "⌘6"
+   },
+   {
+    "text": "Ejecuta todas las pruebas con Product > Test (⌘U). Xcode compila la app y las pruebas, corre cada una y muestra el resultado. Una prueba unitaria (unit test) verifica un trozo pequeño de código; una prueba de UI (UI test) controla la app como un usuario tocando la pantalla.",
+    "shortcut": "⌘U"
+   },
+   {
+    "text": "Fíjate en el rombo (diamante) en el margen izquierdo del editor, junto a cada función de prueba y cada clase de prueba. Haz clic para correr solo esa prueba o esa clase. Se pone verde si pasa y rojo si falla."
+   },
+   {
+    "text": "Para correr varios elementos elegidos, selecciónalos en el Test navigator y usa Product > Perform Action > Test Selected Items (⌃⌥⌘U). Para repetir la última ejecución, usa Test Again (⌃⌥⌘G).",
+    "shortcut": "⌃⌥⌘U"
+   },
+   {
+    "text": "Mira los detalles de un fallo haciendo clic en el marcador rojo del editor o en el elemento rojo del Test navigator. La línea de la aserción que falló queda resaltada con su mensaje."
+   },
+   {
+    "text": "Abre el Report navigator con View > Navigators > Reports (⌘9). Cada ejecución de build y de pruebas se vuelve un reporte; haz clic para ver el log completo, las capturas de las UI tests y los tiempos.",
+    "shortcut": "⌘9"
+   },
+   {
+    "text": "Activa la cobertura: Product > Scheme > Edit Scheme… (⌘<), ve a Test > Options y marca Code Coverage. Después de probar, la cobertura aparece en el Report navigator y en el editor (Editor > Code Coverage).",
+    "shortcut": "⌘<"
+   }
+  ],
+  "tips": [
+   "XCTest es el framework clásico (clases que heredan de XCTestCase, funciones que empiezan con 'test'). Swift Testing es el nuevo, con macros como @Test y #expect; Xcode 26 corre ambos en el mismo navegador.",
+   "Product > Clear Test Results (⌃⌥⌘K) borra los resultados antiguos.",
+   "Haz pruebas pequeñas y rápidas: una función de prueba verifica una sola cosa.",
+   "Corre ⌘U antes de enviar un cambio grande, para detectar roturas pronto."
+  ],
+  "pitfalls": [
+   "Las pruebas solo detectan lo que escribiste para verificar. Pasar las pruebas no significa que la app no tenga errores; una cobertura alta tampoco garantiza calidad.",
+   "No aparece ninguna prueba en el navegador: quizá el proyecto no tiene un target de pruebas. Crea uno con File > New > Target y elige Unit Testing Bundle.",
+   "Las UI tests son lentas y frágiles: dependen de la pantalla y pueden fallar por animaciones. Usa pocas, para flujos críticos.",
+   "Una prueba que a veces pasa y a veces falla (flaky) suele depender de la red, el reloj o el orden; aísla esas dependencias."
+  ],
+  "links": [
+   {
+    "title": "XCTest",
+    "url": "https://developer.apple.com/documentation/xctest"
+   },
+   {
+    "title": "Swift Testing",
+    "url": "https://developer.apple.com/documentation/testing"
+   },
+   {
+    "title": "Organizing tests to improve feedback",
+    "url": "https://developer.apple.com/documentation/xcode/organizing-tests-to-improve-feedback"
+   }
+  ],
+  "related": [
+   20,
+   65
+  ]
+ },
+ {
+  "id": "schemes-destinations",
+  "category": "run",
+  "title": "Schemes, destinos y configuraciones de ejecución",
+  "summary": "Entiende qué es un scheme (esquema), cómo elegir scheme y destino, Debug frente a Release, los argumentos de lanzamiento y cuándo crear un segundo scheme.",
+  "steps": [
+   {
+    "text": "Mira el selector en la barra de herramientas: a la izquierda está el scheme, a la derecha el destino. Un scheme es una receta que le dice a Xcode qué targets compilar y cómo ejecutar, probar, perfilar y archivar. El destino dice dónde correr."
+   },
+   {
+    "text": "Haz clic en el nombre del scheme para cambiarlo. También puedes usar Product > Scheme > Choose Scheme (⌃0) o Select Next/Previous Scheme. Cada scheme aparece también en el submenú Product > Scheme.",
+    "shortcut": "⌃0"
+   },
+   {
+    "text": "Haz clic en el destino para cambiar de dispositivo (simulador, iPhone, Mac). El atajo es Product > Destination > Choose Destination (⌃⇧0).",
+    "shortcut": "⌃⇧0"
+   },
+   {
+    "text": "Abre Product > Scheme > Edit Scheme… (⌘<). La ventana tiene una lista a la izquierda: Build, Run, Test, Profile, Analyze y Archive. Cada elemento define cómo funciona esa acción.",
+    "shortcut": "⌘<"
+   },
+   {
+    "text": "Selecciona Run y mira la pestaña Info. En Build Configuration hay Debug y Release. Debug compila con información para depurar y es más lento; Release optimiza velocidad y tamaño, y es el que se publica."
+   },
+   {
+    "text": "En la pestaña Arguments de la acción Run, agrega Arguments Passed On Launch (textos que la app recibe al iniciar) y Environment Variables (pares nombre/valor). Sirven para activar modos de prueba o logs extra sin cambiar el código. En Info, la opción Executable permite elegir qué app ejecutar."
+   },
+   {
+    "text": "Para guardar una segunda receta, usa Product > Scheme > New Scheme… o duplica desde Edit Scheme. Gestiona, renombra y oculta schemes en Product > Scheme > Manage Schemes…."
+   }
+  ],
+  "tips": [
+   "Xcode crea un scheme automático por app. En la mayoría de los proyectos pequeños, un solo scheme basta.",
+   "Marca Shared en Manage Schemes… si quieres que el scheme vaya a Git y lo use todo el equipo.",
+   "Debug es para desarrollar; Release es para medir el rendimiento real y publicar. Puedes correr en Release desde la acción Run.",
+   "Product > Scheme > Edit Scheme… también controla qué Test Plan usan las pruebas."
+  ],
+  "pitfalls": [
+   "El scheme elegido no es el que creías: la barra muestra otro nombre. Revisa siempre el nombre antes de ejecutar, sobre todo en proyectos con varias extensiones.",
+   "La app corre más lenta de lo esperado: está en Debug. Prueba el rendimiento en Release.",
+   "Un scheme desaparece del selector: puede haberse ocultado en Manage Schemes…; marca Show para recuperarlo.",
+   "Los argumentos de lanzamiento olvidados cambian el comportamiento de la app solo en tu máquina; desmarca los que ya no uses."
+  ],
+  "links": [
+   {
+    "title": "Customizing the build schemes for a project",
+    "url": "https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project"
+   },
+   {
+    "title": "Build settings reference",
+    "url": "https://developer.apple.com/documentation/xcode/build-settings-reference"
+   },
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   }
+  ],
+  "related": [
+   30,
+   68
+  ]
+ }
+]

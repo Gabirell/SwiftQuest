@@ -269,7 +269,7 @@
  },
  {
   "term": "navigator",
-  "definition": "The left panel of Xcode with tabs such as Project, Source Control, Symbol, Find, Issue, Test, Debug and Report navigators."
+  "definition": "The left panel of Xcode with tabs such as Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints and Reports navigators."
  },
  {
   "term": "inspector",

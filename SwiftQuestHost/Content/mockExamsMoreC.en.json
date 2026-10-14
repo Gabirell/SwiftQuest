@@ -100,7 +100,7 @@
      "Shift + Command + Y."
     ],
     "correctIndex": 3,
-    "explanation": "Shift+Command+Y toggles the debug area. Command+0 toggles the Navigator, Option+Command+0 toggles the Inspectors, and Shift+Command+O opens Open Quickly to search files and symbols."
+    "explanation": "Shift+Command+Y toggles the debug area. In Xcode 26, Command+0 shows the Coding Assistant, Option+Command+0 shows Coding Tools, and Shift+Command+O opens Open Quickly to search files and symbols."
    },
    {
     "id": 9,

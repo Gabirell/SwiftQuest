@@ -1,0 +1,445 @@
+[
+ {
+  "id": "comment-code",
+  "category": "editing",
+  "title": "Comment and uncomment code (one line or many)",
+  "summary": "Learn how to switch code off temporarily with Comment Selection, how to write useful comments, and how to organise long files with MARK, TODO and FIXME.",
+  "steps": [
+   {
+    "text": "Click anywhere on a line of code to put the cursor (the blinking bar) on it. You do not need to select anything to comment a single line."
+   },
+   {
+    "text": "Choose Editor > Structure > Comment Selection or press ⌘/. The line gets // at the start and changes colour (usually green or grey), showing that the compiler will ignore it.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "To comment several lines, drag the mouse over them (or click the first one and use ⇧ + arrow down) and press ⌘/ again. Each selected line gets its own //.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "To undo, keep the same selection (or the cursor on the line) and press ⌘/ once more: the command is a toggle and removes the // it added.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "Write a block comment by typing /* before the code and */ after it. Everything between the two markers is ignored, even across many lines; this is handy for long text, but Xcode's ⌘/ uses // line by line."
+   },
+   {
+    "text": "Document a function, struct or property with a documentation comment: type /// on the line right above it. Later, Option-click the symbol's name elsewhere in your code and the text appears in the Quick Help popover."
+   },
+   {
+    "text": "With the cursor on a declaration (for example a func), use Editor > Structure > Add Documentation (⌥⌘/) and Xcode inserts a /// template with the parameters already listed.",
+    "shortcut": "⌥⌘/"
+   },
+   {
+    "text": "Mark sections of a file with // MARK: - Section name, reminders with // TODO: text, and known problems with // FIXME: text. Click the last item of the path bar (the jump bar) above the editor: MARK, TODO and FIXME show up in the symbol list, and the '- ' in a MARK draws a separator line."
+   }
+  ],
+  "tips": [
+   "Commenting out is better than deleting while you test an idea: the code stays there and returns with one ⌘/. Do not leave commented code forever though; version control (Git) already keeps the history.",
+   "Select a whole block, including blank lines, before pressing ⌘/ so you do not have to comment line by line.",
+   "Use // MARK: - Properties, // MARK: - Actions and so on in long files; they become a clickable table of contents in the jump bar.",
+   "Comments should explain the 'why', not the 'what'. 'Add 1' above counter += 1 is noise; 'Skip the table header' is useful.",
+   "If the shortcut is awkward on your keyboard, use the menu Editor > Structure > Comment Selection or change the key in Settings > Key Bindings (search for 'Comment')."
+  ],
+  "pitfalls": [
+   "⌘/ does nothing or triggers something else: on Brazilian ABNT2 or Spanish keyboards the slash lives on another key or needs ⇧, so the combination may not be recognised. Use the menu, or reassign the shortcut in Settings > Key Bindings.",
+   "Commenting a line that opens a block, such as func or if {, without commenting the closing } leaves unbalanced braces and Xcode shows errors. Comment the whole block at once.",
+   "A /* without its closing */ comments out the rest of the file, and almost everything turns green. Look for the forgotten marker. Swift lets /* */ blocks nest, which makes a missing closer easy to overlook; for several lines, prefer //.",
+   "Writing // MARK without the colon does not create an entry in the jump bar. The format is // MARK: text."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Writing symbol documentation in your source files",
+    "url": "https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files"
+   },
+   {
+    "title": "Writing documentation",
+    "url": "https://developer.apple.com/documentation/xcode/writing-documentation"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "indent-format",
+  "category": "editing",
+  "title": "Indent, re-indent and tidy code",
+  "summary": "See how to move blocks left or right, let Xcode fix the indentation of a whole file, and use the formatting entries that exist in the Editor menu.",
+  "steps": [
+   {
+    "text": "Open the file and select the lines you want to move (drag the mouse or use ⇧ + arrow keys). With a selection active, pressing Tab also pushes the block to the right."
+   },
+   {
+    "text": "Open Editor > Structure > Shift Right (⌘]) to push the selected lines one level to the right, and Editor > Structure > Shift Left (⌘[) to bring them back to the left.",
+    "shortcut": "⌘]"
+   },
+   {
+    "text": "To let Xcode fix indentation according to the braces in your code, select the lines and use Editor > Structure > Re-Indent (⌃I). It sets each line to the correct level without changing what the code does.",
+    "shortcut": "⌃I"
+   },
+   {
+    "text": "To tidy a whole file, click in the editor, press ⌘A (Select All) and then ⌃I. You will see every line line up with the structure of the { } braces.",
+    "shortcut": "⌃I"
+   },
+   {
+    "text": "Try Editor > Structure > Format File (⌃⇧I) to format the whole file; Format Selection formats only the selected part, and Reformat To Width and Format to Multiple Lines change how long lines are wrapped. These entries exist in the installed Xcode 26 menu; test them on a small file and press ⌘Z if you do not like the result.",
+    "shortcut": "⌃⇧I"
+   },
+   {
+    "text": "The installed Xcode toolchain includes a command-line tool called swift-format, which can also be used outside Xcode. Do not treat it as required: Re-Indent is all you need to start."
+   },
+   {
+    "text": "To see or adjust tab size, indentation and line wrapping, open Xcode > Settings and go to the Text Editing section; the indentation options live in that part of Settings."
+   },
+   {
+    "text": "To keep long lines from running off the window, turn on Editor > Wrap Lines (⌃⇧⌘L). This only changes how the text is displayed; the file does not get real line breaks.",
+    "shortcut": "⌃⇧⌘L"
+   }
+  ],
+  "tips": [
+   "Press ⌘A and ⌃I before sharing code or making a commit: well-indented files are much easier to read.",
+   "Re-Indent only touches the spaces at the start of lines; it does not rewrite code or fix missing braces.",
+   "If Re-Indent suddenly makes everything crooked, a { or } is almost always missing or extra. Fix the brace and run ⌃I again.",
+   "Xcode does not format everything by itself: it helps indent while you type, but extra spaces, long lines and trailing commas are still your job.",
+   "You can undo any formatting with ⌘Z, so experiment freely."
+  ],
+  "pitfalls": [
+   "Mixing tabs and spaces in one file makes the code look messy in other editors. Pick one and stay with it; see the options in Xcode > Settings > Text Editing.",
+   "Pressing ⌘[ or ⌘] with nothing selected moves only the line the cursor is on. If you wanted to move a block, select all its lines first.",
+   "Format File can change many lines at once, which makes a team commit harder to review. In shared projects, agree beforehand on whether everyone formats the same way."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "move-duplicate-lines",
+  "category": "editing",
+  "title": "Move, duplicate and delete lines; multiple cursors",
+  "summary": "Learn to rearrange code without copy and paste: move lines up and down, duplicate them, delete them, and edit several places at once with multiple selections.",
+  "steps": [
+   {
+    "text": "Click on a line (or select several) and open Editor > Structure > Move Line Down (⌥⌘]). The line swaps places with the one below, with no cutting and pasting.",
+    "shortcut": "⌥⌘]"
+   },
+   {
+    "text": "Use Editor > Structure > Move Line Up (⌥⌘[) to move the line up. Repeat the shortcut as often as you like; it is great for reordering properties or list items.",
+    "shortcut": "⌥⌘["
+   },
+   {
+    "text": "To duplicate, with the line or the passage selected use Edit > Duplicate (⌘D). A copy appears right below; then just adjust what differs, such as a variable name.",
+    "shortcut": "⌘D"
+   },
+   {
+    "text": "The installed Xcode has no 'delete line' menu entry. Select the whole line (click at its start and press ⇧ + arrow down) and press Delete; or, with the cursor at the end of the line, ⌘ + Delete removes everything back to its start, which is standard macOS text-field behaviour."
+   },
+   {
+    "text": "To edit several occurrences of a word at once, select the word and use Find > Select Next Occurrence (⌥⌘E). Each time you repeat it, one more occurrence gets selected with its own cursor.",
+    "shortcut": "⌥⌘E"
+   },
+   {
+    "text": "With several cursors active, just type: the text appears in every place at once. Press Esc or click somewhere else to go back to a single cursor."
+   },
+   {
+    "text": "To grab every occurrence at once, use Find > Select All Find Matches after searching for a word with ⌘F, or Find > Select Find Matches in Selection to limit the search to a selected block."
+   },
+   {
+    "text": "More options in the Editor > Selection menu: Split Selection By Lines puts a cursor at the end of each selected line, Select Column Up and Select Column Down (⌃⇧ + arrow keys) extend a column of cursors, and Select All Symbols selects every occurrence of the symbol under the cursor."
+   }
+  ],
+  "tips": [
+   "⌥⌘[ and ⌥⌘] also work with several lines selected: the whole block moves together.",
+   "To repeat a similar line (for example, switch cases), duplicate with ⌘D and edit only the difference; it is usually faster than typing.",
+   "Split Selection By Lines is great for adding quotes, commas or a prefix at the start or end of a list of lines at once.",
+   "If Select Next Occurrence grabs too much (for example, 'count' inside 'accountCount'), prefer renaming with Editor > Refactor > Rename…, which understands code.",
+   "All of these actions can be undone with ⌘Z."
+  ],
+  "pitfalls": [
+   "Moving lines out of the right block does not give an error right away, but it can break the logic (for example, a line leaves an if). Check the indentation after moving and use ⌃I if needed.",
+   "With several cursors, paste puts the same text in all of them; if you copied something big, you scatter junk over the file. Undo and check where the cursors are.",
+   "Edit > Delete is not the same as deleting a line: it removes the selection. If nothing is selected, it does not delete the whole line. Select the line first."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "completion-snippets",
+  "category": "editing",
+  "title": "Code completion, placeholders, snippets and Fix-its",
+  "summary": "Understand how Xcode suggests code as you type, how to fill in the coloured fields (placeholders), how to create your own snippets and how to fix errors with one click.",
+  "steps": [
+   {
+    "text": "Start typing the name of something, for example Text( or VStack. A list of suggestions appears below the cursor; use the up and down arrows to choose."
+   },
+   {
+    "text": "Press Return or Tab to accept the selected suggestion. If the list disappeared, ask for it again with Editor > Show Completions (⌃Space).",
+    "shortcut": "⌃Space"
+   },
+   {
+    "text": "When the suggestion is a function with parameters, Xcode inserts placeholders: light-blue blocks with text like <#value#> that mark what you must fill in. Type to replace the selected placeholder."
+   },
+   {
+    "text": "Press Tab to jump to the next placeholder (or use Navigate > Jump to Next Placeholder, ⌃/). Navigate > Jump to Previous Placeholder (⌃?) goes back. To replace one with your own value, just type over it.",
+    "shortcut": "⌃/"
+   },
+   {
+    "text": "To keep a passage you repeat a lot, select the code and choose Editor > Create Code Snippet…. A window opens with the title, a 'Completion' (a text shortcut) and the language."
+   },
+   {
+    "text": "Inside the snippet, write <#name#> wherever you want a placeholder; then, in any file, typing the text shortcut you chose makes the snippet show up in the suggestions."
+   },
+   {
+    "text": "To see and edit snippets, open the library with View > Show Library (⇧⌘L) and look for the snippets tab (curly-braces { } icon). Your snippets appear next to Xcode's own.",
+    "shortcut": "⇧⌘L"
+   },
+   {
+    "text": "When code has a problem, a red dot (error) or a yellow triangle (warning) appears in the left margin (the gutter). Click the icon: if there is a Fix button, clicking it applies the suggested correction."
+   },
+   {
+    "text": "Open the Issue navigator with View > Navigators > Issues (⌘5) to see every problem in the project. Use Navigate > Jump to Next Issue (⌘') to hop from one to the next, and Editor > Fix All Issues (⌃⌥⌘F) to apply all available Fix-its.",
+    "shortcut": "⌘5"
+   }
+  ],
+  "tips": [
+   "The suggestion list shows the type of each item (method, property, value); this helps you learn the API without memorising names.",
+   "Typing just the initials of a compound word often works: for example 'fgc' can find a longer name containing those letters.",
+   "Fix-its are suggestions, not guarantees: read what Xcode is about to change before accepting, especially with many errors at once.",
+   "Start a snippet with something simple (a View pattern, a debugging print) and refine it with placeholders.",
+   "Editor > Show Predictive Completion (⌃⌥Space) exists in the Xcode 26 menu; it offers whole-line suggestions when the feature is available on your Mac."
+  ],
+  "pitfalls": [
+   "Accepting a suggestion without looking can insert a similar but wrong method. Check the name and parameters.",
+   "A placeholder left in the code, like <#value#>, makes the build fail with an error. Find them all with Tab before running.",
+   "No suggestion list? The file may have a syntax error above the cursor, or Xcode is still indexing; wait for the progress bar at the top to finish.",
+   "The Fix button only appears when Xcode is sure of a correction. For most errors you will have to read the message and fix it yourself."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Diagnosing and resolving bugs in your running app",
+    "url": "https://developer.apple.com/documentation/xcode/diagnosing-and-resolving-bugs-in-your-running-app"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   33
+  ]
+ },
+ {
+  "id": "rename-refactor",
+  "category": "editing",
+  "title": "Rename and refactor safely",
+  "summary": "See how to change the name of a variable, function or type across the whole project at once without breaking anything, and how to use the extraction tools in the Refactor menu.",
+  "steps": [
+   {
+    "text": "Click the name you want to change (for example a variable or function) and open Editor > Refactor > Rename…. If you prefer, right-click the name and choose Refactor > Rename… from the context menu."
+   },
+   {
+    "text": "Xcode highlights every use of the name and makes the field editable. Type the new name; all occurrences change together as you type."
+   },
+   {
+    "text": "When Rename asks, click Rename to apply. To see what changes first, Xcode may list the affected files in a preview: check it and confirm."
+   },
+   {
+    "text": "To rename only inside the current block (a local variable, a parameter), use Editor > Edit All in Scope (⌃⌘E). Xcode selects only the occurrences in the same scope and you edit them all at once.",
+    "shortcut": "⌃⌘E"
+   },
+   {
+    "text": "To extract code, select the lines and use Editor > Refactor > Extract to Function (or Extract to Method) to create a new function from the passage, or Extract to Variable to give a name to an expression. Extract All Occurrences replaces every identical repeat."
+   },
+   {
+    "text": "To rename a file in the Project navigator, click it and press Return, type the new name and confirm with Return. The file name and the name of the type inside it are separate things."
+   },
+   {
+    "text": "After any rename, build with Product > Build (⌘B) and read the errors: a clean build is proof that nothing was left behind.",
+    "shortcut": "⌘B"
+   }
+  ],
+  "tips": [
+   "Prefer names that say what the thing does: calculateTotal() is better than f1().",
+   "Renaming a file does not rename the struct or class inside it. To keep everything consistent, rename both: the file, and the type with Rename….",
+   "If the project is in Git, make a commit before renaming a lot; that way you can easily go back.",
+   "Targets and schemes also have names: they are changed in the project settings, not through the code Rename…. After changing them, check Product > Scheme.",
+   "Rename… understands Swift code (it knows the difference between 'name' in one variable and 'name' in another); Find and Replace does not."
+  ],
+  "pitfalls": [
+   "Using Find and Replace to rename swaps blind text: it can alter comments, strings, similar names (count inside accountCount) and break the program. Use Rename… for code symbols.",
+   "Rename… may not reach text that is not code: names written inside strings, interface files (storyboards) or configuration keys. Search for the old name with ⇧⌘F afterwards and fix what remains by hand.",
+   "If Rename… is greyed out or nothing changes, the cursor may not be on a symbol, or the project has errors that stop Xcode from understanding the code. Fix the errors and try again.",
+   "Renaming only the folder in Finder, outside Xcode, leaves the Project navigator pointing to the old path (name in red). Always rename from inside Xcode."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   32
+  ]
+ },
+ {
+  "id": "find-replace",
+  "category": "editing",
+  "title": "Find, replace and search the whole project",
+  "summary": "Learn how to find text in the open file and across the whole project, replace safely, and use the Find navigator to see all results at once.",
+  "steps": [
+   {
+    "text": "With a file open, use Find > Find… (⌘F). A search bar appears at the top of the editor; type the word and every occurrence is highlighted in the file.",
+    "shortcut": "⌘F"
+   },
+   {
+    "text": "Press Return or Find > Find Next (⌘G) to go to the next match, and Find > Find Previous (⇧⌘G) to go back. To search for the word already selected in the code, use Find > Use Selection for Find (⌘E).",
+    "shortcut": "⌘G"
+   },
+   {
+    "text": "To replace, use Find > Find and Replace… (⌥⌘F): the bar gains a second field. Type the new text and use Replace (one match), Replace All (all in the file) or Replace and Find Next.",
+    "shortcut": "⌥⌘F"
+   },
+   {
+    "text": "Click the magnifying glass (or the options menu) inside the search bar to adjust the search: how the word should match (for example contains or whole word), ignoring upper and lower case, and Regular Expression mode. The exact names of these options appear in the bar itself.",
+    "shortcut": "⌘E"
+   },
+   {
+    "text": "To search every file, use Find > Find in Workspace… (⇧⌘F). This opens the Find navigator (⌘4) on the left, with the results grouped by file.",
+    "shortcut": "⇧⌘F"
+   },
+   {
+    "text": "Click a result to jump straight to its line. The fields under the search box let you choose the scope (the whole project or some folders) and the kind of search: text, references or definitions.",
+    "shortcut": "⌘4"
+   },
+   {
+    "text": "To limit the search to certain folders, select them and use Find > Find in Selected Groups…. It is faster when the project is big and you know where to look."
+   },
+   {
+    "text": "To replace in many files, use Find > Find and Replace in Workspace… (⌥⇧⌘F), type the new text and use the Preview button to see each change. Untick the files or lines you do not want to change, then confirm with Replace.",
+    "shortcut": "⌥⇧⌘F"
+   }
+  ],
+  "tips": [
+   "To find where a function is used, click it and use Find > Find Selected Symbol in Workspace (⌃⇧⌘F); it understands code better than a plain text search.",
+   "To close the in-file search bar, use Find > Hide Find Bar or press Esc.",
+   "Turn on the whole-word option when searching short names such as 'id', so you do not match 'identifier', 'video' and so on.",
+   "Searching for part of an error message in the Find navigator helps you discover where a piece of on-screen text comes from.",
+   "Anything the Find navigator replaces can be undone with ⌘Z, but undo may work file by file. Commit before a big replacement."
+  ],
+  "pitfalls": [
+   "Replace All in Find in Workspace changes many files at once. Always use the preview and check the results before applying.",
+   "If the search does not find something you know exists, check that the options (case, whole word, scope) are not too restrictive.",
+   "Finding and replacing variable or function names can change text that is not code. For Swift symbols, prefer Editor > Refactor > Rename….",
+   "Regular expressions have their own syntax: characters such as ( ) . * have special meaning. If a plain text search gives odd results, check that regex mode was left on."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "folding-minimap",
+  "category": "editing",
+  "title": "Code folding, line numbers and the minimap",
+  "summary": "Learn to hide blocks of code you are not reading, show line numbers, use the minimap and move around long files without getting lost.",
+  "steps": [
+   {
+    "text": "Click inside a function or a block between braces { }, and use Editor > Code Folding > Fold (⌥⌘←). The body of the block disappears and a mark takes its place, showing there is hidden code."
+   },
+   {
+    "text": "To show it again, use Editor > Code Folding > Unfold (⌥⌘→) with the cursor in the folded part, or click the mark. Editor > Code Folding > Unfold All opens everything at once.",
+    "shortcut": "⌥⌘←"
+   },
+   {
+    "text": "To fold every function in the file, use Editor > Code Folding > Fold Methods & Functions (⌥⇧⌘←); the opposite is Unfold Methods & Functions. Fold Comment Blocks and Unfold Comment Blocks (⌃⇧⌘←/→) do the same for comment blocks."
+   },
+   {
+    "text": "Look for the narrow strip next to the line numbers: it is the folding ribbon. Clicking a small arrow in it folds or unfolds the block. If you do not see it, look in Xcode > Settings > Text Editing for an option called something like 'Code folding ribbon' (the name may vary in your version)."
+   },
+   {
+    "text": "To show the minimap, a miniature version of the file on the right, use Editor > Minimap (⌃⇧⌘M). Hover over it to see symbol names and click to jump to that spot in the file.",
+    "shortcut": "⌃⇧⌘M"
+   },
+   {
+    "text": "To see line numbers, look in Xcode > Settings > Text Editing for a line numbers option (Line numbers). With Editor > Relative Line Numbers, the numbering shows the distance from the cursor's line, useful if you use Vim Mode."
+   },
+   {
+    "text": "To jump between the symbols in the file, click the last item of the path bar (the jump bar) above the editor, or use View > Editor > Show Document Items (⌃6). Type part of a name to filter the list, and click to go there.",
+    "shortcut": "⌃6"
+   },
+   {
+    "text": "To go straight to a line, use Navigate > Jump to… (⌘L) and type the line number. For very long lines, use Editor > Wrap Lines (⌃⇧⌘L), which wraps the text on screen without changing the file."
+   }
+  ],
+  "tips": [
+   "Fold functions you already understand to see the overall structure of the file in a few lines.",
+   "// MARK: - marks show up in the jump bar and in the minimap; they work like a book's table of contents.",
+   "Folded code is still part of the program; folding is only visual.",
+   "The minimap is most useful in long files; on small screens, turn it off to gain space.",
+   "If you cannot find a menu item you saw in a tutorial, look for it in Settings: Xcode 26 reorganised some controls."
+  ],
+  "pitfalls": [
+   "Folding a block and forgetting about it: later you may think the code 'vanished'. Look for the fold mark or use Unfold All.",
+   "Folds are tied to the position of the code; if you edit a lot, Xcode sometimes unfolds by itself. This is normal.",
+   "The arrows in the folding shortcuts (⌥⌘← and ⌥⌘→) depend on arrow keys; on laptops they sit at the bottom right. If the shortcut fails, use the Editor > Code Folding menu.",
+   "If the minimap and line numbers vanish after switching project or window, check the Editor menu and the options in Settings, since some are per window."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ }
+]

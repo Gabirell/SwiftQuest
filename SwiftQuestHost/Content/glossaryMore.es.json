@@ -269,7 +269,7 @@
  },
  {
   "term": "navigator",
-  "definition": "El panel izquierdo de Xcode con pestañas como Project, Source Control, Symbol, Find, Issue, Test, Debug y Report navigators."
+  "definition": "El panel izquierdo de Xcode con pestañas como Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints y Reports navigators."
  },
  {
   "term": "inspector",

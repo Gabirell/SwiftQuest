@@ -1,0 +1,382 @@
+[
+ {
+  "id": "add-images-assets",
+  "category": "assets",
+  "title": "Agrega imágenes y otros recursos (Assets.xcassets)",
+  "summary": "Aprende a guardar imágenes, colores y datos en el catálogo de assets y a usarlos por nombre en SwiftUI y UIKit. Es la forma correcta de dejar que Xcode elija la versión 1x/2x/3x y la apariencia oscura por ti.",
+  "steps": [
+   {
+    "text": "En el Project navigator (la barra lateral izquierda; ábrela con ⌘1), haz clic en Assets.xcassets. El editor muestra el catálogo: una lista de elementos a la izquierda y el contenido del elemento seleccionado a la derecha.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "Haz clic en el botón + de la parte inferior de la lista (o clic derecho en el área vacía) y elige Image Set. Aparece un conjunto nuevo llamado 'Image'."
+   },
+   {
+    "text": "Haz doble clic en el nombre y cámbialo por algo simple, como 'logo'. Ese nombre es la única forma en que tu código encuentra la imagen, así que usa minúsculas y sin espacios."
+   },
+   {
+    "text": "Arrastra tu PNG, PDF o SVG desde el Finder a los espacios (slots) del conjunto. Para un PDF/SVG vectorial déjalo en 'Universal' y marca 'Preserve Vector Data' en el Attributes inspector si quieres que se vea nítido al escalar; para PNG, arrastra una versión a 1x, 2x y 3x (el tamaño base × 1, × 2, × 3 píxeles)."
+   },
+   {
+    "text": "Para una versión de modo oscuro, selecciona el conjunto, abre el Attributes inspector (panel derecho) y en Appearances elige 'Any, Dark'. Aparece un nuevo slot Dark: arrastra ahí la imagen oscura."
+   },
+   {
+    "text": "En SwiftUI, úsala así: Image(\"logo\").resizable().scaledToFit().frame(width: 120). Sin .resizable() la imagen se ve en su tamaño original en píxeles."
+   },
+   {
+    "text": "En UIKit, usa UIImage(named: \"logo\") en código, o en Interface Builder selecciona el UIImageView y elige el nombre en el campo Image del Attributes inspector."
+   },
+   {
+    "text": "Para colores, haz clic en + > Color Set, define el valor (y una variante Dark) y usa Color(\"BrandBlue\") en SwiftUI o UIColor(named:) en UIKit. Un Data Set guarda archivos cualesquiera que lees con NSDataAsset."
+   }
+  ],
+  "tips": [
+   "Prefiere PDF o SVG vectorial para iconos e ilustraciones simples: un solo archivo sirve para todas las pantallas.",
+   "Si tu PNG tiene una sola resolución, elige 'Single Scale' en Scales del Attributes inspector para que Xcode muestre un solo slot.",
+   "Con fotos grandes, expórtalas ya al tamaño que necesitas; un PNG de 4000 px gasta memoria sin motivo.",
+   "Usa Image(systemName:) para iconos del sistema en vez de importar PNG (mira el artículo de SF Symbols)."
+  ],
+  "pitfalls": [
+   "La imagen no aparece y no hay error: el nombre en el código no es idéntico al del conjunto (las mayúsculas cuentan). Compara letra por letra.",
+   "Renombrar un conjunto en el catálogo no actualiza tu código: los textos 'logo' antiguos siguen ahí y ya no muestran nada. Usa el Find navigator (⌘4) para reemplazarlos todos.",
+   "La imagen existe pero no aparece: Assets.xcassets no está marcado en el target correcto (File inspector > Target Membership) o la imagen está en otro bundle (un Swift Package o framework). En ese caso usa Image(\"logo\", bundle: .module).",
+   "Image(\"logo\") sin .resizable() se ve enorme o recortada: agrega .resizable() antes de .scaledToFit()."
+  ],
+  "links": [
+   {
+    "title": "Managing assets with asset catalogs",
+    "url": "https://developer.apple.com/documentation/xcode/managing-assets-with-asset-catalogs"
+   },
+   {
+    "title": "Image",
+    "url": "https://developer.apple.com/documentation/swiftui/image"
+   },
+   {
+    "title": "UIImage init(named:)",
+    "url": "https://developer.apple.com/documentation/uikit/uiimage/init(named:)"
+   },
+   {
+    "title": "Adding images to your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/adding-images-to-your-xcode-project"
+   }
+  ],
+  "related": [
+   31,
+   44
+  ]
+ },
+ {
+  "id": "app-icon-colors",
+  "category": "assets",
+  "title": "Ícono de la app, color de acento y pantalla de lanzamiento",
+  "summary": "Mira dónde viven AppIcon y AccentColor en el catálogo de assets y cómo sabe Xcode cuál usar. También conocerás la pantalla de lanzamiento y cómo revisar el ícono en la pantalla de inicio del simulador.",
+  "steps": [
+   {
+    "text": "Abre Assets.xcassets en el Project navigator (⌘1) y haz clic en AppIcon. En proyectos nuevos acepta una sola imagen de 1024 × 1024 px (PNG cuadrado, sin transparencia y sin esquinas redondeadas: iOS las redondea por ti); revisa los slots que muestra tu versión de Xcode."
+   },
+   {
+    "text": "Arrastra tu PNG de 1024 × 1024 al slot. En versiones recientes (Xcode 16 en adelante) AppIcon también puede tener slots Dark y Tinted para las apariencias oscura y teñida de iOS; son opcionales, y sin ellos iOS adapta el ícono principal."
+   },
+   {
+    "text": "Xcode 26 incluye además la app Icon Composer (instalada dentro de Xcode), que arma un ícono por capas y guarda un archivo .icon que puedes agregar al proyecto. Es opcional: el AppIcon del catálogo sigue siendo el camino más simple."
+   },
+   {
+    "text": "Haz clic en el nombre del proyecto arriba del Project navigator, selecciona el target de la app (un target es la 'receta' que dice cómo construir una app) y abre la pestaña General. En App Icons and Launch Screen, el campo App Icon debe contener el nombre del conjunto, normalmente 'AppIcon'; si no coincide, la app queda con el ícono por defecto en blanco."
+   },
+   {
+    "text": "De vuelta en el catálogo, haz clic en AccentColor y elige un color (y una variante Dark si quieres). Es el color de realce de la app: botones, links, toggles y controles de SwiftUI lo usan sin escribir código; el build setting Global Accent Color Name del target apunta a él."
+   },
+   {
+    "text": "La pantalla de lanzamiento es lo que se ve un instante mientras la app abre. En proyectos SwiftUI modernos basta una configuración en Info.plist (la clave UILaunchScreen, que acepta un color de fondo y una imagen del catálogo); los proyectos UIKit antiguos usan un archivo LaunchScreen.storyboard. Una pantalla vacía con color de fondo es suficiente."
+   },
+   {
+    "text": "Ejecuta la app con Product > Run (⌘R) en un simulador. Al abrir muestra la pantalla de lanzamiento; vuelve a la pantalla de inicio del simulador con Device > Home (⇧⌘H, en la app Simulator) y busca el ícono con el nombre de la app debajo.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Si el ícono no cambió, borra la app del simulador (mantén presionado el ícono y elimínala), elige Product > Clean Build Folder… (⇧⌘K) y ejecuta de nuevo."
+   }
+  ],
+  "tips": [
+   "Mantén el diseño simple: debe leerse a 60 px.",
+   "Evita texto pequeño y transparencia en el ícono: iOS rellena con negro.",
+   "El nombre bajo el ícono viene de Display Name (target > General), no del nombre del archivo.",
+   "El simulador guarda el ícono en caché: si cambiaste la imagen y nada cambió, reinstala la app."
+  ],
+  "pitfalls": [
+   "El ícono sigue siendo el predeterminado (cuadrado blanco): el nombre en App Icon (General) no es el del conjunto en el catálogo, o el PNG no mide exactamente 1024 × 1024.",
+   "La pantalla de lanzamiento sale negra o con un rectángulo pequeño: la app no declara UILaunchScreen y iOS usa un modo de compatibilidad. Agrega la clave en Info.plist.",
+   "El color de acento no cambia los botones: AccentColor no es el nombre configurado en el target, o la vista define .tint o .accentColor por encima."
+  ],
+  "links": [
+   {
+    "title": "Configuring your app icon",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-your-app-icon"
+   },
+   {
+    "title": "Specifying your app's launch screen",
+    "url": "https://developer.apple.com/documentation/xcode/specifying-your-apps-launch-screen"
+   },
+   {
+    "title": "Managing assets with asset catalogs",
+    "url": "https://developer.apple.com/documentation/xcode/managing-assets-with-asset-catalogs"
+   }
+  ],
+  "related": [
+   31,
+   68
+  ]
+ },
+ {
+  "id": "sf-symbols-fonts",
+  "category": "assets",
+  "title": "SF Symbols y fuentes personalizadas",
+  "summary": "Usa miles de íconos del sistema con una línea de código y, cuando lo necesites, agrega tu propia fuente. Aprende los modificadores principales y los errores que impiden que una fuente aparezca.",
+  "steps": [
+   {
+    "text": "En SwiftUI, muestra un símbolo (un ícono vectorial del sistema que escala como texto) con Image(systemName: \"star.fill\"). Si el nombre está mal, el espacio queda vacío, sin error."
+   },
+   {
+    "text": "Instala la app gratuita SF Symbols (descárgala de developer.apple.com/sf-symbols) para explorar símbolos, buscar por nombre y copiar el nombre exacto con clic derecho > Copy Name."
+   },
+   {
+    "text": "Dale estilo como al texto: Image(systemName: \"star.fill\").font(.title).foregroundStyle(.yellow). El tamaño sigue a .font, y .imageScale(.large) ajusta la escala."
+   },
+   {
+    "text": "Usa .symbolRenderingMode(.hierarchical), .palette o .multicolor para variar las capas, por ejemplo Image(systemName: \"cloud.sun.rain.fill\").symbolRenderingMode(.multicolor). Por defecto es monocromático."
+   },
+   {
+    "text": "Para un ícono con texto, usa Label(\"Favoritos\", systemImage: \"star.fill\"): la Label decide sola si muestra solo el ícono, solo el texto o ambos, según el contexto (barras, listas)."
+   },
+   {
+    "text": "Revisa la disponibilidad: cada símbolo (y algunos modificadores) exige una versión mínima de iOS. La app SF Symbols muestra la versión de cada uno; si es más nueva que tu Deployment Target, usa if #available o elige otro símbolo."
+   },
+   {
+    "text": "Para una fuente propia, arrastra el archivo .ttf u .otf al proyecto y, en el diálogo, marca tu target en 'Add to targets'. Confirma en File inspector > Target Membership."
+   },
+   {
+    "text": "Registra la fuente: selecciona el target > pestaña Info y agrega la clave 'Fonts provided by application' (UIAppFonts), con el nombre del archivo incluida la extensión, por ejemplo Poppins-Regular.ttf. Luego usa Text(\"Hola\").font(.custom(\"Poppins-Regular\", size: 24)), donde el nombre es el PostScript name de la fuente (se ve en la app Font Book, en Font Info)."
+   }
+  ],
+  "tips": [
+   "Usa Font.custom(\"Nombre\", size: 17, relativeTo: .body) para que la fuente siga el tamaño de texto elegido por el usuario.",
+   "Para listar las fuentes cargadas y hallar el nombre correcto, imprime UIFont.familyNames y UIFont.fontNames(forFamilyName:) en la consola.",
+   "Prefiere símbolos a PNG: cambian de color, peso y tamaño junto con el texto.",
+   "Cada peso (Regular, Bold) es un archivo y una entrada separados."
+  ],
+  "pitfalls": [
+   "La fuente no aparece y el texto usa la predeterminada: nombre incorrecto. El PostScript name (Poppins-Regular) casi nunca es el nombre del archivo ni el de pantalla, y Xcode no avisa.",
+   "La fuente no aparece aunque el nombre sea correcto: el archivo no está en el target (Target Membership) o no se listó en UIAppFonts. Revisa ambos lugares.",
+   "El símbolo no aparece o el build se queja: el nombre tiene un error de tipeo o el símbolo es de una versión de iOS más nueva que tu Deployment Target."
+  ],
+  "links": [
+   {
+    "title": "SF Symbols",
+    "url": "https://developer.apple.com/sf-symbols/"
+   },
+   {
+    "title": "SF Symbols (HIG)",
+    "url": "https://developer.apple.com/design/human-interface-guidelines/sf-symbols"
+   },
+   {
+    "title": "Applying custom fonts to text",
+    "url": "https://developer.apple.com/documentation/swiftui/applying-custom-fonts-to-text"
+   },
+   {
+    "title": "Image",
+    "url": "https://developer.apple.com/documentation/swiftui/image"
+   }
+  ],
+  "related": [
+   31,
+   44
+  ]
+ },
+ {
+  "id": "localization-strings",
+  "category": "assets",
+  "title": "Traduce tu app: String Catalogs",
+  "summary": "Crea un String Catalog (Localizable.xcstrings) para traducir los textos de tu app sin tocar archivos .strings. Mira cómo Xcode recopila los textos solo y cómo probar cada idioma.",
+  "steps": [
+   {
+    "text": "Crea el catálogo con File > New > File from Template… (⌘N), elige String Catalog y deja el nombre Localizable (queda Localizable.xcstrings). Verifica que tu target esté marcado.",
+    "shortcut": "⌘N"
+   },
+   {
+    "text": "Agrega idiomas: haz clic en el nombre del proyecto en el Project navigator, selecciona el PROJECT (no el target) y abre la pestaña Info. En Localizations haz clic en + y elige, por ejemplo, Spanish (es)."
+   },
+   {
+    "text": "Compila la app con Product > Build (⌘B). Xcode lee tu código y llena el catálogo con cada Text(\"Hola\") y otros textos literales de SwiftUI; aparecen como claves en la tabla.",
+    "shortcut": "⌘B"
+   },
+   {
+    "text": "Abre Localizable.xcstrings: cada fila es un texto y cada columna un idioma. Haz clic en la celda del idioma y escribe la traducción; el estado pasa a 'Translated' (los elementos nuevos salen como New, y los textos que ya no están en el código como Stale)."
+   },
+   {
+    "text": "Para plurales (1 elemento, 2 elementos), haz clic derecho en la fila y elige Vary by Plural; la fila obtiene campos para one, other, etc. También existe Vary by Device para textos distintos en iPhone y iPad. Usa un placeholder como \"%lld elementos\"."
+   },
+   {
+    "text": "Prueba en el canvas agregando .environment(\\.locale, Locale(identifier: \"es\")) a la preview: el texto cambia de idioma sin ejecutar la app."
+   },
+   {
+    "text": "Prueba toda la app: Product > Scheme > Edit Scheme… (⌘<), pestaña Run > Options > App Language, y elige el idioma. Ejecuta con ⌘R."
+   },
+   {
+    "text": "Para textos que no son literales (por ejemplo un String guardado en una variable), usa String(localized: \"Hola\") o el tipo LocalizedStringResource; si no, quedan fuera del catálogo."
+   }
+  ],
+  "tips": [
+   "Deja el Development Language como el idioma de los textos de tu código.",
+   "La columna de estado muestra cuántos textos están traducidos por idioma, ideal para ver qué falta.",
+   "Usa Product > Export Localizations… para entregar el catálogo a traductores e Import Localizations… para recibirlo de vuelta.",
+   "Agrega comentarios, Text(\"Guardar\", comment: \"Botón de guardar\"), para ayudar a quien traduce."
+  ],
+  "pitfalls": [
+   "Aparece la propia clave (como 'welcome_title') en vez de la traducción: falta la traducción en ese idioma, o el idioma no se agregó en Localizations.",
+   "El texto no se extrajo: no es un literal (viene de una variable String) o aún no has compilado. Compila con ⌘B.",
+   "La preview sigue en el idioma anterior: .environment(\\.locale) no se aplicó a la vista correcta, o la preview necesita Resume."
+  ],
+  "links": [
+   {
+    "title": "Localization",
+    "url": "https://developer.apple.com/documentation/xcode/localization"
+   },
+   {
+    "title": "Localizing and varying text with a string catalog",
+    "url": "https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog"
+   },
+   {
+    "title": "LocalizedStringKey",
+    "url": "https://developer.apple.com/documentation/swiftui/localizedstringkey"
+   }
+  ],
+  "related": [
+   31,
+   27
+  ]
+ },
+ {
+  "id": "bundle-resources",
+  "category": "assets",
+  "title": "Agrega archivos de datos, sonidos y JSON a tu app y léelos",
+  "summary": "Pon archivos (JSON, sonidos, texto) dentro de la app y léelos desde el código con Bundle.main. Entiende por qué el resultado es nil y dónde guardar datos que la app necesita modificar.",
+  "steps": [
+   {
+    "text": "Arrastra el archivo desde el Finder al Project navigator (⌘1) o usa File > Add Files… (⌥⌘A). En el diálogo, marca 'Copy items if needed' y, en 'Add to targets', marca el target de tu app.",
+    "shortcut": "⌥⌘A"
+   },
+   {
+    "text": "Confírmalo: selecciona el proyecto, el target, la pestaña Build Phases y abre Copy Bundle Resources. El archivo debe estar en la lista (es la lista de lo que va dentro de la app); si no está, haz clic en + y agrégalo. En proyectos nuevos con carpetas sincronizadas los archivos de la carpeta entran solos, pero conviene revisarlo."
+   },
+   {
+    "text": "Localiza el archivo en el código: let url = Bundle.main.url(forResource: \"data\", withExtension: \"json\"). Bundle.main es el paquete de tu app y el resultado es opcional, porque el archivo podría no existir."
+   },
+   {
+    "text": "Lee los bytes: guard let url, let data = try? Data(contentsOf: url) else { return }. Para texto simple, usa String(contentsOf: url, encoding: .utf8)."
+   },
+   {
+    "text": "Decodifica JSON con Codable: declara struct Item: Codable { let name: String } y haz let items = try JSONDecoder().decode([Item].self, from: data). Los nombres de las propiedades deben coincidir con las claves del JSON."
+   },
+   {
+    "text": "Para reproducir un sonido, agrega el archivo (mp3, wav) igual, importa AVFoundation y usa player = try AVAudioPlayer(contentsOf: url) seguido de player?.play(). Guarda el player en una propiedad, si no se libera y el sonido se corta."
+   },
+   {
+    "text": "Para datos que la app escribe o cambia (notas, progreso), no escribas en el bundle, que es de solo lectura. Usa la carpeta Documents: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]."
+   },
+   {
+    "text": "Si la app necesita una copia editable de un archivo inicial, léelo del bundle una vez y guárdalo en Documents."
+   }
+  ],
+  "tips": [
+   "Pasa el nombre del archivo sin extensión a forResource y la extensión a withExtension.",
+   "Dentro de un Swift Package usa Bundle.module en lugar de Bundle.main.",
+   "Un JSON de ejemplo en el bundle es ideal para alimentar previews y tests.",
+   "Imprime el error del decode (do/catch) en vez de try?: te dice exactamente qué clave falló."
+  ],
+  "pitfalls": [
+   "La URL es nil: el archivo no está en Copy Bundle Resources, el nombre o la extensión difiere (las mayúsculas cuentan), o está en una subcarpeta y el código no indica el subdirectory.",
+   "Un grupo amarillo (group) solo organiza dentro de Xcode y los archivos quedan sueltos en el bundle; una carpeta azul (folder reference) mantiene la carpeta en la app y exige subdirectory: al leer.",
+   "Intentar escribir en el bundle falla o pierde datos: es de solo lectura. Escribe en Documents."
+  ],
+  "links": [
+   {
+    "title": "Bundle",
+    "url": "https://developer.apple.com/documentation/foundation/bundle"
+   },
+   {
+    "title": "url(forResource:withExtension:)",
+    "url": "https://developer.apple.com/documentation/foundation/bundle/url(forresource:withextension:)"
+   },
+   {
+    "title": "AVAudioPlayer",
+    "url": "https://developer.apple.com/documentation/avfaudio/avaudioplayer"
+   }
+  ],
+  "related": [
+   31,
+   54
+  ]
+ },
+ {
+  "id": "canvas-previews",
+  "category": "interface",
+  "title": "Canvas y previews de SwiftUI",
+  "summary": "Mira tu SwiftUI en vivo junto al código, sin ejecutar toda la app. Aprende a abrir el canvas, probar variaciones y entender por qué una preview 'falla' o no se actualiza.",
+  "steps": [
+   {
+    "text": "Abre un archivo SwiftUI (con una struct que cumple View). Si el panel de la derecha no se ve, usa el menú Editor > Preview (Option-Command-Return); en el botón de opciones del editor, arriba a la derecha, el elemento Canvas también activa y desactiva el panel."
+   },
+   {
+    "text": "Busca en el código el bloque #Preview { ContentView() } (un macro: un atajo que el compilador expande). Dice qué dibuja el canvas. Si no existe, escríbelo al final del archivo; para mostrar otro elemento, dale un nombre: #Preview(\"Oscuro\") { ... }."
+   },
+   {
+    "text": "Si el canvas muestra 'Preview paused' o 'Automatic preview updating paused', haz clic en Resume; Refresh recarga la preview desde cero cuando se ve rara. Cada cambio en el código actualiza el canvas en segundos."
+   },
+   {
+    "text": "La barra inferior de la preview tiene el modo Selectable (hacer clic en un elemento selecciona su código) y el modo Live (el botón play: tocas botones y la vista reacciona como en la app). Usa Live para probar interacciones."
+   },
+   {
+    "text": "Usa el botón Device Settings de la barra inferior para cambiar color scheme (claro/oscuro), Dynamic Type y orientación, y Variants para ver varias versiones lado a lado. En código: #Preview(traits: .landscapeLeft) { ... } o .preferredColorScheme(.dark)."
+   },
+   {
+    "text": "Alimenta la preview con datos de ejemplo: crea una propiedad estática (static let sample = Item(...)) y pásala a la vista; si la vista usa @State, el macro @Previewable permite declarar el estado dentro de #Preview."
+   },
+   {
+    "text": "Haz clic en el ícono de alfiler (pin) para fijar la preview: sigue visible aunque abras otro archivo, útil para editar un modelo y ver la pantalla."
+   },
+   {
+    "text": "Cuando la preview no carga, haz clic en el botón Diagnostics (o en el mensaje de error) del canvas; para el log completo abre el Issue navigator (⌘5) y el Report navigator (⌘9). Corrige primero los errores de compilación y luego haz clic en Resume."
+   }
+  ],
+  "tips": [
+   "La preview corre en un proceso aparte y no ejecuta el @main de la app: los datos que la app inyecta (environment, modelContainer) hay que repetirlos en #Preview.",
+   "La preview es rápida pero no reemplaza al simulador: cámara, notificaciones y muchos comportamientos del sistema solo funcionan ejecutando la app (⌘R).",
+   "Ten varios bloques #Preview en el mismo archivo (vacío, cargando, error) para ver todos los estados.",
+   "Product > Clean Build Folder… (⇧⌘K) arregla muchas previews tercas."
+  ],
+  "pitfalls": [
+   "La preview no se actualiza: hay un error de compilación en cualquier archivo del target. Corrígelo desde el Issue navigator (⌘5) y usa Resume.",
+   "'Preview crashed': la vista necesita algo que no se proporcionó (un EnvironmentObject, un modelo, un archivo del bundle). Proporciónalo en #Preview.",
+   "Ocultas el canvas sin querer y crees que desapareció: vuélvelo a abrir con Editor > Preview."
+  ],
+  "links": [
+   {
+    "title": "Previews in Xcode",
+    "url": "https://developer.apple.com/documentation/swiftui/previews-in-xcode"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   43,
+   30
+  ]
+ }
+]

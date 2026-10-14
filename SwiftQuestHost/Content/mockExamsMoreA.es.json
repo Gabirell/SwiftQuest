@@ -305,15 +305,15 @@
    },
    {
     "id": 5,
-    "question": "¿Qué atajo muestra u oculta el área de navigators (lado izquierdo) de Xcode?",
+    "question": "¿Qué atajo abre el Project navigator (lado izquierdo) de Xcode?",
     "options": [
-     "Cmd + 0",
+     "Cmd + 1",
      "Option + Cmd + 0",
      "Shift + Cmd + Y",
      "Cmd + R"
     ],
     "correctIndex": 0,
-    "explanation": "Cmd+0 alterna los navigators, Option+Cmd+0 alterna los inspectors (derecha) y Shift+Cmd+Y alterna la debug area. Cmd+R compila y ejecuta la app. Los mismos botones existen en la esquina superior derecha de la ventana."
+    "explanation": "Cmd+1 abre el Project navigator (Cmd+2 a Cmd+9 abren los demás navigators). Option+Cmd+0 abre las Coding Tools, Shift+Cmd+Y alterna la debug area y Cmd+R compila y ejecuta la app."
    },
    {
     "id": 6,
@@ -454,10 +454,10 @@
      "Source Control navigator",
      "Breakpoint navigator",
      "Report navigator",
-     "Symbol navigator"
+     "Bookmarks navigator"
     ],
     "correctIndex": 0,
-    "explanation": "El Source Control navigator muestra ramas, etiquetas, remotos y el historial de commits. El Breakpoint navigator lista breakpoints, el Report navigator muestra registros de compilación y ejecución y el Symbol navigator lista símbolos del código."
+    "explanation": "El Source Control navigator muestra ramas, etiquetas, remotos y el historial de commits. El Breakpoint navigator lista breakpoints, el Report navigator muestra registros de compilación y ejecución y el Bookmarks navigator lista los bookmarks guardados."
    },
    {
     "id": 18,

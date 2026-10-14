@@ -1,0 +1,441 @@
+[
+ {
+  "id": "first-app-walkthrough",
+  "category": "start",
+  "title": "Crea tu primer proyecto (y qué genera Xcode)",
+  "summary": "Vas a crear una app iOS en blanco con SwiftUI, entender cada campo del asistente de nuevo proyecto y cada archivo generado, y ejecutarla por primera vez.",
+  "steps": [
+   {
+    "text": "Abre Xcode y elige File > New > Project… (⇧⌘N). Aparece una ventana con pestañas de plataforma arriba: iOS, macOS, watchOS, tvOS, visionOS y otras. Elige la pestaña iOS.",
+    "shortcut": "⇧⌘N"
+   },
+   {
+    "text": "En la sección Application, elige la plantilla App y haz clic en Next. Una plantilla es un esqueleto de proyecto ya hecho que Xcode copia para que no empieces de cero."
+   },
+   {
+    "text": "Completa Product Name (el nombre de la app; evita espacios para simplificar), elige tu Team (tu cuenta de Apple; None sirve por ahora si solo usas el simulador) y la Organization Identifier, normalmente tu dominio al revés, como com.tunombre. Justo debajo Xcode muestra el Bundle Identifier, que es la Organization Identifier + el Product Name e identifica tu app en todo el mundo."
+   },
+   {
+    "text": "Pon Interface en SwiftUI y Language en Swift. En Storage deja None para una app simple; SwiftData guarda datos en una base local y puedes agregarlo después. En las opciones de pruebas deja las casillas como están o desmárcalas para un proyecto mínimo."
+   },
+   {
+    "text": "Haz clic en Next, elige una carpeta donde guardar y decide sobre Create Git repository on my Mac. Dejarlo marcado es lo recomendado: Git guarda el historial de tus cambios. Haz clic en Create."
+   },
+   {
+    "text": "El proyecto se abre. En el navegador de la izquierda verás <Nombre>App.swift (el punto de entrada, marcado con @main), ContentView.swift (la primera pantalla), Assets.xcassets (imágenes, colores e ícono de la app), quizá una carpeta Preview Content y <Nombre>.xcodeproj, el archivo que guarda los ajustes del proyecto."
+   },
+   {
+    "text": "Haz clic en ContentView.swift para ver el código de la pantalla (un globo y el texto 'Hello, world!') y el canvas de preview al lado, si está visible."
+   },
+   {
+    "text": "Arriba, elige un simulador de iPhone en el selector de destino y presiona Run (⌘R). Xcode compila (convierte tu código en una app) y abre Simulator con la app corriendo. Para detenerla usa Product > Stop (⌘.).",
+    "shortcut": "⌘R"
+   }
+  ],
+  "tips": [
+   "El Bundle Identifier debe ser único en el mundo cuando publiques; com.tunombre.NombreApp suele funcionar bien.",
+   "Casi todo se puede cambiar después (Team, Bundle Identifier), pero Product Name también nombra carpetas y archivos, así que elígelo con cuidado.",
+   "@main significa 'empieza aquí': es lo primero que se ejecuta cuando abre la app.",
+   "No borres el .xcodeproj ni lo saques de la carpeta del proyecto; ábrelo siempre (o el .xcworkspace) con doble clic."
+  ],
+  "pitfalls": [
+   "Aparece 'Signing for ... requires a development team': solo importa para un iPhone real. El simulador funciona sin Team; para un dispositivo elige tu Team en la pestaña Signing & Capabilities.",
+   "Run no hace nada o está gris: revisa que haya un destino elegido en el selector junto al nombre del scheme.",
+   "Guardar el proyecto dentro de una carpeta que ya usa Git crea un repositorio dentro de otro. Si ya usas Git ahí, desmarca Create Git repository."
+  ],
+  "links": [
+   {
+    "title": "Creating an Xcode project for an app",
+    "url": "https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   }
+  ],
+  "related": [
+   30,
+   43
+  ]
+ },
+ {
+  "id": "xcode-window-map",
+  "category": "interface",
+  "title": "La ventana de Xcode: para qué sirve cada área",
+  "summary": "Un mapa mental de la ventana de Xcode para que sepas dónde buscar cada cosa en lugar de perderte entre paneles.",
+  "steps": [
+   {
+    "text": "Regla de oro: izquierda = encontrar cosas, centro = trabajar, derecha = detalles, abajo = lo que dice la app en ejecución. Recuérdalo y lo demás se vuelve fácil."
+   },
+   {
+    "text": "Mira la toolbar arriba. A la izquierda están los botones Run (▶) y Stop (■), luego el selector de scheme y destino (qué app y dónde correrla: simulador, iPhone, Mac). En el medio está el activity viewer, que muestra el progreso de compilación, el estado de ejecución y avisos."
+   },
+   {
+    "text": "A la izquierda está el área del navigator, con pestañas arriba (Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints, Reports). Es el lugar para encontrar archivos, buscar texto y ver errores."
+   },
+   {
+    "text": "En el centro está el área del editor, donde escribes código. Arriba hay una tab bar (archivos abiertos como pestañas) y justo debajo la jump bar, una ruta clicable al archivo y símbolo actual."
+   },
+   {
+    "text": "Cuando editas una View de SwiftUI, el canvas aparece junto al código con una preview en vivo de la pantalla. Está dentro del área del editor y se puede activar y desactivar."
+   },
+   {
+    "text": "A la derecha está el área del inspector, con detalles de lo seleccionado: información del archivo, historial, Quick Help y, en SwiftUI, los atributos de la vista."
+   },
+   {
+    "text": "Abajo está el área de debug, que aparece al correr la app: variables a la izquierda y la consola a la derecha, con lo que imprimes con print() y los mensajes de error."
+   },
+   {
+    "text": "Haz clic en una pestaña del navigator, selecciona un archivo y observa cómo cambian el editor y el inspector. Ese ir y venir es el flujo normal de trabajo en Xcode."
+   }
+  ],
+  "tips": [
+   "No todas las áreas están siempre visibles; si algo 'desapareció', probablemente solo está oculto (mira el artículo sobre mostrar y ocultar áreas).",
+   "El activity viewer es el primer lugar donde mirar cuando 'no pasa nada': muestra si todavía está compilando.",
+   "Pasa el mouse sobre cualquier botón de la toolbar para ver su nombre.",
+   "La consola de abajo solo muestra algo después de correr la app."
+  ],
+  "pitfalls": [
+   "Confundir el navigator (izquierda) con el inspector (derecha): uno lista los archivos del proyecto, el otro muestra detalles del elemento seleccionado.",
+   "Buscar la consola cuando está oculta: vive en el área de debug, que se abre con View > Debug Area > Show Debug Area.",
+   "Creer que el canvas es una app real: es solo una preview y puede fallar con errores de compilación, a diferencia de Simulator."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   },
+   {
+    "title": "Previews in Xcode",
+    "url": "https://developer.apple.com/documentation/swiftui/previews-in-xcode"
+   }
+  ],
+  "related": [
+   30,
+   43
+  ]
+ },
+ {
+  "id": "show-hide-areas",
+  "category": "interface",
+  "title": "Mostrar y ocultar áreas (y recuperar tu layout)",
+  "summary": "Aprende los comandos del menú View y los atajos para activar y desactivar cada área, y qué hacer cuando 'desapareció mi sidebar'.",
+  "steps": [
+   {
+    "text": "Abre el menú View y mira las áreas: View > Navigators > Show Navigator (barra lateral izquierda), View > Inspectors > Show Inspector (derecha) y View > Debug Area > Show Debug Area (abajo). El ítem dice Hide en lugar de Show cuando el área está visible."
+   },
+   {
+    "text": "Oculta o muestra el área de debug con su atajo (⇧⌘Y). Para ir directo a la consola usa View > Debug Area > Activate Console (⇧⌘C).",
+    "shortcut": "⇧⌘Y"
+   },
+   {
+    "text": "Oculta o muestra la toolbar con View > Show Toolbar (⌥⌘T).",
+    "shortcut": "⌥⌘T"
+   },
+   {
+    "text": "Activa el minimap, una miniatura del archivo a la derecha del editor, con Editor > Minimap (⌃⇧⌘M). Ayuda a moverte en archivos largos.",
+    "shortcut": "⌃⇧⌘M"
+   },
+   {
+    "text": "Muestra la preview de SwiftUI con Editor > Preview; abre el canvas junto al código. Para volver a solo código usa Editor > Show Editor Only."
+   },
+   {
+    "text": "Para abrir una pestaña concreta del navigator usa ⌘1 a ⌘9 (View > Navigators > Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints, Reports). Ojo: en Xcode 26 ⌘0 abre Show Coding Assistant, ya no el navigator."
+   },
+   {
+    "text": "Cambia el tamaño de cualquier área arrastrando la línea divisoria entre áreas. Para pantalla completa usa View > Enter Full Screen (⌃⌘F).",
+    "shortcut": "⌃⌘F"
+   },
+   {
+    "text": "Si el layout quedó raro, usa View > Reset Editor Sizes para restaurar los tamaños de los editores y vuelve a abrir las áreas con los ítems Show del menú View."
+   }
+  ],
+  "tips": [
+   "Cuando necesitas espacio para leer código, oculta navigator e inspector; ganas mucho.",
+   "El menú View es la fuente de verdad: si olvidaste un atajo, muestra el nombre exacto y el atajo al lado.",
+   "Haz clic derecho en la toolbar para personalizar qué botones aparecen (Customize Toolbar).",
+   "En Xcode 26 los atajos antiguos ⌘0 (navigator) y ⌥⌘0 (inspector) pasaron a otras funciones: ⌘0 es Show Coding Assistant y ⌥⌘0 es Show Coding Tools."
+  ],
+  "pitfalls": [
+   "'Perdí mi sidebar': usa View > Navigators > Show Navigator. Si existe pero está muy angosta, arrastra su borde hacia la derecha.",
+   "Presionar ⌘0 esperando el navigator y obtener el panel del asistente de código: usa ⌘1 para el Project navigator o el ítem Show Navigator.",
+   "La consola no aparece al correr: vive en el área de debug; ábrela con ⇧⌘Y."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "navigators",
+  "category": "interface",
+  "title": "Los navigators, uno por uno",
+  "summary": "Conoce las nueve pestañas del navigator (barra lateral izquierda), sus atajos y para qué sirve cada una, para encontrar archivos, errores y pruebas rápido.",
+  "steps": [
+   {
+    "text": "Project (⌘1): el árbol de archivos y carpetas de tu proyecto. Es la pestaña principal; haz clic en un archivo para abrirlo en el editor.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "Source Control (⌘2): muestra branches, commits y repositorios de Git. Útil si marcaste Create Git repository al crear el proyecto.",
+    "shortcut": "⌘2"
+   },
+   {
+    "text": "Bookmarks (⌘3): una lista de marcadores que tú mismo pones para volver rápido a lugares importantes del código.",
+    "shortcut": "⌘3"
+   },
+   {
+    "text": "Find (⌘4): búsqueda de texto en todo el proyecto, con opciones de reemplazo. Más potente que buscar en un solo archivo.",
+    "shortcut": "⌘4"
+   },
+   {
+    "text": "Issues (⌘5): la lista de errores y avisos (warnings) del último build. Haz clic en un ítem para ir directo a su línea.",
+    "shortcut": "⌘5"
+   },
+   {
+    "text": "Tests (⌘6): lista las pruebas del proyecto con botones para correr cada una. Debug (⌘7): aparece con la app corriendo y muestra threads y uso de memoria y CPU.",
+    "shortcut": "⌘6"
+   },
+   {
+    "text": "Breakpoints (⌘8): todos los breakpoints (puntos de parada) del proyecto, para activar, desactivar o borrar. Reports (⌘9): historial de builds y ejecuciones con sus logs.",
+    "shortcut": "⌘8"
+   },
+   {
+    "text": "Al pie de cada navigator hay un campo de filtro; para enfocarlo rápido usa View > Navigators > Filter in Navigator (⌥⌘J). Para encontrar en el Project navigator el archivo abierto en el editor usa Navigate > Reveal in Project Navigator (⇧⌘J).",
+    "shortcut": "⌥⌘J"
+   }
+  ],
+  "tips": [
+   "Cambia de pestaña con el atajo: ⌘1 a ⌘9 siguen el mismo orden de los íconos, de izquierda a derecha.",
+   "El filtro del Project navigator acepta parte del nombre del archivo; escribe 'Content' para ver solo las coincidencias.",
+   "En el Issues navigator los errores (rojos) van antes que los avisos (amarillos): resuelve primero los errores.",
+   "Xcode 26 también tiene View > Navigators > Show Coding Assistant (⌘0), que no es una pestaña de esta lista."
+  ],
+  "pitfalls": [
+   "El Issues navigator está vacío pero la app no corre: compila con Product > Build (⌘B) para actualizar la lista.",
+   "Los navigators Debug y Breakpoints parecen vacíos: Debug solo muestra datos con la app en ejecución.",
+   "Esperar que ⌘0 abra el navigator como en versiones antiguas: en Xcode 26 abre el Coding Assistant. Usa ⌘1 (Project)."
+  ],
+  "links": [
+   {
+    "title": "Managing files and folders in your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/managing-files-and-folders-in-your-xcode-project"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   32,
+   33
+  ]
+ },
+ {
+  "id": "inspectors-libraries",
+  "category": "interface",
+  "title": "Inspectors y la Library",
+  "summary": "Entiende el panel derecho (inspectors) y la Library, de donde arrastras vistas, modificadores, snippets, medios y colores a tu código.",
+  "steps": [
+   {
+    "text": "Abre el inspector con View > Inspectors > Show Inspector. Muestra pestañas distintas según lo que esté seleccionado en el editor."
+   },
+   {
+    "text": "Con un archivo de código abierto, las pestañas principales son File (nombre, ubicación y target del archivo), History (cambios de Git) y Quick Help (documentación del símbolo bajo el cursor)."
+   },
+   {
+    "text": "En SwiftUI, al seleccionar una vista en el canvas o en el código, el inspector de atributos muestra campos para modificadores como fuente, color y padding. Cambiar un campo reescribe el código por ti."
+   },
+   {
+    "text": "En archivos de storyboard (UIKit), seleccionar un objeto muestra las pestañas Identity, Attributes, Size y Connections, para nombre de clase, propiedades visuales, posición y enlaces con el código."
+   },
+   {
+    "text": "Abre la Library con View > Show Library (⇧⌘L). Tiene pestañas de vistas, modificadores, snippets de código, medios y colores. Para mantenerla abierta mientras arrastras ítems usa View > Open Library (⌥⇧⌘L).",
+    "shortcut": "⇧⌘L"
+   },
+   {
+    "text": "Arrastra un ítem de la Library al código o al canvas, por ejemplo un Button o un modificador. Xcode inserta el código y tú ajustas los valores."
+   },
+   {
+    "text": "Lee la Quick Help: pon el cursor sobre una palabra o mantén ⌥ (Option) y haz clic en ella para ver un globo con resumen, declaración y parámetros. La misma información aparece en la pestaña Quick Help del inspector."
+   }
+  ],
+  "tips": [
+   "Quick Help es la forma más rápida de entender una función o tipo de Apple sin salir del código.",
+   "En la Library, la pestaña de snippets guarda trozos listos; también puedes crear los tuyos con Editor > Create Code Snippet…",
+   "Puedes escribir en la búsqueda de la Library para filtrar por nombre.",
+   "El inspector depende del contexto: si no ves la pestaña que esperas, revisa que esté seleccionado el elemento correcto."
+  ],
+  "pitfalls": [
+   "El inspector está vacío o sin las pestañas esperadas: haz clic en el archivo u objeto que te interesa para seleccionarlo.",
+   "Arrastras desde la Library y no pasa nada: suelta dentro del área del editor, en un lugar válido del código.",
+   "Cambias valores en el inspector y el código queda distinto de lo esperado: el inspector edita texto; revisa el código generado."
+  ],
+  "links": [
+   {
+    "title": "Previews in Xcode",
+    "url": "https://developer.apple.com/documentation/swiftui/previews-in-xcode"
+   },
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   43,
+   44,
+   49
+  ]
+ },
+ {
+  "id": "editor-layouts",
+  "category": "interface",
+  "title": "Layouts del editor: pestañas, editor dividido, assistant y version editor",
+  "summary": "Aprende a abrir varios archivos a la vez con pestañas y editores divididos, y a comparar versiones y ver quién cambió cada línea.",
+  "steps": [
+   {
+    "text": "Abre un archivo nuevo en una pestaña con File > New > Tab (⌘T). Cada pestaña es un editor independiente; alterna entre ellas con Navigate > Show Previous Tab y Show Next Tab. Si no se ve la barra de pestañas, activa View > Show Editor Tab Bar.",
+    "shortcut": "⌘T"
+   },
+   {
+    "text": "Divide el editor con File > New > Editor Pane On Right (⌃⌘T) para tener dos archivos lado a lado, o File > New > Editor Pane Below (⌃⌥⌘T) para uno encima del otro. Cierra un panel con File > Close Editor Pane (⌃⇧⌘W).",
+    "shortcut": "⌃⌘T"
+   },
+   {
+    "text": "Usa Editor > Assistant (⌃⌥⌘Return) para abrir un segundo editor que sugiere archivos relacionados, como el archivo de pruebas. En Editor > Layout elige Automatic, Editor on Left o Editor on Top."
+   },
+   {
+    "text": "Cambia la orientación de los paneles con View > Change Editor Orientation y fija una pestaña importante con View > Pin Editor Tab (⇧⌘P).",
+    "shortcut": "⇧⌘P"
+   },
+   {
+    "text": "Compara versiones con Editor > Inline Comparison o Editor > Side By Side Comparison, que muestran las diferencias entre el archivo actual y una versión de Git."
+   },
+   {
+    "text": "Mira quién cambió cada línea con Editor > Authors (⌃⇧⌘A), la vista de blame. Para una línea concreta usa Editor > Show Last Change for Line.",
+    "shortcut": "⌃⇧⌘A"
+   },
+   {
+    "text": "Usa la jump bar, la ruta clicable sobre el editor, para saltar entre archivos y símbolos. Para quedarte con un solo editor usa Editor > Show Editor Only, y activa Editor > Minimap (⌃⇧⌘M) si quieres una vista general del archivo."
+   }
+  ],
+  "tips": [
+   "Dos paneles lado a lado son ideales para tener una View de SwiftUI y su modelo abiertos juntos.",
+   "Haz clic en un panel para activarlo; los archivos nuevos del navigator se abren en el panel activo.",
+   "Usa View > Reset Editor Sizes si un panel quedó diminuto.",
+   "La comparación y el blame solo funcionan en archivos bajo control de versiones Git."
+  ],
+  "pitfalls": [
+   "Abrí un archivo y reemplazó al anterior: Xcode reutiliza la pestaña actual; para conservar ambos abre una pestaña nueva con ⌘T o fija la pestaña con ⇧⌘P.",
+   "Las opciones de comparación parecen no hacer nada: el proyecto debe estar en un repositorio Git con cambios.",
+   "Perdí el segundo panel: usa View > Reset Editor Sizes o crea otro con ⌃⌘T."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Managing files and folders in your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/managing-files-and-folders-in-your-xcode-project"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   32
+  ]
+ },
+ {
+  "id": "open-quickly",
+  "category": "interface",
+  "title": "Muévete rápido: Open Quickly, ir a la definición, atrás y adelante",
+  "summary": "Aprende los comandos que te permiten saltar entre archivos, símbolos, líneas y errores sin soltar el teclado.",
+  "steps": [
+   {
+    "text": "Presiona ⇧⌘O (File > Open Quickly…) y escribe parte del nombre de un archivo o símbolo (tipo, función, variable). Usa las flechas y Enter para abrirlo.",
+    "shortcut": "⇧⌘O"
+   },
+   {
+    "text": "Para ver dónde se declaró algo, selecciona el símbolo y usa Navigate > Jump to Definition (⌃⌘J). También puedes mantener ⌘ y hacer clic en el nombre del símbolo.",
+    "shortcut": "⌃⌘J"
+   },
+   {
+    "text": "Para volver a donde estabas usa Navigate > Show Previous Location in History (⌃⌘←). Para avanzar, Show Next Location in History (⌃⌘→), como los botones atrás y adelante de un navegador."
+   },
+   {
+    "text": "Ve a una línea o símbolo del archivo actual con Navigate > Jump to… (⌘L). Escribe el número de línea y presiona Enter.",
+    "shortcut": "⌘L"
+   },
+   {
+    "text": "Salta entre problemas con Navigate > Jump to Next Issue (⌘') y Jump to Previous Issue (⇧⌘'), que te llevan directo a errores y avisos.",
+    "shortcut": "⌘'"
+   },
+   {
+    "text": "Para saber dónde está el archivo actual en el árbol del proyecto usa Navigate > Reveal in Project Navigator (⇧⌘J).",
+    "shortcut": "⇧⌘J"
+   },
+   {
+    "text": "Usa la jump bar, la ruta clicable sobre el editor, para cambiar de archivo o ir a un método. Los marcadores viven en el Bookmarks navigator (⌘3) y, una vez creados, Navigate > Jump to Next Bookmark (⌃;) salta entre ellos."
+   }
+  ],
+  "tips": [
+   "Open Quickly acepta abreviaturas: escribir iniciales en CamelCase como 'CV' para ContentView suele bastar.",
+   "Open Quickly también encuentra símbolos, no solo archivos.",
+   "Usa Navigate > Jump to Last Destination para volver al destino de tu último salto.",
+   "Los atajos de historial (⌃⌘← y ⌃⌘→) funcionan como el 'atrás' y 'adelante' más usado en Xcode."
+  ],
+  "pitfalls": [
+   "Open Quickly no encuentra un archivo: puede que no esté en el proyecto o el texto tenga un error. Prueba con menos letras.",
+   "Jump to Definition no hace nada útil en código de Apple sin fuente: abre una interfaz generada, lo cual es normal. Usa Navigate > Jump to Original Source/Generated Interface para alternar.",
+   "⌃⌘← puede chocar con atajos de macOS (Mission Control) en algunos Mac; si no funciona, usa el menú Navigate."
+  ],
+  "links": [
+   {
+    "title": "Xcode documentation",
+    "url": "https://developer.apple.com/documentation/xcode"
+   },
+   {
+    "title": "Managing files and folders in your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/managing-files-and-folders-in-your-xcode-project"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   33
+  ]
+ }
+]

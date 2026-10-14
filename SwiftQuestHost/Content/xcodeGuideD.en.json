@@ -1,0 +1,469 @@
+[
+ {
+  "id": "project-workspace-target",
+  "category": "concepts",
+  "title": "Project, workspace, target, scheme, product: what is what",
+  "summary": "Understand the five terms that confuse most people opening Xcode for the first time, and learn where to see each one on screen.",
+  "steps": [
+   {
+    "text": "Think of a restaurant kitchen. The project (.xcodeproj file) is the whole recipe book and kitchen setup: it holds your files, settings and the list of dishes."
+   },
+   {
+    "text": "A target is ONE dish on the menu, with its own ingredient list (files) and cooking method (build settings). One project can have several targets: the app, the tests, an extension."
+   },
+   {
+    "text": "A scheme is the instruction card: it says which dish to cook (build), which to serve (Run), which to taste (Test) and how to measure it (Profile). The product is the finished dish: the .app file (or .appex for extensions)."
+   },
+   {
+    "text": "A workspace (.xcworkspace) is a folder that groups several projects so they open together, for example your app plus a library project. Swift packages and CocoaPods also use workspaces."
+   },
+   {
+    "text": "To see the project: open the project navigator and click the blue name at the top of the list. The central editor shows the project editor, with PROJECT and TARGETS in a column on the left.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "Click each item in the TARGETS list. In a project like SwiftQuest you will see, for example, the app target and the SwiftQuestExtension target, a Source Editor Extension (an extension that adds commands to Xcode's Editor menu)."
+   },
+   {
+    "text": "Look at the top bar: the scheme picker (next to the run buttons) shows the current scheme and destination. Click it, or use Product > Scheme > Choose Scheme, to switch.",
+    "shortcut": "⌃0"
+   },
+   {
+    "text": "To look inside the instruction card, open Product > Scheme > Edit Scheme…. The left column lists Build, Run, Test, Profile, Analyze and Archive, each with its own options.",
+    "shortcut": "⌘<"
+   },
+   {
+    "text": "To see all existing schemes, use Product > Scheme > Manage Schemes…. To create a new target, use File > New > Target…."
+   }
+  ],
+  "tips": [
+   "When you add an extension, widget or test suite, Xcode creates a new target and almost always a new scheme.",
+   "One scheme can build several targets at once; the main target is the one that Run launches.",
+   "The product lives in the Products folder in the project navigator; if its name is red, the app has not been built yet.",
+   "If you only have a simple app you will see just one project, one target and one scheme, and that is normal.",
+   "When a project belongs to a workspace, always open the .xcworkspace, not the .xcodeproj."
+  ],
+  "pitfalls": [
+   "Running the wrong scheme (for example the extension's) opens a dialog asking which app to run. Change the scheme in the top bar picker.",
+   "A file is in the project but does not work: it probably does not belong to the right target (see the Target Membership article).",
+   "Opening the .xcodeproj of a project that uses a workspace makes libraries disappear. Close it and open the .xcworkspace."
+  ],
+  "links": [
+   {
+    "title": "Creating an Xcode project for an app",
+    "url": "https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app"
+   },
+   {
+    "title": "Configuring a new target in your project",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-a-new-target-in-your-project"
+   },
+   {
+    "title": "Customizing the build schemes for a project",
+    "url": "https://developer.apple.com/documentation/xcode/customizing-the-build-schemes-for-a-project"
+   }
+  ],
+  "related": [
+   30,
+   68
+  ]
+ },
+ {
+  "id": "info-plist",
+  "category": "concepts",
+  "title": "What is a plist? Info.plist explained",
+  "summary": "Learn what a property list is, what Info.plist is for, and how to edit its keys without breaking your app.",
+  "steps": [
+   {
+    "text": "Plist means property list: a file of keys and values, like a form where every field has a name (key) and an answer (value). Values can be text (String), number, true/false (Boolean), date, list (Array) or another set of keys (Dictionary)."
+   },
+   {
+    "text": "Info.plist is your app's ID card: it tells the system the name, identifier, version, what the app may ask the user for and how to start. Common keys: CFBundleIdentifier, CFBundleShortVersionString (displayed version, e.g. 1.2), CFBundleVersion (build number) and CFBundleDisplayName (name under the icon)."
+   },
+   {
+    "text": "Other frequent keys: LSApplicationCategoryType (app category on Mac), UIApplicationSceneManifest (how an iOS app creates its windows/scenes) and privacy descriptions such as NSCameraUsageDescription, NSLocationWhenInUseUsageDescription and NSPhotoLibraryUsageDescription."
+   },
+   {
+    "text": "The easy way to edit: open the project navigator, click the project, choose the target and open the Info tab. You will see a table of keys; hover over a row and click + to add one.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "If your project has an Info.plist file, click it in the navigator. It opens as a table (Property List). Right-click the file and choose Open As > Source Code to see the raw XML, or Open As > Property List to go back to the table."
+   },
+   {
+    "text": "Since Xcode 13, new projects have no Info.plist: Xcode generates it at build time from build settings (GENERATE_INFOPLIST_FILE = Yes). That is why the file may not appear. The keys show up in the target's Info tab and in Build Settings with the INFOPLIST_KEY_ prefix."
+   },
+   {
+    "text": "To add a permission (for example, camera), create the NSCameraUsageDescription key in the target's Info tab and write a clear sentence explaining why the app needs the camera. That text appears in the alert the user sees."
+   },
+   {
+    "text": "Build and run with Product > Run. When you first use the feature, the system shows the alert with your text.",
+    "shortcut": "⌘R"
+   },
+   {
+    "text": "Other plists around: the .entitlements file (special permissions, see the Signing & Capabilities article) is a plist. The Contents.json inside an asset catalog is JSON, not a plist."
+   }
+  ],
+  "tips": [
+   "Write privacy descriptions that explain the benefit to the user; the App Store may reject vague text like 'needs camera'.",
+   "CFBundleShortVersionString and CFBundleVersion usually come from Marketing Version and Current Project Version in build settings, so edit them there.",
+   "In Property List mode names appear 'pretty' (e.g. Bundle identifier); in Source Code you see the real keys.",
+   "Press ⇧⌘O (Open Quickly) and type Info.plist to find out whether the file exists in your project.",
+   "Each target (app, extension) has its own Info; keys are not shared."
+  ],
+  "pitfalls": [
+   "If a privacy description is missing, the app crashes the moment it asks for camera, location or photos access, with a console message naming the key. Add the key and run again.",
+   "Putting the key in the wrong target (e.g. the extension instead of the app) has the same effect: check which target is selected.",
+   "Editing the XML by hand with an unclosed tag makes the plist invalid and the build fails; prefer the table if in doubt."
+  ],
+  "links": [
+   {
+    "title": "Information Property List",
+    "url": "https://developer.apple.com/documentation/bundleresources/information-property-list"
+   },
+   {
+    "title": "Configuring the build settings of a target",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-the-build-settings-of-a-target"
+   },
+   {
+    "title": "Entitlements",
+    "url": "https://developer.apple.com/documentation/bundleresources/entitlements"
+   }
+  ],
+  "related": [
+   68,
+   26
+  ]
+ },
+ {
+  "id": "build-settings-phases",
+  "category": "concepts",
+  "title": "Build settings and build phases",
+  "summary": "Find where the compile configuration lives and the steps Xcode runs to assemble your app, and see how it fixes 'file not found' errors.",
+  "steps": [
+   {
+    "text": "Open the project navigator, click the project (blue icon at the top), select an item under TARGETS and use the tabs at the top of the editor: Build Settings and Build Phases. Build settings are the compile rules; build phases are the steps, in order.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "In Build Settings, the Basic and All buttons control how many options show; Customized shows only what was changed. Combined shows the final value, and Levels shows the Resolved, Target, Project and iOS/macOS Default columns."
+   },
+   {
+    "text": "There are two levels: the project (default for every target) and the target (overrides the project). Select PROJECT or an item under TARGETS in the left list to choose which level you edit."
+   },
+   {
+    "text": "Use the search box in the top right corner of the tab to find an option by name, for example 'Deployment Target' or 'Bundle Identifier'. Type part of the English name."
+   },
+   {
+    "text": "Important settings: Product Bundle Identifier (unique app identifier), iOS/macOS Deployment Target (minimum system version), Swift Language Version, Marketing Version and Current Project Version (version and build), Generate Info.plist File and Skip Install (should be No for the main app; extensions use Yes when the app embeds them)."
+   },
+   {
+    "text": "In Build Phases, open Compile Sources (.swift files that get compiled), Link Binary With Libraries (frameworks used), Copy Bundle Resources (images, JSON, sounds and storyboards that go inside the app) and Embed Frameworks or Embed Foundation Extensions (extensions and frameworks that travel inside the app)."
+   },
+   {
+    "text": "If an image, JSON or sound is 'not found' when you run, open Copy Bundle Resources and check that the file is in the list. If not, click + and add it, or tick the target in the file inspector."
+   },
+   {
+    "text": "Many projects keep settings in .xcconfig files (plain text 'KEY = value'). In the project's Info tab, the Configurations section shows which .xcconfig each configuration (Debug, Release) uses."
+   },
+   {
+    "text": "After changing a setting, build for it to take effect.",
+    "shortcut": "⌘B"
+   }
+  ],
+  "tips": [
+   "A value in bold was overridden at that level; select the row and press Delete to go back to the inherited value.",
+   "You can drag phases to reorder them; the order is the execution order.",
+   "To see the real value Xcode uses, select the option and open the Quick Help inspector (right panel).",
+   "Change Debug and Release separately when the option has an expand arrow.",
+   "Searching for 'Generate Info.plist' shows whether Info.plist is automatic."
+  ],
+  "pitfalls": [
+   "You changed a build setting at project level but nothing happens: the target may have its own value that overrides it. Check the Target column or use Levels.",
+   "Adding a file to the project without ticking the target means it does not enter Compile Sources or Copy Bundle Resources, and the app fails when looking for it.",
+   "Setting Deployment Target too high prevents the app from installing on older devices."
+  ],
+  "links": [
+   {
+    "title": "Build settings reference",
+    "url": "https://developer.apple.com/documentation/xcode/build-settings-reference"
+   },
+   {
+    "title": "Configuring the build settings of a target",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-the-build-settings-of-a-target"
+   },
+   {
+    "title": "Running custom scripts during a build",
+    "url": "https://developer.apple.com/documentation/xcode/running-custom-scripts-during-a-build"
+   },
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   }
+  ],
+  "related": [
+   30,
+   68
+  ]
+ },
+ {
+  "id": "signing-capabilities",
+  "category": "concepts",
+  "title": "Signing & Capabilities, bundle identifier and entitlements",
+  "summary": "Understand why Xcode requires signing and unique identifiers, how to turn on features like iCloud or Push, and how to fix the most common signing errors.",
+  "steps": [
+   {
+    "text": "Signing (code signing) is like stamping the app with your developer identity: Apple and the system check who made the app and that it was not modified. Without a valid signature, an iPhone refuses to run your app."
+   },
+   {
+    "text": "Open the project navigator, click the project, select the app target and open the Signing & Capabilities tab.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "Keep Automatically manage signing ticked: Xcode creates and renews certificates and provisioning profiles (the 'ticket' linking your app, your device and your team) for you."
+   },
+   {
+    "text": "Under Team choose your team. To sign in, open Xcode > Settings… and add your Apple ID in the accounts tab. A free Personal Team is enough for testing on devices.",
+    "shortcut": "⌘,"
+   },
+   {
+    "text": "Fill in Bundle Identifier with a unique reverse-domain name, such as com.yourname.MyApp. It identifies the app worldwide and must differ from any other registered one."
+   },
+   {
+    "text": "Click + Capability to add features: iCloud, Push Notifications, App Groups, Sign in with Apple, HealthKit and more. Double-click a feature to add it; it appears as a card with options."
+   },
+   {
+    "text": "Each capability writes permissions to an .entitlements file (a plist with the app's 'rights') that shows up in the project navigator. For Mac, the Sign to Run Locally option signs only to run on this computer, without a paid account."
+   },
+   {
+    "text": "Use the Debug and Release tabs inside Signing & Capabilities if you need different settings. Then build and run; signing errors appear in red on this same screen.",
+    "shortcut": "⌘R"
+   }
+  ],
+  "tips": [
+   "Running on the simulator does not require a team; only real devices and distribution do.",
+   "If the app has extensions, each target needs its own signing and bundle identifier, usually starting with the app's (e.g. com.yourname.MyApp.Extension).",
+   "Paid capabilities (like Push) require the Apple Developer Program; Personal Team does not support them.",
+   "Connecting the device and trusting it (Settings > General > VPN & Device Management on the iPhone) may be needed the first time.",
+   "To distribute on Mac outside the App Store the app needs signing and notarization; for your own use Sign to Run Locally is enough."
+  ],
+  "pitfalls": [
+   "'No Team' or 'Signing requires a development team': choose a Team from the list; if it is empty, add your account in Xcode > Settings….",
+   "'Bundle identifier is already in use' or 'could not be registered': someone already uses that name. Change it to something more specific, with your own domain or name.",
+   "'Requires a provisioning profile': Xcode could not create the automatic profile. Check internet, a valid account and that the device is connected and registered; if needed, untick and tick Automatically manage signing again."
+  ],
+  "links": [
+   {
+    "title": "Capabilities",
+    "url": "https://developer.apple.com/documentation/xcode/capabilities"
+   },
+   {
+    "title": "Adding capabilities to your app",
+    "url": "https://developer.apple.com/documentation/xcode/adding-capabilities-to-your-app"
+   },
+   {
+    "title": "Entitlements",
+    "url": "https://developer.apple.com/documentation/bundleresources/entitlements"
+   },
+   {
+    "title": "Configuring the hardened runtime",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-the-hardened-runtime"
+   }
+  ],
+  "related": [
+   68,
+   69,
+   70
+  ]
+ },
+ {
+  "id": "files-groups-target-membership",
+  "category": "concepts",
+  "title": "Files, groups, folders and Target Membership",
+  "summary": "Learn the difference between groups and folders in the project navigator, how to add and remove files safely, and why a file can go 'missing' at runtime.",
+  "steps": [
+   {
+    "text": "In the project navigator, groups are virtual folders (yellowish folder icon): they only organize the list and may not exist on disk. Folder references (blue icon) point to a real folder on disk and bring all its contents into the app.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "In projects created with Xcode 16 or newer, the app folder is usually a synchronized folder: Xcode mirrors the disk contents, and new files inside it join the target without being added manually."
+   },
+   {
+    "text": "To add an existing file use File > Add Files…. In the window, choose the file and read the options before confirming.",
+    "shortcut": "⌥⌘A"
+   },
+   {
+    "text": "Tick Copy items if needed to copy the file into the project folder (recommended; otherwise the project points to the original). Choose Create groups for groups or Create folder references for blue folders."
+   },
+   {
+    "text": "Under Add to targets, tick the targets that will use the file (for example the app, not the tests). Click Add."
+   },
+   {
+    "text": "To check or fix later, select the file and open the file inspector (right panel, File tab). The Target Membership section lists the targets with checkboxes; tick the ones that should receive the file."
+   },
+   {
+    "text": "To create new groups use File > New > Group (with a folder on disk) or File > New > Group without Folder (virtual only). To see the file in Finder, use File > Show in Finder."
+   },
+   {
+    "text": "To delete, right-click the file and choose Delete. Xcode asks: Remove Reference removes it from the list but keeps it on disk; Move to Trash really deletes the file."
+   },
+   {
+    "text": "Common types: .swift (code), .storyboard and .xib (Interface Builder screens), .xcassets (image and color catalog), .plist (property list), .xcconfig (settings), .entitlements (permissions), .xcstrings (translations) and .xctestplan (test plan)."
+   }
+  ],
+  "tips": [
+   "Rename files from the navigator (Enter while selected, or click slowly twice) so Xcode updates the reference.",
+   "Names in red indicate a broken reference: the file no longer exists at the expected path.",
+   "Use the filter field at the bottom of the navigator to find files quickly; ⇧⌘J (Navigate > Reveal in Project Navigator) locates the open file in the list.",
+   "Moving a file in Finder without telling Xcode breaks the reference; move it in the project navigator.",
+   "Loose JSON files or images work with Bundle.main only if they are in the target."
+  ],
+  "pitfalls": [
+   "The app builds but the file (image, JSON, sound) is not found at runtime: Target Membership is unticked or the file is not in Copy Bundle Resources. Tick the target.",
+   "Swift error 'cannot find X in scope': the .swift file does not belong to the target being compiled. Tick the target in the inspector.",
+   "Choosing Move to Trash by mistake deletes the file from disk; if it happened, recover it from the macOS Trash or from Time Machine/Git."
+  ],
+  "links": [
+   {
+    "title": "Managing files and folders in your Xcode project",
+    "url": "https://developer.apple.com/documentation/xcode/managing-files-and-folders-in-your-xcode-project"
+   },
+   {
+    "title": "Configuring a new target in your project",
+    "url": "https://developer.apple.com/documentation/xcode/configuring-a-new-target-in-your-project"
+   },
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   }
+  ],
+  "related": [
+   30,
+   31
+  ]
+ },
+ {
+  "id": "swift-packages",
+  "category": "concepts",
+  "title": "Swift packages: add libraries to your project",
+  "summary": "Learn to add a third-party library with Swift Package Manager, choose the version, use import and solve common problems.",
+  "steps": [
+   {
+    "text": "A Swift package is a ready-made library (someone else's code or yours) distributed through a repository, usually on GitHub. Swift Package Manager (SPM) ships with Xcode: nothing to install."
+   },
+   {
+    "text": "Open the menu File > Add Package Dependencies…. A window opens with a search box in the top right corner."
+   },
+   {
+    "text": "Paste the package repository URL (for example https://github.com/user/Library) into the search and press Return. Xcode fetches the information and shows the available version."
+   },
+   {
+    "text": "Choose the Dependency Rule. The default Up to Next Major Version accepts safe updates (1.2.0 up to before 2.0.0); Exact Version pins one version; Branch follows a branch."
+   },
+   {
+    "text": "Click Add Package. Choose the package product (the library you want) and the target that will use it in the Add to Target column, then click Add Package."
+   },
+   {
+    "text": "Wait for the download. In the project navigator the Package Dependencies section appears with the package and its version.",
+    "shortcut": "⌘1"
+   },
+   {
+    "text": "In Swift code, write import ProductName at the top of the file and use the library's types. If the import is not recognized, build once.",
+    "shortcut": "⌘B"
+   },
+   {
+    "text": "To update, use File > Packages > Update to Latest Package Versions. To just download already-defined versions use File > Packages > Resolve Package Versions; File > Packages > Reset Package Caches clears the package cache."
+   },
+   {
+    "text": "To remove, open the project, Package Dependencies tab, select the package and click −; also remove the product in the target's Frameworks, Libraries, and Embedded Content section. For local packages (a folder on your disk), use the Add Local… button in the add-package window."
+   }
+  ],
+  "tips": [
+   "Some packages use macros or plugins; Xcode asks whether you trust them (Trust & Enable). Only accept if you trust the author.",
+   "Packages appear in the project list, but only work in targets where you ticked the product.",
+   "Use a repository with version tags (1.0.0, 1.1.0); without tags you can only follow a branch.",
+   "File > New > Package… creates a package of your own to split the app into modules.",
+   "You can also open the Package.resolved file to see the exact versions that were pinned."
+  ],
+  "pitfalls": [
+   "'Failed to resolve dependencies' or 'Unable to resolve': no internet, wrong URL, a private repository without a GitHub login (Xcode > Settings… > Accounts) or an impossible version rule. Fix it and use File > Packages > Resolve Package Versions.",
+   "'No such module X': the product was not added to the right target. Open the target > General > Frameworks, Libraries, and Embedded Content and add it.",
+   "Strange errors after updating: use File > Packages > Reset Package Caches and then Product > Clean Build Folder."
+  ],
+  "links": [
+   {
+    "title": "Adding package dependencies to your app",
+    "url": "https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app"
+   },
+   {
+    "title": "Organizing your code with local packages",
+    "url": "https://developer.apple.com/documentation/xcode/organizing-your-code-with-local-packages"
+   }
+  ],
+  "related": [
+   32
+  ]
+ },
+ {
+  "id": "derived-data",
+  "category": "concepts",
+  "title": "Derived Data, caches and 'Clean Build Folder'",
+  "summary": "Understand what Xcode caches, when cleaning fixes mysterious errors and what you should never delete.",
+  "steps": [
+   {
+    "text": "Derived Data is Xcode's work folder: it stores compiled products (build products), the index (used for autocomplete and navigation), logs and other temporary files. All of it can be recreated from your code."
+   },
+   {
+    "text": "The default location is ~/Library/Developer/Xcode/DerivedData. To see and change it, open Xcode > Settings… and look for the Locations tab; the Derived Data field shows the path and an arrow that opens it in Finder.",
+    "shortcut": "⌘,"
+   },
+   {
+    "text": "For a light cleanup, use Product > Clean Build Folder…. Confirm in the dialog. This deletes the current project's compiled files, and the next build redoes everything.",
+    "shortcut": "⇧⌘K"
+   },
+   {
+    "text": "Product > Clean Build Folder Immediately does the same without asking.",
+    "shortcut": "⌥⇧⌘K"
+   },
+   {
+    "text": "If strange errors remain, quit Xcode, open the DerivedData folder in Finder and delete only your project's subfolder (its name starts with the project name followed by letters). Open the project again."
+   },
+   {
+    "text": "On opening, Xcode reindexes; a progress bar appears at the top of the window. Wait for it to finish before judging whether the error is gone. The first build after cleaning is slower."
+   },
+   {
+    "text": "If the SwiftUI preview (Canvas) hangs or shows an old error, try restarting the preview and then build; if that does not help, delete Derived Data as above and restart Xcode."
+   },
+   {
+    "text": "After cleaning, build to confirm everything works.",
+    "shortcut": "⌘B"
+   }
+  ],
+  "tips": [
+   "Restarting Xcode (⌘Q and reopen) fixes a lot without deleting anything.",
+   "Autocomplete problems, 'jump to definition' not working or phantom red errors are usually a broken index: delete Derived Data.",
+   "You can also delete a project's Derived Data with the arrow button in Locations; Xcode asks before deleting.",
+   "Derived Data can grow to several GB over time; deleting it safely frees space.",
+   "If a Swift package misbehaves, combine with File > Packages > Reset Package Caches."
+  ],
+  "pitfalls": [
+   "Do not delete files outside the DerivedData folder, such as your project folder or ~/Library/Developer/Xcode/Archives (your distribution archives), which hold things that are yours.",
+   "Deleting while Xcode is open can corrupt the index: quit Xcode first.",
+   "Cleaning does not fix a real code error: if the message points to a line of yours, fix the code instead of cleaning again."
+  ],
+  "links": [
+   {
+    "title": "Build system",
+    "url": "https://developer.apple.com/documentation/xcode/build-system"
+   },
+   {
+    "title": "Xcode release notes",
+    "url": "https://developer.apple.com/documentation/xcode-release-notes"
+   }
+  ],
+  "related": [
+   30,
+   33
+  ]
+ }
+]

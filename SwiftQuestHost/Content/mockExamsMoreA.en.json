@@ -305,15 +305,15 @@
    },
    {
     "id": 5,
-    "question": "Which shortcut shows or hides Xcode's navigator area (left side)?",
+    "question": "Which shortcut opens Xcode's Project navigator (left side)?",
     "options": [
-     "Cmd + 0",
+     "Cmd + 1",
      "Option + Cmd + 0",
      "Shift + Cmd + Y",
      "Cmd + R"
     ],
     "correctIndex": 0,
-    "explanation": "Cmd+0 toggles the navigators, Option+Cmd+0 toggles the inspectors (right) and Shift+Cmd+Y toggles the debug area. Cmd+R builds and runs the app. The same buttons exist at the top right of the window."
+    "explanation": "Cmd+1 opens the Project navigator (Cmd+2 to Cmd+9 open the other navigators). Option+Cmd+0 shows Coding Tools, Shift+Cmd+Y toggles the debug area and Cmd+R builds and runs the app."
    },
    {
     "id": 6,
@@ -454,10 +454,10 @@
      "Source Control navigator",
      "Breakpoint navigator",
      "Report navigator",
-     "Symbol navigator"
+     "Bookmarks navigator"
     ],
     "correctIndex": 0,
-    "explanation": "The Source Control navigator displays branches, tags, remotes and commit history. The Breakpoint navigator lists breakpoints, the Report navigator shows build and run logs and the Symbol navigator lists code symbols."
+    "explanation": "The Source Control navigator displays branches, tags, remotes and commit history. The Breakpoint navigator lists breakpoints, the Report navigator shows build and run logs and the Bookmarks navigator lists saved bookmarks."
    },
    {
     "id": 18,

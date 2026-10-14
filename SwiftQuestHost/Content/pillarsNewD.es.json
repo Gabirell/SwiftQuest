@@ -2,18 +2,18 @@
  {
   "id": 30,
   "title": "Navegación en el proyecto de Xcode",
-  "theory": "La ventana de Xcode se divide en áreas: la barra de herramientas (toolbar) arriba, el navigator a la izquierda, el editor al centro, el inspector a la derecha y la debug area abajo. Muestras u ocultas el navigator con ⌘0, el inspector con ⌥⌘0 y la debug area con ⇧⌘Y, algo que se evalúa en la certificación. El navigator tiene pestañas accesibles con ⌘1 a ⌘9: Project, Source Control, Symbol, Find, Issue, Test, Debug, Breakpoint y Report. Los archivos más comunes son '.swift' (código), '.xcodeproj' (el proyecto), '.xcworkspace' (agrupa proyectos y paquetes), '.xcassets' (catálogo de imágenes y colores), '.plist' (propiedades, como Info.plist), '.storyboard' y '.xib' (interfaz de UIKit), '.xcconfig' (ajustes de build en texto), '.entitlements' (capacidades de la app), '.xctestplan' (plan de pruebas) y '.xcstrings' (catálogo de textos localizados). Un target es un producto que se construye, un scheme define qué target compilar y cómo ejecutarlo, y el destination elige dónde correr, como un Simulator o un dispositivo. Build (⌘B) solo compila; Run (⌘R) compila y ejecuta la app en el destination elegido, y Stop es ⌘. . Info.plist guarda metadatos como el nombre visible, la versión y los textos de permisos. En SwiftUI, la macro '#Preview' muestra la vista en el canvas sin abrir el Simulator, que sigue siendo necesario para probar la app completa. Un error común es editar el archivo equivocado al confundir '.xcodeproj' con '.xcworkspace': si existe un '.xcworkspace' (por ejemplo, con CocoaPods o varios proyectos), abre siempre el workspace.",
+  "theory": "La ventana de Xcode se divide en áreas: la barra de herramientas (toolbar) arriba, el navigator a la izquierda, el editor al centro, el inspector a la derecha y la debug area abajo. Muestras u ocultas el navigator y el inspector desde el menú View (View > Navigators > Show Navigator y View > Inspectors > Show Inspector) y la debug area con ⇧⌘Y, algo que se evalúa en la certificación. El navigator tiene pestañas accesibles con ⌘1 a ⌘9: Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints y Reports (en Xcode 26, ⌘0 es Show Coding Assistant). Los archivos más comunes son '.swift' (código), '.xcodeproj' (el proyecto), '.xcworkspace' (agrupa proyectos y paquetes), '.xcassets' (catálogo de imágenes y colores), '.plist' (propiedades, como Info.plist), '.storyboard' y '.xib' (interfaz de UIKit), '.xcconfig' (ajustes de build en texto), '.entitlements' (capacidades de la app), '.xctestplan' (plan de pruebas) y '.xcstrings' (catálogo de textos localizados). Un target es un producto que se construye, un scheme define qué target compilar y cómo ejecutarlo, y el destination elige dónde correr, como un Simulator o un dispositivo. Build (⌘B) solo compila; Run (⌘R) compila y ejecuta la app en el destination elegido, y Stop es ⌘. . Info.plist guarda metadatos como el nombre visible, la versión y los textos de permisos. En SwiftUI, la macro '#Preview' muestra la vista en el canvas sin abrir el Simulator, que sigue siendo necesario para probar la app completa. Un error común es editar el archivo equivocado al confundir '.xcodeproj' con '.xcworkspace': si existe un '.xcworkspace' (por ejemplo, con CocoaPods o varios proyectos), abre siempre el workspace.",
   "appleDocUrl": "https://developer.apple.com/tutorials/develop-in-swift/meet-xcode",
   "category": "Xcode e Ferramentas",
   "corporateCase": "En un equipo que mantiene una app bancaria con varios módulos, la persona nueva abre el '.xcworkspace', elige el scheme de pruebas y un destination iPhone en el Simulator, y usa ⌘1 y ⌘5 para alternar entre archivos y errores. Las direcciones del servidor viven en archivos '.xcconfig', uno por configuración de build, en lugar de estar dispersas en el código.",
-  "gameCase": "En un videojuego de plataformas, el estudio usa '#Preview' para ajustar el menú principal sin ejecutar todo el juego y oculta el navigator con ⌘0 para ganar espacio de edición. Los sprites están en '.xcassets' y los textos de permisos están en Info.plist y capacidades como Game Center aparecen en el archivo '.entitlements'.",
+  "gameCase": "En un videojuego de plataformas, el estudio usa '#Preview' para ajustar el menú principal sin ejecutar todo el juego y oculta el navigator desde el menú View para ganar espacio de edición. Los sprites están en '.xcassets' y los textos de permisos están en Info.plist y capacidades como Game Center aparecen en el archivo '.entitlements'.",
   "exercises": [
    {
     "id": 1,
-    "question": "¿Qué número acompaña a ⌘ para mostrar u ocultar el navigator?",
-    "codeSnippet": "Atajo del navigator: ⌘___",
-    "correctAnswer": "0",
-    "hint": "Es el mismo número que se usa, con ⌥, para el inspector."
+    "question": "¿Qué número acompaña a ⌘ para abrir el Project navigator?",
+    "codeSnippet": "Atajo del Project navigator: ⌘___",
+    "correctAnswer": "1",
+    "hint": "Es la primera de las pestañas numeradas del navigator (⌘1 a ⌘9)."
    },
    {
     "id": 2,
@@ -54,15 +54,15 @@
   "quiz": [
    {
     "id": 1,
-    "question": "¿Qué atajo muestra u oculta el inspector (panel derecho)?",
+    "question": "¿Qué atajo muestra u oculta la debug area (panel inferior)?",
     "options": [
      "⌘0",
+     "⌘B",
      "⇧⌘Y",
-     "⌥⌘0",
-     "⌘B"
+     "⌥⌘0"
     ],
     "correctIndex": 2,
-    "explanation": "⌥⌘0 alterna el inspector; ⌘0 alterna el navigator y ⇧⌘Y la debug area. ⌘B es Build."
+    "explanation": "⇧⌘Y alterna la debug area; en Xcode 26, ⌘0 es Show Coding Assistant y ⌥⌘0 es Show Coding Tools. ⌘B es Build."
    },
    {
     "id": 2,
@@ -70,7 +70,7 @@
     "options": [
      "Project navigator",
      "Issue navigator",
-     "Symbol navigator",
+     "Bookmarks navigator",
      "Report navigator"
     ],
     "correctIndex": 1,
@@ -146,7 +146,7 @@
      "⌘5"
     ],
     "correctIndex": 3,
-    "explanation": "⌘1 Project, ⌘2 Source Control, ⌘3 Symbol, ⌘4 Find, ⌘5 Issue, ⌘6 Test, ⌘7 Debug, ⌘8 Breakpoint, ⌘9 Report."
+    "explanation": "⌘1 Project, ⌘2 Source Control, ⌘3 Bookmarks, ⌘4 Find, ⌘5 Issues, ⌘6 Tests, ⌘7 Debug, ⌘8 Breakpoints, ⌘9 Reports."
    }
   ],
   "extraQuiz": [
@@ -196,7 +196,7 @@
      "Breakpoint navigator"
     ],
     "correctIndex": 0,
-    "explanation": "El Find navigator (⌘4) busca en todo el proyecto, con opciones de reemplazo. El Symbol navigator lista tipos y funciones."
+    "explanation": "El Find navigator (⌘4) busca en todo el proyecto, con opciones de reemplazo. El Bookmarks navigator lista los bookmarks guardados."
    },
    {
     "id": 5,
@@ -452,7 +452,7 @@
  {
   "id": 32,
   "title": "Git y Gestor de Paquetes (SPM)",
-  "theory": "Git es el sistema de control de versiones: registra el historial del proyecto en commits, que son fotografías del código con un mensaje. En Xcode creas el repositorio al crear el proyecto (opción Create Git repository) o con 'git init', y usas el menú Source Control y el Source Control navigator (⌘2) para hacer commit, crear branches, hacer merge, push y pull. Una branch es una línea de trabajo independiente, y el merge une una branch en otra; cuando dos personas cambian las mismas líneas surge un conflicto, marcado en el archivo con '<<<<<<<', '=======' y '>>>>>>>', y eliges el resultado final y haces commit. El '.gitignore' lista lo que no debe versionarse, como 'xcuserdata', 'DerivedData', '.DS_Store' y '.build'. Un buen mensaje de commit es corto, en imperativo y dice qué cambió, por ejemplo 'Agrega pantalla de login', en vez de 'cambios'. El Swift Package Manager (SPM) gestiona dependencias: un paquete se describe con un 'Package.swift', que declara 'products' (lo que ofrece el paquete, como una library), 'targets' (módulos de código) y 'dependencies'. Para agregar un paquete en Xcode usa File > Add Package Dependencies, pega la URL y elige la regla de versión (Up to Next Major, Up to Next Minor, Exact, Branch o Commit); luego usa 'import NombreDelModulo'. Los paquetes locales permiten dividir la app en módulos, lo que facilita la organización, las pruebas y la reutilización.",
+  "theory": "Git es el sistema de control de versiones: registra el historial del proyecto en commits, que son fotografías del código con un mensaje. En Xcode creas el repositorio al crear el proyecto (opción Create Git repository) o con 'git init', y usas el menú Integrate y el Source Control navigator (⌘2) para hacer commit, crear branches, hacer merge, push y pull. Una branch es una línea de trabajo independiente, y el merge une una branch en otra; cuando dos personas cambian las mismas líneas surge un conflicto, marcado en el archivo con '<<<<<<<', '=======' y '>>>>>>>', y eliges el resultado final y haces commit. El '.gitignore' lista lo que no debe versionarse, como 'xcuserdata', 'DerivedData', '.DS_Store' y '.build'. Un buen mensaje de commit es corto, en imperativo y dice qué cambió, por ejemplo 'Agrega pantalla de login', en vez de 'cambios'. El Swift Package Manager (SPM) gestiona dependencias: un paquete se describe con un 'Package.swift', que declara 'products' (lo que ofrece el paquete, como una library), 'targets' (módulos de código) y 'dependencies'. Para agregar un paquete en Xcode usa File > Add Package Dependencies, pega la URL y elige la regla de versión (Up to Next Major, Up to Next Minor, Exact, Branch o Commit); luego usa 'import NombreDelModulo'. Los paquetes locales permiten dividir la app en módulos, lo que facilita la organización, las pruebas y la reutilización.",
   "appleDocUrl": "https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app",
   "category": "Xcode e Ferramentas",
   "corporateCase": "Un equipo de cinco personas trabaja en branches cortas, abre una revisión antes de hacer merge en 'main' y resuelve conflictos en el editor de merge de Xcode. Agregan una librería de red mediante SPM con la regla Up to Next Major, y 'Package.resolved' asegura que todos usen las mismas versiones.",

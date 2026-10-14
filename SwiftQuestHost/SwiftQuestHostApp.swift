@@ -52,7 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 enum SidebarItem: String, Hashable {
-    case path, focus, certification, learn, practice, explain, course, exams, dashboard, glossary, badges
+    case path, focus, certification, guide, learn, practice, explain, course, exams, dashboard, glossary, badges
     case review, flashcards, playground, mindmap, placement
 }
 
@@ -89,6 +89,7 @@ final class SwiftQuestRoute: ObservableObject {
     @Published var banner: String?
     @Published var lessonTarget: String?
     @Published var pillarTarget: Int?
+    @Published var guideTarget: String? { didSet { if guideTarget != nil { selection = .guide } } }
 
     enum ExplainMode { case explain, exercise }
 
@@ -159,6 +160,7 @@ struct SwiftQuestHome: View {
                     Label(loc.t("nav.explain"), systemImage: "text.magnifyingglass").tag(SidebarItem.explain)
                 }
                 Section(loc.t("sidebar.course")) {
+                    Label(loc.t("nav.guide"), systemImage: "hammer.fill").tag(SidebarItem.guide)
                     Label(loc.t("nav.cert"), systemImage: "checkmark.seal.fill").tag(SidebarItem.certification)
                     Label(loc.t("nav.course"), systemImage: "graduationcap.fill").tag(SidebarItem.course)
                     Label(loc.t("nav.mindmap"), systemImage: "point.3.connected.trianglepath.dotted").tag(SidebarItem.mindmap)
@@ -198,6 +200,7 @@ struct SwiftQuestHome: View {
             case .path: PathView()
             case .focus: FocusView()
             case .certification: CertificationView()
+            case .guide: XcodeGuideView()
             case .review: ReviewView()
             case .flashcards: FlashcardsView()
             case .playground: PlaygroundView()

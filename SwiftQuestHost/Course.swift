@@ -156,6 +156,7 @@ struct CourseSnapshot: Codable {
     var wrongQuestions: [String] = []              // review queue: "p:<pillar>:<q>", "e:<exam>:<q>", "i:<lessonQ>"
     var solvedChallenges: [String] = []            // playground challenges solved
     var unlockedUpTo = 0                           // guided path: steps below this index are open (placement quiz)
+    var guideRead: [String] = []                   // Xcode Guide articles marked as read
     var topicStats: [String: TopicStat] = [:]      // "p:<pillar>", "l:<lesson>", "e:<exam category>", "c:<challenge>"
 
     init() {}
@@ -171,6 +172,7 @@ struct CourseSnapshot: Codable {
         solvedChallenges = try c.decodeIfPresent([String].self, forKey: .solvedChallenges) ?? []
         unlockedUpTo = try c.decodeIfPresent(Int.self, forKey: .unlockedUpTo) ?? 0
         topicStats = try c.decodeIfPresent([String: TopicStat].self, forKey: .topicStats) ?? [:]
+        guideRead = try c.decodeIfPresent([String].self, forKey: .guideRead) ?? []
     }
 }
 
@@ -346,6 +348,16 @@ final class CourseProgress: ObservableObject {
     }
 
     var reviewQueue: [String] { snapshot.wrongQuestions }
+
+    func toggleGuideRead(_ id: String) {
+        if let i = snapshot.guideRead.firstIndex(of: id) {
+            snapshot.guideRead.remove(at: i)
+        } else {
+            snapshot.guideRead.append(id)
+            HabitStore.shared.recordActivity()
+        }
+        persist()
+    }
 
     func isSolved(_ challenge: String) -> Bool { snapshot.solvedChallenges.contains(challenge) }
 

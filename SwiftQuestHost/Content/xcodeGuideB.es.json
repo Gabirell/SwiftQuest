@@ -1,0 +1,445 @@
+[
+ {
+  "id": "comment-code",
+  "category": "editing",
+  "title": "Comentar y descomentar código (una línea o varias)",
+  "summary": "Aprende a desactivar código temporalmente con Comment Selection, a escribir comentarios útiles y a organizar archivos largos con MARK, TODO y FIXME.",
+  "steps": [
+   {
+    "text": "Haz clic en cualquier parte de una línea de código para poner el cursor (la barra parpadeante) en ella. No hace falta seleccionar nada para comentar una sola línea."
+   },
+   {
+    "text": "Elige Editor > Structure > Comment Selection o pulsa ⌘/. La línea recibe // al principio y cambia de color (normalmente verde o gris), señal de que el compilador la ignora.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "Para comentar varias líneas, arrastra el ratón sobre ellas (o haz clic en la primera y usa ⇧ + flecha abajo) y pulsa ⌘/ otra vez. Cada línea seleccionada recibe su propio //.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "Para deshacerlo, mantén la misma selección (o el cursor en la línea) y pulsa ⌘/ de nuevo: el comando es un interruptor (toggle) y quita los // que él mismo puso.",
+    "shortcut": "⌘/"
+   },
+   {
+    "text": "Escribe un comentario de bloque con /* antes del código y */ después. Todo lo que queda entre los dos marcadores se ignora, incluso en varias líneas; sirve para textos largos, pero el ⌘/ de Xcode usa // línea por línea."
+   },
+   {
+    "text": "Documenta una función, struct o propiedad con un comentario de documentación: escribe /// en la línea justo encima. Luego, haz ⌥-clic en el nombre del símbolo en otro lugar del código y el texto aparece en el panel Quick Help."
+   },
+   {
+    "text": "Con el cursor sobre una declaración (por ejemplo un func), usa Editor > Structure > Add Documentation (⌥⌘/) y Xcode inserta una plantilla /// con los parámetros ya listados.",
+    "shortcut": "⌥⌘/"
+   },
+   {
+    "text": "Marca secciones del archivo con // MARK: - Nombre de la sección, recordatorios con // TODO: texto y problemas conocidos con // FIXME: texto. Haz clic en el último elemento de la barra de ruta (jump bar) sobre el editor: MARK, TODO y FIXME aparecen en la lista de símbolos, y el '- ' del MARK dibuja una línea separadora."
+   }
+  ],
+  "tips": [
+   "Comentar es mejor que borrar mientras pruebas una idea: el código sigue ahí y vuelve con un ⌘/. Pero no dejes código comentado para siempre; el control de versiones (Git) ya guarda el historial.",
+   "Selecciona un bloque entero, con líneas en blanco incluidas, antes de ⌘/ para no comentar línea por línea.",
+   "Usa // MARK: - Propiedades, // MARK: - Acciones, etc. en archivos largos; se convierten en un índice clicable en la jump bar.",
+   "Los comentarios explican el 'por qué', no el 'qué'. 'Suma 1' sobre contador += 1 es ruido; 'Salta el encabezado de la tabla' es útil.",
+   "Si el atajo es incómodo en tu teclado, usa el menú Editor > Structure > Comment Selection o cambia la tecla en Settings > Key Bindings (busca 'Comment')."
+  ],
+  "pitfalls": [
+   "⌘/ no hace nada o activa otra cosa: en teclados ABNT2 (Brasil) o en español la barra / está en otra tecla o requiere ⇧, así que la combinación puede no reconocerse. Usa el menú o reasigna el atajo en Settings > Key Bindings.",
+   "Comentar una línea que abre un bloque, como func o if {, sin comentar la llave de cierre } deja llaves desbalanceadas y Xcode muestra errores. Comenta el bloque completo de una vez.",
+   "Un /* sin su */ de cierre comenta el resto del archivo y casi todo se pone verde. Busca el marcador olvidado. En Swift los bloques /* */ se pueden anidar, lo que hace fácil olvidar un cierre; para varias líneas, prefiere //.",
+   "Escribir // MARK sin los dos puntos no crea una entrada en la jump bar. El formato es // MARK: texto."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Writing symbol documentation in your source files",
+    "url": "https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files"
+   },
+   {
+    "title": "Writing documentation",
+    "url": "https://developer.apple.com/documentation/xcode/writing-documentation"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "indent-format",
+  "category": "editing",
+  "title": "Indentar, reindentar y ordenar el código",
+  "summary": "Mira cómo mover bloques a la izquierda o a la derecha, dejar que Xcode corrija la indentación de un archivo entero y usar las opciones de formato que existen en el menú Editor.",
+  "steps": [
+   {
+    "text": "Abre el archivo y selecciona las líneas que quieres mover (arrastra el ratón o usa ⇧ + flechas). Con una selección activa, pulsar Tab también empuja el bloque hacia la derecha."
+   },
+   {
+    "text": "Abre Editor > Structure > Shift Right (⌘]) para empujar las líneas seleccionadas un nivel a la derecha, y Editor > Structure > Shift Left (⌘[) para devolverlas a la izquierda.",
+    "shortcut": "⌘]"
+   },
+   {
+    "text": "Para que Xcode corrija la indentación según las llaves del código, selecciona las líneas y usa Editor > Structure > Re-Indent (⌃I). Ajusta cada línea al nivel correcto sin cambiar lo que hace el código.",
+    "shortcut": "⌃I"
+   },
+   {
+    "text": "Para ordenar un archivo entero, haz clic en el editor, pulsa ⌘A (Select All) y luego ⌃I. Verás cómo todas las líneas se alinean con la estructura de las llaves { }.",
+    "shortcut": "⌃I"
+   },
+   {
+    "text": "Prueba Editor > Structure > Format File (⌃⇧I) para formatear todo el archivo; Format Selection formatea solo lo seleccionado, y Reformat To Width y Format to Multiple Lines cambian cómo se parten las líneas largas. Estas opciones existen en el menú del Xcode 26 instalado; pruébalas en un archivo pequeño y pulsa ⌘Z si no te gusta el resultado.",
+    "shortcut": "⌃⇧I"
+   },
+   {
+    "text": "El toolchain de Xcode instalado incluye una herramienta de línea de comandos llamada swift-format, que también se puede usar fuera de Xcode. No la tomes como obligatoria: para empezar basta con Re-Indent."
+   },
+   {
+    "text": "Para ver o ajustar el tamaño del tabulador, la indentación y el ajuste de línea, abre Xcode > Settings y entra en la sección Text Editing; las opciones de indentación están en esa parte de Settings."
+   },
+   {
+    "text": "Para que las líneas largas no se salgan de la ventana, activa Editor > Wrap Lines (⌃⇧⌘L). Esto solo cambia cómo se muestra el texto; el archivo no recibe saltos de línea reales.",
+    "shortcut": "⌃⇧⌘L"
+   }
+  ],
+  "tips": [
+   "Pulsa ⌘A y ⌃I antes de compartir código o hacer un commit: los archivos bien indentados son mucho más fáciles de leer.",
+   "Re-Indent solo toca los espacios al inicio de las líneas; no reescribe código ni arregla llaves que faltan.",
+   "Si Re-Indent deja todo torcido de repente, casi siempre falta o sobra una llave { o }. Corrige la llave y ejecuta ⌃I otra vez.",
+   "Xcode no formatea todo por sí solo: ayuda a indentar mientras escribes, pero los espacios extra, las líneas largas y las comas finales siguen siendo trabajo tuyo.",
+   "Puedes deshacer cualquier formato con ⌘Z, así que experimenta sin miedo."
+  ],
+  "pitfalls": [
+   "Mezclar tabuladores y espacios en un mismo archivo deja el código desordenado en otros editores. Elige uno y mantenlo; mira las opciones en Xcode > Settings > Text Editing.",
+   "Pulsar ⌘[ o ⌘] sin seleccionar nada mueve solo la línea donde está el cursor. Si querías mover un bloque, selecciona todas sus líneas primero.",
+   "Format File puede cambiar muchas líneas a la vez, lo que dificulta revisar un commit en equipo. En proyectos compartidos, acuerden antes si todos formatean igual."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "move-duplicate-lines",
+  "category": "editing",
+  "title": "Mover, duplicar y borrar líneas; varios cursores",
+  "summary": "Aprende a reorganizar código sin copiar y pegar: mover líneas arriba y abajo, duplicarlas, borrarlas y editar varios lugares a la vez con selecciones múltiples.",
+  "steps": [
+   {
+    "text": "Haz clic en una línea (o selecciona varias) y abre Editor > Structure > Move Line Down (⌥⌘]). La línea cambia de lugar con la de abajo, sin cortar y pegar.",
+    "shortcut": "⌥⌘]"
+   },
+   {
+    "text": "Usa Editor > Structure > Move Line Up (⌥⌘[) para subir la línea. Repite el atajo cuantas veces quieras; es ideal para reordenar propiedades o elementos de una lista.",
+    "shortcut": "⌥⌘["
+   },
+   {
+    "text": "Para duplicar, con la línea o el fragmento seleccionado usa Edit > Duplicate (⌘D). Aparece una copia justo debajo; luego solo ajusta lo que cambia, como el nombre de una variable.",
+    "shortcut": "⌘D"
+   },
+   {
+    "text": "El Xcode instalado no tiene una opción de menú 'borrar línea'. Selecciona la línea entera (clic al inicio y ⇧ + flecha abajo) y pulsa Delete; o, con el cursor al final de la línea, ⌘ + Delete borra todo hasta su inicio, un comportamiento estándar de los campos de texto de macOS."
+   },
+   {
+    "text": "Para editar varias apariciones de una palabra a la vez, selecciona la palabra y usa Find > Select Next Occurrence (⌥⌘E). Cada vez que lo repitas, una aparición más queda seleccionada con su propio cursor.",
+    "shortcut": "⌥⌘E"
+   },
+   {
+    "text": "Con varios cursores activos, escribe con normalidad: el texto aparece en todos los lugares a la vez. Pulsa Esc o haz clic en otro punto para volver a un solo cursor."
+   },
+   {
+    "text": "Para tomar todas las apariciones de una vez, usa Find > Select All Find Matches después de buscar una palabra con ⌘F, o Find > Select Find Matches in Selection para limitar la búsqueda a un bloque seleccionado."
+   },
+   {
+    "text": "Más opciones en el menú Editor > Selection: Split Selection By Lines pone un cursor al final de cada línea seleccionada, Select Column Up y Select Column Down (⌃⇧ + flechas) extienden una columna de cursores, y Select All Symbols selecciona todas las apariciones del símbolo bajo el cursor."
+   }
+  ],
+  "tips": [
+   "⌥⌘[ y ⌥⌘] también funcionan con varias líneas seleccionadas: el bloque entero se mueve junto.",
+   "Para repetir una línea parecida (por ejemplo, casos de un switch), duplica con ⌘D y edita solo la diferencia; suele ser más rápido que escribir.",
+   "Split Selection By Lines es excelente para añadir comillas, comas o un prefijo al inicio o final de una lista de líneas de una vez.",
+   "Si Select Next Occurrence toma demasiado (por ejemplo, 'count' dentro de 'accountCount'), prefiere renombrar con Editor > Refactor > Rename…, que entiende el código.",
+   "Todas estas acciones se pueden deshacer con ⌘Z."
+  ],
+  "pitfalls": [
+   "Mover líneas fuera del bloque correcto no da error enseguida, pero puede romper la lógica (por ejemplo, una línea sale de un if). Revisa la indentación después de mover y usa ⌃I si hace falta.",
+   "Con varios cursores, pegar pone el mismo texto en todos; si copiaste algo grande, esparces basura por el archivo. Deshaz y revisa dónde están los cursores.",
+   "Edit > Delete no es lo mismo que borrar una línea: elimina la selección. Si no hay nada seleccionado, no borra la línea entera. Selecciona la línea primero."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "completion-snippets",
+  "category": "editing",
+  "title": "Autocompletado, placeholders, snippets y Fix-its",
+  "summary": "Entiende cómo Xcode sugiere código mientras escribes, cómo rellenar los campos de color (placeholders), crear tus propios snippets y corregir errores con un clic.",
+  "steps": [
+   {
+    "text": "Empieza a escribir el nombre de algo, por ejemplo Text( o VStack. Aparece una lista de sugerencias bajo el cursor; usa las flechas arriba y abajo para elegir."
+   },
+   {
+    "text": "Pulsa Return o Tab para aceptar la sugerencia seleccionada. Si la lista desapareció, pídela de nuevo con Editor > Show Completions (⌃Space).",
+    "shortcut": "⌃Space"
+   },
+   {
+    "text": "Cuando la sugerencia es una función con parámetros, Xcode inserta placeholders: bloques azul claro con texto como <#value#> que marcan lo que debes rellenar. Escribe para reemplazar el placeholder seleccionado."
+   },
+   {
+    "text": "Pulsa Tab para saltar al siguiente placeholder (o usa Navigate > Jump to Next Placeholder, ⌃/). Navigate > Jump to Previous Placeholder (⌃?) vuelve al anterior. Para poner tu propio valor, escribe encima.",
+    "shortcut": "⌃/"
+   },
+   {
+    "text": "Para guardar un fragmento que repites mucho, selecciona el código y elige Editor > Create Code Snippet…. Se abre una ventana con el título, un 'Completion' (un atajo de texto) y el lenguaje."
+   },
+   {
+    "text": "Dentro del snippet, escribe <#nombre#> donde quieras un placeholder; luego, en cualquier archivo, escribir el atajo de texto que elegiste hace que el snippet aparezca en las sugerencias."
+   },
+   {
+    "text": "Para ver y editar los snippets, abre la biblioteca con View > Show Library (⇧⌘L) y busca la pestaña de snippets (icono de llaves { }). Los tuyos aparecen junto a los de Xcode.",
+    "shortcut": "⇧⌘L"
+   },
+   {
+    "text": "Cuando el código tiene un problema, un punto rojo (error) o un triángulo amarillo (advertencia) aparece en el margen izquierdo (el gutter). Haz clic en el icono: si hay un botón Fix, pulsarlo aplica la corrección sugerida."
+   },
+   {
+    "text": "Abre el Issue navigator con View > Navigators > Issues (⌘5) para ver todos los problemas del proyecto. Usa Navigate > Jump to Next Issue (⌘') para saltar de uno a otro, y Editor > Fix All Issues (⌃⌥⌘F) para aplicar todos los Fix-its disponibles.",
+    "shortcut": "⌘5"
+   }
+  ],
+  "tips": [
+   "La lista de sugerencias muestra el tipo de cada elemento (método, propiedad, valor); eso ayuda a aprender la API sin memorizar nombres.",
+   "Escribir solo las iniciales de una palabra compuesta suele bastar: por ejemplo 'fgc' puede encontrar un nombre más largo con esas letras.",
+   "Los Fix-its son sugerencias, no garantías: lee lo que Xcode va a cambiar antes de aceptar, sobre todo con muchos errores a la vez.",
+   "Empieza un snippet con algo simple (un patrón de View, un print de depuración) y refínalo con placeholders.",
+   "Editor > Show Predictive Completion (⌃⌥Space) existe en el menú de Xcode 26; ofrece sugerencias de líneas completas cuando la función está disponible en tu Mac."
+  ],
+  "pitfalls": [
+   "Aceptar una sugerencia sin mirar puede insertar un método parecido pero equivocado. Revisa el nombre y los parámetros.",
+   "Un placeholder olvidado en el código, como <#value#>, hace fallar el build con un error. Encuéntralos todos con Tab antes de ejecutar.",
+   "¿No aparece la lista de sugerencias? El archivo puede tener un error de sintaxis encima del cursor, o Xcode sigue indexando; espera a que termine la barra de progreso de arriba.",
+   "El botón Fix solo aparece cuando Xcode está seguro de una corrección. Para la mayoría de los errores tendrás que leer el mensaje y arreglarlo tú."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Diagnosing and resolving bugs in your running app",
+    "url": "https://developer.apple.com/documentation/xcode/diagnosing-and-resolving-bugs-in-your-running-app"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   33
+  ]
+ },
+ {
+  "id": "rename-refactor",
+  "category": "editing",
+  "title": "Renombrar y refactorizar con seguridad",
+  "summary": "Mira cómo cambiar el nombre de una variable, función o tipo en todo el proyecto de una vez sin romper nada, y cómo usar las herramientas de extracción del menú Refactor.",
+  "steps": [
+   {
+    "text": "Haz clic en el nombre que quieres cambiar (por ejemplo, una variable o función) y abre Editor > Refactor > Rename…. Si prefieres, haz clic derecho sobre el nombre y elige Refactor > Rename… en el menú contextual."
+   },
+   {
+    "text": "Xcode resalta todos los usos del nombre y hace editable el campo. Escribe el nuevo nombre; todas las apariciones cambian juntas mientras escribes."
+   },
+   {
+    "text": "Cuando Rename lo pida, haz clic en Rename para aplicar. Para ver antes qué cambia, Xcode puede listar los archivos afectados en una vista previa: revísala y confirma."
+   },
+   {
+    "text": "Para renombrar solo dentro del bloque actual (una variable local, un parámetro), usa Editor > Edit All in Scope (⌃⌘E). Xcode selecciona solo las apariciones del mismo ámbito y las editas todas a la vez.",
+    "shortcut": "⌃⌘E"
+   },
+   {
+    "text": "Para extraer código, selecciona las líneas y usa Editor > Refactor > Extract to Function (o Extract to Method) para crear una función nueva con el fragmento, o Extract to Variable para dar nombre a una expresión. Extract All Occurrences reemplaza todas las repeticiones idénticas."
+   },
+   {
+    "text": "Para renombrar un archivo en el Project navigator, haz clic en él y pulsa Return, escribe el nuevo nombre y confirma con Return. El nombre del archivo y el del tipo que contiene son cosas separadas."
+   },
+   {
+    "text": "Después de cualquier renombrado, compila con Product > Build (⌘B) y lee los errores: un build limpio es la prueba de que no quedó nada atrás.",
+    "shortcut": "⌘B"
+   }
+  ],
+  "tips": [
+   "Prefiere nombres que digan lo que hace la cosa: calcularTotal() es mejor que f1().",
+   "Renombrar un archivo no renombra el struct o la class que contiene. Para mantener todo coherente, renombra ambos: el archivo, y el tipo con Rename….",
+   "Si el proyecto está en Git, haz un commit antes de renombrar mucho; así puedes volver atrás fácilmente.",
+   "Los targets y schemes también tienen nombre: se cambian en los ajustes del proyecto, no con el Rename… del código. Tras cambiarlos, revisa Product > Scheme.",
+   "Rename… entiende el código Swift (sabe la diferencia entre 'name' de una variable y 'name' de otra); Buscar y Reemplazar no."
+  ],
+  "pitfalls": [
+   "Usar Find and Replace para renombrar cambia texto a ciegas: puede alterar comentarios, strings, nombres parecidos (count dentro de accountCount) y romper el programa. Usa Rename… para símbolos de código.",
+   "Rename… puede no alcanzar texto que no es código: nombres escritos en strings, archivos de interfaz (storyboards) o claves de configuración. Busca el nombre viejo con ⇧⌘F después y arregla a mano lo que quede.",
+   "Si Rename… está en gris o no cambia nada, el cursor puede no estar sobre un símbolo, o el proyecto tiene errores que impiden a Xcode entender el código. Corrige los errores e inténtalo de nuevo.",
+   "Renombrar solo la carpeta en el Finder, fuera de Xcode, deja el Project navigator apuntando a la ruta vieja (nombre en rojo). Renombra siempre desde dentro de Xcode."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30,
+   32
+  ]
+ },
+ {
+  "id": "find-replace",
+  "category": "editing",
+  "title": "Buscar, reemplazar y explorar todo el proyecto",
+  "summary": "Aprende a encontrar texto en el archivo abierto y en todo el proyecto, a reemplazar con seguridad y a usar el Find navigator para ver todos los resultados a la vez.",
+  "steps": [
+   {
+    "text": "Con un archivo abierto, usa Find > Find… (⌘F). Aparece una barra de búsqueda arriba del editor; escribe la palabra y todas las coincidencias se resaltan en el archivo.",
+    "shortcut": "⌘F"
+   },
+   {
+    "text": "Pulsa Return o Find > Find Next (⌘G) para ir a la siguiente coincidencia, y Find > Find Previous (⇧⌘G) para volver. Para buscar la palabra ya seleccionada en el código, usa Find > Use Selection for Find (⌘E).",
+    "shortcut": "⌘G"
+   },
+   {
+    "text": "Para reemplazar, usa Find > Find and Replace… (⌥⌘F): la barra gana un segundo campo. Escribe el texto nuevo y usa Replace (una coincidencia), Replace All (todas en el archivo) o Replace and Find Next.",
+    "shortcut": "⌥⌘F"
+   },
+   {
+    "text": "Haz clic en la lupa (o en el menú de opciones) dentro de la barra para ajustar la búsqueda: cómo debe coincidir la palabra (por ejemplo, que contenga o palabra completa), ignorar mayúsculas y minúsculas y el modo de expresión regular (Regular Expression). Los nombres exactos de estas opciones aparecen en la propia barra.",
+    "shortcut": "⌘E"
+   },
+   {
+    "text": "Para buscar en todos los archivos, usa Find > Find in Workspace… (⇧⌘F). Esto abre el Find navigator (⌘4) a la izquierda, con los resultados agrupados por archivo.",
+    "shortcut": "⇧⌘F"
+   },
+   {
+    "text": "Haz clic en un resultado para ir directo a su línea. Los campos bajo el cuadro de búsqueda te permiten elegir el ámbito (todo el proyecto o algunas carpetas) y el tipo de búsqueda: texto, referencias o definiciones.",
+    "shortcut": "⌘4"
+   },
+   {
+    "text": "Para limitar la búsqueda a ciertas carpetas, selecciónalas y usa Find > Find in Selected Groups…. Es más rápido cuando el proyecto es grande y sabes dónde buscar."
+   },
+   {
+    "text": "Para reemplazar en muchos archivos, usa Find > Find and Replace in Workspace… (⌥⇧⌘F), escribe el texto nuevo y usa el botón de vista previa (Preview) para ver cada cambio. Desmarca los archivos o líneas que no quieras cambiar y confirma con Replace.",
+    "shortcut": "⌥⇧⌘F"
+   }
+  ],
+  "tips": [
+   "Para saber dónde se usa una función, haz clic en ella y usa Find > Find Selected Symbol in Workspace (⌃⇧⌘F); entiende mejor el código que una búsqueda de texto simple.",
+   "Para cerrar la barra de búsqueda del archivo, usa Find > Hide Find Bar o pulsa Esc.",
+   "Activa la opción de palabra completa al buscar nombres cortos como 'id', para no encontrar 'identifier', 'video', etc.",
+   "Buscar parte de un mensaje de error en el Find navigator ayuda a descubrir de dónde sale un texto de la pantalla.",
+   "Todo lo que reemplace el Find navigator se puede deshacer con ⌘Z, pero el deshacer puede ser archivo por archivo. Haz commit antes de un reemplazo grande."
+  ],
+  "pitfalls": [
+   "Replace All en Find in Workspace cambia muchos archivos a la vez. Usa siempre la vista previa y revisa los resultados antes de aplicar.",
+   "Si la búsqueda no encuentra algo que sabes que existe, revisa que las opciones (mayúsculas, palabra completa, ámbito) no sean demasiado restrictivas.",
+   "Buscar y reemplazar nombres de variables o funciones puede cambiar texto que no es código. Para símbolos de Swift, prefiere Editor > Refactor > Rename….",
+   "Las expresiones regulares tienen su propia sintaxis: caracteres como ( ) . * tienen significado especial. Si una búsqueda de texto simple da resultados raros, revisa que el modo regex no haya quedado activado."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ },
+ {
+  "id": "folding-minimap",
+  "category": "editing",
+  "title": "Plegar código, números de línea y minimap",
+  "summary": "Aprende a ocultar bloques de código que no estás leyendo, mostrar números de línea, usar el minimap y moverte por archivos largos sin perderte.",
+  "steps": [
+   {
+    "text": "Haz clic dentro de una función o de un bloque entre llaves { }, y usa Editor > Code Folding > Fold (⌥⌘←). El cuerpo del bloque desaparece y queda una marca en su lugar, que indica que hay código oculto."
+   },
+   {
+    "text": "Para mostrarlo de nuevo, usa Editor > Code Folding > Unfold (⌥⌘→) con el cursor en la parte plegada, o haz clic en la marca. Editor > Code Folding > Unfold All abre todo de una vez.",
+    "shortcut": "⌥⌘←"
+   },
+   {
+    "text": "Para plegar todas las funciones del archivo, usa Editor > Code Folding > Fold Methods & Functions (⌥⇧⌘←); lo opuesto es Unfold Methods & Functions. Fold Comment Blocks y Unfold Comment Blocks (⌃⇧⌘←/→) hacen lo mismo con los bloques de comentario."
+   },
+   {
+    "text": "Busca la franja estrecha junto a los números de línea: es la cinta de plegado (folding ribbon). Hacer clic en una pequeña flecha de ella pliega o despliega el bloque. Si no la ves, busca en Xcode > Settings > Text Editing una opción llamada algo como 'Code folding ribbon' (el nombre puede variar en tu versión)."
+   },
+   {
+    "text": "Para mostrar el minimap, una versión en miniatura del archivo a la derecha, usa Editor > Minimap (⌃⇧⌘M). Pasa el ratón por encima para ver los nombres de símbolos y haz clic para saltar a ese punto del archivo.",
+    "shortcut": "⌃⇧⌘M"
+   },
+   {
+    "text": "Para ver números de línea, busca en Xcode > Settings > Text Editing una opción de números de línea (Line numbers). Con Editor > Relative Line Numbers, la numeración muestra la distancia desde la línea del cursor, útil si usas Vim Mode."
+   },
+   {
+    "text": "Para saltar entre los símbolos del archivo, haz clic en el último elemento de la barra de ruta (jump bar) sobre el editor, o usa View > Editor > Show Document Items (⌃6). Escribe parte de un nombre para filtrar la lista y haz clic para ir allí.",
+    "shortcut": "⌃6"
+   },
+   {
+    "text": "Para ir directo a una línea, usa Navigate > Jump to… (⌘L) y escribe el número de línea. Para líneas muy largas, usa Editor > Wrap Lines (⌃⇧⌘L), que ajusta el texto en pantalla sin cambiar el archivo."
+   }
+  ],
+  "tips": [
+   "Pliega las funciones que ya entendiste para ver la estructura general del archivo en pocas líneas.",
+   "Las marcas // MARK: - aparecen en la jump bar y en el minimap; funcionan como el índice de un libro.",
+   "El código plegado sigue siendo parte del programa; plegar es solo algo visual.",
+   "El minimap es más útil en archivos largos; en pantallas pequeñas, apágalo para ganar espacio.",
+   "Si no encuentras un elemento de menú que viste en un tutorial, búscalo en Settings: Xcode 26 reorganizó algunos controles."
+  ],
+  "pitfalls": [
+   "Plegar un bloque y olvidarlo: después puedes pensar que el código 'desapareció'. Busca la marca de plegado o usa Unfold All.",
+   "Los pliegues quedan atados a la posición del código; si editas mucho, Xcode a veces despliega solo. Es normal.",
+   "Las flechas en los atajos de plegado (⌥⌘← y ⌥⌘→) dependen de las teclas de flecha; en portátiles están abajo a la derecha. Si el atajo falla, usa el menú Editor > Code Folding.",
+   "Si el minimap y los números de línea desaparecen al cambiar de proyecto o ventana, revisa el menú Editor y las opciones en Settings, pues algunas son por ventana."
+  ],
+  "links": [
+   {
+    "title": "Source editor",
+    "url": "https://developer.apple.com/documentation/xcode/source-editor"
+   },
+   {
+    "title": "Develop in Swift tutorials",
+    "url": "https://developer.apple.com/tutorials/develop-in-swift/"
+   }
+  ],
+  "related": [
+   30
+  ]
+ }
+]

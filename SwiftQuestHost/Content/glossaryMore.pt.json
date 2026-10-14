@@ -269,7 +269,7 @@
  },
  {
   "term": "navigator",
-  "definition": "O painel esquerdo do Xcode com abas como Project, Source Control, Symbol, Find, Issue, Test, Debug e Report navigators."
+  "definition": "O painel esquerdo do Xcode com abas como Project, Source Control, Bookmarks, Find, Issues, Tests, Debug, Breakpoints e Reports navigators."
  },
  {
   "term": "inspector",

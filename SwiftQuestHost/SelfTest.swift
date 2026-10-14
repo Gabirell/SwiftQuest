@@ -25,6 +25,7 @@ enum SelfTest {
                 var badges: [String] = []
                 var challenges: [String] = []
                 var lessonQuiz: [String] = []
+                var guide: [String] = []
             }
             var shapes: [AppLanguage: Shape] = [:]
             for lang in AppLanguage.allCases {
@@ -38,6 +39,7 @@ enum SelfTest {
                 s.badges = loc.badges.map(\.id)
                 s.challenges = loc.challenges.map(\.id)
                 s.lessonQuiz = loc.lessons.map { "\($0.id):\($0.quiz.count)" }
+                s.guide = loc.guide.map { "\($0.id):\($0.category):\($0.steps.count):\($0.tips.count):\($0.pitfalls.count):\($0.links.count)" }
                 shapes[lang] = s
                 check(loc.pillars.count >= 25 && Set(s.pillars).count == s.pillars.count, "\(lang.rawValue): \(loc.pillars.count) unique pillars")
                 check(loc.pillars.allSatisfy { $0.exercises.count >= 5 && $0.quiz.count >= 5 && !$0.theory.isEmpty }, "\(lang.rawValue): every pillar has >=5 exercises, >=5 quiz questions and theory")
@@ -50,6 +52,13 @@ enum SelfTest {
                 check(loc.glossary.count >= 19 && Set(s.glossary.map { $0.lowercased() }).count == s.glossary.count, "\(lang.rawValue): \(loc.glossary.count) unique glossary terms")
                 check(loc.badges.count == 12 && loc.lessons.count == 6 && loc.introGlossary.count == 20, "\(lang.rawValue): badges, intro lessons, intro glossary")
                 check(loc.challenges.count >= 10 && Set(s.challenges).count == s.challenges.count, "\(lang.rawValue): \(loc.challenges.count) unique challenges")
+                let pillarIDSet = Set(loc.pillars.map(\.id))
+                check(loc.guide.count >= 30 && Set(loc.guide.map(\.id)).count == loc.guide.count, "\(lang.rawValue): \(loc.guide.count) unique Xcode guide articles")
+                check(loc.guide.allSatisfy { GuideData.categoryOrder.contains($0.category) && $0.steps.count >= 5 && $0.tips.count >= 3 && !$0.links.isEmpty }, "\(lang.rawValue): every guide article is complete")
+                check(loc.guide.allSatisfy { $0.related.allSatisfy(pillarIDSet.contains) }, "\(lang.rawValue): guide articles only relate to existing pillars")
+                let guideIDs = Set(loc.guide.map(\.id))
+                check(XcodeWindowMap.MapRegion.allCases.allSatisfy { guideIDs.contains($0.article) }, "\(lang.rawValue): every Xcode window map area points to a guide article")
+                check(loc.guide.allSatisfy { $0.category != "" && loc.t("guide.cat." + $0.category) != "guide.cat." + $0.category }, "\(lang.rawValue): guide categories have names")
                 check(!loc.studyBank.isEmpty, "\(lang.rawValue): study bank (\(loc.studyBank.count) questions)")
                 let categories = Set(loc.pillars.map(\.categoryName)).union(loc.exams.map(\.category))
                 check(categories.allSatisfy { loc.category($0) != "cat." + $0 }, "\(lang.rawValue): every category has a display name \(categories.filter { loc.category($0) == "cat." + $0 })")
